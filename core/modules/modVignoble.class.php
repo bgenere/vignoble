@@ -64,7 +64,7 @@ class modVignoble extends DolibarrModules
 		// Module description
 		// used if translation string 'ModuleXXXDesc' not found
 		// (where XXX is value of numeric property 'numero' of module)
-		$this->description = "Description of module Vignoble";
+		$this->description = "Wine Yard Management";
 		// Possible values for version are: 'development', 'experimental' or version
 		$this->version = 'development';
 		// Key used in llx_const table to save module status enabled/disabled

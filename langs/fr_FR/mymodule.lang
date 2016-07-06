@@ -20,26 +20,26 @@
 
 # Module label 'ModuleXXXName'
 # (where XXX is value of numeric property 'numero' of module)
-Module10000Name = Mon module
+Module123000Name = Vignoble
 # Module description 'ModuleXXXDesc'
 # (where XXX is value of numeric property 'numero' of module)
-Module10000Desc = Description de mon module
+Module123000Desc = Ajoute toute les fonctions spécifiques à la gestion d'un vignoble
 
 #
 # Page d'administration
 #
-MyModuleSetup = Configuration du module mon module
+MyModuleSetup = Configuration du module Vignoble
 Settings = Réglages
-MyModuleSetupPage = Page de réglage de mon module
+MyModuleSetupPage = Page de réglage de Vignoble
 
 #
 # Page À propos
 #
 About = À propos
-MyModuleAbout = À propos de mon module
-MyModuleAboutPage = Page à propos de mon module
+MyModuleAbout = À propos de Vignoble
+MyModuleAboutPage = Page à propos de Vignoble
 
 #
 # Page d'exemple
 #
-MyPageName = Nom de ma page
+MyPageName = Vignoble - page d'exemple
