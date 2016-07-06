@@ -1,5 +1,6 @@
--- <one line to give the program's name and a brief idea of what it does.>
--- Copyright (C) <year>  <name of author>
+-- SQL update for the Vignoble module
+-- from release x.x.x to y.y.y
+-- Copyright (C) 2016  Bruno Généré
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by

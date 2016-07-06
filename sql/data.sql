@@ -1,5 +1,5 @@
--- <one line to give the program's name and a brief idea of what it does.>
--- Copyright (C) <year>  <name of author>
+-- Initial load for the Vignoble module
+-- Copyright (C) 2016  Bruno Généré
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,6 +14,22 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-INSERT INTO llx_mytable VALUES (
-	1, 1, 'mydata'
-);
+-- assolement
+
+delete from llx_c_assolement;
+insert into llx_c_assolement (code,label) values ('VIGNE','Vigne');
+insert into llx_c_assolement (code,label) values ('JEUNEVIGNE','Jeune Vigne');
+insert into llx_c_assolement (code,label) values ('JACHERE','Jachère');
+
+-- cepage
+
+delete from llx_c_cepage;
+insert into llx_c_cepage (code,label) values ('CABERNET','Cabernet');
+insert into llx_c_cepage (code,label) values ('MERLOT','Merlot');
+
+-- porte_greffe
+
+delete from llx_c_porte_greffe;
+insert into llx_c_porte_greffe (code,label) values ('S04','SO4');
+insert into llx_c_porte_greffe (code,label) values ('5BB','5BB');
+insert into llx_c_porte_greffe (code,label) values ('101-14','101-14');

@@ -20,26 +20,26 @@
 
 # Module label 'ModuleXXXName'
 # (where XXX is value of numeric property 'numero' of module)
-Module10000Name = My module
+Module123001Name = WineYard
 # Module description 'ModuleXXXDesc'
 # (where XXX is value of numeric property 'numero' of module)
-Module10000Desc = My module description
+Module123001Desc = Add all features to manage a Wine Yard estate
 
 #
 # Admin page
 #
-MyModuleSetup = My module setup
+MyModuleSetup = WineYard setup
 Settings = Settings
-MyModuleSetupPage = My module setup page
+MyModuleSetupPage = WineYard setup page
 
 #
 # About page
 #
 About = About
-MyModuleAbout = About my module
-MyModuleAboutPage = My module about page
+MyModuleAbout = About WineYard
+MyModuleAboutPage = WineYard about page
 
 #
 # Sample page
 #
-MyPageName = My page name
+MyPageName = WineYard - sample page

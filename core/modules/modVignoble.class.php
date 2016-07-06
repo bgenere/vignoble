@@ -204,28 +204,28 @@ class modVignoble extends DolibarrModules
 			$conf->vignoble=new stdClass();
 			$conf->vignoble->enabled = 0;
 		}
-		$this->dictionaries = array();
-		/* Example:
+		//$this->dictionaries = array();
+		
 		  // This is to avoid warnings
 		  if (! isset($conf->vignoble->enabled)) $conf->vignoble->enabled=0;
 		  $this->dictionaries=array(
 			  'langs'=>'vignoble@vignoble',
-			  // List of tables we want to see into dictonnary editor
+			  // List of tables we want to see into dictionnary editor
 			  'tabname'=>array(
-				  MAIN_DB_PREFIX."table1",
-				  MAIN_DB_PREFIX."table2",
-				  MAIN_DB_PREFIX."table3"
+				  MAIN_DB_PREFIX."c_assolement",
+				  MAIN_DB_PREFIX."c_cepage",
+				  MAIN_DB_PREFIX."c_porte_greffe"
 			  ),
 			  // Label of tables
-			  'tablib'=>array("Table1","Table2","Table3"),
+			  'tablib'=>array("Assolement","Cépage","Porte Greffe"),
 			  // Request to select fields
 			  'tabsql'=>array(
 				  'SELECT f.rowid as rowid, f.code, f.label, f.active'
-				  . ' FROM ' . MAIN_DB_PREFIX . 'table1 as f',
+				  . ' FROM ' . MAIN_DB_PREFIX . 'c_assolement as f',
 				  'SELECT f.rowid as rowid, f.code, f.label, f.active'
-				  . ' FROM ' . MAIN_DB_PREFIX . 'table2 as f',
+				  . ' FROM ' . MAIN_DB_PREFIX . 'c_cepage as f',
 				  'SELECT f.rowid as rowid, f.code, f.label, f.active'
-				  . ' FROM ' . MAIN_DB_PREFIX . 'table3 as f'
+				  . ' FROM ' . MAIN_DB_PREFIX . 'c_porte_greffe as f'
 			  ),
 			  // Sort order
 			  'tabsqlsort'=>array("label ASC","label ASC","label ASC"),
@@ -244,7 +244,7 @@ class modVignoble extends DolibarrModules
 				  $conf->vignoble->enabled
 			  )
 		  );
-		 */
+		 
 
 		// Boxes
 		// Add here list of php file(s) stored in core/boxes that contains class to show a box.
