@@ -28,18 +28,24 @@ Module123001Desc = Ajoute toute les fonctions spécifiques à la gestion d'un vi
 #
 # Page d'administration
 #
-MyModuleSetup = Configuration du module Vignoble
+vignobleSetup = Configuration du module Vignoble
 Settings = Réglages
-MyModuleSetupPage = Page de réglage de Vignoble
+vignobleSetupPage = Page de configuration du module Vignoble
 
 #
 # Page À propos
 #
 About = À propos
-MyModuleAbout = À propos de Vignoble
-MyModuleAboutPage = Page à propos de Vignoble
+vignobleAbout = À propos du module Vignoble
+vignobleAboutPage = Page à propos du module Vignoble
 
 #
 # Page d'exemple
 #
 MyPageName = Vignoble - page d'exemple
+
+#
+# Pages
+#
+ParcelleListTitle = Liste des parcelles
+

@@ -18,7 +18,7 @@
 
 /**
  * 	\file		admin/about.php
- * 	\ingroup	mymodule
+ * 	\ingroup	vignoble
  * 	\brief		This file is an example about page
  * 				Put some comments here
  */
@@ -32,13 +32,13 @@ global $langs, $user;
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
-require_once '../lib/mymodule.lib.php';
+require_once '../lib/vignoble.lib.php';
 
 require __DIR__ . '/../vendor/autoload.php';
 
 //require_once "../class/myclass.class.php";
 // Translations
-$langs->load("mymodule@mymodule");
+$langs->load("vignoble@vignoble");
 
 // Access control
 if (! $user->admin) {
@@ -55,7 +55,7 @@ $action = GETPOST('action', 'alpha');
 /*
  * View
  */
-$page_name = "MyModuleAbout";
+$page_name = "vignobleAbout";
 llxHeader('', $langs->trans($page_name));
 
 // Subheader
@@ -64,26 +64,26 @@ $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'
 print_fiche_titre($langs->trans($page_name), $linkback);
 
 // Configuration header
-$head = mymoduleAdminPrepareHead();
+$head = vignobleAdminPrepareHead();
 dol_fiche_head(
 	$head,
 	'about',
-	$langs->trans("Module10000Name"),
+	$langs->trans("Module123001Name"),
 	0,
-	'mymodule@mymodule'
+	'vignoble@vignoble'
 );
 
 // About page goes here
-echo $langs->trans("MyModuleAboutPage");
+echo $langs->trans("vignobleAboutPage");
 
 echo '<br>';
 
-$buffer = file_get_contents(dol_buildpath('/mymodule/README.md', 0));
+$buffer = file_get_contents(dol_buildpath('/vignoble/README.md', 0));
 echo Parsedown::instance()->text($buffer);
 
 echo '<br>',
-'<a href="' . dol_buildpath('/mymodule/COPYING', 1) . '">',
-'<img src="' . dol_buildpath('/mymodule/img/gplv3.png', 1) . '"/>',
+'<a href="' . dol_buildpath('/vignoble/COPYING', 1) . '">',
+'<img src="' . dol_buildpath('/vignoble/img/gplv3.png', 1) . '"/>',
 '</a>';
 
 

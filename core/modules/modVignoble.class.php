@@ -68,7 +68,7 @@ class modVignoble extends DolibarrModules
 		// Possible values for version are: 'development', 'experimental' or version
 		$this->version = 'development';
 		// Key used in llx_const table to save module status enabled/disabled
-		// (where MYMODULE is value of property name of module in uppercase)
+		// (where vignoble is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_' . strtoupper($this->name);
 		// Where to store the module in setup page
 		// (0=common,1=interface,2=others,3=very specific)
@@ -128,7 +128,7 @@ class modVignoble extends DolibarrModules
 
 		// Config pages. Put here list of php pages
 		// stored into vignoble/admin directory, used to setup module.
-		$this->config_page_url = array("admin_mymodule.php@vignoble");
+		$this->config_page_url = array("admin_vignoble.php@vignoble");
 
 		// Dependencies
 		// A condition to hide module
@@ -152,7 +152,7 @@ class modVignoble extends DolibarrModules
 		// Example:
 		$this->const = array(
 			//	0 => array(
-			//		'MYMODULE_MYNEWCONST1',
+			//		'vignoble_MYNEWCONST1',
 			//		'chaine',
 			//		'myvalue',
 			//		'This is a constant to add',
@@ -161,7 +161,7 @@ class modVignoble extends DolibarrModules
 			//      0,
 			//	),
 			//	1 => array(
-			//		'MYMODULE_MYNEWCONST2',
+			//		'vignoble_MYNEWCONST2',
 			//		'chaine',
 			//		'myvalue',
 			//		'This is another constant to add',
@@ -278,64 +278,65 @@ class modVignoble extends DolibarrModules
 		//// if ($user->rights->permkey->level1->level2)
 		//$this->rights[$r][5] = 'level2';
 		//$r++;
+
 		// Main menu entries
 
 		// Add here entries to declare new menus
 		//
 		// Example to declare a new Top Menu entry and its Left menu entry:
-		//$this->menu[]=array(
-		//	// Put 0 if this is a top menu
-		//	'fk_menu'=>0,
+		$this->menu[]=array(
+		// Put 0 if this is a top menu
+			'fk_menu'=>0,
 		//	// This is a Top menu entry
-		//	'type'=>'top',
+			'type'=>'top',
 		// Menu's title. FIXME: use a translation key
-		//	'titre'=>'Vignoble top menu',
+			'titre'=>'Vignoble',
 		// This menu's mainmenu ID
-		//	'mainmenu'=>'vignoble',
+			'mainmenu'=>'vignoble_top',
 		// This menu's leftmenu ID
-		//	'leftmenu'=>'vignoble',
-		//	'url'=>'/vignoble/pagetop.php',
-		//	// Lang file to use (without .lang) by module.
-		//	// File must be in langs/code_CODE/ directory.
-		//	'langs'=>'mylangfile',
-		//	'position'=>100,
+			'leftmenu'=>'vignoble_left',
+			'url'=>'/vignoble/parcelle_list.php',
+		// Lang file to use (without .lang) by module.
+		// File must be in langs/code_CODE/ directory.
+			'langs'=>'vignoble',
+			'position'=>123,
 		//	// Define condition to show or hide menu entry.
-		//	// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
-		//	'enabled'=>'$conf->vignoble->enabled',
-		//	// Use 'perms'=>'$user->rights->vignoble->level1->level2'
-		//	// if you want your menu with a permission rules
-		//	'perms'=>'1',
-		//	'target'=>'',
-		//	// 0=Menu for internal users, 1=external users, 2=both
-		//	'user'=>2
-		//);
-		//$this->menu[]=array(
-		//	// Use r=value where r is index key used for the parent menu entry
-		//	// (higher parent must be a top menu entry)
-		//	'fk_menu'=>'r=0',
-		//	// This is a Left menu entry
-		//	'type'=>'left',
-		// Menu's title. FIXME: use a translation key
-		//	'titre'=>'Vignoble left menu',
-		// This menu's mainmenu ID
-		//	'mainmenu'=>'vignoble',
-		// This menu's leftmenu ID
-		//	'leftmenu'=>'vignoble',
-		//	'url'=>'/vignoble/pagelevel1.php',
-		//	// Lang file to use (without .lang) by module.
-		//	// File must be in langs/code_CODE/ directory.
-		//	'langs'=>'mylangfile',
-		//	'position'=>100,
-		//	// Define condition to show or hide menu entry.
-		//	// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
-		//	'enabled'=>'$conf->vignoble->enabled',
-		//	// Use 'perms'=>'$user->rights->vignoble->level1->level2'
-		//	// if you want your menu with a permission rules
-		//	'perms'=>'1',
-		//	'target'=>'',
-		//	// 0=Menu for internal users, 1=external users, 2=both
-		//	'user'=>2
-		//);
+		// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
+			'enabled'=>'$conf->vignoble->enabled',
+		// Use 'perms'=>'$user->rights->vignoble->level1->level2'
+		// if you want your menu with a permission rules
+			'perms'=>'1',
+			'target'=>'',
+		// 0=Menu for internal users, 1=external users, 2=both
+			'user'=>2
+		);
+		$this->menu[]=array(
+			// Use r=value where r is index key used for the parent menu entry
+			// (higher parent must be a top menu entry)
+			'fk_menu'=>'r=0',
+			// This is a Left menu entry
+			'type'=>'left',
+			//Menu's title. FIXME: use a translation key
+			'titre'=>'Vignoble left menu',
+			// This menu's mainmenu ID
+			'mainmenu'=>'vignoble_top',
+			//This menu's leftmenu ID
+			'leftmenu'=>'vignoble_left',
+			'url'=>'/vignoble/parcelle_card.php',
+			// Lang file to use (without .lang) by module.
+			// File must be in langs/code_CODE/ directory.
+			'langs'=>'vignoble',
+			'position'=>1,
+			// Define condition to show or hide menu entry.
+			// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
+			'enabled'=>'$conf->vignoble->enabled',
+			// Use 'perms'=>'$user->rights->vignoble->level1->level2'
+			// if you want your menu with a permission rules
+			'perms'=>'1',
+			'target'=>'',
+			// 0=Menu for internal users, 1=external users, 2=both
+			'user'=>2
+		);
 		//
 		// Example to declare a Left Menu entry into an existing Top menu entry:
 		//$this->menu[]=array(

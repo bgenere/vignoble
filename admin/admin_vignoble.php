@@ -17,8 +17,8 @@
  */
 
 /**
- * 	\file		admin/mymodule.php
- * 	\ingroup	mymodule
+ * 	\file		admin/vignoble.php
+ * 	\ingroup	vignoble
  * 	\brief		This file is an example module setup page
  * 				Put some comments here
  */
@@ -32,10 +32,10 @@ global $langs, $user;
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
-require_once '../lib/mymodule.lib.php';
+require_once '../lib/vignoble.lib.php';
 //require_once "../class/myclass.class.php";
 // Translations
-$langs->load("mymodule@mymodule");
+$langs->load("vignoble@vignoble");
 
 // Access control
 if (! $user->admin) {
@@ -52,7 +52,7 @@ $action = GETPOST('action', 'alpha');
 /*
  * View
  */
-$page_name = "MyModuleSetup";
+$page_name = "vignobleSetup";
 llxHeader('', $langs->trans($page_name));
 
 // Subheader
@@ -61,17 +61,17 @@ $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'
 print_fiche_titre($langs->trans($page_name), $linkback);
 
 // Configuration header
-$head = mymoduleAdminPrepareHead();
+$head = vignobleAdminPrepareHead();
 dol_fiche_head(
 	$head,
 	'settings',
-	$langs->trans("Module10000Name"),
+	$langs->trans("Module123001Name"),
 	0,
-	"mymodule@mymodule"
+	"vignoble@vignoble"
 );
 
 // Setup page goes here
-echo $langs->trans("MyModuleSetupPage");
+echo $langs->trans("vignobleSetupPage");
 
 // Page end
 dol_fiche_end();
