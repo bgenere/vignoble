@@ -17,6 +17,7 @@
 -- assolement
 
 delete from llx_c_assolement;
+ALTER TABLE llx_c_assolement AUTO_INCREMENT = 1;
 insert into llx_c_assolement (code,label) values ('VIGNE','Vigne');
 insert into llx_c_assolement (code,label) values ('JEUNEVIGNE','Jeune Vigne');
 insert into llx_c_assolement (code,label) values ('JACHERE','Jachère');
@@ -24,12 +25,14 @@ insert into llx_c_assolement (code,label) values ('JACHERE','Jachère');
 -- cepage
 
 delete from llx_c_cepage;
+ALTER TABLE llx_c_cepage AUTO_INCREMENT = 1;
 insert into llx_c_cepage (code,label) values ('CABERNET','Cabernet');
 insert into llx_c_cepage (code,label) values ('MERLOT','Merlot');
 
 -- porte_greffe
 
 delete from llx_c_porte_greffe;
+ALTER TABLE llx_c_porte_greffe AUTO_INCREMENT = 1;
 insert into llx_c_porte_greffe (code,label) values ('S04','SO4');
 insert into llx_c_porte_greffe (code,label) values ('5BB','5BB');
 insert into llx_c_porte_greffe (code,label) values ('101-14','101-14');
