@@ -1,6 +1,6 @@
 -- SQL update for the Vignoble module
 -- from release x.x.x to y.y.y
--- Copyright (C) 2016  Bruno Généré
+-- Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by

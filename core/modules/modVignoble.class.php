@@ -1,6 +1,6 @@
 <?php
-/* <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) <year>  <name of author>
+/* Vignoble Module class 
+ * Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,27 +177,27 @@ class modVignoble extends DolibarrModules
 			//	// To add another new tab identified by code tabname2
 			//	'objecttype:+tabname2:Title2:langfile@vignoble:$user->rights->othermodule->read:/vignoble/mynewtab2.php?id=__ID__',
 			//	// To remove an existing tab identified by code tabname
-			//	'objecttype:-tabname'
+			//	'objecttype:-tabname'		
+			// 'categories_x'	  to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
+			// 'contact'          to add a tab in contact view
+			// 'contract'         to add a tab in contract view
+			// 'group'            to add a tab in group view
+			// 'intervention'     to add a tab in intervention view
+			// 'invoice'          to add a tab in customer invoice view
+			// 'invoice_supplier' to add a tab in supplier invoice view
+			// 'member'           to add a tab in fundation member view
+			// 'opensurveypoll'	  to add a tab in opensurvey poll view
+			// 'order'            to add a tab in customer order view
+			// 'order_supplier'   to add a tab in supplier order view
+			// 'payment'		  to add a tab in payment view
+			// 'payment_supplier' to add a tab in supplier payment view
+			// 'product'          to add a tab in product view
+			// 'propal'           to add a tab in propal view
+			// 'project'          to add a tab in project view
+			// 'stock'            to add a tab in stock view
+			// 'thirdparty'       to add a tab in third party view
+			// 'user'             to add a tab in user view
 		);
-		// 'categories_x'	  to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
-		// 'contact'          to add a tab in contact view
-		// 'contract'         to add a tab in contract view
-		// 'group'            to add a tab in group view
-		// 'intervention'     to add a tab in intervention view
-		// 'invoice'          to add a tab in customer invoice view
-		// 'invoice_supplier' to add a tab in supplier invoice view
-		// 'member'           to add a tab in fundation member view
-		// 'opensurveypoll'	  to add a tab in opensurvey poll view
-		// 'order'            to add a tab in customer order view
-		// 'order_supplier'   to add a tab in supplier order view
-		// 'payment'		  to add a tab in payment view
-		// 'payment_supplier' to add a tab in supplier payment view
-		// 'product'          to add a tab in product view
-		// 'propal'           to add a tab in propal view
-		// 'project'          to add a tab in project view
-		// 'stock'            to add a tab in stock view
-		// 'thirdparty'       to add a tab in third party view
-		// 'user'             to add a tab in user view
 
 		// Dictionaries
 		if (! isset($conf->vignoble->enabled)) {
@@ -207,9 +207,9 @@ class modVignoble extends DolibarrModules
 		//$this->dictionaries = array();
 		
 		  // This is to avoid warnings
-		  if (! isset($conf->vignoble->enabled)) $conf->vignoble->enabled=0;
+		  //if (! isset($conf->vignoble->enabled)) $conf->vignoble->enabled=0;
 		  $this->dictionaries=array(
-			  'langs'=>'vignoble@vignoble',
+			  //'langs'=>'dico', -- not used
 			  // List of tables we want to see into dictionnary editor
 			  'tabname'=>array(
 				  MAIN_DB_PREFIX."c_assolement",
@@ -280,25 +280,22 @@ class modVignoble extends DolibarrModules
 		//$r++;
 
 		// Main menu entries
-
-		// Add here entries to declare new menus
+		// Translations added to fix menu translation issue
+		$langs->load("vignoble@vignoble");
 		//
-		// Example to declare a new Top Menu entry and its Left menu entry:
+		// Top Menu entry 
 		$this->menu[]=array(
 		// Put 0 if this is a top menu
 			'fk_menu'=>0,
 		//	// This is a Top menu entry
 			'type'=>'top',
-		// Menu's title. FIXME: use a translation key
-			'titre'=>'Vignoble',
+		// Menu's title. 
+			'titre'=> $langs->trans('Module123001Name'),
 		// This menu's mainmenu ID
-			'mainmenu'=>'vignoble_top',
+			'mainmenu'=>'vignoble',
 		// This menu's leftmenu ID
-			'leftmenu'=>'vignoble_left',
+			'leftmenu'=>'vignoble',
 			'url'=>'/vignoble/parcelle_list.php',
-		// Lang file to use (without .lang) by module.
-		// File must be in langs/code_CODE/ directory.
-			'langs'=>'vignoble',
 			'position'=>123,
 		//	// Define condition to show or hide menu entry.
 		// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
@@ -310,6 +307,7 @@ class modVignoble extends DolibarrModules
 		// 0=Menu for internal users, 1=external users, 2=both
 			'user'=>2
 		);
+		// Left menu
 		$this->menu[]=array(
 			// Use r=value where r is index key used for the parent menu entry
 			// (higher parent must be a top menu entry)
@@ -317,15 +315,12 @@ class modVignoble extends DolibarrModules
 			// This is a Left menu entry
 			'type'=>'left',
 			//Menu's title. FIXME: use a translation key
-			'titre'=>'Vignoble left menu',
+			'titre'=> $langs->trans('Parcelles'),
 			// This menu's mainmenu ID
-			'mainmenu'=>'vignoble_top',
+			'mainmenu'=>'vignoble',
 			//This menu's leftmenu ID
-			'leftmenu'=>'vignoble_left',
-			'url'=>'/vignoble/parcelle_card.php',
-			// Lang file to use (without .lang) by module.
-			// File must be in langs/code_CODE/ directory.
-			'langs'=>'vignoble',
+			'leftmenu'=>'parcelles',
+			'url'=>'/vignoble/parcelle_list.php',
 			'position'=>1,
 			// Define condition to show or hide menu entry.
 			// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
@@ -339,34 +334,56 @@ class modVignoble extends DolibarrModules
 		);
 		//
 		// Example to declare a Left Menu entry into an existing Top menu entry:
-		//$this->menu[]=array(
-		//	// Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy'
-		//	'fk_menu'=>'fk_mainmenu=mainmenucode',
-		//	// This is a Left menu entry
-		//	'type'=>'left',
-		// Menu's title. FIXME: use a translation key
-		//	'titre'=>'Vignoble left menu',
-		// This menu's mainmenu ID
-		//	'mainmenu'=>'mainmenucode',
-		// This menu's leftmenu ID
-		//	'leftmenu'=>'vignoble',
-		//	'url'=>'/vignoble/pagelevel2.php',
-		//	// Lang file to use (without .lang) by module.
-		//	// File must be in langs/code_CODE/ directory.
-		//	'langs'=>'mylangfile',
-		//	'position'=>100,
-		//	// Define condition to show or hide menu entry.
-		//	// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
-		//	// Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-		//	'enabled'=>'$conf->vignoble->enabled',
-		//	// Use 'perms'=>'$user->rights->vignoble->level1->level2'
-		//	// if you want your menu with a permission rules
-		//	'perms'=>'1',
-		//	'target'=>'',
-		//	// 0=Menu for internal users, 1=external users, 2=both
-		//	'user'=>2
-		//);
-
+		$this->menu[]=array(
+			// Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy'
+			'fk_menu'=>'fk_mainmenu=vignoble,fk_leftmenu=parcelles',
+			// This is a Left menu entry
+			'type'=>'left',
+			//Menu's title. FIXME: use a translation key
+			'titre'=>'Nouvelle Parcelle',
+			//This menu's mainmenu ID
+			'mainmenu'=>'vignoble',
+			//This menu's leftmenu ID
+			'leftmenu'=>'create',
+			'url'=>'/vignoble/parcelle_card.php',
+			'position'=>10,
+			// Define condition to show or hide menu entry.
+			// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
+			// Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			'enabled'=>'$conf->vignoble->enabled',
+			// Use 'perms'=>'$user->rights->vignoble->level1->level2'
+			// if you want your menu with a permission rules
+			'perms'=>'1',
+			'target'=>'',
+			// 0=Menu for internal users, 1=external users, 2=both
+			'user'=>2
+		);
+//
+		// Example to declare a Left Menu entry into an existing Top menu entry:
+		$this->menu[]=array(
+			// Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy'
+			'fk_menu'=>'fk_mainmenu=vignoble,fk_leftmenu=parcelles',
+			// This is a Left menu entry
+			'type'=>'left',
+			//Menu's title. FIXME: use a translation key
+			'titre'=>'Liste des parcelles',
+			//This menu's mainmenu ID
+			'mainmenu'=>'vignoble',
+			//This menu's leftmenu ID
+			'leftmenu'=>'list',
+			'url'=>'/vignoble/parcelle_list.php',
+			'position'=>20,
+			// Define condition to show or hide menu entry.
+			// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
+			// Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			'enabled'=>'$conf->vignoble->enabled',
+			// Use 'perms'=>'$user->rights->vignoble->level1->level2'
+			// if you want your menu with a permission rules
+			'perms'=>'1',
+			'target'=>'',
+			// 0=Menu for internal users, 1=external users, 2=both
+			'user'=>2
+		);
 		// Exports
 		$r = 0;
 

@@ -1,5 +1,5 @@
 -- parcelle table definition - A piece of land of the wineyard
--- Copyright (C) 2016  Bruno Généré
+-- Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -18,23 +18,24 @@ CREATE TABLE llx_parcelle(
 	-- object keys
 	rowid INTEGER AUTO_INCREMENT PRIMARY KEY,  
 	entity INTEGER DEFAULT 1 NOT NULL, -- multi company id
-	-- links 
-	fk_user_author INTEGER NOT NULL,
-	fk_user_modif 	INTEGER NOT NULL,
+
+ 	ref VARCHAR(125),				   -- unique reference
+	label VARCHAR(255),
+	description TEXT,
+	-- attributes
+	surface real,						-- area size
+	nbpieds INTEGER NOT NULL,			-- number of wine roots
+	ecartement real, 					-- distance between 2 rows
+	-- attributes (in dictionnary) 
 	fk_assolement 	INTEGER NOT NULL, 
 	fk_cepage 	INTEGER NOT NULL,
 	fk_porte_greffe INTEGER NOT NULL,
-	-- record date time
+	-- private note
+	note_private TEXT,
+	-- record date time & user
 	tms	timestamp,
   	datec	datetime,                   -- creation date
-	-- champs numériques
-	surface float,						-- area size
-	nbpieds INTEGER NOT NULL,			-- number of wine roots
-	ecartement float, 					-- distance between 2 rows
-	-- champs texte
-    ref VARCHAR(125),					-- reference
-	label VARCHAR(255),
-	description TEXT,
-	note_private TEXT
+    fk_user_author INTEGER NOT NULL,
+	fk_user_modif 	INTEGER NOT NULL   
 	
 )ENGINE=innodb;

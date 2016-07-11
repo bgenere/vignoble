@@ -1,10 +1,10 @@
-Dolibarr Module Template (aka My Module)
+Dolibarr Module Vignoble
 ========================================
 
-This is a full featured module template for Dolibarr.
+This is a full featured module for Dolibarr.
 It's a tool for module developers to kickstart their project and give an hands-on sample of which features Dolibarr has to offer for module development.
 
-If you're not a module developer you have no use for this.
+
 
 Documentation
 -------------
