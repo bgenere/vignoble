@@ -20,7 +20,7 @@
  *   	\file       vignoble/parcelle_card.php
  *		\ingroup    vignoble
  *		\brief      This file is an example of a php page
- *					Initialy built by build_class_from_table on 2016-07-07 15:59
+ *					Initialy built by build_class_from_table on 2016-07-13 11:12
  */
 
 //if (! defined('NOREQUIREUSER'))  define('NOREQUIREUSER','1');
@@ -58,18 +58,18 @@ $myparam	= GETPOST('myparam','alpha');
 
 
 $search_entity=GETPOST('search_entity','int');
-$search_fk_user_author=GETPOST('search_fk_user_author','int');
-$search_fk_user_modif=GETPOST('search_fk_user_modif','int');
-$search_fk_assolement=GETPOST('search_fk_assolement','int');
-$search_fk_cepage=GETPOST('search_fk_cepage','int');
-$search_fk_porte_greffe=GETPOST('search_fk_porte_greffe','int');
-$search_surface=GETPOST('search_surface','alpha');
-$search_nbpieds=GETPOST('search_nbpieds','int');
-$search_ecartement=GETPOST('search_ecartement','alpha');
 $search_ref=GETPOST('search_ref','alpha');
 $search_label=GETPOST('search_label','alpha');
 $search_description=GETPOST('search_description','alpha');
+$search_surface=GETPOST('search_surface','alpha');
+$search_nbpieds=GETPOST('search_nbpieds','int');
+$search_ecartement=GETPOST('search_ecartement','alpha');
+$search_fk_assolement=GETPOST('search_fk_assolement','int');
+$search_fk_cepage=GETPOST('search_fk_cepage','int');
+$search_fk_porte_greffe=GETPOST('search_fk_porte_greffe','int');
 $search_note_private=GETPOST('search_note_private','alpha');
+$search_fk_user_author=GETPOST('search_fk_user_author','int');
+$search_fk_user_modif=GETPOST('search_fk_user_modif','int');
 
 
 
@@ -122,18 +122,18 @@ if (empty($reshook))
 		/* object_prop_getpost_prop */
 		
 	$object->entity=GETPOST('entity','int');
-	$object->fk_user_author=GETPOST('fk_user_author','int');
-	$object->fk_user_modif=GETPOST('fk_user_modif','int');
-	$object->fk_assolement=GETPOST('fk_assolement','int');
-	$object->fk_cepage=GETPOST('fk_cepage','int');
-	$object->fk_porte_greffe=GETPOST('fk_porte_greffe','int');
-	$object->surface=GETPOST('surface','alpha');
-	$object->nbpieds=GETPOST('nbpieds','int');
-	$object->ecartement=GETPOST('ecartement','alpha');
 	$object->ref=GETPOST('ref','alpha');
 	$object->label=GETPOST('label','alpha');
 	$object->description=GETPOST('description','alpha');
+	$object->surface=GETPOST('surface','alpha');
+	$object->nbpieds=GETPOST('nbpieds','int');
+	$object->ecartement=GETPOST('ecartement','alpha');
+	$object->fk_assolement=GETPOST('fk_assolement','int');
+	$object->fk_cepage=GETPOST('fk_cepage','int');
+	$object->fk_porte_greffe=GETPOST('fk_porte_greffe','int');
 	$object->note_private=GETPOST('note_private','alpha');
+	$object->fk_user_author=GETPOST('fk_user_author','int');
+	$object->fk_user_modif=GETPOST('fk_user_modif','int');
 
 		
 
@@ -176,18 +176,18 @@ if (empty($reshook))
 
 		
 	$object->entity=GETPOST('entity','int');
-	$object->fk_user_author=GETPOST('fk_user_author','int');
-	$object->fk_user_modif=GETPOST('fk_user_modif','int');
-	$object->fk_assolement=GETPOST('fk_assolement','int');
-	$object->fk_cepage=GETPOST('fk_cepage','int');
-	$object->fk_porte_greffe=GETPOST('fk_porte_greffe','int');
-	$object->surface=GETPOST('surface','alpha');
-	$object->nbpieds=GETPOST('nbpieds','int');
-	$object->ecartement=GETPOST('ecartement','alpha');
 	$object->ref=GETPOST('ref','alpha');
 	$object->label=GETPOST('label','alpha');
 	$object->description=GETPOST('description','alpha');
+	$object->surface=GETPOST('surface','alpha');
+	$object->nbpieds=GETPOST('nbpieds','int');
+	$object->ecartement=GETPOST('ecartement','alpha');
+	$object->fk_assolement=GETPOST('fk_assolement','int');
+	$object->fk_cepage=GETPOST('fk_cepage','int');
+	$object->fk_porte_greffe=GETPOST('fk_porte_greffe','int');
 	$object->note_private=GETPOST('note_private','alpha');
+	$object->fk_user_author=GETPOST('fk_user_author','int');
+	$object->fk_user_modif=GETPOST('fk_user_modif','int');
 
 		
 
@@ -284,18 +284,18 @@ if ($action == 'create')
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	// 
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldentity").'</td><td><input class="flat" type="text" name="entity" value="'.GETPOST('entity').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_author").'</td><td><input class="flat" type="text" name="fk_user_author" value="'.GETPOST('fk_user_author').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_modif").'</td><td><input class="flat" type="text" name="fk_user_modif" value="'.GETPOST('fk_user_modif').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_assolement").'</td><td><input class="flat" type="text" name="fk_assolement" value="'.GETPOST('fk_assolement').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_cepage").'</td><td><input class="flat" type="text" name="fk_cepage" value="'.GETPOST('fk_cepage').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_porte_greffe").'</td><td><input class="flat" type="text" name="fk_porte_greffe" value="'.GETPOST('fk_porte_greffe').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldsurface").'</td><td><input class="flat" type="text" name="surface" value="'.GETPOST('surface').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnbpieds").'</td><td><input class="flat" type="text" name="nbpieds" value="'.GETPOST('nbpieds').'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldecartement").'</td><td><input class="flat" type="text" name="ecartement" value="'.GETPOST('ecartement').'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldref").'</td><td><input class="flat" type="text" name="ref" value="'.GETPOST('ref').'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldlabel").'</td><td><input class="flat" type="text" name="label" value="'.GETPOST('label').'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fielddescription").'</td><td><input class="flat" type="text" name="description" value="'.GETPOST('description').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldsurface").'</td><td><input class="flat" type="text" name="surface" value="'.GETPOST('surface').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnbpieds").'</td><td><input class="flat" type="text" name="nbpieds" value="'.GETPOST('nbpieds').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldecartement").'</td><td><input class="flat" type="text" name="ecartement" value="'.GETPOST('ecartement').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_assolement").'</td><td><input class="flat" type="text" name="fk_assolement" value="'.GETPOST('fk_assolement').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_cepage").'</td><td><input class="flat" type="text" name="fk_cepage" value="'.GETPOST('fk_cepage').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_porte_greffe").'</td><td><input class="flat" type="text" name="fk_porte_greffe" value="'.GETPOST('fk_porte_greffe').'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnote_private").'</td><td><input class="flat" type="text" name="note_private" value="'.GETPOST('note_private').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_author").'</td><td><input class="flat" type="text" name="fk_user_author" value="'.GETPOST('fk_user_author').'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_modif").'</td><td><input class="flat" type="text" name="fk_user_modif" value="'.GETPOST('fk_user_modif').'"></td></tr>';
 
 	print '</table>'."\n";
 
@@ -324,18 +324,18 @@ if (($id || $ref) && $action == 'edit')
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	// 
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldentity").'</td><td><input class="flat" type="text" name="entity" value="'.$object->entity.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_author").'</td><td><input class="flat" type="text" name="fk_user_author" value="'.$object->fk_user_author.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_modif").'</td><td><input class="flat" type="text" name="fk_user_modif" value="'.$object->fk_user_modif.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_assolement").'</td><td><input class="flat" type="text" name="fk_assolement" value="'.$object->fk_assolement.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_cepage").'</td><td><input class="flat" type="text" name="fk_cepage" value="'.$object->fk_cepage.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_porte_greffe").'</td><td><input class="flat" type="text" name="fk_porte_greffe" value="'.$object->fk_porte_greffe.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldsurface").'</td><td><input class="flat" type="text" name="surface" value="'.$object->surface.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnbpieds").'</td><td><input class="flat" type="text" name="nbpieds" value="'.$object->nbpieds.'"></td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldecartement").'</td><td><input class="flat" type="text" name="ecartement" value="'.$object->ecartement.'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldref").'</td><td><input class="flat" type="text" name="ref" value="'.$object->ref.'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldlabel").'</td><td><input class="flat" type="text" name="label" value="'.$object->label.'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fielddescription").'</td><td><input class="flat" type="text" name="description" value="'.$object->description.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldsurface").'</td><td><input class="flat" type="text" name="surface" value="'.$object->surface.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnbpieds").'</td><td><input class="flat" type="text" name="nbpieds" value="'.$object->nbpieds.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldecartement").'</td><td><input class="flat" type="text" name="ecartement" value="'.$object->ecartement.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_assolement").'</td><td><input class="flat" type="text" name="fk_assolement" value="'.$object->fk_assolement.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_cepage").'</td><td><input class="flat" type="text" name="fk_cepage" value="'.$object->fk_cepage.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_porte_greffe").'</td><td><input class="flat" type="text" name="fk_porte_greffe" value="'.$object->fk_porte_greffe.'"></td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnote_private").'</td><td><input class="flat" type="text" name="note_private" value="'.$object->note_private.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_author").'</td><td><input class="flat" type="text" name="fk_user_author" value="'.$object->fk_user_author.'"></td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_modif").'</td><td><input class="flat" type="text" name="fk_user_modif" value="'.$object->fk_user_modif.'"></td></tr>';
 
 	print '</table>';
 	
@@ -366,18 +366,18 @@ if ($id && (empty($action) || $action == 'view' || $action == 'delete'))
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	// 
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldentity").'</td><td>$object->entity</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_author").'</td><td>$object->fk_user_author</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_modif").'</td><td>$object->fk_user_modif</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_assolement").'</td><td>$object->fk_assolement</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_cepage").'</td><td>$object->fk_cepage</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_porte_greffe").'</td><td>$object->fk_porte_greffe</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldsurface").'</td><td>$object->surface</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnbpieds").'</td><td>$object->nbpieds</td></tr>';
-print '<tr><td class="fieldrequired">'.$langs->trans("Fieldecartement").'</td><td>$object->ecartement</td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldref").'</td><td>$object->ref</td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldlabel").'</td><td>$object->label</td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fielddescription").'</td><td>$object->description</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldsurface").'</td><td>$object->surface</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnbpieds").'</td><td>$object->nbpieds</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldecartement").'</td><td>$object->ecartement</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_assolement").'</td><td>$object->fk_assolement</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_cepage").'</td><td>$object->fk_cepage</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_porte_greffe").'</td><td>$object->fk_porte_greffe</td></tr>';
 print '<tr><td class="fieldrequired">'.$langs->trans("Fieldnote_private").'</td><td>$object->note_private</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_author").'</td><td>$object->fk_user_author</td></tr>';
+print '<tr><td class="fieldrequired">'.$langs->trans("Fieldfk_user_modif").'</td><td>$object->fk_user_modif</td></tr>';
 
 	print '</table>';
 	

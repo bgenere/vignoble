@@ -20,7 +20,7 @@
  *   	\file       vignoble/parcelle_list.php
  *		\ingroup    vignoble
  *		\brief      This file is an example of a php page
- *					Initialy built by build_class_from_table on 2016-07-07 15:59
+ *					Initialy built by build_class_from_table on 2016-07-13 11:12
  */
 
 //if (! defined('NOREQUIREUSER'))  define('NOREQUIREUSER','1');
@@ -46,7 +46,7 @@ if (! $res) die("Include of main fails");
 include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
 dol_include_once('/vignoble/class/parcelle.class.php');
 
-// Load traductions files required by page
+// Load traductions files requiredby by page
 $langs->load("vignoble");
 $langs->load("other");
 
@@ -58,18 +58,18 @@ $myparam	= GETPOST('myparam','alpha');
 
 
 $search_entity=GETPOST('search_entity','int');
-$search_fk_user_author=GETPOST('search_fk_user_author','int');
-$search_fk_user_modif=GETPOST('search_fk_user_modif','int');
-$search_fk_assolement=GETPOST('search_fk_assolement','int');
-$search_fk_cepage=GETPOST('search_fk_cepage','int');
-$search_fk_porte_greffe=GETPOST('search_fk_porte_greffe','int');
-$search_surface=GETPOST('search_surface','alpha');
-$search_nbpieds=GETPOST('search_nbpieds','int');
-$search_ecartement=GETPOST('search_ecartement','alpha');
 $search_ref=GETPOST('search_ref','alpha');
 $search_label=GETPOST('search_label','alpha');
 $search_description=GETPOST('search_description','alpha');
+$search_surface=GETPOST('search_surface','alpha');
+$search_nbpieds=GETPOST('search_nbpieds','int');
+$search_ecartement=GETPOST('search_ecartement','alpha');
+$search_fk_assolement=GETPOST('search_fk_assolement','int');
+$search_fk_cepage=GETPOST('search_fk_cepage','int');
+$search_fk_porte_greffe=GETPOST('search_fk_porte_greffe','int');
 $search_note_private=GETPOST('search_note_private','alpha');
+$search_fk_user_author=GETPOST('search_fk_user_author','int');
+$search_fk_user_modif=GETPOST('search_fk_user_modif','int');
 
 
 $optioncss = GETPOST('optioncss','alpha');
@@ -83,7 +83,7 @@ if ($page == -1) { $page = 0; }
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (! $sortfield) $sortfield="t.ref"; // Set here default search field
+if (! $sortfield) $sortfield="t.rowid"; // Set here default search field
 if (! $sortorder) $sortorder="ASC";
 
 // Protection if external user
@@ -112,24 +112,26 @@ if (($id > 0 || ! empty($ref)) && $action != 'add')
 
 // Definition of fields for list
 $arrayfields=array(
-    't.ref'=>array('label'=>$langs->trans("Fieldref"), 'checked'=>1, 'position'=>1),
-	't.label'=>array('label'=>$langs->trans("Fieldlabel"), 'checked'=>1, 'position'=>2),
-
-'t.fk_assolement'=>array('label'=>$langs->trans("Fieldfk_assolement"), 'checked'=>1, 'position'=>3),
-'t.fk_cepage'=>array('label'=>$langs->trans("Fieldfk_cepage"), 'checked'=>1),
-'t.fk_porte_greffe'=>array('label'=>$langs->trans("Fieldfk_porte_greffe"), 'checked'=>1),
+    
+'t.entity'=>array('label'=>$langs->trans("Fieldentity"), 'checked'=>1),
+'t.ref'=>array('label'=>$langs->trans("Fieldref"), 'checked'=>1),
+'t.label'=>array('label'=>$langs->trans("Fieldlabel"), 'checked'=>1),
+'t.description'=>array('label'=>$langs->trans("Fielddescription"), 'checked'=>1),
 't.surface'=>array('label'=>$langs->trans("Fieldsurface"), 'checked'=>1),
 't.nbpieds'=>array('label'=>$langs->trans("Fieldnbpieds"), 'checked'=>1),
 't.ecartement'=>array('label'=>$langs->trans("Fieldecartement"), 'checked'=>1),
+'t.fk_assolement'=>array('label'=>$langs->trans("Fieldfk_assolement"), 'checked'=>1),
+'t.fk_cepage'=>array('label'=>$langs->trans("Fieldfk_cepage"), 'checked'=>1),
+'t.fk_porte_greffe'=>array('label'=>$langs->trans("Fieldfk_porte_greffe"), 'checked'=>1),
+'t.note_private'=>array('label'=>$langs->trans("Fieldnote_private"), 'checked'=>1),
+'t.fk_user_author'=>array('label'=>$langs->trans("Fieldfk_user_author"), 'checked'=>1),
+'t.fk_user_modif'=>array('label'=>$langs->trans("Fieldfk_user_modif"), 'checked'=>1),
 
-'t.description'=>array('label'=>$langs->trans("Fielddescription"), 'checked'=>0),
-'t.note_private'=>array('label'=>$langs->trans("Fieldnote_private"), 'checked'=>0),  
-'t.entity'=>array('label'=>$langs->trans("Entity"), 'checked'=>1, 'enabled'=>(! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))),
-'t.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-'t.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
-'t.fk_user_author'=>array('label'=>$langs->trans("Fieldfk_user_author"), 'checked'=>0),
-'t.fk_user_modif'=>array('label'=>$langs->trans("Fieldfk_user_modif"), 'checked'=>0)
-
+    
+    //'t.entity'=>array('label'=>$langs->trans("Entity"), 'checked'=>1, 'enabled'=>(! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))),
+    't.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
+    't.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
+    //'t.statut'=>array('label'=>$langs->trans("Status"), 'checked'=>1, 'position'=>1000),
 );
 // Extra fields
 if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label))
@@ -157,19 +159,22 @@ include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
 
 if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") ||GETPOST("button_removefilter")) // All test are required to be compatible with all browsers
 {
-	$search_entity='';
-	$search_fk_user_author='';
-	$search_fk_user_modif='';
-	$search_fk_assolement='';
-	$search_fk_cepage='';
-	$search_fk_porte_greffe='';
-	$search_surface='';
-	$search_nbpieds='';
-	$search_ecartement='';
-	$search_ref='';
-	$search_label='';
-	$search_description='';
-	$search_note_private='';
+	
+$search_entity='';
+$search_ref='';
+$search_label='';
+$search_description='';
+$search_surface='';
+$search_nbpieds='';
+$search_ecartement='';
+$search_fk_assolement='';
+$search_fk_cepage='';
+$search_fk_porte_greffe='';
+$search_note_private='';
+$search_fk_user_author='';
+$search_fk_user_modif='';
+
+	
 	$search_date_creation='';
 	$search_date_update='';
 	$search_array_options=array();
@@ -206,12 +211,12 @@ if (empty($reshook))
 * Put here all code to build page
 ****************************************************/
 
-llxHeader('',$langs->trans('ParcelleListTitle'),'');
+llxHeader('','MyPageName','');
 
 $form=new Form($db);
 
 // Put here content of your page
-$title = $langs->trans('ParcelleListTitle');
+$title = $langs->trans('MyModuleListTitle');
 
 // Example : Adding jquery code
 print '<script type="text/javascript" language="javascript">
@@ -233,20 +238,20 @@ $sql = "SELECT";
 $sql.= " t.rowid,";
 
 		$sql .= " t.entity,";
-		$sql .= " t.fk_user_author,";
-		$sql .= " t.fk_user_modif,";
-		$sql .= " t.fk_assolement,";
-		$sql .= " t.fk_cepage,";
-		$sql .= " t.fk_porte_greffe,";
-		$sql .= " t.tms,";
-		$sql .= " t.datec,";
-		$sql .= " t.surface,";
-		$sql .= " t.nbpieds,";
-		$sql .= " t.ecartement,";
 		$sql .= " t.ref,";
 		$sql .= " t.label,";
 		$sql .= " t.description,";
-		$sql .= " t.note_private";
+		$sql .= " t.surface,";
+		$sql .= " t.nbpieds,";
+		$sql .= " t.ecartement,";
+		$sql .= " t.fk_assolement,";
+		$sql .= " t.fk_cepage,";
+		$sql .= " t.fk_porte_greffe,";
+		$sql .= " t.note_private,";
+		$sql .= " t.tms,";
+		$sql .= " t.datec,";
+		$sql .= " t.fk_user_author,";
+		$sql .= " t.fk_user_modif";
 
 
 // Add fields for extrafields
@@ -261,18 +266,18 @@ $sql.= " WHERE 1 = 1";
 //$sql.= " WHERE u.entity IN (".getEntity('mytable',1).")";
 
 if ($search_entity) $sql.= natural_search("entity",$search_entity);
-if ($search_fk_user_author) $sql.= natural_search("fk_user_author",$search_fk_user_author);
-if ($search_fk_user_modif) $sql.= natural_search("fk_user_modif",$search_fk_user_modif);
-if ($search_fk_assolement) $sql.= natural_search("fk_assolement",$search_fk_assolement);
-if ($search_fk_cepage) $sql.= natural_search("fk_cepage",$search_fk_cepage);
-if ($search_fk_porte_greffe) $sql.= natural_search("fk_porte_greffe",$search_fk_porte_greffe);
-if ($search_surface) $sql.= natural_search("surface",$search_surface);
-if ($search_nbpieds) $sql.= natural_search("nbpieds",$search_nbpieds);
-if ($search_ecartement) $sql.= natural_search("ecartement",$search_ecartement);
 if ($search_ref) $sql.= natural_search("ref",$search_ref);
 if ($search_label) $sql.= natural_search("label",$search_label);
 if ($search_description) $sql.= natural_search("description",$search_description);
+if ($search_surface) $sql.= natural_search("surface",$search_surface);
+if ($search_nbpieds) $sql.= natural_search("nbpieds",$search_nbpieds);
+if ($search_ecartement) $sql.= natural_search("ecartement",$search_ecartement);
+if ($search_fk_assolement) $sql.= natural_search("fk_assolement",$search_fk_assolement);
+if ($search_fk_cepage) $sql.= natural_search("fk_cepage",$search_fk_cepage);
+if ($search_fk_porte_greffe) $sql.= natural_search("fk_porte_greffe",$search_fk_porte_greffe);
 if ($search_note_private) $sql.= natural_search("note_private",$search_note_private);
+if ($search_fk_user_author) $sql.= natural_search("fk_user_author",$search_fk_user_author);
+if ($search_fk_user_modif) $sql.= natural_search("fk_user_modif",$search_fk_user_modif);
 
 
 if ($sall)          $sql.= natural_search(array_keys($fieldstosearchall), $sall);
@@ -316,18 +321,18 @@ if ($resql)
     $params='';
 	
 if ($search_entity != '') $params.= '&amp;search_entity='.urlencode($search_entity);
-if ($search_fk_user_author != '') $params.= '&amp;search_fk_user_author='.urlencode($search_fk_user_author);
-if ($search_fk_user_modif != '') $params.= '&amp;search_fk_user_modif='.urlencode($search_fk_user_modif);
-if ($search_fk_assolement != '') $params.= '&amp;search_fk_assolement='.urlencode($search_fk_assolement);
-if ($search_fk_cepage != '') $params.= '&amp;search_fk_cepage='.urlencode($search_fk_cepage);
-if ($search_fk_porte_greffe != '') $params.= '&amp;search_fk_porte_greffe='.urlencode($search_fk_porte_greffe);
-if ($search_surface != '') $params.= '&amp;search_surface='.urlencode($search_surface);
-if ($search_nbpieds != '') $params.= '&amp;search_nbpieds='.urlencode($search_nbpieds);
-if ($search_ecartement != '') $params.= '&amp;search_ecartement='.urlencode($search_ecartement);
 if ($search_ref != '') $params.= '&amp;search_ref='.urlencode($search_ref);
 if ($search_label != '') $params.= '&amp;search_label='.urlencode($search_label);
 if ($search_description != '') $params.= '&amp;search_description='.urlencode($search_description);
+if ($search_surface != '') $params.= '&amp;search_surface='.urlencode($search_surface);
+if ($search_nbpieds != '') $params.= '&amp;search_nbpieds='.urlencode($search_nbpieds);
+if ($search_ecartement != '') $params.= '&amp;search_ecartement='.urlencode($search_ecartement);
+if ($search_fk_assolement != '') $params.= '&amp;search_fk_assolement='.urlencode($search_fk_assolement);
+if ($search_fk_cepage != '') $params.= '&amp;search_fk_cepage='.urlencode($search_fk_cepage);
+if ($search_fk_porte_greffe != '') $params.= '&amp;search_fk_porte_greffe='.urlencode($search_fk_porte_greffe);
 if ($search_note_private != '') $params.= '&amp;search_note_private='.urlencode($search_note_private);
+if ($search_fk_user_author != '') $params.= '&amp;search_fk_user_author='.urlencode($search_fk_user_author);
+if ($search_fk_user_modif != '') $params.= '&amp;search_fk_user_modif='.urlencode($search_fk_user_modif);
 
 	
     if ($optioncss != '') $param.='&optioncss='.$optioncss;
@@ -374,18 +379,18 @@ if ($search_note_private != '') $params.= '&amp;search_note_private='.urlencode(
     print '<tr class="liste_titre">';
     
 if (! empty($arrayfields['t.entity']['checked'])) print_liste_field_titre($arrayfields['t.entity']['label'],$_SERVER['PHP_SELF'],'t.entity','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.fk_user_author']['checked'])) print_liste_field_titre($arrayfields['t.fk_user_author']['label'],$_SERVER['PHP_SELF'],'t.fk_user_author','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.fk_user_modif']['checked'])) print_liste_field_titre($arrayfields['t.fk_user_modif']['label'],$_SERVER['PHP_SELF'],'t.fk_user_modif','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.fk_assolement']['checked'])) print_liste_field_titre($arrayfields['t.fk_assolement']['label'],$_SERVER['PHP_SELF'],'t.fk_assolement','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.fk_cepage']['checked'])) print_liste_field_titre($arrayfields['t.fk_cepage']['label'],$_SERVER['PHP_SELF'],'t.fk_cepage','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.fk_porte_greffe']['checked'])) print_liste_field_titre($arrayfields['t.fk_porte_greffe']['label'],$_SERVER['PHP_SELF'],'t.fk_porte_greffe','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.surface']['checked'])) print_liste_field_titre($arrayfields['t.surface']['label'],$_SERVER['PHP_SELF'],'t.surface','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.nbpieds']['checked'])) print_liste_field_titre($arrayfields['t.nbpieds']['label'],$_SERVER['PHP_SELF'],'t.nbpieds','',$param,'',$sortfield,$sortorder);
-if (! empty($arrayfields['t.ecartement']['checked'])) print_liste_field_titre($arrayfields['t.ecartement']['label'],$_SERVER['PHP_SELF'],'t.ecartement','',$param,'',$sortfield,$sortorder);
 if (! empty($arrayfields['t.ref']['checked'])) print_liste_field_titre($arrayfields['t.ref']['label'],$_SERVER['PHP_SELF'],'t.ref','',$param,'',$sortfield,$sortorder);
 if (! empty($arrayfields['t.label']['checked'])) print_liste_field_titre($arrayfields['t.label']['label'],$_SERVER['PHP_SELF'],'t.label','',$param,'',$sortfield,$sortorder);
 if (! empty($arrayfields['t.description']['checked'])) print_liste_field_titre($arrayfields['t.description']['label'],$_SERVER['PHP_SELF'],'t.description','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.surface']['checked'])) print_liste_field_titre($arrayfields['t.surface']['label'],$_SERVER['PHP_SELF'],'t.surface','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.nbpieds']['checked'])) print_liste_field_titre($arrayfields['t.nbpieds']['label'],$_SERVER['PHP_SELF'],'t.nbpieds','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.ecartement']['checked'])) print_liste_field_titre($arrayfields['t.ecartement']['label'],$_SERVER['PHP_SELF'],'t.ecartement','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.fk_assolement']['checked'])) print_liste_field_titre($arrayfields['t.fk_assolement']['label'],$_SERVER['PHP_SELF'],'t.fk_assolement','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.fk_cepage']['checked'])) print_liste_field_titre($arrayfields['t.fk_cepage']['label'],$_SERVER['PHP_SELF'],'t.fk_cepage','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.fk_porte_greffe']['checked'])) print_liste_field_titre($arrayfields['t.fk_porte_greffe']['label'],$_SERVER['PHP_SELF'],'t.fk_porte_greffe','',$param,'',$sortfield,$sortorder);
 if (! empty($arrayfields['t.note_private']['checked'])) print_liste_field_titre($arrayfields['t.note_private']['label'],$_SERVER['PHP_SELF'],'t.note_private','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.fk_user_author']['checked'])) print_liste_field_titre($arrayfields['t.fk_user_author']['label'],$_SERVER['PHP_SELF'],'t.fk_user_author','',$param,'',$sortfield,$sortorder);
+if (! empty($arrayfields['t.fk_user_modif']['checked'])) print_liste_field_titre($arrayfields['t.fk_user_modif']['label'],$_SERVER['PHP_SELF'],'t.fk_user_modif','',$param,'',$sortfield,$sortorder);
 
     
 	// Extra fields
@@ -414,18 +419,18 @@ if (! empty($arrayfields['t.note_private']['checked'])) print_liste_field_titre(
 	print '<tr class="liste_titre">';
 	
 if (! empty($arrayfields['t.entity']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_entity" value="'.$search_entity.'" size="10"></td>';
-if (! empty($arrayfields['t.fk_user_author']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_user_author" value="'.$search_fk_user_author.'" size="10"></td>';
-if (! empty($arrayfields['t.fk_user_modif']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_user_modif" value="'.$search_fk_user_modif.'" size="10"></td>';
-if (! empty($arrayfields['t.fk_assolement']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_assolement" value="'.$search_fk_assolement.'" size="10"></td>';
-if (! empty($arrayfields['t.fk_cepage']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_cepage" value="'.$search_fk_cepage.'" size="10"></td>';
-if (! empty($arrayfields['t.fk_porte_greffe']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_porte_greffe" value="'.$search_fk_porte_greffe.'" size="10"></td>';
-if (! empty($arrayfields['t.surface']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_surface" value="'.$search_surface.'" size="10"></td>';
-if (! empty($arrayfields['t.nbpieds']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_nbpieds" value="'.$search_nbpieds.'" size="10"></td>';
-if (! empty($arrayfields['t.ecartement']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_ecartement" value="'.$search_ecartement.'" size="10"></td>';
 if (! empty($arrayfields['t.ref']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_ref" value="'.$search_ref.'" size="10"></td>';
 if (! empty($arrayfields['t.label']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_label" value="'.$search_label.'" size="10"></td>';
 if (! empty($arrayfields['t.description']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_description" value="'.$search_description.'" size="10"></td>';
+if (! empty($arrayfields['t.surface']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_surface" value="'.$search_surface.'" size="10"></td>';
+if (! empty($arrayfields['t.nbpieds']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_nbpieds" value="'.$search_nbpieds.'" size="10"></td>';
+if (! empty($arrayfields['t.ecartement']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_ecartement" value="'.$search_ecartement.'" size="10"></td>';
+if (! empty($arrayfields['t.fk_assolement']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_assolement" value="'.$search_fk_assolement.'" size="10"></td>';
+if (! empty($arrayfields['t.fk_cepage']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_cepage" value="'.$search_fk_cepage.'" size="10"></td>';
+if (! empty($arrayfields['t.fk_porte_greffe']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_porte_greffe" value="'.$search_fk_porte_greffe.'" size="10"></td>';
 if (! empty($arrayfields['t.note_private']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_note_private" value="'.$search_note_private.'" size="10"></td>';
+if (! empty($arrayfields['t.fk_user_author']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_user_author" value="'.$search_fk_user_author.'" size="10"></td>';
+if (! empty($arrayfields['t.fk_user_modif']['checked'])) print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_user_modif" value="'.$search_fk_user_modif.'" size="10"></td>';
 
 	
 	// Extra fields
@@ -467,7 +472,13 @@ if (! empty($arrayfields['t.note_private']['checked'])) print '<td class="liste_
         print '<td class="liste_titre">';
         print '</td>';
     }
-    
+    /*if (! empty($arrayfields['u.statut']['checked']))
+    {
+        // Status
+        print '<td class="liste_titre" align="center">';
+        print $form->selectarray('search_statut', array('-1'=>'','0'=>$langs->trans('Disabled'),'1'=>$langs->trans('Enabled')),$search_statut);
+        print '</td>';
+    }*/
     // Action column
 	print '<td class="liste_titre" align="right">';
 	print '<input type="image" class="liste_titre" name="button_search" src="'.img_picto($langs->trans("Search"),'search.png','','',1).'" value="'.dol_escape_htmltag($langs->trans("Search")).'" title="'.dol_escape_htmltag($langs->trans("Search")).'">';
@@ -486,18 +497,18 @@ if (! empty($arrayfields['t.note_private']['checked'])) print '<td class="liste_
             print '<tr>';
             
 if (! empty($arrayfields['t.entity']['checked'])) print '<td>'.$obj->entity.'</td>';
-if (! empty($arrayfields['t.fk_user_author']['checked'])) print '<td>'.$obj->fk_user_author.'</td>';
-if (! empty($arrayfields['t.fk_user_modif']['checked'])) print '<td>'.$obj->fk_user_modif.'</td>';
-if (! empty($arrayfields['t.fk_assolement']['checked'])) print '<td>'.$obj->fk_assolement.'</td>';
-if (! empty($arrayfields['t.fk_cepage']['checked'])) print '<td>'.$obj->fk_cepage.'</td>';
-if (! empty($arrayfields['t.fk_porte_greffe']['checked'])) print '<td>'.$obj->fk_porte_greffe.'</td>';
-if (! empty($arrayfields['t.surface']['checked'])) print '<td>'.$obj->surface.'</td>';
-if (! empty($arrayfields['t.nbpieds']['checked'])) print '<td>'.$obj->nbpieds.'</td>';
-if (! empty($arrayfields['t.ecartement']['checked'])) print '<td>'.$obj->ecartement.'</td>';
 if (! empty($arrayfields['t.ref']['checked'])) print '<td>'.$obj->ref.'</td>';
 if (! empty($arrayfields['t.label']['checked'])) print '<td>'.$obj->label.'</td>';
 if (! empty($arrayfields['t.description']['checked'])) print '<td>'.$obj->description.'</td>';
+if (! empty($arrayfields['t.surface']['checked'])) print '<td>'.$obj->surface.'</td>';
+if (! empty($arrayfields['t.nbpieds']['checked'])) print '<td>'.$obj->nbpieds.'</td>';
+if (! empty($arrayfields['t.ecartement']['checked'])) print '<td>'.$obj->ecartement.'</td>';
+if (! empty($arrayfields['t.fk_assolement']['checked'])) print '<td>'.$obj->fk_assolement.'</td>';
+if (! empty($arrayfields['t.fk_cepage']['checked'])) print '<td>'.$obj->fk_cepage.'</td>';
+if (! empty($arrayfields['t.fk_porte_greffe']['checked'])) print '<td>'.$obj->fk_porte_greffe.'</td>';
 if (! empty($arrayfields['t.note_private']['checked'])) print '<td>'.$obj->note_private.'</td>';
+if (! empty($arrayfields['t.fk_user_author']['checked'])) print '<td>'.$obj->fk_user_author.'</td>';
+if (! empty($arrayfields['t.fk_user_modif']['checked'])) print '<td>'.$obj->fk_user_modif.'</td>';
 
             
         	// Extra fields

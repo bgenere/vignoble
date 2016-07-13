@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 /* Copyright (C) 2007-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) ---Put here your own copyright and developer email---
+ * Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  *      \file       vignoble/parcelle_script.php
  *		\ingroup    vignoble
  *      \brief      This file is an example for a command line script
- *					Initialy built by build_class_from_table on 2016-07-07 15:59
+ *					Initialy built by build_class_from_table on 2016-07-13 11:12
  */
 
 $sapi_type = php_sapi_name();

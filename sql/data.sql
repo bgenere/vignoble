@@ -14,25 +14,26 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+-- 
+-- Load dictionnary table
+--
+
 -- assolement
 
-delete from llx_c_assolement;
-ALTER TABLE llx_c_assolement AUTO_INCREMENT = 1;
-insert into llx_c_assolement (code,label) values ('VIGNE','Vigne');
-insert into llx_c_assolement (code,label) values ('JEUNEVIGNE','Jeune Vigne');
-insert into llx_c_assolement (code,label) values ('JACHERE','Jachère');
+delete from llx_c_assolement where module = 'vignoble';
+insert into llx_c_assolement (rowid,code,label,module) values (1,'VIGNE','Vigne','vignoble');
+insert into llx_c_assolement (rowid,code,label,module) values (2,'JEUNEVIGNE','Jeune Vigne','vignoble');
+insert into llx_c_assolement (rowid,code,label,module) values (3,'JACHERE','Jachère','vignoble');
 
 -- cepage
 
-delete from llx_c_cepage;
-ALTER TABLE llx_c_cepage AUTO_INCREMENT = 1;
-insert into llx_c_cepage (code,label) values ('CABERNET','Cabernet');
-insert into llx_c_cepage (code,label) values ('MERLOT','Merlot');
+delete from llx_c_cepage where module = 'vignoble';
+insert into llx_c_cepage (rowid,code,label,module) values (1,'CABERNET','Cabernet','vignoble');
+insert into llx_c_cepage (rowid,code,label,module) values (2,'MERLOT','Merlot','vignoble');
 
 -- porte_greffe
 
-delete from llx_c_porte_greffe;
-ALTER TABLE llx_c_porte_greffe AUTO_INCREMENT = 1;
-insert into llx_c_porte_greffe (code,label) values ('S04','SO4');
-insert into llx_c_porte_greffe (code,label) values ('5BB','5BB');
-insert into llx_c_porte_greffe (code,label) values ('101-14','101-14');
+delete from llx_c_porte_greffe where module = 'vignoble';
+insert into llx_c_porte_greffe (rowid,code,label,module) values (1,'S04','SO4','vignoble');
+insert into llx_c_porte_greffe (rowid,code,label,module) values (2,'5BB','5BB','vignoble');
+insert into llx_c_porte_greffe (rowid,code,label,module) values (3,'101-14','101-14','vignoble');

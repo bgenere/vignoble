@@ -57,20 +57,20 @@ class Parcelle extends CommonObject
 	 */
 	
 	public $entity;
-	public $fk_user_author;
-	public $fk_user_modif;
-	public $fk_assolement;
-	public $fk_cepage;
-	public $fk_porte_greffe;
-	public $tms = '';
-	public $datec = '';
-	public $surface;
-	public $nbpieds;
-	public $ecartement;
 	public $ref;
 	public $label;
 	public $description;
+	public $surface;
+	public $nbpieds;
+	public $ecartement;
+	public $fk_assolement;
+	public $fk_cepage;
+	public $fk_porte_greffe;
 	public $note_private;
+	public $tms = '';
+	public $datec = '';
+	public $fk_user_author;
+	public $fk_user_modif;
 
 	/**
 	 */
@@ -106,20 +106,14 @@ class Parcelle extends CommonObject
 		if (isset($this->entity)) {
 			 $this->entity = trim($this->entity);
 		}
-		if (isset($this->fk_user_author)) {
-			 $this->fk_user_author = trim($this->fk_user_author);
+		if (isset($this->ref)) {
+			 $this->ref = trim($this->ref);
 		}
-		if (isset($this->fk_user_modif)) {
-			 $this->fk_user_modif = trim($this->fk_user_modif);
+		if (isset($this->label)) {
+			 $this->label = trim($this->label);
 		}
-		if (isset($this->fk_assolement)) {
-			 $this->fk_assolement = trim($this->fk_assolement);
-		}
-		if (isset($this->fk_cepage)) {
-			 $this->fk_cepage = trim($this->fk_cepage);
-		}
-		if (isset($this->fk_porte_greffe)) {
-			 $this->fk_porte_greffe = trim($this->fk_porte_greffe);
+		if (isset($this->description)) {
+			 $this->description = trim($this->description);
 		}
 		if (isset($this->surface)) {
 			 $this->surface = trim($this->surface);
@@ -130,17 +124,23 @@ class Parcelle extends CommonObject
 		if (isset($this->ecartement)) {
 			 $this->ecartement = trim($this->ecartement);
 		}
-		if (isset($this->ref)) {
-			 $this->ref = trim($this->ref);
+		if (isset($this->fk_assolement)) {
+			 $this->fk_assolement = trim($this->fk_assolement);
 		}
-		if (isset($this->label)) {
-			 $this->label = trim($this->label);
+		if (isset($this->fk_cepage)) {
+			 $this->fk_cepage = trim($this->fk_cepage);
 		}
-		if (isset($this->description)) {
-			 $this->description = trim($this->description);
+		if (isset($this->fk_porte_greffe)) {
+			 $this->fk_porte_greffe = trim($this->fk_porte_greffe);
 		}
 		if (isset($this->note_private)) {
 			 $this->note_private = trim($this->note_private);
+		}
+		if (isset($this->fk_user_author)) {
+			 $this->fk_user_author = trim($this->fk_user_author);
+		}
+		if (isset($this->fk_user_modif)) {
+			 $this->fk_user_modif = trim($this->fk_user_modif);
 		}
 
 		
@@ -152,37 +152,37 @@ class Parcelle extends CommonObject
 		$sql = 'INSERT INTO ' . MAIN_DB_PREFIX . $this->table_element . '(';
 		
 		$sql.= 'entity,';
-		$sql.= 'fk_user_author,';
-		$sql.= 'fk_user_modif,';
-		$sql.= 'fk_assolement,';
-		$sql.= 'fk_cepage,';
-		$sql.= 'fk_porte_greffe,';
-		$sql.= 'datec,';
+		$sql.= 'ref,';
+		$sql.= 'label,';
+		$sql.= 'description,';
 		$sql.= 'surface,';
 		$sql.= 'nbpieds,';
 		$sql.= 'ecartement,';
-		$sql.= 'ref,';
-		$sql.= 'label,';
-		$sql.= 'description';
-		$sql.= 'note_private';
+		$sql.= 'fk_assolement,';
+		$sql.= 'fk_cepage,';
+		$sql.= 'fk_porte_greffe,';
+		$sql.= 'note_private,';
+		$sql.= 'datec,';
+		$sql.= 'fk_user_author';
+		$sql.= 'fk_user_modif';
 
 		
 		$sql .= ') VALUES (';
 		
 		$sql .= ' '.(! isset($this->entity)?'NULL':$this->entity).',';
-		$sql .= ' '.$user->id.',';
-		$sql .= ' '.(! isset($this->fk_user_modif)?'NULL':$this->fk_user_modif).',';
-		$sql .= ' '.(! isset($this->fk_assolement)?'NULL':$this->fk_assolement).',';
-		$sql .= ' '.(! isset($this->fk_cepage)?'NULL':$this->fk_cepage).',';
-		$sql .= ' '.(! isset($this->fk_porte_greffe)?'NULL':$this->fk_porte_greffe).',';
-		$sql .= ' '."'".$this->db->idate(dol_now())."'".',';
-		$sql .= ' '.(! isset($this->surface)?'NULL':"'".$this->surface."'").',';
-		$sql .= ' '.(! isset($this->nbpieds)?'NULL':$this->nbpieds).',';
-		$sql .= ' '.(! isset($this->ecartement)?'NULL':"'".$this->ecartement."'").',';
 		$sql .= ' '.(! isset($this->ref)?'NULL':"'".$this->db->escape($this->ref)."'").',';
 		$sql .= ' '.(! isset($this->label)?'NULL':"'".$this->db->escape($this->label)."'").',';
 		$sql .= ' '.(! isset($this->description)?'NULL':"'".$this->db->escape($this->description)."'").',';
-		$sql .= ' '.(! isset($this->note_private)?'NULL':"'".$this->db->escape($this->note_private)."'");
+		$sql .= ' '.(! isset($this->surface)?'NULL':"'".$this->surface."'").',';
+		$sql .= ' '.(! isset($this->nbpieds)?'NULL':$this->nbpieds).',';
+		$sql .= ' '.(! isset($this->ecartement)?'NULL':"'".$this->ecartement."'").',';
+		$sql .= ' '.(! isset($this->fk_assolement)?'NULL':$this->fk_assolement).',';
+		$sql .= ' '.(! isset($this->fk_cepage)?'NULL':$this->fk_cepage).',';
+		$sql .= ' '.(! isset($this->fk_porte_greffe)?'NULL':$this->fk_porte_greffe).',';
+		$sql .= ' '.(! isset($this->note_private)?'NULL':"'".$this->db->escape($this->note_private)."'").',';
+		$sql .= ' '."'".$this->db->idate(dol_now())."'".',';
+		$sql .= ' '.$user->id.',';
+		$sql .= ' '.(! isset($this->fk_user_modif)?'NULL':$this->fk_user_modif);
 
 		
 		$sql .= ')';
@@ -238,20 +238,20 @@ class Parcelle extends CommonObject
 		$sql .= ' t.rowid,';
 		
 		$sql .= " t.entity,";
-		$sql .= " t.fk_user_author,";
-		$sql .= " t.fk_user_modif,";
-		$sql .= " t.fk_assolement,";
-		$sql .= " t.fk_cepage,";
-		$sql .= " t.fk_porte_greffe,";
-		$sql .= " t.tms,";
-		$sql .= " t.datec,";
-		$sql .= " t.surface,";
-		$sql .= " t.nbpieds,";
-		$sql .= " t.ecartement,";
 		$sql .= " t.ref,";
 		$sql .= " t.label,";
 		$sql .= " t.description,";
-		$sql .= " t.note_private";
+		$sql .= " t.surface,";
+		$sql .= " t.nbpieds,";
+		$sql .= " t.ecartement,";
+		$sql .= " t.fk_assolement,";
+		$sql .= " t.fk_cepage,";
+		$sql .= " t.fk_porte_greffe,";
+		$sql .= " t.note_private,";
+		$sql .= " t.tms,";
+		$sql .= " t.datec,";
+		$sql .= " t.fk_user_author,";
+		$sql .= " t.fk_user_modif";
 
 		
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
@@ -270,20 +270,20 @@ class Parcelle extends CommonObject
 				$this->id = $obj->rowid;
 				
 				$this->entity = $obj->entity;
-				$this->fk_user_author = $obj->fk_user_author;
-				$this->fk_user_modif = $obj->fk_user_modif;
-				$this->fk_assolement = $obj->fk_assolement;
-				$this->fk_cepage = $obj->fk_cepage;
-				$this->fk_porte_greffe = $obj->fk_porte_greffe;
-				$this->tms = $this->db->jdate($obj->tms);
-				$this->datec = $this->db->jdate($obj->datec);
-				$this->surface = $obj->surface;
-				$this->nbpieds = $obj->nbpieds;
-				$this->ecartement = $obj->ecartement;
 				$this->ref = $obj->ref;
 				$this->label = $obj->label;
 				$this->description = $obj->description;
+				$this->surface = $obj->surface;
+				$this->nbpieds = $obj->nbpieds;
+				$this->ecartement = $obj->ecartement;
+				$this->fk_assolement = $obj->fk_assolement;
+				$this->fk_cepage = $obj->fk_cepage;
+				$this->fk_porte_greffe = $obj->fk_porte_greffe;
 				$this->note_private = $obj->note_private;
+				$this->tms = $this->db->jdate($obj->tms);
+				$this->datec = $this->db->jdate($obj->datec);
+				$this->fk_user_author = $obj->fk_user_author;
+				$this->fk_user_modif = $obj->fk_user_modif;
 
 				
 			}
@@ -322,20 +322,20 @@ class Parcelle extends CommonObject
 		$sql .= ' t.rowid,';
 		
 		$sql .= " t.entity,";
-		$sql .= " t.fk_user_author,";
-		$sql .= " t.fk_user_modif,";
-		$sql .= " t.fk_assolement,";
-		$sql .= " t.fk_cepage,";
-		$sql .= " t.fk_porte_greffe,";
-		$sql .= " t.tms,";
-		$sql .= " t.datec,";
-		$sql .= " t.surface,";
-		$sql .= " t.nbpieds,";
-		$sql .= " t.ecartement,";
 		$sql .= " t.ref,";
 		$sql .= " t.label,";
 		$sql .= " t.description,";
-		$sql .= " t.note_private";
+		$sql .= " t.surface,";
+		$sql .= " t.nbpieds,";
+		$sql .= " t.ecartement,";
+		$sql .= " t.fk_assolement,";
+		$sql .= " t.fk_cepage,";
+		$sql .= " t.fk_porte_greffe,";
+		$sql .= " t.note_private,";
+		$sql .= " t.tms,";
+		$sql .= " t.datec,";
+		$sql .= " t.fk_user_author,";
+		$sql .= " t.fk_user_modif";
 
 		
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element. ' as t';
@@ -369,20 +369,20 @@ class Parcelle extends CommonObject
 				$line->id = $obj->rowid;
 				
 				$line->entity = $obj->entity;
-				$line->fk_user_author = $obj->fk_user_author;
-				$line->fk_user_modif = $obj->fk_user_modif;
-				$line->fk_assolement = $obj->fk_assolement;
-				$line->fk_cepage = $obj->fk_cepage;
-				$line->fk_porte_greffe = $obj->fk_porte_greffe;
-				$line->tms = $this->db->jdate($obj->tms);
-				$line->datec = $this->db->jdate($obj->datec);
-				$line->surface = $obj->surface;
-				$line->nbpieds = $obj->nbpieds;
-				$line->ecartement = $obj->ecartement;
 				$line->ref = $obj->ref;
 				$line->label = $obj->label;
 				$line->description = $obj->description;
+				$line->surface = $obj->surface;
+				$line->nbpieds = $obj->nbpieds;
+				$line->ecartement = $obj->ecartement;
+				$line->fk_assolement = $obj->fk_assolement;
+				$line->fk_cepage = $obj->fk_cepage;
+				$line->fk_porte_greffe = $obj->fk_porte_greffe;
 				$line->note_private = $obj->note_private;
+				$line->tms = $this->db->jdate($obj->tms);
+				$line->datec = $this->db->jdate($obj->datec);
+				$line->fk_user_author = $obj->fk_user_author;
+				$line->fk_user_modif = $obj->fk_user_modif;
 
 				
 
@@ -418,20 +418,14 @@ class Parcelle extends CommonObject
 		if (isset($this->entity)) {
 			 $this->entity = trim($this->entity);
 		}
-		if (isset($this->fk_user_author)) {
-			 $this->fk_user_author = trim($this->fk_user_author);
+		if (isset($this->ref)) {
+			 $this->ref = trim($this->ref);
 		}
-		if (isset($this->fk_user_modif)) {
-			 $this->fk_user_modif = trim($this->fk_user_modif);
+		if (isset($this->label)) {
+			 $this->label = trim($this->label);
 		}
-		if (isset($this->fk_assolement)) {
-			 $this->fk_assolement = trim($this->fk_assolement);
-		}
-		if (isset($this->fk_cepage)) {
-			 $this->fk_cepage = trim($this->fk_cepage);
-		}
-		if (isset($this->fk_porte_greffe)) {
-			 $this->fk_porte_greffe = trim($this->fk_porte_greffe);
+		if (isset($this->description)) {
+			 $this->description = trim($this->description);
 		}
 		if (isset($this->surface)) {
 			 $this->surface = trim($this->surface);
@@ -442,17 +436,23 @@ class Parcelle extends CommonObject
 		if (isset($this->ecartement)) {
 			 $this->ecartement = trim($this->ecartement);
 		}
-		if (isset($this->ref)) {
-			 $this->ref = trim($this->ref);
+		if (isset($this->fk_assolement)) {
+			 $this->fk_assolement = trim($this->fk_assolement);
 		}
-		if (isset($this->label)) {
-			 $this->label = trim($this->label);
+		if (isset($this->fk_cepage)) {
+			 $this->fk_cepage = trim($this->fk_cepage);
 		}
-		if (isset($this->description)) {
-			 $this->description = trim($this->description);
+		if (isset($this->fk_porte_greffe)) {
+			 $this->fk_porte_greffe = trim($this->fk_porte_greffe);
 		}
 		if (isset($this->note_private)) {
 			 $this->note_private = trim($this->note_private);
+		}
+		if (isset($this->fk_user_author)) {
+			 $this->fk_user_author = trim($this->fk_user_author);
+		}
+		if (isset($this->fk_user_modif)) {
+			 $this->fk_user_modif = trim($this->fk_user_modif);
 		}
 
 		
@@ -464,20 +464,20 @@ class Parcelle extends CommonObject
 		$sql = 'UPDATE ' . MAIN_DB_PREFIX . $this->table_element . ' SET';
 		
 		$sql .= ' entity = '.(isset($this->entity)?$this->entity:"null").',';
-		$sql .= ' fk_user_author = '.(isset($this->fk_user_author)?$this->fk_user_author:"null").',';
-		$sql .= ' fk_user_modif = '.(isset($this->fk_user_modif)?$this->fk_user_modif:"null").',';
-		$sql .= ' fk_assolement = '.(isset($this->fk_assolement)?$this->fk_assolement:"null").',';
-		$sql .= ' fk_cepage = '.(isset($this->fk_cepage)?$this->fk_cepage:"null").',';
-		$sql .= ' fk_porte_greffe = '.(isset($this->fk_porte_greffe)?$this->fk_porte_greffe:"null").',';
-		$sql .= ' tms = '.(dol_strlen($this->tms) != 0 ? "'".$this->db->idate($this->tms)."'" : "'".$this->db->idate(dol_now())."'").',';
-		$sql .= ' datec = '.(! isset($this->datec) || dol_strlen($this->datec) != 0 ? "'".$this->db->idate($this->datec)."'" : 'null').',';
-		$sql .= ' surface = '.(isset($this->surface)?$this->surface:"null").',';
-		$sql .= ' nbpieds = '.(isset($this->nbpieds)?$this->nbpieds:"null").',';
-		$sql .= ' ecartement = '.(isset($this->ecartement)?$this->ecartement:"null").',';
 		$sql .= ' ref = '.(isset($this->ref)?"'".$this->db->escape($this->ref)."'":"null").',';
 		$sql .= ' label = '.(isset($this->label)?"'".$this->db->escape($this->label)."'":"null").',';
 		$sql .= ' description = '.(isset($this->description)?"'".$this->db->escape($this->description)."'":"null").',';
-		$sql .= ' note_private = '.(isset($this->note_private)?"'".$this->db->escape($this->note_private)."'":"null");
+		$sql .= ' surface = '.(isset($this->surface)?$this->surface:"null").',';
+		$sql .= ' nbpieds = '.(isset($this->nbpieds)?$this->nbpieds:"null").',';
+		$sql .= ' ecartement = '.(isset($this->ecartement)?$this->ecartement:"null").',';
+		$sql .= ' fk_assolement = '.(isset($this->fk_assolement)?$this->fk_assolement:"null").',';
+		$sql .= ' fk_cepage = '.(isset($this->fk_cepage)?$this->fk_cepage:"null").',';
+		$sql .= ' fk_porte_greffe = '.(isset($this->fk_porte_greffe)?$this->fk_porte_greffe:"null").',';
+		$sql .= ' note_private = '.(isset($this->note_private)?"'".$this->db->escape($this->note_private)."'":"null").',';
+		$sql .= ' tms = '.(dol_strlen($this->tms) != 0 ? "'".$this->db->idate($this->tms)."'" : "'".$this->db->idate(dol_now())."'").',';
+		$sql .= ' datec = '.(! isset($this->datec) || dol_strlen($this->datec) != 0 ? "'".$this->db->idate($this->datec)."'" : 'null').',';
+		$sql .= ' fk_user_author = '.(isset($this->fk_user_author)?$this->fk_user_author:"null").',';
+		$sql .= ' fk_user_modif = '.(isset($this->fk_user_modif)?$this->fk_user_modif:"null");
 
         
 		$sql .= ' WHERE rowid=' . $this->id;
@@ -718,20 +718,20 @@ class Parcelle extends CommonObject
 		$this->id = 0;
 		
 		$this->entity = '';
-		$this->fk_user_author = '';
-		$this->fk_user_modif = '';
-		$this->fk_assolement = '';
-		$this->fk_cepage = '';
-		$this->fk_porte_greffe = '';
-		$this->tms = '';
-		$this->datec = '';
-		$this->surface = '';
-		$this->nbpieds = '';
-		$this->ecartement = '';
 		$this->ref = '';
 		$this->label = '';
 		$this->description = '';
+		$this->surface = '';
+		$this->nbpieds = '';
+		$this->ecartement = '';
+		$this->fk_assolement = '';
+		$this->fk_cepage = '';
+		$this->fk_porte_greffe = '';
 		$this->note_private = '';
+		$this->tms = '';
+		$this->datec = '';
+		$this->fk_user_author = '';
+		$this->fk_user_modif = '';
 
 		
 	}
@@ -752,20 +752,20 @@ class ParcelleLine
 	 */
 	
 	public $entity;
-	public $fk_user_author;
-	public $fk_user_modif;
-	public $fk_assolement;
-	public $fk_cepage;
-	public $fk_porte_greffe;
-	public $tms = '';
-	public $datec = '';
-	public $surface;
-	public $nbpieds;
-	public $ecartement;
 	public $ref;
 	public $label;
 	public $description;
+	public $surface;
+	public $nbpieds;
+	public $ecartement;
+	public $fk_assolement;
+	public $fk_cepage;
+	public $fk_porte_greffe;
 	public $note_private;
+	public $tms = '';
+	public $datec = '';
+	public $fk_user_author;
+	public $fk_user_modif;
 
 	/**
 	 * @var mixed Sample line property 2

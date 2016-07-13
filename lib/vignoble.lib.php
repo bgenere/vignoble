@@ -1,6 +1,6 @@
 <?php
-/* <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) <year>  <name of author>
+/* Vignoble Module library
+ * Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,14 @@
 /**
  *	\file		lib/vignoble.lib.php
  *	\ingroup	vignoble
- *	\brief		This file is an example module library
+ *	\brief		Module library for module vignoble
  *				Put some comments here
  */
 
+/**
+* Prepare tabs header for the admin page
+* return $head
+*/
 function vignobleAdminPrepareHead()
 {
 	global $langs, $conf;
