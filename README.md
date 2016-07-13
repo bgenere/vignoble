@@ -1,13 +1,19 @@
-Dolibarr Module Vignoble
+ Module Vignoble
 ========================================
+Ce module est en cours de développement.
 
-This is a full featured module for Dolibarr.
-It's a tool for module developers to kickstart their project and give an hands-on sample of which features Dolibarr has to offer for module development.
+Auteur : Bruno Généré      <bgenere@webiseasy.org>
+
+Ce module permet de gérer la culture d'un vignoble dans Dolibarr.
+
+Fonction principales
+--------------------
+
+Liste des Parcelles (en cours)
 
 
-
-Documentation
--------------
+Développement du module
+-----------------------
 
 [Module tutorial](http://wiki.dolibarr.org/index.php/Module_development)
 

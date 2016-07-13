@@ -1,6 +1,6 @@
 <?php
-/* <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) <year>  <name of author>
+/* This page is displayed to provide module information
+ * Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,16 +55,18 @@ $action = GETPOST('action', 'alpha');
 /*
  * View
  */
+ // page name and header
 $page_name = "vignobleAbout";
 llxHeader('', $langs->trans($page_name));
 
-// Subheader
+// page title (printed) and link to module list
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'
 	. $langs->trans("BackToModuleList") . '</a>';
 print_fiche_titre($langs->trans($page_name), $linkback);
 
-// Configuration header
+// Tabs configuration (in library)
 $head = vignobleAdminPrepareHead();
+// Select about tab in tabs
 dol_fiche_head(
 	$head,
 	'about',
@@ -73,19 +75,17 @@ dol_fiche_head(
 	'vignoble@vignoble'
 );
 
-// About page goes here
+// About page start here
 echo $langs->trans("vignobleAboutPage");
-
+// get readme file and print
 echo '<br>';
-
 $buffer = file_get_contents(dol_buildpath('/vignoble/README.md', 0));
 echo Parsedown::instance()->text($buffer);
-
+// link to GPLV3 licence
 echo '<br>',
 '<a href="' . dol_buildpath('/vignoble/COPYING', 1) . '">',
 '<img src="' . dol_buildpath('/vignoble/img/gplv3.png', 1) . '"/>',
 '</a>';
-
 
 // Page end
 dol_fiche_end();
