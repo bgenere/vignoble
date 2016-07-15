@@ -47,7 +47,7 @@ include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
 dol_include_once('/vignoble/class/parcelle.class.php');
 
 // Load traductions files requiredby by page
-$langs->load("vignoble");
+$langs->load("vignoble@vignoble");
 $langs->load("other");
 
 // Get parameters
@@ -246,7 +246,7 @@ if (empty($reshook))
 * Put here all code to build page
 ****************************************************/
 
-llxHeader('','MyPageName','');
+llxHeader('',$langs->trans('ParcelleCardTitle'),'');
 
 $form=new Form($db);
 
@@ -272,7 +272,7 @@ jQuery(document).ready(function() {
 // Part to create
 if ($action == 'create')
 {
-	print load_fiche_titre($langs->trans("NewMyModule"));
+	print load_fiche_titre($langs->trans("ParcelleCardNew"));
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="action" value="add">';

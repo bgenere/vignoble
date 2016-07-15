@@ -47,7 +47,7 @@ include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
 dol_include_once('/vignoble/class/parcelle.class.php');
 
 // Load traductions files requiredby by page
-$langs->load("vignoble");
+$langs->load("vignoble@vignoble");
 $langs->load("other");
 
 // Get parameters
@@ -113,25 +113,21 @@ if (($id > 0 || ! empty($ref)) && $action != 'add')
 // Definition of fields for list
 $arrayfields=array(
     
-'t.entity'=>array('label'=>$langs->trans("Fieldentity"), 'checked'=>1),
 't.ref'=>array('label'=>$langs->trans("Fieldref"), 'checked'=>1),
 't.label'=>array('label'=>$langs->trans("Fieldlabel"), 'checked'=>1),
-'t.description'=>array('label'=>$langs->trans("Fielddescription"), 'checked'=>1),
+'t.description'=>array('label'=>$langs->trans("Fielddescription"), 'checked'=>0),
 't.surface'=>array('label'=>$langs->trans("Fieldsurface"), 'checked'=>1),
 't.nbpieds'=>array('label'=>$langs->trans("Fieldnbpieds"), 'checked'=>1),
 't.ecartement'=>array('label'=>$langs->trans("Fieldecartement"), 'checked'=>1),
 't.fk_assolement'=>array('label'=>$langs->trans("Fieldfk_assolement"), 'checked'=>1),
 't.fk_cepage'=>array('label'=>$langs->trans("Fieldfk_cepage"), 'checked'=>1),
 't.fk_porte_greffe'=>array('label'=>$langs->trans("Fieldfk_porte_greffe"), 'checked'=>1),
-'t.note_private'=>array('label'=>$langs->trans("Fieldnote_private"), 'checked'=>1),
-'t.fk_user_author'=>array('label'=>$langs->trans("Fieldfk_user_author"), 'checked'=>1),
-'t.fk_user_modif'=>array('label'=>$langs->trans("Fieldfk_user_modif"), 'checked'=>1),
-
-    
-    //'t.entity'=>array('label'=>$langs->trans("Entity"), 'checked'=>1, 'enabled'=>(! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))),
-    't.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
-    't.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
-    //'t.statut'=>array('label'=>$langs->trans("Status"), 'checked'=>1, 'position'=>1000),
+'t.note_private'=>array('label'=>$langs->trans("Fieldnote_private"), 'checked'=>0),
+'t.fk_user_author'=>array('label'=>$langs->trans("Fieldfk_user_author"), 'checked'=>0),
+'t.fk_user_modif'=>array('label'=>$langs->trans("Fieldfk_user_modif"), 'checked'=>0),
+'t.entity'=>array('label'=>$langs->trans("Entity"), 'checked'=>1, 'enabled'=>(! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))),
+'t.datec'=>array('label'=>$langs->trans("DateCreation"), 'checked'=>0, 'position'=>500),
+'t.tms'=>array('label'=>$langs->trans("DateModificationShort"), 'checked'=>0, 'position'=>500),
 );
 // Extra fields
 if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label))
@@ -211,12 +207,12 @@ if (empty($reshook))
 * Put here all code to build page
 ****************************************************/
 
-llxHeader('','MyPageName','');
+llxHeader('',$langs->trans('ParcelleListTitle'),'');
 
 $form=new Form($db);
 
 // Put here content of your page
-$title = $langs->trans('MyModuleListTitle');
+$title = $langs->trans('ParcelleList');
 
 // Example : Adding jquery code
 print '<script type="text/javascript" language="javascript">

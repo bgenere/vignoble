@@ -45,9 +45,21 @@ vignobleAboutPage = Page à propos du module Vignoble
 MyPageName = Vignoble - page d'exemple
 
 #
-# Pages
+# Parcelle
 #
-ParcelleListTitle = Liste des parcelles
+ParcelleListTitle = Vignoble - Liste des parcelles
+ParcelleCardTitle = Vignoble - Formulaire Parcelle
+ParcelleList = Liste des parcelles
+ParcelleCardNew = Nouvelle parcelle
+Fieldref = Référence
+Fieldlabel = Libellé
+Fielddescription = Description
+Fieldsurface = Surface
+Fieldnbpieds = Nb de pieds
+Fieldecartement = Ecartement
+Fieldfk_assolement = Assolement
+Fieldfk_cepage = Cépage
+Fieldfk_porte_greffe = Porte greffe
 #
 # Dictionnaires
 #

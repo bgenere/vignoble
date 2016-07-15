@@ -345,7 +345,7 @@ class modVignoble extends DolibarrModules
 			'mainmenu'=>'vignoble',
 			//This menu's leftmenu ID
 			'leftmenu'=>'create',
-			'url'=>'/vignoble/parcelle_card.php',
+			'url'=>'/vignoble/parcelle_card.php?action=create',
 			'position'=>10,
 			// Define condition to show or hide menu entry.
 			// Use '$conf->vignoble->enabled' if entry must be visible if module is enabled.
