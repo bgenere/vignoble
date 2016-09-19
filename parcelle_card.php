@@ -19,7 +19,7 @@
 /**
  *   	\file       vignoble/parcelle_card.php
  *		\ingroup    vignoble
- *		\brief      This file is an example of a php page
+ *		\brief      This file manage the Parcelle form.
  *					Initialy built by build_class_from_table on 2016-07-13 11:12
  */
 
@@ -112,7 +112,7 @@ if (empty($reshook))
 	{
 		if (GETPOST('cancel'))
 		{
-			$urltogo=$backtopage?$backtopage:dol_buildpath('/vignoble/list.php',1);
+			$urltogo=$backtopage?$backtopage:dol_buildpath('/vignoble/parcelle_list.php',1);
 			header("Location: ".$urltogo);
 			exit;
 		}
@@ -149,7 +149,7 @@ if (empty($reshook))
 			if ($result > 0)
 			{
 				// Creation OK
-				$urltogo=$backtopage?$backtopage:dol_buildpath('/vignoble/list.php',1);
+				$urltogo=$backtopage?$backtopage:dol_buildpath('/vignoble/parcelle_list.php',1);
 				header("Location: ".$urltogo);
 				exit;
 			}
@@ -226,7 +226,7 @@ if (empty($reshook))
 		{
 			// Delete OK
 			setEventMessages("RecordDeleted", null, 'mesgs');
-			header("Location: ".dol_buildpath('/vignoble/list.php',1));
+			header("Location: ".dol_buildpath('/vignoble/parcelle_list.php',1));
 			exit;
 		}
 		else
