@@ -19,9 +19,12 @@
 
 /**
  * \file admin/about.php
- * \ingroup vignoble
- * \brief This file is an example about page
- * Put some comments here
+ * \ingroup vineyard
+ * \brief This page displays module information
+ * Page content :
+ * 	- README.md file for the module
+ *  - COPYING file for the module
+ *  - GPLV3 licence link
  */
 
 // Load Dolibarr environment

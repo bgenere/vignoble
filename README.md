@@ -1,18 +1,21 @@
- Module Vignoble
+Vineyard Module
 ========================================
-Ce module est en cours de développement.
+This module is currently in development.
 
-Auteur : Bruno Généré      <bgenere@webiseasy.org>
+Author : Bruno Généré      <bgenere@webiseasy.org>
 
-Ce module permet de gérer la culture d'un vignoble dans Dolibarr.
+This module targets the Dolibarr platform.
+The aim of this module is to manage the complete life cycle of vine cultivation.
+To track all operations and tasks done by plots of land, type of vine and to collect results.
+Using this module the vine cultivation could be followed and enhanced as needed year by year.  
 
-Fonction principales
+Current Main features
 --------------------
 
-Liste des Parcelles (en cours)
+Plots of land catalog (first draft)
 
 
-Développement du module
+Dolibarr Module Development
 -----------------------
 
 [Module tutorial](http://wiki.dolibarr.org/index.php/Module_development)
