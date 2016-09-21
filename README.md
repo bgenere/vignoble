@@ -5,11 +5,13 @@ This module is currently in development.
 Author : Bruno Généré      <bgenere@webiseasy.org>
 
 This module targets the Dolibarr platform.
-The aim of this module is to manage the complete life cycle of vine cultivation.
-To track all operations and tasks done by plots of land, type of vine and to collect results.
-Using this module the vine cultivation could be followed and enhanced as needed year by year.  
 
-Current Main features
+The aim of this module is to manage the complete life cycle of vine cultivation.
+You could track all operations and tasks done by plots of land, type of vine and collect results.
+
+Using this module the vine cultivation could be followed and enhanced as needed year by year. 
+
+Main features
 --------------------
 
 Plots of land catalog (first draft)
