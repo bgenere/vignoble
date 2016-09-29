@@ -18,7 +18,7 @@
  */
 
 /**
- * \file vignoble/parcelle_list.php
+ * \file vignoble/plot_list.php
  * \ingroup vignoble
  * \brief This file is an example of a php page
  * Initialy built by build_class_from_table on 2016-07-13 11:12
@@ -50,7 +50,7 @@ if (! $res)
 	die("Include of main fails");
 	// Change this following line to use the correct relative path from htdocs
 	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
-dol_include_once('/vignoble/class/parcelle.class.php');
+dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
 // Load traductions files requiredby by page
@@ -67,13 +67,14 @@ $search_entity = GETPOST('search_entity', 'int');
 $search_ref = GETPOST('search_ref', 'alpha');
 $search_label = GETPOST('search_label', 'alpha');
 $search_description = GETPOST('search_description', 'alpha');
-$search_surface = GETPOST('search_surface', 'alpha');
-$search_nbpieds = GETPOST('search_nbpieds', 'int');
-$search_ecartement = GETPOST('search_ecartement', 'alpha');
-$search_fk_assolement = GETPOST('search_fk_assolement', 'int');
-$search_fk_cepage = GETPOST('search_fk_cepage', 'int');
-$search_fk_porte_greffe = GETPOST('search_fk_porte_greffe', 'int');
+$search_areasize = GETPOST('search_areasize', 'alpha');
+$search_rootsnumber = GETPOST('search_rootsnumber', 'int');
+$search_spacing = GETPOST('search_spacing', 'alpha');
+$search_fk_cultivationtype = GETPOST('search_fk_cultivationtype', 'int');
+$search_fk_varietal = GETPOST('search_fk_varietal', 'int');
+$search_fk_rootstock = GETPOST('search_fk_rootstock', 'int');
 $search_note_private = GETPOST('search_note_private', 'alpha');
+$search_note_public = GETPOST('search_note_public', 'alpha');
 $search_fk_user_author = GETPOST('search_fk_user_author', 'int');
 $search_fk_user_modif = GETPOST('search_fk_user_modif', 'int');
 
@@ -104,7 +105,7 @@ if ($user->societe_id > 0) {
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
 $hookmanager->initHooks(array(
-'parcellelist'
+	'plotlist'
 ));
 $extrafields = new ExtraFields($db);
 
@@ -113,7 +114,7 @@ $extralabels = $extrafields->fetch_name_optionals_label('vignoble');
 $search_array_options = $extrafields->getOptionalsFromPost($extralabels, '', 'search_');
 
 // Load object if id or ref is provided as parameter
-$object = new Parcelle($db);
+$object = new plot($db);
 if (($id > 0 || ! empty($ref)) && $action != 'add') {
 	$result = $object->fetch($id, $ref);
 	if ($result < 0)
@@ -122,73 +123,73 @@ if (($id > 0 || ! empty($ref)) && $action != 'add') {
 
 // Definition of fields for list
 $arrayfields = array(
-
-'t.ref' => array(
-'label' => $langs->trans("Fieldref"),
-'checked' => 1
-),
-'t.label' => array(
-'label' => $langs->trans("Fieldlabel"),
-'checked' => 1
-),
-'t.description' => array(
-'label' => $langs->trans("Fielddescription"),
-'checked' => 0
-),
-'t.surface' => array(
-'label' => $langs->trans("Fieldsurface"),
-'checked' => 1
-),
-'t.nbpieds' => array(
-'label' => $langs->trans("Fieldnbpieds"),
-'checked' => 1
-),
-'t.ecartement' => array(
-'label' => $langs->trans("Fieldecartement"),
-'checked' => 1
-),
-'t.fk_assolement' => array(
-'label' => $langs->trans("Fieldfk_assolement"),
-'checked' => 1
-),
-'t.fk_cepage' => array(
-'label' => $langs->trans("Fieldfk_cepage"),
-'checked' => 1
-),
-'t.fk_porte_greffe' => array(
-'label' => $langs->trans("Fieldfk_porte_greffe"),
-'checked' => 1
-),
-'t.note_private' => array(
-'label' => $langs->trans("Fieldnote_private"),
-'checked' => 0
-),
-// 't.fk_user_author'=>array('label'=>$langs->trans("Fieldfk_user_author"), 'checked'=>0),
-// 't.fk_user_modif'=>array('label'=>$langs->trans("Fieldfk_user_modif"), 'checked'=>0),
-'t.entity' => array(
-'label' => $langs->trans("Entity"),
-'checked' => 1,
-'enabled' => (! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))
-),
-'t.datec' => array(
-'label' => $langs->trans("DateCreation"),
-'checked' => 0,
-'position' => 500
-),
-'t.tms' => array(
-'label' => $langs->trans("DateModificationShort"),
-'checked' => 0,
-'position' => 500
-)
+	
+	't.ref' => array(
+		'label' => $langs->trans("Fieldref"),
+		'checked' => 1
+	),
+	't.label' => array(
+		'label' => $langs->trans("Fieldlabel"),
+		'checked' => 1
+	),
+	't.description' => array(
+		'label' => $langs->trans("Fielddescription"),
+		'checked' => 0
+	),
+	't.areasize' => array(
+		'label' => $langs->trans("Fieldareasize"),
+		'checked' => 1
+	),
+	't.rootsnumber' => array(
+		'label' => $langs->trans("Fieldrootsnumber"),
+		'checked' => 1
+	),
+	't.spacing' => array(
+		'label' => $langs->trans("Fieldspacing"),
+		'checked' => 1
+	),
+	't.fk_cultivationtype' => array(
+		'label' => $langs->trans("Fieldfk_cultivationtype"),
+		'checked' => 1
+	),
+	't.fk_varietal' => array(
+		'label' => $langs->trans("Fieldfk_varietal"),
+		'checked' => 1
+	),
+	't.fk_rootstock' => array(
+		'label' => $langs->trans("Fieldfk_rootstock"),
+		'checked' => 1
+	),
+	't.note_private' => array(
+		'label' => $langs->trans("Fieldnote_private"),
+		'checked' => 0
+	),
+	// 't.fk_user_author'=>array('label'=>$langs->trans("Fieldfk_user_author"), 'checked'=>0),
+	// 't.fk_user_modif'=>array('label'=>$langs->trans("Fieldfk_user_modif"), 'checked'=>0),
+	't.entity' => array(
+		'label' => $langs->trans("Entity"),
+		'checked' => 1,
+		'enabled' => (! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))
+	),
+	't.datec' => array(
+		'label' => $langs->trans("DateCreation"),
+		'checked' => 0,
+		'position' => 500
+	),
+	't.tms' => array(
+		'label' => $langs->trans("DateModificationShort"),
+		'checked' => 0,
+		'position' => 500
+	)
 );
 // Extra fields
 if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 	foreach ($extrafields->attribute_label as $key => $val) {
 		$arrayfields["ef." . $key] = array(
-		'label' => $extrafields->attribute_label[$key],
-		'checked' => $extrafields->attribute_list[$key],
-		'position' => $extrafields->attribute_pos[$key],
-		'enabled' => $extrafields->attribute_perms[$key]
+			'label' => $extrafields->attribute_label[$key],
+			'checked' => $extrafields->attribute_list[$key],
+			'position' => $extrafields->attribute_pos[$key],
+			'enabled' => $extrafields->attribute_perms[$key]
 		);
 	}
 }
@@ -215,13 +216,14 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 	$search_ref = '';
 	$search_label = '';
 	$search_description = '';
-	$search_surface = '';
-	$search_nbpieds = '';
-	$search_ecartement = '';
-	$search_fk_assolement = '';
-	$search_fk_cepage = '';
-	$search_fk_porte_greffe = '';
+	$search_areasize = '';
+	$search_rootsnumber = '';
+	$search_spacing = '';
+	$search_fk_cultivationtype = '';
+	$search_fk_varietal = '';
+	$search_fk_rootstock = '';
 	$search_note_private = '';
+	$search_note_public = '';
 	$search_fk_user_author = '';
 	$search_fk_user_modif = '';
 	
@@ -256,14 +258,14 @@ if (empty($reshook)) {
  * **************************************************
  */
 
-llxHeader('', $langs->trans('ParcelleListTitle'), '');
+llxHeader('', $langs->trans('plotListTitle'), '');
 
 $form = new Form($db);
 $formvignoble = new FormVignoble($db);
-$parcelle = new Parcelle($db);
+$plot = new plot($db);
 
 // Put here content of your page
-$title = $langs->trans('ParcelleList');
+$title = $langs->trans('plotList');
 
 // Example : Adding jquery code
 print '<script type="text/javascript" language="javascript">
@@ -287,18 +289,19 @@ $sql .= " t.entity,";
 $sql .= " t.ref,";
 $sql .= " t.label,";
 $sql .= " t.description,";
-$sql .= " t.surface,";
-$sql .= " t.nbpieds,";
-$sql .= " t.ecartement,";
-$sql .= " t.fk_assolement,";
-$sql .= " t.fk_cepage,";
-$sql .= " t.fk_porte_greffe,";
+$sql .= " t.areasize,";
+$sql .= " t.rootsnumber,";
+$sql .= " t.spacing,";
+$sql .= " t.fk_cultivationtype,";
+$sql .= " t.fk_varietal,";
+$sql .= " t.fk_rootstock,";
 $sql .= " t.note_private,";
+$sql .= " t.note_public,";
 $sql .= " t.tms as date_update,";
 $sql .= " t.datec as date_creation,";
 $sql .= " t.fk_user_author,";
 $sql .= " t.fk_user_modif,";
-$sql .= " cepage.label as cepagelabel";
+$sql .= " varietal.label as varietallabel";
 
 // Add fields for extrafields
 foreach ($extrafields->attribute_list as $key => $val)
@@ -307,10 +310,10 @@ foreach ($extrafields->attribute_list as $key => $val)
 $parameters = array();
 $reshook = $hookmanager->executeHooks('printFieldListSelect', $parameters); // Note that $action and $object may have been modified by hook
 $sql .= $hookmanager->resPrint;
-$sql .= " FROM " . MAIN_DB_PREFIX . "parcelle as t";
+$sql .= " FROM " . MAIN_DB_PREFIX . "plot as t";
 if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label))
-	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "parcelle_extrafields as ef on (u.rowid = ef.fk_object)";
-$sql .= " JOIN " . MAIN_DB_PREFIX . "c_cepage AS cepage ON t.fk_cepage = cepage.rowid";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "plot_extrafields as ef on (u.rowid = ef.fk_object)";
+$sql .= " JOIN " . MAIN_DB_PREFIX . "c_varietal AS varietal ON t.fk_varietal = varietal.rowid";
 $sql .= " WHERE 1 = 1";
 // $sql.= " WHERE u.entity IN (".getEntity('mytable',1).")";
 
@@ -322,20 +325,22 @@ if ($search_label)
 	$sql .= natural_search("label", $search_label);
 if ($search_description)
 	$sql .= natural_search("description", $search_description);
-if ($search_surface)
-	$sql .= natural_search("surface", $search_surface);
-if ($search_nbpieds)
-	$sql .= natural_search("nbpieds", $search_nbpieds);
-if ($search_ecartement)
-	$sql .= natural_search("ecartement", $search_ecartement);
-if ($search_fk_assolement)
-	$sql .= natural_search("fk_assolement", $search_fk_assolement);
-if ($search_fk_cepage > 0)
-	$sql .= natural_search("fk_cepage", $search_fk_cepage);
-if ($search_fk_porte_greffe)
-	$sql .= natural_search("fk_porte_greffe", $search_fk_porte_greffe);
+if ($search_areasize)
+	$sql .= natural_search("areasize", $search_areasize);
+if ($search_rootsnumber)
+	$sql .= natural_search("rootsnumber", $search_rootsnumber);
+if ($search_spacing)
+	$sql .= natural_search("spacing", $search_spacing);
+if ($search_fk_cultivationtype)
+	$sql .= natural_search("fk_cultivationtype", $search_fk_cultivationtype);
+if ($search_fk_varietal > 0)
+	$sql .= natural_search("fk_varietal", $search_fk_varietal);
+if ($search_fk_rootstock)
+	$sql .= natural_search("fk_rootstock", $search_fk_rootstock);
 if ($search_note_private)
 	$sql .= natural_search("note_private", $search_note_private);
+if ($search_note_public)
+	$sql .= natural_search("note_public", $search_note_public);
 if ($search_fk_user_author)
 	$sql .= natural_search("fk_user_author", $search_fk_user_author);
 if ($search_fk_user_modif)
@@ -350,12 +355,12 @@ foreach ($search_array_options as $key => $val) {
 	$typ = $extrafields->attribute_type[$tmpkey];
 	$mode = 0;
 	if (in_array($typ, array(
-	'int',
-	'double'
+		'int',
+		'double'
 	)))
 		$mode = 1; // Search on a numeric
 	if ($val && (($crit != '' && ! in_array($typ, array(
-	'select'
+		'select'
 	))) || ! empty($crit))) {
 		$sql .= natural_search('ef.' . $tmpkey, $crit, $mode);
 	}
@@ -391,20 +396,22 @@ if ($resql) {
 		$params .= '&amp;search_label=' . urlencode($search_label);
 	if ($search_description != '')
 		$params .= '&amp;search_description=' . urlencode($search_description);
-	if ($search_surface != '')
-		$params .= '&amp;search_surface=' . urlencode($search_surface);
-	if ($search_nbpieds != '')
-		$params .= '&amp;search_nbpieds=' . urlencode($search_nbpieds);
-	if ($search_ecartement != '')
-		$params .= '&amp;search_ecartement=' . urlencode($search_ecartement);
-	if ($search_fk_assolement != '')
-		$params .= '&amp;search_fk_assolement=' . urlencode($search_fk_assolement);
-	if ($search_fk_cepage != '')
-		$params .= '&amp;search_fk_cepage=' . urlencode($search_fk_cepage);
-	if ($search_fk_porte_greffe != '')
-		$params .= '&amp;search_fk_porte_greffe=' . urlencode($search_fk_porte_greffe);
+	if ($search_areasize != '')
+		$params .= '&amp;search_areasize=' . urlencode($search_areasize);
+	if ($search_rootsnumber != '')
+		$params .= '&amp;search_rootsnumber=' . urlencode($search_rootsnumber);
+	if ($search_spacing != '')
+		$params .= '&amp;search_spacing=' . urlencode($search_spacing);
+	if ($search_fk_cultivationtype != '')
+		$params .= '&amp;search_fk_cultivationtype=' . urlencode($search_fk_cultivationtype);
+	if ($search_fk_varietal != '')
+		$params .= '&amp;search_fk_varietal=' . urlencode($search_fk_varietal);
+	if ($search_fk_rootstock != '')
+		$params .= '&amp;search_fk_rootstock=' . urlencode($search_fk_rootstock);
 	if ($search_note_private != '')
 		$params .= '&amp;search_note_private=' . urlencode($search_note_private);
+	if ($search_note_public != '')
+		$params .= '&amp;search_note_public=' . urlencode($search_note_public);
 	if ($search_fk_user_author != '')
 		$params .= '&amp;search_fk_user_author=' . urlencode($search_fk_user_author);
 	if ($search_fk_user_modif != '')
@@ -461,20 +468,22 @@ if ($resql) {
 		print_liste_field_titre($arrayfields['t.label']['label'], $_SERVER['PHP_SELF'], 't.label', '', $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.description']['checked']))
 		print_liste_field_titre($arrayfields['t.description']['label'], $_SERVER['PHP_SELF'], 't.description', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.surface']['checked']))
-		print_liste_field_titre($arrayfields['t.surface']['label'], $_SERVER['PHP_SELF'], 't.surface', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.nbpieds']['checked']))
-		print_liste_field_titre($arrayfields['t.nbpieds']['label'], $_SERVER['PHP_SELF'], 't.nbpieds', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.ecartement']['checked']))
-		print_liste_field_titre($arrayfields['t.ecartement']['label'], $_SERVER['PHP_SELF'], 't.ecartement', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.fk_assolement']['checked']))
-		print_liste_field_titre($arrayfields['t.fk_assolement']['label'], $_SERVER['PHP_SELF'], 't.fk_assolement', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.fk_cepage']['checked']))
-		print_liste_field_titre($arrayfields['t.fk_cepage']['label'], $_SERVER['PHP_SELF'], 't.fk_cepage', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.fk_porte_greffe']['checked']))
-		print_liste_field_titre($arrayfields['t.fk_porte_greffe']['label'], $_SERVER['PHP_SELF'], 't.fk_porte_greffe', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.areasize']['checked']))
+		print_liste_field_titre($arrayfields['t.areasize']['label'], $_SERVER['PHP_SELF'], 't.areasize', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.rootsnumber']['checked']))
+		print_liste_field_titre($arrayfields['t.rootsnumber']['label'], $_SERVER['PHP_SELF'], 't.rootsnumber', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.spacing']['checked']))
+		print_liste_field_titre($arrayfields['t.spacing']['label'], $_SERVER['PHP_SELF'], 't.spacing', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
+		print_liste_field_titre($arrayfields['t.fk_cultivationtype']['label'], $_SERVER['PHP_SELF'], 't.fk_cultivationtype', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.fk_varietal']['checked']))
+		print_liste_field_titre($arrayfields['t.fk_varietal']['label'], $_SERVER['PHP_SELF'], 't.fk_varietal', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.fk_rootstock']['checked']))
+		print_liste_field_titre($arrayfields['t.fk_rootstock']['label'], $_SERVER['PHP_SELF'], 't.fk_rootstock', '', $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.note_private']['checked']))
 		print_liste_field_titre($arrayfields['t.note_private']['label'], $_SERVER['PHP_SELF'], 't.note_private', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.note_public']['checked']))
+		print_liste_field_titre($arrayfields['t.note_public']['label'], $_SERVER['PHP_SELF'], 't.note_public', '', $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.fk_user_author']['checked']))
 		print_liste_field_titre($arrayfields['t.fk_user_author']['label'], $_SERVER['PHP_SELF'], 't.fk_user_author', '', $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.fk_user_modif']['checked']))
@@ -491,7 +500,7 @@ if ($resql) {
 	}
 	// Hook fields
 	$parameters = array(
-	'arrayfields' => $arrayfields
+		'arrayfields' => $arrayfields
 	);
 	$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook
 	print $hookmanager->resPrint;
@@ -514,20 +523,22 @@ if ($resql) {
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_label" value="' . $search_label . '" size="10"></td>';
 	if (! empty($arrayfields['t.description']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_description" value="' . $search_description . '" size="10"></td>';
-	if (! empty($arrayfields['t.surface']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_surface" value="' . $search_surface . '" size="10"></td>';
-	if (! empty($arrayfields['t.nbpieds']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_nbpieds" value="' . $search_nbpieds . '" size="10"></td>';
-	if (! empty($arrayfields['t.ecartement']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_ecartement" value="' . $search_ecartement . '" size="10"></td>';
-	if (! empty($arrayfields['t.fk_assolement']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_assolement" value="' . $search_fk_assolement . '" size="10"></td>';
-	if (! empty($arrayfields['t.fk_cepage']['checked']))
-		print '<td class="liste_titre">' . $formvignoble->select_cepage($search_fk_cepage, 'search_fk_cepage', 1) . '</td>';
-	if (! empty($arrayfields['t.fk_porte_greffe']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_porte_greffe" value="' . $search_fk_porte_greffe . '" size="10"></td>';
+	if (! empty($arrayfields['t.areasize']['checked']))
+		print '<td class="liste_titre"><input type="text" class="flat" name="search_areasize" value="' . $search_areasize . '" size="10"></td>';
+	if (! empty($arrayfields['t.rootsnumber']['checked']))
+		print '<td class="liste_titre"><input type="text" class="flat" name="search_rootsnumber" value="' . $search_rootsnumber . '" size="10"></td>';
+	if (! empty($arrayfields['t.spacing']['checked']))
+		print '<td class="liste_titre"><input type="text" class="flat" name="search_spacing" value="' . $search_spacing . '" size="10"></td>';
+	if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
+		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_cultivationtype" value="' . $search_fk_cultivationtype . '" size="10"></td>';
+	if (! empty($arrayfields['t.fk_varietal']['checked']))
+		print '<td class="liste_titre">' . $formvignoble->select_varietal($search_fk_varietal, 'search_fk_varietal', 1) . '</td>';
+	if (! empty($arrayfields['t.fk_rootstock']['checked']))
+		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_rootstock" value="' . $search_fk_rootstock . '" size="10"></td>';
 	if (! empty($arrayfields['t.note_private']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_note_private" value="' . $search_note_private . '" size="10"></td>';
+	if (! empty($arrayfields['t.note_public']['checked']))
+		print '<td class="liste_titre"><input type="text" class="flat" name="search_note_public" value="' . $search_note_public . '" size="10"></td>';
 	if (! empty($arrayfields['t.fk_user_author']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_user_author" value="' . $search_fk_user_author . '" size="10"></td>';
 	if (! empty($arrayfields['t.fk_user_modif']['checked']))
@@ -541,22 +552,22 @@ if ($resql) {
 				$typeofextrafield = $extrafields->attribute_type[$key];
 				print '<td class="liste_titre' . ($align ? ' ' . $align : '') . '">';
 				if (in_array($typeofextrafield, array(
-				'varchar',
-				'int',
-				'double',
-				'select'
+					'varchar',
+					'int',
+					'double',
+					'select'
 				))) {
 					$crit = $val;
 					$tmpkey = preg_replace('/search_options_/', '', $key);
 					$searchclass = '';
 					if (in_array($typeofextrafield, array(
-					'varchar',
-					'select'
+						'varchar',
+						'select'
 					)))
 						$searchclass = 'searchstring';
 					if (in_array($typeofextrafield, array(
-					'int',
-					'double'
+						'int',
+						'double'
 					)))
 						$searchclass = 'searchnum';
 					print '<input class="flat' . ($searchclass ? ' ' . $searchclass : '') . '" size="4" type="text" name="search_options_' . $tmpkey . '" value="' . dol_escape_htmltag($search_array_options['search_options_' . $tmpkey]) . '">';
@@ -567,7 +578,7 @@ if ($resql) {
 	}
 	// Fields from hook
 	$parameters = array(
-	'arrayfields' => $arrayfields
+		'arrayfields' => $arrayfields
 	);
 	$reshook = $hookmanager->executeHooks('printFieldListOption', $parameters); // Note that $action and $object may have been modified by hook
 	print $hookmanager->resPrint;
@@ -603,29 +614,31 @@ if ($resql) {
 		if ($obj) {
 			// You can use here results
 			print '<tr>';
-			$parcelle->fetch($obj->rowid);
+			$plot->fetch($obj->rowid);
 			if (! empty($arrayfields['t.entity']['checked']))
 				print '<td>' . $obj->entity . '</td>';
 			if (! empty($arrayfields['t.ref']['checked']))
-				print '<td>' . $parcelle->getNomUrl(1) . '</td>';
+				print '<td>' . $plot->getNomUrl(1) . '</td>';
 			if (! empty($arrayfields['t.label']['checked']))
 				print '<td>' . $obj->label . '</td>';
 			if (! empty($arrayfields['t.description']['checked']))
 				print '<td>' . $obj->description . '</td>';
-			if (! empty($arrayfields['t.surface']['checked']))
-				print '<td>' . $obj->surface . '</td>';
-			if (! empty($arrayfields['t.nbpieds']['checked']))
-				print '<td>' . $obj->nbpieds . '</td>';
-			if (! empty($arrayfields['t.ecartement']['checked']))
-				print '<td>' . $obj->ecartement . '</td>';
-			if (! empty($arrayfields['t.fk_assolement']['checked']))
-				print '<td>' . $obj->fk_assolement . '</td>';
-			if (! empty($arrayfields['t.fk_cepage']['checked']))
-				print '<td>' . $obj->cepagelabel . '</td>';
-			if (! empty($arrayfields['t.fk_porte_greffe']['checked']))
-				print '<td>' . $obj->fk_porte_greffe . '</td>';
+			if (! empty($arrayfields['t.areasize']['checked']))
+				print '<td>' . $obj->areasize . '</td>';
+			if (! empty($arrayfields['t.rootsnumber']['checked']))
+				print '<td>' . $obj->rootsnumber . '</td>';
+			if (! empty($arrayfields['t.spacing']['checked']))
+				print '<td>' . $obj->spacing . '</td>';
+			if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
+				print '<td>' . $obj->fk_cultivationtype . '</td>';
+			if (! empty($arrayfields['t.fk_varietal']['checked']))
+				print '<td>' . $obj->varietallabel . '</td>';
+			if (! empty($arrayfields['t.fk_rootstock']['checked']))
+				print '<td>' . $obj->fk_rootstock . '</td>';
 			if (! empty($arrayfields['t.note_private']['checked']))
 				print '<td>' . $obj->note_private . '</td>';
+			if (! empty($arrayfields['t.note_public']['checked']))
+				print '<td>' . $obj->note_public . '</td>';
 			if (! empty($arrayfields['t.fk_user_author']['checked']))
 				print '<td>' . $obj->fk_user_author . '</td>';
 			if (! empty($arrayfields['t.fk_user_modif']['checked']))
@@ -648,8 +661,8 @@ if ($resql) {
 			}
 			// Fields from hook
 			$parameters = array(
-			'arrayfields' => $arrayfields,
-			'obj' => $obj
+				'arrayfields' => $arrayfields,
+				'obj' => $obj
 			);
 			$reshook = $hookmanager->executeHooks('printFieldListValue', $parameters); // Note that $action and $object may have been modified by hook
 			print $hookmanager->resPrint;
@@ -683,7 +696,7 @@ if ($resql) {
 	$db->free($resql);
 	
 	$parameters = array(
-	'sql' => $sql
+		'sql' => $sql
 	);
 	$reshook = $hookmanager->executeHooks('printFieldListFooter', $parameters); // Note that $action and $object may have been modified by hook
 	print $hookmanager->resPrint;

@@ -56,17 +56,17 @@ class FormVignoble
 	 * 
 	 *  @return	string					String with HTML select
 	 */
-	function select_cepage($selected='',$htmlname='cepage_id', $useempty=0)
+	function select_varietal($selected='',$htmlname='varietal_id', $useempty=0)
 	{
 		global $conf,$langs,$user;
 		$langs->load("dict");
 
 		$out='';
 
-		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_cepage";
+		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_varietal";
 		$sql.= " WHERE active = 1";
 
-		dol_syslog("Form::select_cepage", LOG_DEBUG);
+		dol_syslog("Form::select_varietal", LOG_DEBUG);
 		$resql=$this->db->query($sql);
 		if ($resql)
 		{
@@ -88,7 +88,7 @@ class FormVignoble
 						$out.= '<option value="'.$obj->rowid.'">';
 					}
 					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out.= ($langs->trans("cepage".$obj->code)!="cepage".$obj->code ? $langs->trans("cepage".$obj->code) : ($obj->label!='-'?$obj->label:''));
+					$out.= ($langs->trans("varietal".$obj->code)!="varietal".$obj->code ? $langs->trans("varietal".$obj->code) : ($obj->label!='-'?$obj->label:''));
 					$out.= '</option>';
 					$i++;
 				}
@@ -113,17 +113,17 @@ class FormVignoble
 	 * 	@param	string	$htmlname		Name of HTML select combo field
 	 *  @return	string					String with HTML select
 	 */
-	function select_porte_greffe($selected='',$htmlname='porte_greffe_id')
+	function select_rootstock($selected='',$htmlname='rootstock_id')
 	{
 		global $conf,$langs,$user;
 		$langs->load("dict");
 
 		$out='';
 
-		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_porte_greffe";
+		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_rootstock";
 		$sql.= " WHERE active = 1";
 
-		dol_syslog("Form::select_porte_greffe", LOG_DEBUG);
+		dol_syslog("Form::select_rootstock", LOG_DEBUG);
 		$resql=$this->db->query($sql);
 		if ($resql)
 		{
@@ -145,7 +145,7 @@ class FormVignoble
 						$out.= '<option value="'.$obj->rowid.'">';
 					}
 					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out.= ($langs->trans("porte_greffe".$obj->code)!="porte_greffe".$obj->code ? $langs->trans("porte_greffe".$obj->code) : ($obj->label!='-'?$obj->label:''));
+					$out.= ($langs->trans("rootstock".$obj->code)!="rootstock".$obj->code ? $langs->trans("rootstock".$obj->code) : ($obj->label!='-'?$obj->label:''));
 					$out.= '</option>';
 					$i++;
 				}
@@ -168,17 +168,17 @@ class FormVignoble
 	 * 	@param	string	$htmlname		Name of HTML select combo field
 	 *  @return	string					String with HTML select
 	 */
-	function select_assolement($selected='',$htmlname='assolement_id')
+	function select_cultivationtype($selected='',$htmlname='cultivationtype_id')
 	{
 		global $conf,$langs,$user;
 		$langs->load("dict");
 
 		$out='';
 
-		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_assolement";
+		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_cultivationtype";
 		$sql.= " WHERE active = 1";
 
-		dol_syslog("Form::select_assolement", LOG_DEBUG);
+		dol_syslog("Form::select_cultivationtype", LOG_DEBUG);
 		$resql=$this->db->query($sql);
 		if ($resql)
 		{
@@ -200,7 +200,7 @@ class FormVignoble
 						$out.= '<option value="'.$obj->rowid.'">';
 					}
 					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out.= ($langs->trans("assolement".$obj->code)!="assolement".$obj->code ? $langs->trans("assolement".$obj->code) : ($obj->label!='-'?$obj->label:''));
+					$out.= ($langs->trans("cultivationtype".$obj->code)!="cultivationtype".$obj->code ? $langs->trans("cultivationtype".$obj->code) : ($obj->label!='-'?$obj->label:''));
 					$out.= '</option>';
 					$i++;
 				}

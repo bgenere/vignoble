@@ -18,7 +18,7 @@
  */
 
 /**
- * \file vignoble/parcelle_card.php
+ * \file vignoble/plot_card.php
  * \ingroup vignoble
  * \brief This file manage the plot form.
  * Initialy built by build_class_from_table on 2016-07-13 11:12
@@ -50,7 +50,7 @@ if (! $res)
 	die("Include of main fails");
 	// Change this following line to use the correct relative path from htdocs
 	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
-dol_include_once('/vignoble/class/parcelle.class.php');
+dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
 // Load traductions files requiredby by page
@@ -69,12 +69,12 @@ $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // $search_ref=GETPOST('search_ref','alpha');
                                      // $search_label=GETPOST('search_label','alpha');
                                      // $search_description=GETPOST('search_description','alpha');
-                                     // $search_surface=GETPOST('search_surface','alpha');
-                                     // $search_nbpieds=GETPOST('search_nbpieds','int');
-                                     // $search_ecartement=GETPOST('search_ecartement','alpha');
-                                     // $search_fk_assolement=GETPOST('search_fk_assolement','int');
-                                     // $search_fk_cepage=GETPOST('search_fk_cepage','int');
-                                     // $search_fk_porte_greffe=GETPOST('search_fk_porte_greffe','int');
+                                     // $search_areasize=GETPOST('search_areasize','alpha');
+                                     // $search_rootsnumber=GETPOST('search_rootsnumber','int');
+                                     // $search_spacing=GETPOST('search_spacing','alpha');
+                                     // $search_fk_cultivationtype=GETPOST('search_fk_cultivationtype','int');
+                                     // $search_fk_varietal=GETPOST('search_fk_varietal','int');
+                                     // $search_fk_rootstock=GETPOST('search_fk_rootstock','int');
                                      // $search_note_private=GETPOST('search_note_private','alpha');
                                      // $search_fk_user_author=GETPOST('search_fk_user_author','int');
                                      // $search_fk_user_modif=GETPOST('search_fk_user_modif','int');
@@ -88,7 +88,7 @@ if (empty($action) && empty($id) && empty($ref))
 	$action = 'view';
 	
 	// Load object if id or ref is provided as parameter
-$object = new Parcelle($db);
+$object = new plot($db);
 if (($id > 0 || ! empty($ref)) && $action != 'add') {
 	$result = $object->fetch($id, $ref);
 	if ($result < 0)
@@ -97,7 +97,7 @@ if (($id > 0 || ! empty($ref)) && $action != 'add') {
 
 // Initialize technical object to manage hooks of modules. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array(
-'parcelle'
+'plot'
 ));
 $extrafields = new ExtraFields($db);
 
@@ -118,7 +118,7 @@ if (empty($reshook)) {
 	// Action to add record
 	if ($action == 'add') {
 		if (GETPOST('cancel')) {
-			$urltogo = $backtopage ? $backtopage : dol_buildpath('/vignoble/parcelle_list.php', 1);
+			$urltogo = $backtopage ? $backtopage : dol_buildpath('/vignoble/plot_list.php', 1);
 			header("Location: " . $urltogo);
 			exit();
 		}
@@ -131,12 +131,12 @@ if (empty($reshook)) {
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
 		$object->description = GETPOST('description', 'alpha');
-		$object->surface = GETPOST('surface', 'alpha');
-		$object->nbpieds = GETPOST('nbpieds', 'int');
-		$object->ecartement = GETPOST('ecartement', 'alpha');
-		$object->fk_assolement = GETPOST('fk_assolement', 'int');
-		$object->fk_cepage = GETPOST('fk_cepage', 'int');
-		$object->fk_porte_greffe = GETPOST('fk_porte_greffe', 'int');
+		$object->areasize = GETPOST('areasize', 'alpha');
+		$object->rootsnumber = GETPOST('rootsnumber', 'int');
+		$object->spacing = GETPOST('spacing', 'alpha');
+		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
+		$object->fk_varietal = GETPOST('fk_varietal', 'int');
+		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
 		$object->note_private = GETPOST('note_private', 'alpha');
 		$object->fk_user_author = $user->id;
 		$object->fk_user_modif = $user->id;
@@ -150,7 +150,7 @@ if (empty($reshook)) {
 			$result = $object->create($user);
 			if ($result > 0) {
 				// Creation OK
-				$urltogo = $backtopage ? $backtopage : dol_buildpath('/vignoble/parcelle_list.php', 1);
+				$urltogo = $backtopage ? $backtopage : dol_buildpath('/vignoble/plot_list.php', 1);
 				header("Location: " . $urltogo);
 				exit();
 			}
@@ -179,12 +179,12 @@ if (empty($reshook)) {
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
 		$object->description = GETPOST('description', 'alpha');
-		$object->surface = GETPOST('surface', 'alpha');
-		$object->nbpieds = GETPOST('nbpieds', 'int');
-		$object->ecartement = GETPOST('ecartement', 'alpha');
-		$object->fk_assolement = GETPOST('fk_assolement', 'int');
-		$object->fk_cepage = GETPOST('fk_cepage', 'int');
-		$object->fk_porte_greffe = GETPOST('fk_porte_greffe', 'int');
+		$object->areasize = GETPOST('areasize', 'alpha');
+		$object->rootsnumber = GETPOST('rootsnumber', 'int');
+		$object->spacing = GETPOST('spacing', 'alpha');
+		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
+		$object->fk_varietal = GETPOST('fk_varietal', 'int');
+		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
 		$object->note_private = GETPOST('note_private', 'alpha');
 		$object->fk_user_author = GETPOST('fk_user_author', 'int');
 		$object->fk_user_modif = GETPOST('fk_user_modif', 'int');
@@ -217,7 +217,7 @@ if (empty($reshook)) {
 		if ($result > 0) {
 			// Delete OK
 			setEventMessages("RecordDeleted", null, 'mesgs');
-			header("Location: " . dol_buildpath('/vignoble/parcelle_list.php', 1));
+			header("Location: " . dol_buildpath('/vignoble/plot_list.php', 1));
 			exit();
 		} else {
 			if (! empty($object->errors))
@@ -236,7 +236,7 @@ if (empty($reshook)) {
  * **************************************************
  */
 
-llxHeader('', $langs->trans('ParcelleCardTitle'), '');
+llxHeader('', $langs->trans('plotCardTitle'), '');
 
 $form = new Form($db);
 $formvignoble = new FormVignoble($db);
@@ -260,7 +260,7 @@ $formvignoble = new FormVignoble($db);
 
 // Part to create
 if ($action == 'create') {
-	print load_fiche_titre($langs->trans("ParcelleCardNew"));
+	print load_fiche_titre($langs->trans("plotCardNew"));
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="add">';
@@ -274,12 +274,12 @@ if ($action == 'create') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . GETPOST('ref') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . GETPOST('label') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . GETPOST('description') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldsurface") . '</td><td><input class="flat" type="text" name="surface" value="' . GETPOST('surface') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnbpieds") . '</td><td><input class="flat" type="text" name="nbpieds" value="' . GETPOST('nbpieds') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldecartement") . '</td><td><input class="flat" type="text" name="ecartement" value="' . GETPOST('ecartement') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_assolement") . '</td><td>' . $formvignoble->select_assolement(GETPOST('fk_assolement'), 'fk_assolement') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cepage") . '</td><td>' . $formvignoble->select_cepage(GETPOST('fk_cepage'), 'fk_cepage') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_porte_greffe") . '</td><td>' . $formvignoble->select_porte_greffe(GETPOST('fk_porte_greffe'), 'fk_porte_greffe') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . GETPOST('areasize') . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . GETPOST('rootsnumber') . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . GETPOST('spacing') . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->select_cultivationtype(GETPOST('fk_cultivationtype'), 'fk_cultivationtype') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->select_varietal(GETPOST('fk_varietal'), 'fk_varietal') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->select_rootstock(GETPOST('fk_rootstock'), 'fk_rootstock') . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnote_private") . '</td><td><input class="flat" type="text" name="note_private" value="' . GETPOST('note_private') . '"></td></tr>';
 	print '</table>' . "\n";
 	
@@ -308,12 +308,12 @@ if (($id || $ref) && $action == 'edit') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . $object->ref . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . $object->label . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . $object->description . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldsurface") . '</td><td><input class="flat" type="text" name="surface" value="' . $object->surface . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnbpieds") . '</td><td><input class="flat" type="text" name="nbpieds" value="' . $object->nbpieds . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldecartement") . '</td><td><input class="flat" type="text" name="ecartement" value="' . $object->ecartement . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_assolement") . '</td><td><input class="flat" type="text" name="fk_assolement" value="' . $object->fk_assolement . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cepage") . '</td><td>' . dol_getIdFromCode($db, $object->fk_cepage, 'c_cepage', 'id', 'label') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_porte_greffe") . '</td><td><input class="flat" type="text" name="fk_porte_greffe" value="' . $object->fk_porte_greffe . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . $object->areasize . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . $object->rootsnumber . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . $object->spacing . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td><input class="flat" type="text" name="fk_cultivationtype" value="' . $object->fk_cultivationtype . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'id', 'label') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td><input class="flat" type="text" name="fk_rootstock" value="' . $object->fk_rootstock . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnote_private") . '</td><td><input class="flat" type="text" name="note_private" value="' . $object->note_private . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_author") . '</td><td><input class="flat" type="text" name="fk_user_author" value="' . $object->fk_user_author . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_modif") . '</td><td><input class="flat" type="text" name="fk_user_modif" value="' . $object->fk_user_modif . '"></td></tr>';
@@ -331,23 +331,23 @@ if (($id || $ref) && $action == 'edit') {
 
 // Part to show record
 if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
-	//print load_fiche_titre($langs->trans("Parcelle"));
+	//print load_fiche_titre($langs->trans("plot"));
 	
 	$head = array();
 	$h = 0;
-	$head[$h][0] = 'parcelle_card.php?id=' . $object->id;
+	$head[$h][0] = 'plot_card.php?id=' . $object->id;
 	$head[$h][1] = $langs->trans("Card");
 	$head[$h][2] = 'card';
 	$h = 1;
-	$head[$h][0] = 'parcelle_notes.php?id=' . $object->id;
+	$head[$h][0] = 'plot_notes.php?id=' . $object->id;
 	$head[$h][1] = $langs->trans("Notes");
 	$head[$h][2] = 'notes';
 	$h = 2;
-	$head[$h][0] = 'parcelle_info.php?id=' . $object->id;
+	$head[$h][0] = 'plot_info.php?id=' . $object->id;
 	$head[$h][1] = $langs->trans("Info");
 	$head[$h][2] = 'info';
 	
-	dol_fiche_head($head, 'card', $langs->trans("Parcelle"), 0, 'parcelle');
+	dol_fiche_head($head, 'card', $langs->trans("plot"), 0, 'plot');
 	
 	if ($action == 'delete') {
 		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('DeleteMyOjbect'), $langs->trans('ConfirmDeleteMyObject'), 'confirm_delete', '', 0, 1);
@@ -362,7 +362,7 @@ if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
 	//
 	//print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td>' . $object->ref . '</td></tr>';
 	
-    $linkback = '<a href="'.dol_buildpath('/vignoble/parcelle_list.php',1).'">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="'.dol_buildpath('/vignoble/plot_list.php',1).'">'.$langs->trans("BackToList").'</a>';
 
         // Ref
         print '<tr><td class="titlefield">'.$langs->trans("Ref").'</td><td>';
@@ -380,12 +380,12 @@ if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
 	
 	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td>' . $object->label . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td>' . $object->description . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldsurface") . '</td><td>' . $object->surface . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnbpieds") . '</td><td>' . $object->nbpieds . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldecartement") . '</td><td>' . $object->ecartement . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_assolement") . '</td><td>' . $object->fk_assolement . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cepage") . '</td><td>' . dol_getIdFromCode($db, $object->fk_cepage, 'c_cepage', 'rowid', 'label') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_porte_greffe") . '</td><td>' . $object->fk_porte_greffe . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td>' . $object->areasize . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td>' . $object->rootsnumber . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td>' . $object->spacing . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $object->fk_cultivationtype . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $object->fk_rootstock . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnote_private") . '</td><td>' . $object->note_private . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_author") . '</td><td>' . $object->fk_user_author . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_modif") . '</td><td>' . $object->fk_user_modif . '</td></tr>';
@@ -406,7 +406,7 @@ if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
 			print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=edit">' . $langs->trans("Modify") . '</a></div>' . "\n";
 		//}
 		
-		if ($user->rights->vignoble->parcelle->delete) {
+		if ($user->rights->vignoble->plot->delete) {
 			print '<div class="inline-block divButAction"><a class="butActionDelete" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a></div>' . "\n";
 		}
 		else

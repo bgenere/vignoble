@@ -57,7 +57,7 @@ class ActionsVignoble
 		global $search_boxvalue;
 		global $langs;
 		
-		$this->results[] = array('img'=>'object_wine-cask', 'label'=>$langs->trans("SearchIntoParcelle"), 'text'=>img_picto('','object_wine-cask').' '.$langs->trans("SearchIntoParcelles"), 'url'=>dol_buildpath('/vignoble/parcelle_list.php',1).'?mainmenu=vignoblem&sall='.urlencode($search_boxvalue));
+		$this->results[] = array('img'=>'object_wine-cask', 'label'=>$langs->trans("SearchIntoplot"), 'text'=>img_picto('','object_wine-cask').' '.$langs->trans("SearchIntoplots"), 'url'=>dol_buildpath('/vignoble/plot_list.php',1).'?mainmenu=vignoblem&sall='.urlencode($search_boxvalue));
 		
 		return 0;
 	}

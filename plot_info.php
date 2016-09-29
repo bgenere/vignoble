@@ -1,8 +1,6 @@
 <?php
-/* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2007 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@capnetworks.com>
- * Copyright (C) 2013      Florian Henry		  	<florian.henry@open-concept.pro>
+/* Copyright (C) 2005-2006 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@capnetworks.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +17,9 @@
  */
 
 /**
- *  \file       htdocs/commande/note.php
- *  \ingroup    commande
- *  \brief      Fiche de notes sur une commande
+ *      \file       htdocs/commande/info.php
+ *      \ingroup    commande
+ *		\brief      Page des informations d'une commande
  */
 
 // Change this following line to use the correct relative path (../, ../../, etc)
@@ -36,42 +34,22 @@ if (! $res && file_exists("../../../../dolibarr/htdocs/main.inc.php"))
 	$res = @include '../../../../dolibarr/htdocs/main.inc.php'; // Used on dev env only
 if (! $res)
 	die("Include of main fails");
+require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+//require_once DOL_DOCUMENT_ROOT.'/commande/class/commande.class.php';
 //require_once DOL_DOCUMENT_ROOT.'/core/lib/order.lib.php';
-//require_once DOL_DOCUMENT_ROOT .'/commande/class/commande.class.php';
-dol_include_once('/vignoble/class/parcelle.class.php');
+dol_include_once('/vignoble/class/plot.class.php');
 
+//if (!$user->rights->commande->lire)	accessforbidden();
 
-//$langs->load("companies");
-//$langs->load("bills");
+//$langs->load("orders");
 $langs->load("vignoble@vignoble");
-
-$id = GETPOST('id','int');
-$ref=GETPOST('ref','alpha');
-//$socid=GETPOST('socid','int');
-$action=GETPOST('action','alpha');
 
 // Security check
 //$socid=0;
+$id = GETPOST("id",'int');
 //if ($user->societe_id) $socid=$user->societe_id;
-//result=restrictedArea($user,'commande',$id,'');
+//$result=restrictedArea($user,'commande',$comid,'');
 
-
-$object = new Parcelle($db);
-if (! $object->fetch($id) > 0)
-{
-	dol_print_error($db);
-}
-
-//$permissionnote=$user->rights->vignoble->creer;	// Used by the include of actions_setnotes.inc.php
-$permission=true;
-$permissionnote=true;
-
-
-/*
- * Actions
- */
-
-include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php';	// Must be include, not includ_once
 
 
 /*
@@ -80,49 +58,35 @@ include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php';	// Must be include, 
 
 llxHeader('',$langs->trans('Order'),'EN:Customers_Orders|FR:Commandes_Clients|ES:Pedidos de clientes');
 
-$form = new Form($db);
+$object = new plot($db);
+$object->fetch($id);
+$object->info($id);
+//$soc = new Societe($db);
+//$soc->fetch($object->socid);
 
-if ($id > 0 || ! empty($ref))
-{
-	//$soc = new Societe($db);
-	//$soc->fetch($object->socid);
-
-	//$head = commande_prepare_head($object);
+//$head = commande_prepare_head($object);
 	$head = array();
 	$h = 0;
-	$head[$h][0] = 'parcelle_card.php?id=' . $object->id;
+	$head[$h][0] = 'plot_card.php?id=' . $object->id;
 	$head[$h][1] = $langs->trans("Card");
 	$head[$h][2] = 'card';
 	$h = 1;
-	$head[$h][0] = 'parcelle_notes.php?id=' . $object->id;
+	$head[$h][0] = 'plot_notes.php?id=' . $object->id;
 	$head[$h][1] = $langs->trans("Notes");
 	$head[$h][2] = 'notes';
 	$h = 2;
-	$head[$h][0] = 'parcelle_info.php?id=' . $object->id;
+	$head[$h][0] = 'plot_info.php?id=' . $object->id;
 	$head[$h][1] = $langs->trans("Info");
 	$head[$h][2] = 'info';
 	
-	dol_fiche_head($head, 'notes', $langs->trans("Parcelle"), 0, 'parcelle');
+dol_fiche_head($head, 'info', $langs->trans("plot"), 0, 'wine-cask@vignoble');
 
-	print '<table class="border" width="100%">';
 
-	$linkback = '<a href="'.dol_buildpath('/vignoble/parcelle_list.php',1).'">'.$langs->trans("BackToList").'</a>';
-	
-	// Ref
-	print '<tr><td width="25%">'.$langs->trans("Ref").'</td><td colspan="3">';
-	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref');
-	print "</td></tr>";
+print '<table width="100%"><tr><td>';
+dol_print_object_info($object);
+print '</td></tr></table>';
 
-	print "</table>";
-
-	print '<br>';
-
-	$cssclass="titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
-
-	print '</div>';
-}
-
+print '</div>';
 
 llxFooter();
 $db->close();

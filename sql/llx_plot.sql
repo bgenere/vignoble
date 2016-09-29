@@ -14,7 +14,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CREATE TABLE llx_parcelle(
+CREATE TABLE llx_plot(
 	-- object keys
 	rowid INTEGER AUTO_INCREMENT PRIMARY KEY,  
 	entity INTEGER DEFAULT 1 NOT NULL, -- multi company id
@@ -23,13 +23,13 @@ CREATE TABLE llx_parcelle(
 	label VARCHAR(255),
 	description TEXT,
 	-- attributes
-	surface real,						-- area size
-	nbpieds INTEGER NOT NULL,			-- number of wine roots
-	ecartement real, 					-- distance between 2 rows
+	areasize real,						-- area size
+	rootsnumber INTEGER NOT NULL,			-- number of wine roots
+	spacing real, 					-- distance between 2 rows
 	-- attributes (in dictionnary) 
-	fk_assolement 	INTEGER NOT NULL, 
-	fk_cepage 	INTEGER NOT NULL,
-	fk_porte_greffe INTEGER NOT NULL,
+	fk_cultivationtype 	INTEGER NOT NULL, 
+	fk_varietal 	INTEGER NOT NULL,
+	fk_rootstock INTEGER NOT NULL,
 	-- private note
 	note_private TEXT,
 	note_public TEXT,
