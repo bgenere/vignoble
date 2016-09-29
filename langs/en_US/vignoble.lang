@@ -20,7 +20,7 @@
 
 # Module label 'ModuleXXXName'
 # (where XXX is value of numeric property 'numero' of module)
-Module123001Name = WineYard
+Module123001Name = VineYard
 # Module description 'ModuleXXXDesc'
 # (where XXX is value of numeric property 'numero' of module)
 Module123001Desc = Add all features to manage a Wine Yard estate

@@ -56,7 +56,7 @@ class Parcelle extends CommonObject
 	/**
 	 */
 	
-	public $entity;
+	public $entity=1;
 	public $ref;
 	public $label;
 	public $description;
@@ -163,13 +163,13 @@ class Parcelle extends CommonObject
 		$sql.= 'fk_porte_greffe,';
 		$sql.= 'note_private,';
 		$sql.= 'datec,';
-		$sql.= 'fk_user_author';
+		$sql.= 'fk_user_author,';
 		$sql.= 'fk_user_modif';
 
 		
 		$sql .= ') VALUES (';
 		
-		$sql .= ' '.(! isset($this->entity)?'NULL':$this->entity).',';
+		$sql .= ' '.((! isset($this->entity) || empty($this->entity))?'1':$this->entity).',';
 		$sql .= ' '.(! isset($this->ref)?'NULL':"'".$this->db->escape($this->ref)."'").',';
 		$sql .= ' '.(! isset($this->label)?'NULL':"'".$this->db->escape($this->label)."'").',';
 		$sql .= ' '.(! isset($this->description)?'NULL':"'".$this->db->escape($this->description)."'").',';
@@ -614,7 +614,6 @@ class Parcelle extends CommonObject
 
 	/**
 	 *  Return a link to the user card (with optionaly the picto)
-	 * 	Use this->id,this->lastname, this->firstname
 	 *
 	 *	@param	int		$withpicto			Include picto in link (0=No picto, 1=Include picto into link, 2=Only picto)
 	 *	@param	string	$option				On what the link point to
@@ -633,11 +632,11 @@ class Parcelle extends CommonObject
         $result = '';
         $companylink = '';
 
-        $label = '<u>' . $langs->trans("MyModule") . '</u>';
+        $label = '<u>' . $langs->trans("Parcelle") . '</u>';
         $label.= '<div width="100%">';
         $label.= '<b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
 
-        $link = '<a href="'.DOL_URL_ROOT.'/vignoble/card.php?id='.$this->id.'"';
+        $link = '<a href="'.dol_buildpath('/vignoble/parcelle_card.php', 1).'?id='.$this->id.'"';
         $link.= ($notooltip?'':' title="'.dol_escape_htmltag($label, 1).'" class="classfortooltip'.($morecss?' '.$morecss:'').'"');
         $link.= '>';
 		$linkend='</a>';
@@ -705,6 +704,53 @@ class Parcelle extends CommonObject
 			if ($status == 0) return $langs->trans('Disabled').' '.img_picto($langs->trans('Disabled'),'statut5');
 		}
 	}
+	
+	
+   /**
+     *	Charge les informations d'ordre info dans l'objet commande
+     *
+     *	@param  int		$id       Id of order
+     *	@return	void
+     */
+    function info($id)
+    {
+        $sql = 'SELECT c.rowid, datec as datec, tms as datem,';
+        $sql.= ' fk_user_author, fk_user_modif';
+        $sql.= ' FROM '.MAIN_DB_PREFIX.'parcelle as c';
+        $sql.= ' WHERE c.rowid = '.$id;
+        $result=$this->db->query($sql);
+        if ($result)
+        {
+            if ($this->db->num_rows($result))
+            {
+                $obj = $this->db->fetch_object($result);
+                $this->id = $obj->rowid;
+                if ($obj->fk_user_author)
+                {
+                    $cuser = new User($this->db);
+                    $cuser->fetch($obj->fk_user_author);
+                    $this->user_creation   = $cuser;
+                }
+
+                if ($obj->fk_user_modif)
+                {
+                    $vuser = new User($this->db);
+                    $vuser->fetch($obj->fk_user_modif);
+                    $this->user_validation = $vuser;
+                }
+
+                $this->date_creation     = $this->db->jdate($obj->datec);
+                $this->date_modification = $this->db->jdate($obj->datem);
+            }
+
+            $this->db->free($result);
+
+        }
+        else
+        {
+            dol_print_error($this->db);
+        }
+    }
 	
 	
 	/**

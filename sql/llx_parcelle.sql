@@ -32,6 +32,7 @@ CREATE TABLE llx_parcelle(
 	fk_porte_greffe INTEGER NOT NULL,
 	-- private note
 	note_private TEXT,
+	note_public TEXT,
 	-- record date time & user
 	tms	timestamp,
   	datec	datetime,                   -- creation date

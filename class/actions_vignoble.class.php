@@ -26,7 +26,7 @@
 /**
  * Class ActionsMyModule
  */
-class ActionsMyModule
+class ActionsVignoble
 {
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
@@ -50,6 +50,20 @@ class ActionsMyModule
 	{
 	}
 
+	
+	
+	function addSearchEntry()
+	{
+		global $search_boxvalue;
+		global $langs;
+		
+		$this->results[] = array('img'=>'object_wine-cask', 'label'=>$langs->trans("SearchIntoParcelle"), 'text'=>img_picto('','object_wine-cask').' '.$langs->trans("SearchIntoParcelles"), 'url'=>dol_buildpath('/vignoble/parcelle_list.php',1).'?mainmenu=vignoblem&sall='.urlencode($search_boxvalue));
+		
+		return 0;
+	}
+	
+	
+	
 	/**
 	 * Overloading the doActions function : replacing the parent's function with the one below
 	 *

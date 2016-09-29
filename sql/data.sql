@@ -16,24 +16,21 @@
 
 -- 
 -- Load dictionnary table
---
+-- 
 
--- assolement
+-- cultivationtype
 
-delete from llx_c_assolement where module = 'vignoble';
-insert into llx_c_assolement (rowid,code,label,module) values (1,'VIGNE','Vigne','vignoble');
-insert into llx_c_assolement (rowid,code,label,module) values (2,'JEUNEVIGNE','Jeune Vigne','vignoble');
-insert into llx_c_assolement (rowid,code,label,module) values (3,'JACHERE','Jachère','vignoble');
+insert into llx_c_cultivationtype (code,label,module) values ('VIGNE','Vigne','vignoble');
+insert into llx_c_cultivationtype (code,label,module) values ('JEUNEVIGNE','Jeune Vigne','vignoble');
+insert into llx_c_cultivationtype (code,label,module) values ('JACHERE','Jachère','vignoble');
 
--- cepage
+-- varietal
 
-delete from llx_c_cepage where module = 'vignoble';
-insert into llx_c_cepage (rowid,code,label,module) values (1,'CABERNET','Cabernet','vignoble');
-insert into llx_c_cepage (rowid,code,label,module) values (2,'MERLOT','Merlot','vignoble');
+insert into llx_c_varietal (code,label,module) values ('CABERNET','Cabernet','vignoble');
+insert into llx_c_varietal (code,label,module) values ('MERLOT','Merlot','vignoble');
 
--- porte_greffe
+-- rootstock
 
-delete from llx_c_porte_greffe where module = 'vignoble';
-insert into llx_c_porte_greffe (rowid,code,label,module) values (1,'S04','SO4','vignoble');
-insert into llx_c_porte_greffe (rowid,code,label,module) values (2,'5BB','5BB','vignoble');
-insert into llx_c_porte_greffe (rowid,code,label,module) values (3,'101-14','101-14','vignoble');
+insert into llx_c_rootstock (code,label,module) values ('S04','SO4','vignoble');
+insert into llx_c_rootstock (code,label,module) values ('5BB','5BB','vignoble');
+insert into llx_c_rootstock (code,label,module) values ('101-14','101-14','vignoble');

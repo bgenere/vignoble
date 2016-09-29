@@ -1,10 +1,8 @@
-Vineyard Module
+Vineyard Module 
 ========================================
-This module is currently in development.
 
 Author : Bruno Généré      <bgenere@webiseasy.org>
 
-This module targets the Dolibarr platform.
 
 The aim of this module is to manage the complete life cycle of vine cultivation.
 You could track all operations and tasks done by plots of land, type of vine and collect results.
@@ -14,30 +12,23 @@ Using this module the vine cultivation could be followed and enhanced as needed 
 Main features
 --------------------
 
-Plots of land catalog (first draft)
+This module is under development.
+
+Current list of features :
+
+- Plots of land catalog (first draft)
 
 
-Dolibarr Module Development
+Pre-requisites
 -----------------------
 
-[Module tutorial](http://wiki.dolibarr.org/index.php/Module_development)
+This module targets the Dolibarr platform. (>= 4.0.x)
 
-[Dolibarr development](http://wiki.dolibarr.org/index.php/Developer_documentation)
-
-### Translations
-
-Dolibarr uses [Transifex](http://transifex.com) to manage it's translations.
-
-This template also contains a sample configuration for Transifex managed translations under the hidden [.tx](.tx) directory.
-
-For more informations, see the [translator's documentation](http://wiki.dolibarr.org/index.php/Translator_documentation).
-
-The Transifex project for this module is available at <http://transifex.com/projects/p/dolibarr-module-template>
 
 Install
 -------
 
-- Make sure Dolibarr (>= 3.3.x) is already installed and configured on your workstation or development server.
+- Make sure Dolibarr is already installed and configured on your workstation or development server.
 
 - In your Dolibarr installation directory, edit the ```htdocs/conf/conf.php``` file
 
@@ -69,9 +60,7 @@ Install
 
     For more information about the ```conf.php``` file take a look at the conf.php.example file.
 
-*Note that for Dolibarr versions before 3.5, the ```$dolibarr_main_url_root_alt``` has to be an absolute path*
-
-- Clone the repository in ```$dolibarr_main_document_root_alt/mymodule```
+- Clone the repository in ```$dolibarr_main_document_root_alt/vignoble```
 
 *(You may have to create the ```htdocs/custom``` directory first if it doesn't exist yet.)*
 ```sh
@@ -88,12 +77,12 @@ git clone git@github.com:GPCsolutions/dolibarr-module-template.git mymodule
 
     - The module is under one of the tabs
 
-    - You should now be able to enable the new module and start coding ;)
+    - You should now be able to enable the new module and start using it ;)
 
 Contributions
 -------------
 
-Feel free to contribute and report defects at <http://github.com/GPCsolutions/dolibarr-module-template/issues>
+Feel free to contribute and report defects at <https://github.com/bgenere/vignoble/issues>
 
 Licenses
 --------
