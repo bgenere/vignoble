@@ -42,10 +42,6 @@ if (! $res && file_exists("../main.inc.php"))
 	$res = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
 if (! $res && file_exists("../../main.inc.php"))
 	$res = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-if (! $res && file_exists("../../../dolibarr/htdocs/main.inc.php"))
-	$res = @include '../../../dolibarr/htdocs/main.inc.php'; // Used on dev env only
-if (! $res && file_exists("../../../../dolibarr/htdocs/main.inc.php"))
-	$res = @include '../../../../dolibarr/htdocs/main.inc.php'; // Used on dev env only
 if (! $res)
 	die("Include of main fails");
 	// Change this following line to use the correct relative path from htdocs
@@ -55,12 +51,15 @@ dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
 // Load traductions files requiredby by page
 $langs->load("vignoble@vignoble");
-// Dolibarr language file @TODO document usage of file
+// Dolibarr language file @TODO document usage of file other
 $langs->load("other");
 
 // Get parameters
 $id = GETPOST('id', 'int'); // object row id
+$ref = GETPOST('ref', 'alpha'); // object unique reference
 $action = GETPOST('action', 'alpha'); // action to do
+$ref = GETPOST('ref', 'alpha');
+if ($ref == '') {$ref = NULL ;} // NEEDED else your record will never be populated when ref is empty !!!
 $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // add your own parameters like this
                                      // $myparam = GETPOST('myparam','alpha');
@@ -89,7 +88,7 @@ if (empty($action) && empty($id) && empty($ref))
 	
 	// Load object if id or ref is provided as parameter
 $object = new plot($db);
-if (($id > 0 || ! empty($ref)) && $action != 'add') {
+if ( ($id > 0 || !empty($ref) ) && $action != 'add') {
 	$result = $object->fetch($id, $ref);
 	if ($result < 0)
 		dol_print_error($db);
@@ -97,7 +96,7 @@ if (($id > 0 || ! empty($ref)) && $action != 'add') {
 
 // Initialize technical object to manage hooks of modules. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array(
-'plot'
+	'plot'
 ));
 $extrafields = new ExtraFields($db);
 
@@ -236,38 +235,22 @@ if (empty($reshook)) {
  * **************************************************
  */
 
-llxHeader('', $langs->trans('plotCardTitle'), '');
+llxHeader('', $langs->trans('PlotCardTitle'), '');
 
 $form = new Form($db);
 $formvignoble = new FormVignoble($db);
 
 // Put here content of your page
 
-// Example : Adding jquery code
-// print '<script type="text/javascript" language="javascript">
-// jQuery(document).ready(function() {
-// function init_myfunc()
-// {
-// jQuery("#myid").removeAttr(\'disabled\');
-// jQuery("#myid").attr(\'disabled\',\'disabled\');
-// }
-// init_myfunc();
-// jQuery("#mybutton").click(function() {
-// init_myfunc();
-// });
-// });
-// </script>';
-
 // Part to create
 if ($action == 'create') {
-	print load_fiche_titre($langs->trans("plotCardNew"));
+	print load_fiche_titre($langs->trans("New Plot"));
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 	
-	dol_fiche_head();
-	
+		
 	print '<table class="border centpercent">' . "\n";
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	//
@@ -292,14 +275,13 @@ if ($action == 'create') {
 
 // Part to edit record
 if (($id || $ref) && $action == 'edit') {
-	print load_fiche_titre($langs->trans("MyModule"));
+	print load_fiche_titre($langs->trans("Edit Plot"));
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
 	
-	dol_fiche_head();
 	
 	print '<table class="border centpercent">' . "\n";
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
@@ -314,9 +296,7 @@ if (($id || $ref) && $action == 'edit') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td><input class="flat" type="text" name="fk_cultivationtype" value="' . $object->fk_cultivationtype . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'id', 'label') . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td><input class="flat" type="text" name="fk_rootstock" value="' . $object->fk_rootstock . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnote_private") . '</td><td><input class="flat" type="text" name="note_private" value="' . $object->note_private . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_author") . '</td><td><input class="flat" type="text" name="fk_user_author" value="' . $object->fk_user_author . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_modif") . '</td><td><input class="flat" type="text" name="fk_user_modif" value="' . $object->fk_user_modif . '"></td></tr>';
+
 	
 	print '</table>';
 	
@@ -329,66 +309,34 @@ if (($id || $ref) && $action == 'edit') {
 	print '</form>';
 }
 
-// Part to show record
+// show object card when action is view, delete or none 
 if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
-	//print load_fiche_titre($langs->trans("plot"));
 	
-	$head = array();
-	$h = 0;
-	$head[$h][0] = 'plot_card.php?id=' . $object->id;
-	$head[$h][1] = $langs->trans("Card");
-	$head[$h][2] = 'card';
-	$h = 1;
-	$head[$h][0] = 'plot_notes.php?id=' . $object->id;
-	$head[$h][1] = $langs->trans("Notes");
-	$head[$h][2] = 'notes';
-	$h = 2;
-	$head[$h][0] = 'plot_info.php?id=' . $object->id;
-	$head[$h][1] = $langs->trans("Info");
-	$head[$h][2] = 'info';
-	
-	dol_fiche_head($head, 'card', $langs->trans("plot"), 0, 'plot');
+	$head = $formvignoble->getTabsHeader($langs,$object);
+	dol_fiche_head($head, 'card', $langs->trans("Plot"), 0, 'wine-cask@vignoble');
 	
 	if ($action == 'delete') {
 		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('DeleteMyOjbect'), $langs->trans('ConfirmDeleteMyObject'), 'confirm_delete', '', 0, 1);
 		print $formconfirm;
 	}
 	
-	
-	//dol_banner_tab($object, 'id');
-	
 	print '<table class="border centpercent">' . "\n";
-	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
-	//
-	//print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td>' . $object->ref . '</td></tr>';
 	
-    $linkback = '<a href="'.dol_buildpath('/vignoble/plot_list.php',1).'">'.$langs->trans("BackToList").'</a>';
-
-        // Ref
-        print '<tr><td class="titlefield">'.$langs->trans("Ref").'</td><td>';
-        // Define a complementary filter for search of next/prev ref.
-        //if (! $user->rights->projet->all->lire)
-        //{
-        //    $objectsListId = $object->getProjectsAuthorizedForUser($user,0,0);
-        //    $object->next_prev_filter=" rowid in (".(count($objectsListId)?join(',',array_keys($objectsListId)):'0').")";
-        //}
-        print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref');
-        print '</td></tr>';
+	$linkback = '<a href="' . dol_buildpath('/vignoble/plot_list.php', 1) . '">' . $langs->trans("BackToList") . '</a>';
 	
-	
-	
+	// Ref
+	print '<tr><td class="titlefield">' . $langs->trans("Ref") . '</td><td>';
+	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref');
+	print '</td></tr>';
 	
 	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td>' . $object->label . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td>' . $object->description . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td>' . $object->areasize . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td>' . $object->rootsnumber . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td>' . $object->spacing . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $object->fk_cultivationtype . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $object->fk_rootstock . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnote_private") . '</td><td>' . $object->note_private . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_author") . '</td><td>' . $object->fk_user_author . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_user_modif") . '</td><td>' . $object->fk_user_modif . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldareasize") . '</td><td>' . $object->areasize . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldrootsnumber") . '</td><td>' . $object->rootsnumber . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldspacing") . '</td><td>' . $object->spacing . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . dol_getIdFromCode($db,$object->fk_cultivationtype,'c_cultivationtype', 'rowid', 'label') . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldfk_rootstock") . '</td><td>' .dol_getIdFromCode($db, $object->fk_rootstock,'c_rootstock', 'rowid', 'label') . '</td></tr>';
 	
 	print '</table>';
 	
@@ -402,17 +350,14 @@ if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
 		setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 	
 	if (empty($reshook)) {
-		//if ($user->rights->vignoble->level1->level2) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=edit">' . $langs->trans("Modify") . '</a></div>' . "\n";
-		//}
+		// if ($user->rights->vignoble->level1->level2) {
+		print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=edit">' . $langs->trans("Modify") . '</a></div>' . "\n";
+		// }
 		
 		if ($user->rights->vignoble->plot->delete) {
 			print '<div class="inline-block divButAction"><a class="butActionDelete" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a></div>' . "\n";
-		}
-		else
-		{
+		} else {
 			print '<div class="inline-block divButAction"><a class="butActionRefused" href="#">' . $langs->trans('Delete') . '</a></div>' . "\n";
-			
 		}
 	}
 	print '</div>' . "\n";
@@ -426,3 +371,5 @@ if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
 // End of page
 llxFooter();
 $db->close();
+
+

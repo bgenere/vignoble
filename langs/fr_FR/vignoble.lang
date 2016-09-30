@@ -30,14 +30,14 @@ Module123001Desc = Ajoute toute les fonctions spécifiques à la gestion d'un vi
 #
 vignobleSetup = Configuration du module Vignoble
 Settings = Réglages
-vignobleSetupPage = Page de configuration du module Vignoble
+No Content Yet = Pas de contenu pour l'instant.
 
 #
 # Page À propos
 #
 About = À propos
 vignobleAbout = À propos du module Vignoble
-vignobleAboutPage = Page à propos du module Vignoble
+
 
 #
 # Page d'exemple
@@ -47,22 +47,25 @@ MyPageName = Vignoble - page d'exemple
 #
 # Parcelle
 #
-ParcelleListTitle = Vignoble - Liste des parcelles
-ParcelleCardTitle = Vignoble - Formulaire Parcelle
-ParcelleList = Liste des parcelles
-ParcelleCardNew = Nouvelle parcelle
+Plot = Parcelle
+Plots = Parcelles
+Plots List = Liste des parcelles
+New Plot = Nouvelle parcelle
+PlotListTitle = Vignoble - Liste des parcelles
+PlotCardTitle = Vignoble - Formulaire Parcelle
+
 Fieldref = Référence
 Fieldlabel = Libellé
 Fielddescription = Description
-Fieldsurface = Surface
-Fieldnbpieds = Nb de pieds
-Fieldecartement = Ecartement
-Fieldfk_assolement = Assolement
-Fieldfk_cepage = Cépage
-Fieldfk_porte_greffe = Porte greffe
+Fieldareasize = Surface
+Fieldrootsnumber = Nb de pieds
+Fieldspacing = Ecartement
+Fieldfk_cultivationtype = Assolement
+Fieldfk_varietal = Cépage
+Fieldfk_rootstock = Porte greffe
 #
 # Dictionnaires
 #
-Cépage = Liste des cépages plantés
-Assolement = Type d'assolement sur une parcelle
-Porte Greffe = Liste des portes greffe plantés
+Varietal = Cépages
+Cultivation Type = Assolements
+Rootstock = Portes greffe

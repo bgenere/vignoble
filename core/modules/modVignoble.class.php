@@ -291,7 +291,7 @@ class modVignoble extends DolibarrModules
 			'mainmenu' => 'vignoble',
 			'leftmenu' => 'plot_list',
 			'fk_menu' => 'fk_mainmenu=vignoble,fk_leftmenu=plots',
-			'titre' => 'Plots List',
+			'titre' => 'List',
 			'langs' => 'vignoble@vignoble',
 			'url' => '/vignoble/plot_list.php',
 			'target' => '',

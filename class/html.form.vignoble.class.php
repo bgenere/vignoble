@@ -1,7 +1,9 @@
 <?php
-/* Copyright (C) 2008-2012	Laurent Destailleur	<eldy@users.sourceforge.net>
- * Copyright (C) 2008-2012	Regis Houssin		<regis.houssin@capnetworks.com>
- * Copyright (C) 2014		Juanjo Menent		<jmenent@2byte.es>
+
+/*
+ * Copyright (C) 2008-2012 Laurent Destailleur <eldy@users.sourceforge.net>
+ * Copyright (C) 2008-2012 Regis Houssin <regis.houssin@capnetworks.com>
+ * Copyright (C) 2014 Juanjo Menent <jmenent@2byte.es>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -10,7 +12,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -18,204 +20,229 @@
  */
 
 /**
- *	\file       htdocs/core/class/html.form.vignoble.class.php
- *  \ingroup    core
- *	\brief      File of class to build HTML component for third parties management
+ * \file htdocs/core/class/html.form.vignoble.class.php
+ * \ingroup core
+ * \brief File of class to build HTML component for third parties management
  */
 
-
 /**
- *	Class to build HTML component for third parties management
- *	Only common components are here.
+ * Class to build HTML component for third parties management
+ * Only common components are here.
  */
 class FormVignoble
 {
+
 	var $db;
+
 	var $error;
 
-
-
 	/**
-	 *	Constructor
+	 * Constructor
 	 *
-	 *	@param	DoliDB	$db		Database handler
+	 * @param DoliDB $db
+	 *        	Database handler
 	 */
 	function __construct($db)
 	{
 		$this->db = $db;
-
+		
 		return 1;
 	}
 
+	/**
+	 * Return combo list with cépage name
+	 *
+	 * @param string $selected
+	 *        	Title preselected
+	 * @param string $htmlname
+	 *        	Name of HTML select combo field
+	 *        	
+	 * @return string String with HTML select
+	 */
+	function select_varietal($selected = '', $htmlname = 'varietal_id', $useempty = 0)
+	{
+		global $conf, $langs, $user;
+		$langs->load("dict");
+		
+		$out = '';
+		
+		$sql = "SELECT rowid, code, label, active FROM " . MAIN_DB_PREFIX . "c_varietal";
+		$sql .= " WHERE active = 1";
+		
+		dol_syslog("Form::select_varietal", LOG_DEBUG);
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$out .= '<select class="flat" name="' . $htmlname . '" id="' . $htmlname . '">';
+			if ($useempty)
+				$out .= '<option value="-1"> &nbsp;</option>';
+			$num = $this->db->num_rows($resql);
+			$i = 0;
+			if ($num) {
+				while ($i < $num) {
+					$obj = $this->db->fetch_object($resql);
+					if ($selected == $obj->rowid) {
+						$out .= '<option value="' . $obj->rowid . '" selected>';
+					} else {
+						$out .= '<option value="' . $obj->rowid . '">';
+					}
+					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
+					$out .= ($langs->trans("varietal" . $obj->code) != "varietal" . $obj->code ? $langs->trans("varietal" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
+					$out .= '</option>';
+					$i ++;
+				}
+			}
+			$out .= '</select>';
+			if ($user->admin)
+				$out .= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+			$out .= ajax_combobox($htmlname);
+		} else {
+			dol_print_error($this->db);
+		}
+		
+		return $out;
+	}
 
 	/**
-	 *  Return combo list with cépage name
+	 * Return combo list with cépage name
 	 *
-	 *  @param  string	$selected   	Title preselected
-	 * 	@param	string	$htmlname		Name of HTML select combo field
-	 * 
-	 *  @return	string					String with HTML select
+	 * @param string $selected
+	 *        	Title preselected
+	 * @param string $htmlname
+	 *        	Name of HTML select combo field
+	 * @return string String with HTML select
 	 */
-	function select_varietal($selected='',$htmlname='varietal_id', $useempty=0)
+	function select_rootstock($selected = '', $htmlname = 'rootstock_id')
 	{
-		global $conf,$langs,$user;
+		global $conf, $langs, $user;
 		$langs->load("dict");
-
-		$out='';
-
-		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_varietal";
-		$sql.= " WHERE active = 1";
-
-		dol_syslog("Form::select_varietal", LOG_DEBUG);
-		$resql=$this->db->query($sql);
-		if ($resql)
-		{
-			$out.= '<select class="flat" name="'.$htmlname.'" id="'.$htmlname.'">';
-			if ($useempty) $out.= '<option value="-1"> &nbsp;</option>';
-			$num = $this->db->num_rows($resql);
-			$i = 0;
-			if ($num)
-			{
-				while ($i < $num)
-				{
-					$obj = $this->db->fetch_object($resql);
-					if ($selected == $obj->rowid)
-					{
-						$out.= '<option value="'.$obj->rowid.'" selected>';
-					}
-					else
-					{
-						$out.= '<option value="'.$obj->rowid.'">';
-					}
-					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out.= ($langs->trans("varietal".$obj->code)!="varietal".$obj->code ? $langs->trans("varietal".$obj->code) : ($obj->label!='-'?$obj->label:''));
-					$out.= '</option>';
-					$i++;
-				}
-			}
-			$out.= '</select>';
-			if ($user->admin) $out.= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
-			$out.=ajax_combobox($htmlname);
-		}
-		else
-		{
-			dol_print_error($this->db);
-		}
-
-		return $out;
-	}
-
-
-/**
-	 *  Return combo list with cépage name
-	 *
-	 *  @param  string	$selected   	Title preselected
-	 * 	@param	string	$htmlname		Name of HTML select combo field
-	 *  @return	string					String with HTML select
-	 */
-	function select_rootstock($selected='',$htmlname='rootstock_id')
-	{
-		global $conf,$langs,$user;
-		$langs->load("dict");
-
-		$out='';
-
-		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_rootstock";
-		$sql.= " WHERE active = 1";
-
+		
+		$out = '';
+		
+		$sql = "SELECT rowid, code, label, active FROM " . MAIN_DB_PREFIX . "c_rootstock";
+		$sql .= " WHERE active = 1";
+		
 		dol_syslog("Form::select_rootstock", LOG_DEBUG);
-		$resql=$this->db->query($sql);
-		if ($resql)
-		{
-			$out.= '<select class="flat" name="'.$htmlname.'" id="'.$htmlname.'">';
-			$out.= '<option value="">&nbsp;</option>';
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$out .= '<select class="flat" name="' . $htmlname . '" id="' . $htmlname . '">';
+			$out .= '<option value="">&nbsp;</option>';
 			$num = $this->db->num_rows($resql);
 			$i = 0;
-			if ($num)
-			{
-				while ($i < $num)
-				{
+			if ($num) {
+				while ($i < $num) {
 					$obj = $this->db->fetch_object($resql);
-					if ($selected == $obj->rowid)
-					{
-						$out.= '<option value="'.$obj->rowid.'" selected>';
-					}
-					else
-					{
-						$out.= '<option value="'.$obj->rowid.'">';
+					if ($selected == $obj->rowid) {
+						$out .= '<option value="' . $obj->rowid . '" selected>';
+					} else {
+						$out .= '<option value="' . $obj->rowid . '">';
 					}
 					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out.= ($langs->trans("rootstock".$obj->code)!="rootstock".$obj->code ? $langs->trans("rootstock".$obj->code) : ($obj->label!='-'?$obj->label:''));
-					$out.= '</option>';
-					$i++;
+					$out .= ($langs->trans("rootstock" . $obj->code) != "rootstock" . $obj->code ? $langs->trans("rootstock" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
+					$out .= '</option>';
+					$i ++;
 				}
 			}
-			$out.= '</select>';
-			if ($user->admin) $out.= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
-		}
-		else
-		{
+			$out .= '</select>';
+			if ($user->admin)
+				$out .= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+		} else {
 			dol_print_error($this->db);
 		}
-
+		
 		return $out;
 	}
-	
-/**
-	 *  Return combo list with cépage name
+
+	/**
+	 * Return combo list with cépage name
 	 *
-	 *  @param  string	$selected   	Title preselected
-	 * 	@param	string	$htmlname		Name of HTML select combo field
-	 *  @return	string					String with HTML select
+	 * @param string $selected
+	 *        	Title preselected
+	 * @param string $htmlname
+	 *        	Name of HTML select combo field
+	 * @return string String with HTML select
 	 */
-	function select_cultivationtype($selected='',$htmlname='cultivationtype_id')
+	function select_cultivationtype($selected = '', $htmlname = 'cultivationtype_id')
 	{
-		global $conf,$langs,$user;
+		global $conf, $langs, $user;
 		$langs->load("dict");
-
-		$out='';
-
-		$sql = "SELECT rowid, code, label, active FROM ".MAIN_DB_PREFIX."c_cultivationtype";
-		$sql.= " WHERE active = 1";
-
+		
+		$out = '';
+		
+		$sql = "SELECT rowid, code, label, active FROM " . MAIN_DB_PREFIX . "c_cultivationtype";
+		$sql .= " WHERE active = 1";
+		
 		dol_syslog("Form::select_cultivationtype", LOG_DEBUG);
-		$resql=$this->db->query($sql);
-		if ($resql)
-		{
-			$out.= '<select class="flat" name="'.$htmlname.'" id="'.$htmlname.'">';
-			$out.= '<option value="">&nbsp;</option>';
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$out .= '<select class="flat" name="' . $htmlname . '" id="' . $htmlname . '">';
+			$out .= '<option value="">&nbsp;</option>';
 			$num = $this->db->num_rows($resql);
 			$i = 0;
-			if ($num)
-			{
-				while ($i < $num)
-				{
+			if ($num) {
+				while ($i < $num) {
 					$obj = $this->db->fetch_object($resql);
-					if ($selected == $obj->rowid)
-					{
-						$out.= '<option value="'.$obj->rowid.'" selected>';
-					}
-					else
-					{
-						$out.= '<option value="'.$obj->rowid.'">';
+					if ($selected == $obj->rowid) {
+						$out .= '<option value="' . $obj->rowid . '" selected>';
+					} else {
+						$out .= '<option value="' . $obj->rowid . '">';
 					}
 					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out.= ($langs->trans("cultivationtype".$obj->code)!="cultivationtype".$obj->code ? $langs->trans("cultivationtype".$obj->code) : ($obj->label!='-'?$obj->label:''));
-					$out.= '</option>';
-					$i++;
+					$out .= ($langs->trans("cultivationtype" . $obj->code) != "cultivationtype" . $obj->code ? $langs->trans("cultivationtype" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
+					$out .= '</option>';
+					$i ++;
 				}
 			}
-			$out.= '</select>';
-			if ($user->admin) $out.= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
-			$out.=ajax_combobox($htmlname);
-			
-		}
-		else
-		{
+			$out .= '</select>';
+			if ($user->admin)
+				$out .= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+			$out .= ajax_combobox($htmlname);
+		} else {
 			dol_print_error($this->db);
 		}
-
+		
 		return $out;
 	}
 
+	/**
+	 * Print the object reference with links to navigate the current list
+	 * 
+	 * @param
+	 *        	form
+	 * @param
+	 *        	langs
+	 * @param
+	 *        	$object
+	 */
+	function printObjectRef($form, $langs, $object)
+	{
+		$linkback = '<a href="' . dol_buildpath('/vignoble/plot_list.php', 1) . '">' . $langs->trans("BackToList") . '</a>';
+		
+		print '<table class="border" width="100%">';
+		print '<tr><td width="25%">' . $langs->trans("Ref") . '</td><td colspan="3">';
+		print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref');
+		print "</td></tr>";
+		print "</table>";
+	}
+
+	/**
+	 * Set up 3 Tabs : Card, Notes, Info
+	 */
+	function getTabsHeader($langs, $object)
+	{
+		// print load_fiche_titre($langs->trans("plot"));
+		$head = array();
+		$h = 0;
+		$head[$h][0] = 'plot_card.php?id=' . $object->id;
+		$head[$h][1] = $langs->trans("Card");
+		$head[$h][2] = 'card';
+		$h = 1;
+		$head[$h][0] = 'plot_notes.php?id=' . $object->id;
+		$head[$h][1] = $langs->trans("Notes");
+		$head[$h][2] = 'notes';
+		$h = 2;
+		$head[$h][0] = 'plot_info.php?id=' . $object->id;
+		$head[$h][1] = $langs->trans("Info");
+		$head[$h][2] = 'info';
+		return $head;
+	}
 }

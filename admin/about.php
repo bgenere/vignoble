@@ -19,12 +19,12 @@
 
 /**
  * \file admin/about.php
- * \ingroup vineyard
- * \brief This page displays module information
- * Page content :
- * 	- README.md file for the module
- *  - COPYING file for the module
- *  - GPLV3 licence link
+ * \ingroup vignoble
+ * \brief Displays module information in a Setup Tab
+ * Tab content :
+ * - README.md file for the module
+ * - COPYING file for the module
+ * - GPLV3 licence link
  */
 
 // Load Dolibarr environment
@@ -34,22 +34,20 @@ if (false === (@include '../../main.inc.php')) { // From htdocs directory
 
 global $langs, $user;
 
-// Libraries
+// Dolibar and module libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once '../lib/vignoble.lib.php';
-
+// md file parser
 require __DIR__ . '/../vendor/autoload.php';
-
-// require_once "../class/myclass.class.php";
 // Translations
 $langs->load("vignoble@vignoble");
 
-// Access control
+// Access control admin user only
 if (! $user->admin) {
 	accessforbidden();
 }
 
-// Parameters
+// Parameters if any
 $action = GETPOST('action', 'alpha');
 
 /*
@@ -60,23 +58,30 @@ $action = GETPOST('action', 'alpha');
  * View
  */
 // page name and header
-$page_name = "vignobleAbout";
+$page_name = "vignobleSetup";
 llxHeader('', $langs->trans($page_name));
 
 // page title (printed) and link to module list
+// @TODO Why configuration icons on top is a folder ?
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
-print_fiche_titre($langs->trans($page_name), $linkback);
+print load_fiche_titre($langs->trans($page_name), $linkback);
 
 // Tabs configuration (in library)
 $head = vignobleAdminPrepareHead();
 // Select about tab in tabs
 dol_fiche_head($head, 'about', $langs->trans("Module123001Name"), 0, 'vignoble@vignoble');
 
-// About page start here
-echo $langs->trans("vignobleAboutPage");
+// About Tab start here
 // get readme file and print
-echo '<br>';
-$buffer = file_get_contents(dol_buildpath('/vignoble/README.md', 0));
+//echo '<br>',var_dump($user),'<br>';
+// @TODO issue with user language not properly set-up
+switch ($user->lang){
+	case 'fr-FR':
+		$buffer = file_get_contents(dol_buildpath('/vignoble/README-fr.md', 0));
+		break;
+	default:
+		$buffer = file_get_contents(dol_buildpath('/vignoble/README.md', 0));
+}
 echo Parsedown::instance()->text($buffer);
 // link to GPLV3 licence
 echo '<br>', '<a href="' . dol_buildpath('/vignoble/COPYING', 1) . '">', '<img src="' . dol_buildpath('/vignoble/img/gplv3.png', 1) . '"/>', '</a>';

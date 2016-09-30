@@ -671,7 +671,7 @@ class plot extends CommonObject
 		$result = '';
 		$companylink = '';
 		
-		$label = '<u>' . $langs->trans("plot") . '</u>';
+		$label = '<u>' . $langs->trans("Plot") . '</u>';
 		$label .= '<div width="100%">';
 		$label .= '<b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
 		

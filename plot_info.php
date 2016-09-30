@@ -28,17 +28,13 @@ if (! $res && file_exists("../main.inc.php"))
 	$res = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
 if (! $res && file_exists("../../main.inc.php"))
 	$res = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-if (! $res && file_exists("../../../dolibarr/htdocs/main.inc.php"))
-	$res = @include '../../../dolibarr/htdocs/main.inc.php'; // Used on dev env only
-if (! $res && file_exists("../../../../dolibarr/htdocs/main.inc.php"))
-	$res = @include '../../../../dolibarr/htdocs/main.inc.php'; // Used on dev env only
 if (! $res)
 	die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 //require_once DOL_DOCUMENT_ROOT.'/commande/class/commande.class.php';
 //require_once DOL_DOCUMENT_ROOT.'/core/lib/order.lib.php';
 dol_include_once('/vignoble/class/plot.class.php');
-
+dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 //if (!$user->rights->commande->lire)	accessforbidden();
 
 //$langs->load("orders");
@@ -47,6 +43,7 @@ $langs->load("vignoble@vignoble");
 // Security check
 //$socid=0;
 $id = GETPOST("id",'int');
+$ref = GETPOST("ref",'alpha');
 //if ($user->societe_id) $socid=$user->societe_id;
 //$result=restrictedArea($user,'commande',$comid,'');
 
@@ -55,35 +52,22 @@ $id = GETPOST("id",'int');
 /*
  * View
  */
+llxHeader('', $langs->trans('PlotCardTitle'));
 
-llxHeader('',$langs->trans('Order'),'EN:Customers_Orders|FR:Commandes_Clients|ES:Pedidos de clientes');
+$form = new Form($db);
+$formvignoble = new FormVignoble($db);
 
-$object = new plot($db);
-$object->fetch($id);
-$object->info($id);
-//$soc = new Societe($db);
-//$soc->fetch($object->socid);
+$currentPlot = new plot($db);
+$currentPlot->fetch($id);
+$currentPlot->info($id);
+$form = new Form($db);
+$formvignoble = new FormVignoble($db);
+$head = $formvignoble->getTabsHeader($langs,$currentPlot);	
+dol_fiche_head($head, 'info', $langs->trans("Plot"), 0, 'wine-cask@vignoble');
 
-//$head = commande_prepare_head($object);
-	$head = array();
-	$h = 0;
-	$head[$h][0] = 'plot_card.php?id=' . $object->id;
-	$head[$h][1] = $langs->trans("Card");
-	$head[$h][2] = 'card';
-	$h = 1;
-	$head[$h][0] = 'plot_notes.php?id=' . $object->id;
-	$head[$h][1] = $langs->trans("Notes");
-	$head[$h][2] = 'notes';
-	$h = 2;
-	$head[$h][0] = 'plot_info.php?id=' . $object->id;
-	$head[$h][1] = $langs->trans("Info");
-	$head[$h][2] = 'info';
-	
-dol_fiche_head($head, 'info', $langs->trans("plot"), 0, 'wine-cask@vignoble');
-
-
+$formvignoble->printObjectRef($form,$langs,$currentPlot);
 print '<table width="100%"><tr><td>';
-dol_print_object_info($object);
+dol_print_object_info($currentPlot);
 print '</td></tr></table>';
 
 print '</div>';
