@@ -60,23 +60,11 @@ $ref = GETPOST('ref', 'alpha'); // object unique reference
 $action = GETPOST('action', 'alpha'); // action to do
 $ref = GETPOST('ref', 'alpha');
 if ($ref == '') {$ref = NULL ;} // NEEDED else your record will never be populated when ref is empty !!!
+//echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
 $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // add your own parameters like this
                                      // $myparam = GETPOST('myparam','alpha');
                                      
-// $search_entity=GETPOST('search_entity','int');
-                                     // $search_ref=GETPOST('search_ref','alpha');
-                                     // $search_label=GETPOST('search_label','alpha');
-                                     // $search_description=GETPOST('search_description','alpha');
-                                     // $search_areasize=GETPOST('search_areasize','alpha');
-                                     // $search_rootsnumber=GETPOST('search_rootsnumber','int');
-                                     // $search_spacing=GETPOST('search_spacing','alpha');
-                                     // $search_fk_cultivationtype=GETPOST('search_fk_cultivationtype','int');
-                                     // $search_fk_varietal=GETPOST('search_fk_varietal','int');
-                                     // $search_fk_rootstock=GETPOST('search_fk_rootstock','int');
-                                     // $search_note_private=GETPOST('search_note_private','alpha');
-                                     // $search_fk_user_author=GETPOST('search_fk_user_author','int');
-                                     // $search_fk_user_modif=GETPOST('search_fk_user_modif','int');
                                      
 // Prevent direct access through URL
 if ($user->societe_id > 0 || $user->rights->vignoble->level1->level2 == 0) {
@@ -87,9 +75,13 @@ if (empty($action) && empty($id) && empty($ref))
 	$action = 'view';
 	
 	// Load object if id or ref is provided as parameter
+//echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
 $object = new plot($db);
-if ( ($id > 0 || !empty($ref) ) && $action != 'add') {
+// TODO create a function that populate the object when objet id or ref is provided and object is not loaded
+if ( ($id > 0 || !empty($ref) ) && $action != 'add') { //$action should not be there
 	$result = $object->fetch($id, $ref);
+	//echo 'After object fetch ';echo '$id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$object ';var_dump($object);echo '<br />';
+	$id = $object->id; // NEEDED else view is not displayed when only ref is provided
 	if ($result < 0)
 		dol_print_error($db);
 }
@@ -309,6 +301,7 @@ if (($id || $ref) && $action == 'edit') {
 	print '</form>';
 }
 
+//echo 'Before object view ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
 // show object card when action is view, delete or none 
 if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
 	

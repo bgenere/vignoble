@@ -48,15 +48,14 @@ $action = GETPOST('action', 'alpha');
 // $socid=0;
 // if ($user->societe_id) $socid=$user->societe_id;
 // result=restrictedArea($user,'commande',$id,'');
-// @TODO the $object name is mandatory for the includes !!! 
+// @TODO the $object name is mandatory for the includes !!!
 // any change there break the code !
 $object = new plot($db);
-if (! $object->fetch($id) > 0) {
-	dol_print_error($db);
-}
-
+$result = $object->loadObject($id, $ref, true);
+//echo 'after object load id: ';var_dump($id);echo ' $ref: ';var_dump($ref);echo ' object: ';var_dump($object);echo'<br />';
+	
 // $permissionnote=$user->rights->vignoble->creer;
-// Used by the include of actions_setnotes.inc.php
+	// Used by the include of actions_setnotes.inc.php
 $permission = true;
 $permissionnote = true;
 
@@ -77,10 +76,10 @@ $formvignoble = new FormVignoble($db);
 
 if ($id > 0 || ! empty($ref)) {
 	
-	$head = $formvignoble->getTabsHeader($langs,$object);
+	$head = $formvignoble->getTabsHeader($langs, $object);
 	dol_fiche_head($head, 'notes', $langs->trans("Plot"), 0, 'wine-cask@vignoble');
 	
-	$formvignoble->printObjectRef($form,$langs,$object);
+	$formvignoble->printObjectRef($form, $langs, $object);
 	
 	print '<br>';
 	

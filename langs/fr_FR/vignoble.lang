@@ -20,10 +20,10 @@
 
 # Module label 'ModuleXXXName'
 # (where XXX is value of numeric property 'numero' of module)
-Module123001Name = Vignoble
+Module123100Name = Vignoble
 # Module description 'ModuleXXXDesc'
 # (where XXX is value of numeric property 'numero' of module)
-Module123001Desc = Ajoute toute les fonctions spécifiques à la gestion d'un vignoble
+Module123100Desc = Ajoute toute les fonctions spécifiques à la gestion d'un vignoble
 
 #
 # Page d'administration

@@ -24,7 +24,6 @@
  * \file vignoble/plot.class.php
  * \ingroup vignoble
  * \brief CRUD class file for the Plot object (Create/Read/Update/Delete)
- * 
  */
 
 // Put here all includes required by your class file
@@ -36,7 +35,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
  * Class plot
  *
  * Put here description of your class
- * 
+ *
  * @see CommonObject
  */
 class plot extends CommonObject
@@ -61,6 +60,8 @@ class plot extends CommonObject
 	public $lines = array();
 
 	/**
+	 *
+	 * @var object properties
 	 */
 	public $entity = 1;
 
@@ -83,6 +84,8 @@ class plot extends CommonObject
 	public $fk_rootstock;
 
 	public $note_private;
+
+	public $note_public;
 
 	public $tms = '';
 
@@ -249,6 +252,90 @@ class plot extends CommonObject
 	 * Load object in memory from the database
 	 *
 	 * @param int $id
+	 *        	Object Id
+	 * @param string $ref
+	 *        	Object Reference
+	 * @param $force True,
+	 *        	force SELECT in DB when $this->id is not empty
+	 *        	False, do not acces DB if $this-> id is not empty
+	 *        	
+	 * @return int <0 if KO, 0 if not found, Id of object if OK
+	 */
+	public function loadObject($id, $ref = null, $force = false)
+	{
+		if (empty($this->id) || $force) {
+			dol_syslog(__METHOD__, LOG_DEBUG);
+			
+			$sql = 'SELECT';
+			$sql .= ' t.rowid,';
+			$sql .= " t.entity,";
+			$sql .= " t.ref,";
+			$sql .= " t.label,";
+			$sql .= " t.description,";
+			$sql .= " t.areasize,";
+			$sql .= " t.rootsnumber,";
+			$sql .= " t.spacing,";
+			$sql .= " t.fk_cultivationtype,";
+			$sql .= " t.fk_varietal,";
+			$sql .= " t.fk_rootstock,";
+			$sql .= " t.note_private,";
+			$sql .= " t.note_public,";
+			$sql .= " t.tms,";
+			$sql .= " t.datec,";
+			$sql .= " t.fk_user_author,";
+			$sql .= " t.fk_user_modif";
+			
+			$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
+			if (! empty($ref)) {
+				$sql .= ' WHERE t.ref = ' . '\'' . $ref . '\'';
+			} else {
+				$sql .= ' WHERE t.rowid = ' . $id;
+			}
+			
+			$resql = $this->db->query($sql);
+			if ($resql) {
+				$numrows = $this->db->num_rows($resql);
+				if ($numrows) {
+					$obj = $this->db->fetch_object($resql);
+					
+					$this->id = $obj->rowid;
+					$this->entity = $obj->entity;
+					$this->ref = $obj->ref;
+					$this->label = $obj->label;
+					$this->description = $obj->description;
+					$this->areasize = $obj->areasize;
+					$this->rootsnumber = $obj->rootsnumber;
+					$this->spacing = $obj->spacing;
+					$this->fk_cultivationtype = $obj->fk_cultivationtype;
+					$this->fk_varietal = $obj->fk_varietal;
+					$this->fk_rootstock = $obj->fk_rootstock;
+					$this->note_private = $obj->note_private;
+					$this->note_public = $obj->note_public;
+					$this->tms = $this->db->jdate($obj->tms);
+					$this->datec = $this->db->jdate($obj->datec);
+					$this->fk_user_author = $obj->fk_user_author;
+					$this->fk_user_modif = $obj->fk_user_modif;
+				}
+				$this->db->free($resql);
+				
+				if ($numrows) {
+					return $this->id;
+				} else {
+					return 0;
+				}
+			} else {
+				$this->errors[] = 'Error ' . $this->db->lasterror();
+				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+				
+				return - 1;
+			}
+		}
+	}
+
+	/**
+	 * Load object in memory from the database
+	 *
+	 * @param int $id
 	 *        	Id object
 	 * @param string $ref
 	 *        	Ref
@@ -293,7 +380,6 @@ class plot extends CommonObject
 				$obj = $this->db->fetch_object($resql);
 				
 				$this->id = $obj->rowid;
-				
 				$this->entity = $obj->entity;
 				$this->ref = $obj->ref;
 				$this->label = $obj->label;
@@ -327,7 +413,7 @@ class plot extends CommonObject
 	}
 
 	/**
-	 * Load object in memory from the database
+	 * Load a set of objects in memory from the database
 	 *
 	 * @param string $sortorder
 	 *        	Sort Order
@@ -760,12 +846,17 @@ class plot extends CommonObject
 	 *        	Id of object
 	 * @return void
 	 */
-	function info($id)
+	function info($id, $ref = null)
 	{
 		$sql = 'SELECT c.rowid, datec as datec, tms as datem,';
 		$sql .= ' fk_user_author, fk_user_modif';
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . 'plot as c';
-		$sql .= ' WHERE c.rowid = ' . $id;
+		if (! empty($ref)) {
+			$sql .= ' WHERE c.ref = ' . '\'' . $ref . '\'';
+		} else {
+			$sql .= ' WHERE c.rowid = ' . $id;
+		}
+		
 		$result = $this->db->query($sql);
 		if ($result) {
 			if ($this->db->num_rows($result)) {
