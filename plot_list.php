@@ -419,11 +419,11 @@ if ($resql) {
 	if (! empty($arrayfields['t.spacing']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_spacing" value="' . $search_spacing . '" size="10"></td>';
 	if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_cultivationtype" value="' . $search_fk_cultivationtype . '" size="10"></td>';
+		print '<td class="liste_titre">'. $formvignoble->displayDicCombo('c_cultivationtype', 'cultivationtype',$search_fk_cultivationtype,'search_fk_cultivationtype',true).'</td>';
 	if (! empty($arrayfields['t.fk_varietal']['checked']))
-		print '<td class="liste_titre">' . $formvignoble->select_varietal($search_fk_varietal, 'search_fk_varietal', 1) . '</td>';
+		print '<td class="liste_titre">'. $formvignoble->displayDicCombo('c_varietal', 'varietal',$search_fk_varietal, 'search_fk_varietal', true) . '</td>';
 	if (! empty($arrayfields['t.fk_rootstock']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_rootstock" value="' . $search_fk_rootstock . '" size="10"></td>';
+		print '<td class="liste_titre">'.$formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock',true).'</td>';
 	if (! empty($arrayfields['t.note_private']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_note_private" value="' . $search_note_private . '" size="10"></td>';
 	if (! empty($arrayfields['t.note_public']['checked']))

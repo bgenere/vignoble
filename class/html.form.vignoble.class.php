@@ -48,28 +48,35 @@ class FormVignoble
 		
 		return 1;
 	}
-
-	/**
-	 * Return combo list with cépage name
+	
+/**
+	 * Return a combo list for a dictionnary
 	 *
+	 * @param string $dictable
+	 * 			table of the dictionnary
+	 * @param string $dicname
+	 * 			Table name for user
+	 * 
 	 * @param string $selected
 	 *        	Title preselected
 	 * @param string $htmlname
 	 *        	Name of HTML select combo field
+	 * @param  boolean $useempty      
+	 *          True if you need a white line in combo
 	 *        	
 	 * @return string String with HTML select
 	 */
-	function select_varietal($selected = '', $htmlname = 'varietal_id', $useempty = 0)
+	function displayDicCombo($dictable,$dicname, $selected = '', $htmlname = 'varietal_id', $useempty = false)
 	{
 		global $conf, $langs, $user;
 		$langs->load("dict");
 		
 		$out = '';
 		
-		$sql = "SELECT rowid, code, label, active FROM " . MAIN_DB_PREFIX . "c_varietal";
+		$sql = "SELECT rowid, code, label, active FROM " . MAIN_DB_PREFIX . $dictable;
 		$sql .= " WHERE active = 1";
 		
-		dol_syslog("Form::select_varietal", LOG_DEBUG);
+		dol_syslog("Form::select_".$dictable , LOG_DEBUG);
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			$out .= '<select class="flat" name="' . $htmlname . '" id="' . $htmlname . '">';
@@ -86,108 +93,7 @@ class FormVignoble
 						$out .= '<option value="' . $obj->rowid . '">';
 					}
 					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out .= ($langs->trans("varietal" . $obj->code) != "varietal" . $obj->code ? $langs->trans("varietal" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
-					$out .= '</option>';
-					$i ++;
-				}
-			}
-			$out .= '</select>';
-			if ($user->admin)
-				$out .= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-			$out .= ajax_combobox($htmlname);
-		} else {
-			dol_print_error($this->db);
-		}
-		
-		return $out;
-	}
-
-	/**
-	 * Return combo list with cépage name
-	 *
-	 * @param string $selected
-	 *        	Title preselected
-	 * @param string $htmlname
-	 *        	Name of HTML select combo field
-	 * @return string String with HTML select
-	 */
-	function select_rootstock($selected = '', $htmlname = 'rootstock_id')
-	{
-		global $conf, $langs, $user;
-		$langs->load("dict");
-		
-		$out = '';
-		
-		$sql = "SELECT rowid, code, label, active FROM " . MAIN_DB_PREFIX . "c_rootstock";
-		$sql .= " WHERE active = 1";
-		
-		dol_syslog("Form::select_rootstock", LOG_DEBUG);
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			$out .= '<select class="flat" name="' . $htmlname . '" id="' . $htmlname . '">';
-			$out .= '<option value="">&nbsp;</option>';
-			$num = $this->db->num_rows($resql);
-			$i = 0;
-			if ($num) {
-				while ($i < $num) {
-					$obj = $this->db->fetch_object($resql);
-					if ($selected == $obj->rowid) {
-						$out .= '<option value="' . $obj->rowid . '" selected>';
-					} else {
-						$out .= '<option value="' . $obj->rowid . '">';
-					}
-					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out .= ($langs->trans("rootstock" . $obj->code) != "rootstock" . $obj->code ? $langs->trans("rootstock" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
-					$out .= '</option>';
-					$i ++;
-				}
-			}
-			$out .= '</select>';
-			if ($user->admin)
-				$out .= info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-		} else {
-			dol_print_error($this->db);
-		}
-		
-		return $out;
-	}
-
-	/**
-	 * Return combo list with cépage name
-	 *
-	 * @param string $selected
-	 *        	Title preselected
-	 * @param string $htmlname
-	 *        	Name of HTML select combo field
-	 * @return string String with HTML select
-	 */
-	function select_cultivationtype($selected = '', $htmlname = 'cultivationtype_id')
-	{
-		global $conf, $langs, $user;
-		$langs->load("dict");
-		
-		$out = '';
-		
-		$sql = "SELECT rowid, code, label, active FROM " . MAIN_DB_PREFIX . "c_cultivationtype";
-		$sql .= " WHERE active = 1";
-		
-		dol_syslog("Form::select_cultivationtype", LOG_DEBUG);
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			$out .= '<select class="flat" name="' . $htmlname . '" id="' . $htmlname . '">';
-			$out .= '<option value="">&nbsp;</option>';
-			$num = $this->db->num_rows($resql);
-			$i = 0;
-			if ($num) {
-				while ($i < $num) {
-					$obj = $this->db->fetch_object($resql);
-					if ($selected == $obj->rowid) {
-						$out .= '<option value="' . $obj->rowid . '" selected>';
-					} else {
-						$out .= '<option value="' . $obj->rowid . '">';
-					}
-					// Si traduction existe, on l'utilise, sinon on prend le libelle par defaut
-					$out .= ($langs->trans("cultivationtype" . $obj->code) != "cultivationtype" . $obj->code ? $langs->trans("cultivationtype" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
+					$out .= ($langs->trans($dicname . $obj->code) != $dicname . $obj->code ? $langs->trans($dicname . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
 					$out .= '</option>';
 					$i ++;
 				}

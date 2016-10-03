@@ -256,7 +256,7 @@ class modVignoble extends DolibarrModules
 			'titre' => 'Module123100Name',
 			'langs' => 'vignoble@vignoble',
 			'position' => 123,
-			'url' => '/vignoble/plot_list.php',
+			'url' => '/vignoble/index.php',
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
@@ -396,15 +396,11 @@ class modVignoble extends DolibarrModules
 	 */
 	private function getBoxes()
 	{
-		// Boxes
-		// Add here list of php file(s) stored in core/boxes that contains class to show a box.
-		$this->boxes = array(); // Boxes list
-		                        // Example:
 		$this->boxes = array(
 			0 => array(
-				'file' => 'mybox@vignoble',
-				'note' => '',
-				'enabledbydefaulton' => 'Home'
+				'file' => 'plotsummarybox.php@vignoble',
+				'note' => 'This box is experimental',
+				'enabledbydefaulton' => 'home'
 			)
 		);
 	}
