@@ -104,10 +104,6 @@ $hookmanager->initHooks(array(
 	'plotlist'
 ));
 
-
-
-$currentPlot = getRequestedObject($db, $id, $ref, $action, $result);
-
 $arrayfields = defineListFields($langs);
 
 // Extra fields
@@ -215,8 +211,8 @@ $sql .= " t.datec as date_creation";
 // Add fields for extrafields
 foreach ($extrafields->attribute_list as $key => $val)
 	$sql .= ",ef." . $key . ' as options_' . $key;
-
-// Add fields from hooks
+	
+	// Add fields from hooks
 $parameters = array();
 $reshook = $hookmanager->executeHooks('printFieldListSelect', $parameters); // Note that $action and $currentPlot may have been modified by hook
 $sql .= $hookmanager->resPrint;
@@ -242,17 +238,17 @@ if ($search_rootsnumber)
 	$sql .= natural_search("rootsnumber", $search_rootsnumber);
 if ($search_spacing)
 	$sql .= natural_search("spacing", $search_spacing);
-if ($search_fk_cultivationtype)
+if ($search_fk_cultivationtype > 0) // Means a value has been selected in combo
 	$sql .= natural_search("fk_cultivationtype", $search_fk_cultivationtype);
 if ($search_fk_varietal > 0)
 	$sql .= natural_search("fk_varietal", $search_fk_varietal);
-if ($search_fk_rootstock)
+if ($search_fk_rootstock > 0)
 	$sql .= natural_search("fk_rootstock", $search_fk_rootstock);
 
 if ($sall)
 	$sql .= natural_search(array_keys($fieldstosearchall), $sall);
-
-// Add where from extra fields
+	
+	// Add where from extra fields
 foreach ($search_array_options as $key => $val) {
 	$crit = $val;
 	$tmpkey = preg_replace('/search_options_/', '', $key);
@@ -275,6 +271,8 @@ $reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // No
 $sql .= $hookmanager->resPrint;
 
 $sql .= $db->order($sortfield, $sortorder);
+
+//echo var_dump($sql);
 
 // Count total nb of records
 $nbtotalofrecords = 0;
@@ -313,7 +311,7 @@ if ($resql) {
 		$params .= '&amp;search_fk_varietal=' . urlencode($search_fk_varietal);
 	if ($search_fk_rootstock != '')
 		$params .= '&amp;search_fk_rootstock=' . urlencode($search_fk_rootstock);
-		
+	
 	if ($optioncss != '')
 		$param .= '&optioncss=' . $optioncss;
 		// Add $param from extra fields
@@ -377,7 +375,7 @@ if ($resql) {
 		print_liste_field_titre($arrayfields['t.fk_varietal']['label'], $_SERVER['PHP_SELF'], 't.fk_varietal', '', $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.fk_rootstock']['checked']))
 		print_liste_field_titre($arrayfields['t.fk_rootstock']['label'], $_SERVER['PHP_SELF'], 't.fk_rootstock', '', $param, '', $sortfield, $sortorder);
-			
+		
 		// Extra fields
 	if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 		foreach ($extrafields->attribute_label as $key => $val) {
@@ -401,7 +399,7 @@ if ($resql) {
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', 'align="right"', $sortfield, $sortorder, 'maxwidthsearch ');
 	print '</tr>' . "\n";
 	
-	// Search Fields in title 
+	// Search Fields in title
 	print '<tr class="liste_titre">';
 	
 	if (! empty($arrayfields['t.entity']['checked']))
@@ -419,11 +417,11 @@ if ($resql) {
 	if (! empty($arrayfields['t.spacing']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_spacing" value="' . $search_spacing . '" size="10"></td>';
 	if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
-		print '<td class="liste_titre">'. $formvignoble->displayDicCombo('c_cultivationtype', 'cultivationtype',$search_fk_cultivationtype,'search_fk_cultivationtype',true).'</td>';
+		print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_cultivationtype', 'cultivationtype', $search_fk_cultivationtype, 'search_fk_cultivationtype', true) . '</td>';
 	if (! empty($arrayfields['t.fk_varietal']['checked']))
-		print '<td class="liste_titre">'. $formvignoble->displayDicCombo('c_varietal', 'varietal',$search_fk_varietal, 'search_fk_varietal', true) . '</td>';
+		print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_varietal', 'varietal', $search_fk_varietal, 'search_fk_varietal', true) . '</td>';
 	if (! empty($arrayfields['t.fk_rootstock']['checked']))
-		print '<td class="liste_titre">'.$formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock',true).'</td>';
+		print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock', true) . '</td>';
 	if (! empty($arrayfields['t.note_private']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_note_private" value="' . $search_note_private . '" size="10"></td>';
 	if (! empty($arrayfields['t.note_public']['checked']))
@@ -519,11 +517,11 @@ if ($resql) {
 			if (! empty($arrayfields['t.spacing']['checked']))
 				print '<td>' . $obj->spacing . '</td>';
 			if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
-				print '<td>' . dol_getIdFromCode($db,$obj->fk_cultivationtype,'c_cultivationtype', 'rowid', 'label') . '</td>';
+				print '<td>' . dol_getIdFromCode($db, $obj->fk_cultivationtype, 'c_cultivationtype', 'rowid', 'label') . '</td>';
 			if (! empty($arrayfields['t.fk_varietal']['checked']))
 				print '<td>' . dol_getIdFromCode($db, $obj->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td>';
 			if (! empty($arrayfields['t.fk_rootstock']['checked']))
-				print '<td>' . dol_getIdFromCode($db, $obj->fk_rootstock,'c_rootstock', 'rowid', 'label') . '</td>';
+				print '<td>' . dol_getIdFromCode($db, $obj->fk_rootstock, 'c_rootstock', 'rowid', 'label') . '</td>';
 				
 				// Extra fields
 			if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
@@ -664,33 +662,8 @@ function defineListFields($langs)
 }
 
 /**
- * Load object if id or ref is provided as parameter
- *
- * @param
- *        	db the database context
- * @param
- *        	id the object id provided in URL
- * @param
- *        	action the action provided in URL
- * @param
- *        	result the object
- */
-function getRequestedObject($db, $id, $ref,$action, $result)
-{
-	// Load object if id or ref is provided as parameter
-	$object = new plot($db);
-	if (($id > 0 || ! empty($ref)) && $action != 'add') {
-		$result = $object->fetch($id, $ref);
-		if ($result < 0)
-			dol_print_error($db);
-	}
-	return $object;
-}
-
-/**
  * Example : Adding jquery code
  */
-
 function addJQuery()
 {
 	print '<script type="text/javascript" language="javascript">
