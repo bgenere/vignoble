@@ -40,6 +40,10 @@ require_once '../lib/vignoble.lib.php';
 // md file parser
 require __DIR__ . '/../vendor/autoload.php';
 // Translations
+
+$langs->load("admin");
+$langs->load("errors");
+$langs->load("other");
 $langs->load("vignoble@vignoble");
 
 // Access control admin user only
@@ -64,12 +68,12 @@ llxHeader('', $langs->trans($page_name));
 // page title (printed) and link to module list
 // @TODO Why configuration icons on top is a folder ?
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
-print load_fiche_titre($langs->trans($page_name), $linkback);
+print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 // Tabs configuration (in library)
 $head = vignobleAdminPrepareHead();
 // Select about tab in tabs
-dol_fiche_head($head, 'about', $langs->trans("Module123001Name"), 0, 'vignoble@vignoble');
+dol_fiche_head($head, 'about', $langs->trans("Module123100Name"), 0, 'vignoble@vignoble');
 
 // About Tab start here
 // get readme file and print
