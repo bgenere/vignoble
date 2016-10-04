@@ -562,26 +562,13 @@ class plot extends CommonObject
 		if (isset($this->fk_rootstock)) {
 			$this->fk_rootstock = trim($this->fk_rootstock);
 		}
-		if (isset($this->note_private)) {
-			$this->note_private = trim($this->note_private);
-		}
-		if (isset($this->note_public)) {
-			$this->note_public = trim($this->note_public);
-		}
-		if (isset($this->fk_user_author)) {
-			$this->fk_user_author = trim($this->fk_user_author);
-		}
-		if (isset($this->fk_user_modif)) {
-			$this->fk_user_modif = trim($this->fk_user_modif);
-		}
-		
+				
 		// Check parameters
 		// Put here code to add a control on parameters values
 		
 		// Update request
 		$sql = 'UPDATE ' . MAIN_DB_PREFIX . $this->table_element . ' SET';
 		
-		$sql .= ' entity = ' . (isset($this->entity) ? $this->entity : "null") . ',';
 		$sql .= ' ref = ' . (isset($this->ref) ? "'" . $this->db->escape($this->ref) . "'" : "null") . ',';
 		$sql .= ' label = ' . (isset($this->label) ? "'" . $this->db->escape($this->label) . "'" : "null") . ',';
 		$sql .= ' description = ' . (isset($this->description) ? "'" . $this->db->escape($this->description) . "'" : "null") . ',';
@@ -591,12 +578,10 @@ class plot extends CommonObject
 		$sql .= ' fk_cultivationtype = ' . (isset($this->fk_cultivationtype) ? $this->fk_cultivationtype : "null") . ',';
 		$sql .= ' fk_varietal = ' . (isset($this->fk_varietal) ? $this->fk_varietal : "null") . ',';
 		$sql .= ' fk_rootstock = ' . (isset($this->fk_rootstock) ? $this->fk_rootstock : "null") . ',';
-		$sql .= ' note_private = ' . (isset($this->note_private) ? "'" . $this->db->escape($this->note_private) . "'" : "null") . ',';
-		$sql .= ' note_public = ' . (isset($this->note_public) ? "'" . $this->db->escape($this->note_public) . "'" : "null") . ',';
 		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
-		$sql .= ' datec = ' . (! isset($this->datec) || dol_strlen($this->datec) != 0 ? "'" . $this->db->idate($this->datec) . "'" : 'null') . ',';
-		$sql .= ' fk_user_author = ' . (isset($this->fk_user_author) ? $this->fk_user_author : "null") . ',';
-		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : "null");
+		// $sql .= ' datec = ' . (! isset($this->datec) || dol_strlen($this->datec) != 0 ? "'" . $this->db->idate($this->datec) . "'" : 'null') . ',';
+		// $sql .= ' fk_user_author = ' . (isset($this->fk_user_author) ? $this->fk_user_author : "null") . ','; \\TODO remove from template 
+		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id); // TODO why $user-> id was not used ?
 		
 		$sql .= ' WHERE rowid=' . $this->id;
 		

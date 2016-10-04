@@ -77,7 +77,7 @@ $formvignoble = new FormVignoble($db);
 if ($id > 0 || ! empty($ref)) {
 	
 	$head = $formvignoble->getTabsHeader($langs, $object);
-	dol_fiche_head($head, 'notes', $langs->trans("Plot"), 0, 'wine-cask@vignoble');
+	dol_fiche_head($head, 'notes', $langs->trans("Plot"), 0, 'plot@vignoble');
 	
 	$formvignoble->printObjectRef($form, $langs, $object);
 	

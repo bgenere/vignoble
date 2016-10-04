@@ -59,12 +59,13 @@ $id = GETPOST('id', 'int'); // object row id
 $ref = GETPOST('ref', 'alpha'); // object unique reference
 $action = GETPOST('action', 'alpha'); // action to do
 $ref = GETPOST('ref', 'alpha');
-if ($ref == '') {$ref = NULL ;} // NEEDED else your record will never be populated when ref is empty !!!
-//echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
+if ($ref == '') {
+	$ref = NULL;
+} // NEEDED else your record will never be populated when ref is empty !!!
+                                // echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
 $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // add your own parameters like this
                                      // $myparam = GETPOST('myparam','alpha');
-                                     
                                      
 // Prevent direct access through URL
 if ($user->societe_id > 0 || $user->rights->vignoble->level1->level2 == 0) {
@@ -75,12 +76,12 @@ if (empty($action) && empty($id) && empty($ref))
 	$action = 'view';
 	
 	// Load object if id or ref is provided as parameter
-//echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
+	// echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
 $object = new plot($db);
 // TODO create a function that populate the object when objet id or ref is provided and object is not loaded
-if ( ($id > 0 || !empty($ref) ) && $action != 'add') { //$action should not be there
+if (($id > 0 || ! empty($ref)) && $action != 'add') { // $action should not be there
 	$result = $object->fetch($id, $ref);
-	//echo 'After object fetch ';echo '$id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$object ';var_dump($object);echo '<br />';
+	// echo 'After object fetch ';echo '$id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$object ';var_dump($object);echo '<br />';
 	$id = $object->id; // NEEDED else view is not displayed when only ref is provided
 	if ($result < 0)
 		dol_print_error($db);
@@ -166,7 +167,7 @@ if (empty($reshook)) {
 	if ($action == 'update' && ! GETPOST('cancel')) {
 		$error = 0;
 		
-		$object->entity = GETPOST('entity', 'int');
+		$object->id = GETPOST('id', 'int');
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
 		$object->description = GETPOST('description', 'alpha');
@@ -176,9 +177,7 @@ if (empty($reshook)) {
 		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
 		$object->fk_varietal = GETPOST('fk_varietal', 'int');
 		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
-		$object->note_private = GETPOST('note_private', 'alpha');
-		$object->fk_user_author = GETPOST('fk_user_author', 'int');
-		$object->fk_user_modif = GETPOST('fk_user_modif', 'int');
+		
 		
 		if (empty($object->ref)) {
 			$error ++;
@@ -242,7 +241,6 @@ if ($action == 'create') {
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 	
-		
 	print '<table class="border centpercent">' . "\n";
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	//
@@ -252,10 +250,9 @@ if ($action == 'create') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . GETPOST('areasize') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . GETPOST('rootsnumber') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . GETPOST('spacing') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->select_cultivationtype(GETPOST('fk_cultivationtype'), 'fk_cultivationtype') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->select_varietal(GETPOST('fk_varietal'), 'fk_varietal') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->select_rootstock(GETPOST('fk_rootstock'), 'fk_rootstock') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldnote_private") . '</td><td><input class="flat" type="text" name="note_private" value="' . GETPOST('note_private') . '"></td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', GETPOST('fk_cultivationtype'), 'fk_cultivationtype') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', GETPOST('fk_varietal'), 'fk_varietal') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', GETPOST('fk_rootstock'), 'fk_rootstock') . '</td></tr>';
 	print '</table>' . "\n";
 	
 	dol_fiche_end();
@@ -265,30 +262,27 @@ if ($action == 'create') {
 	print '</form>';
 }
 
-// Part to edit record
+// Part to edit record @TODO remove test on data
 if (($id || $ref) && $action == 'edit') {
-	print load_fiche_titre($langs->trans("Edit Plot"));
+	print load_fiche_titre($langs->trans("Edit Plot"), $object->label,'object_plot@vignoble');
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
 	
-	
 	print '<table class="border centpercent">' . "\n";
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	//
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldentity") . '</td><td><input class="flat" type="text" name="entity" value="' . $object->entity . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . $object->ref . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . $object->label . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . $object->description . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . $object->areasize . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . $object->rootsnumber . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . $object->spacing . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td><input class="flat" type="text" name="fk_cultivationtype" value="' . $object->fk_cultivationtype . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'id', 'label') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td><input class="flat" type="text" name="fk_rootstock" value="' . $object->fk_rootstock . '"></td></tr>';
-
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', $object->fk_cultivationtype, 'fk_cultivationtype') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', $object->fk_varietal, 'fk_varietal') . '</td></tr>';
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', $object->fk_rootstock, 'fk_rootstock') . '</td></tr>';
 	
 	print '</table>';
 	
@@ -303,10 +297,10 @@ if (($id || $ref) && $action == 'edit') {
 
 //echo 'Before object view ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
 // show object card when action is view, delete or none 
-if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
+if  (empty($action) || $action == 'view' || $action == 'delete') {
 	
-	$head = $formvignoble->getTabsHeader($langs,$object);
-	dol_fiche_head($head, 'card', $langs->trans("Plot"), 0, 'wine-cask@vignoble');
+	$head = $formvignoble->getTabsHeader($langs, $object);
+	dol_fiche_head($head, 'card', $langs->trans("Plot"), 0, 'plot@vignoble');
 	
 	if ($action == 'delete') {
 		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('DeleteMyOjbect'), $langs->trans('ConfirmDeleteMyObject'), 'confirm_delete', '', 0, 1);
@@ -327,9 +321,9 @@ if ($id && (empty($action) || $action == 'view' || $action == 'delete')) {
 	print '<tr><td>' . $langs->trans("Fieldareasize") . '</td><td>' . $object->areasize . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fieldrootsnumber") . '</td><td>' . $object->rootsnumber . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fieldspacing") . '</td><td>' . $object->spacing . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . dol_getIdFromCode($db,$object->fk_cultivationtype,'c_cultivationtype', 'rowid', 'label') . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . dol_getIdFromCode($db, $object->fk_cultivationtype, 'c_cultivationtype', 'rowid', 'label') . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldfk_rootstock") . '</td><td>' .dol_getIdFromCode($db, $object->fk_rootstock,'c_rootstock', 'rowid', 'label') . '</td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . dol_getIdFromCode($db, $object->fk_rootstock, 'c_rootstock', 'rowid', 'label') . '</td></tr>';
 	
 	print '</table>';
 	

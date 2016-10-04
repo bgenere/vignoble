@@ -68,7 +68,7 @@ $currentPlot->info($id, $ref);
 $form = new Form($db);
 $formvignoble = new FormVignoble($db);
 $head = $formvignoble->getTabsHeader($langs, $currentPlot);
-dol_fiche_head($head, 'info', $langs->trans("Plot"), 0, 'wine-cask@vignoble');
+dol_fiche_head($head, 'info', $langs->trans("Plot"), 0, 'plot@vignoble');
 
 $formvignoble->printObjectRef($form, $langs, $currentPlot);
 print '<table width="100%"><tr><td>';

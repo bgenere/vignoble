@@ -324,7 +324,7 @@ if ($resql) {
 			$param .= '&search_options_' . $tmpkey . '=' . urlencode($val);
 	}
 	
-	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $params, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'title_companies');
+	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $params, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'object_plot@vignoble');
 	
 	print '<form method="GET" id="searchFormList" action="' . $_SERVER["PHP_SELF"] . '">';
 	if ($optioncss != '')
