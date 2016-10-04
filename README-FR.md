@@ -10,7 +10,7 @@ Il vous donne la possibilité de planifier et suivre toutes les opérations réa
 En utilsant ce module la culture de la vigne peut être suivie et améliorées année après année.
 
 
-Main features
+Fonctions Principales
 --------------------
 
 Ce module est en cours de développement.

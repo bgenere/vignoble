@@ -65,8 +65,7 @@ $action = GETPOST('action', 'alpha');
 $page_name = "vignobleSetup";
 llxHeader('', $langs->trans($page_name));
 
-// page title (printed) and link to module list
-// @TODO Why configuration icons on top is a folder ?
+// link bacj to module list and admin card title
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
@@ -79,9 +78,10 @@ dol_fiche_head($head, 'about', $langs->trans("Module123100Name"), 0, 'vignoble@v
 // get readme file and print
 //echo '<br>',var_dump($user),'<br>';
 // @TODO issue with user language not properly set-up
-switch ($user->lang){
-	case 'fr-FR':
-		$buffer = file_get_contents(dol_buildpath('/vignoble/README-fr.md', 0));
+
+switch ($langs->getDefaultLang()){
+	case 'fr_FR':
+		$buffer = file_get_contents(dol_buildpath('/vignoble/README-FR.md', 0));
 		break;
 	default:
 		$buffer = file_get_contents(dol_buildpath('/vignoble/README.md', 0));
