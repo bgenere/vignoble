@@ -92,12 +92,10 @@ if (! $sortorder)
 	
 	// Protection if external user
 $socid = 0;
-if ($user->societe_id > 0) {
-	$socid = $user->societe_id;
+if ($user->societe_id > 0) { // défini pour utilisateur externe, Id du tiers société vide sinon
+	$socid = $user->societe_id; //$socid est souvent dans l'url
 	// accessforbidden();
 }
-// @TODO check why NULL ($user loading ??)
-// var_dump($user->societe);
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
 $hookmanager->initHooks(array(

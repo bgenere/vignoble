@@ -209,7 +209,7 @@ class plot extends CommonObject
 		$sql .= ' ' . (! isset($this->note_public) ? 'NULL' : "'" . $this->db->escape($this->note_public) . "'") . ',';
 		$sql .= ' ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
 		$sql .= ' ' . $user->id . ',';
-		$sql .= ' ' . (! isset($this->fk_user_modif) ? 'NULL' : $this->fk_user_modif);
+		$sql .= ' ' . $user->id . ',';
 		
 		$sql .= ')';
 		
@@ -579,9 +579,7 @@ class plot extends CommonObject
 		$sql .= ' fk_varietal = ' . (isset($this->fk_varietal) ? $this->fk_varietal : "null") . ',';
 		$sql .= ' fk_rootstock = ' . (isset($this->fk_rootstock) ? $this->fk_rootstock : "null") . ',';
 		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
-		// $sql .= ' datec = ' . (! isset($this->datec) || dol_strlen($this->datec) != 0 ? "'" . $this->db->idate($this->datec) . "'" : 'null') . ',';
-		// $sql .= ' fk_user_author = ' . (isset($this->fk_user_author) ? $this->fk_user_author : "null") . ','; \\TODO remove from template 
-		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id); // TODO why $user-> id was not used ?
+		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id); 
 		
 		$sql .= ' WHERE rowid=' . $this->id;
 		
@@ -868,6 +866,42 @@ class plot extends CommonObject
 			dol_print_error($this->db);
 		}
 	}
+	
+	
+	/**
+	 *  Create a document onto disk accordign to template module.
+	 *
+	 *  @param	    string		$modele			Force le mnodele a utiliser ('' to not force)
+	 *  @param		Translate	$outputlangs	objet lang a utiliser pour traduction
+	 *  @param      int			$hidedetails    Hide details of lines
+	 *  @param      int			$hidedesc       Hide description
+	 *  @param      int			$hideref        Hide ref
+	 *  @return     int         				0 if KO, 1 if OK
+	 */
+	public function generateDocument($modele, $outputlangs, $hidedetails=0, $hidedesc=0, $hideref=0)
+	{
+		global $conf,$langs;
+
+		$langs->load("vignoble@vignoble");
+
+		// Positionne le modele sur le nom du modele a utiliser
+		if (! dol_strlen($modele))
+		{
+			if (! empty($conf->global->PLOT_ADDON_PDF))
+			{
+				$modele = $conf->global->PLOT_ADDON_PDF;
+			}
+			else
+			{
+				$modele = 'plot';
+			}
+		}
+
+		$modelpath = "core/modules/vignoble/doc/";
+
+		return $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref);
+	}
+	
 
 	/**
 	 * Initialise object with example values
@@ -879,9 +913,10 @@ class plot extends CommonObject
 	{
 		$this->id = 0;
 		
-		$this->entity = '';
-		$this->ref = '';
-		$this->label = '';
+		$this->specimen=1;
+		$this->entity = '1';
+		$this->ref = 'PlotSpecimen';
+		$this->label = 'Plot Label';
 		$this->description = '';
 		$this->areasize = '';
 		$this->rootsnumber = '';
@@ -890,7 +925,7 @@ class plot extends CommonObject
 		$this->fk_varietal = '';
 		$this->fk_rootstock = '';
 		$this->note_private = '';
-		$this->note_public = '';
+		$this->note_public = 'This is a public note';
 		$this->tms = '';
 		$this->datec = '';
 		$this->fk_user_author = '';

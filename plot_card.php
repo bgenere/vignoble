@@ -44,10 +44,16 @@ if (! $res && file_exists("../../main.inc.php"))
 	$res = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
 if (! $res)
 	die("Include of main fails");
+
+// $conf $user $lang $db variables globales
+
 	// Change this following line to use the correct relative path from htdocs
 	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
 dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
+include_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
+include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
+
 
 // Load traductions files requiredby by page
 $langs->load("vignoble@vignoble");
@@ -148,10 +154,7 @@ if (empty($reshook)) {
 			}
 			{
 				// Creation KO
-				if (! empty($object->errors))
-					setEventMessages(null, $object->errors, 'errors');
-				else
-					setEventMessages($object->error, null, 'errors');
+				setEventMessages($object->error, $object->errors, 'errors');
 				$action = 'create';
 			}
 		} else {
@@ -216,7 +219,53 @@ if (empty($reshook)) {
 				setEventMessages($object->error, null, 'errors');
 		}
 	}
+	
+	if ($action == 'builddoc') // In get or post
+	{
+		// Save last template used to generate document
+		if (GETPOST('model'))
+			$object->setDocModel($user, GETPOST('model', 'alpha'));
+        
+
+		// Define output language
+		$outputlangs = $langs;
+		$newlang = '';
+		if ($conf->global->MAIN_MULTILANGS && empty($newlang) && ! empty($_REQUEST['lang_id']))
+			$newlang = $_REQUEST['lang_id'];
+		if (! empty($newlang)) {
+			$outputlangs = new Translate("", $conf);
+			$outputlangs->setDefaultLang($newlang);
+		}
+		$result = $object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+		if ($result <= 0)
+		{
+			setEventMessages($object->error, $object->errors, 'errors');
+	        $action='';
+		}
+		$action='';
+	}
+
+	// Remove file in doc form
+	if ($action == 'remove_file')
+	{
+		if ($object->id > 0)
+		{
+			require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+
+			$langs->load("other");
+			$upload_dir = $conf->vignoble->dir_output;
+			$file = $upload_dir . '/' . GETPOST('file');
+			$ret = dol_delete_file($file, 0, 0, 0, $object);
+			if ($ret)
+				setEventMessages($langs->trans("FileWasRemoved", GETPOST('file')), null, 'mesgs');
+			else
+				setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('file')), null, 'errors');
+			$action = '';
+		}
+	}
+	
 }
+
 
 /**
  * *************************************************
@@ -230,17 +279,20 @@ llxHeader('', $langs->trans('PlotCardTitle'), '');
 
 $form = new Form($db);
 $formvignoble = new FormVignoble($db);
+$formfile = new FormFile($db);
+$formactions=new FormActions($db);
 
 // Put here content of your page
 
 // Part to create
 if ($action == 'create') {
-	print load_fiche_titre($langs->trans("New Plot"));
+	print load_fiche_titre($langs->trans("New Plot"),'','object_plot@vignoble');
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 	
+	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	//
@@ -271,6 +323,7 @@ if (($id || $ref) && $action == 'edit') {
 	print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
 	
+	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
 	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
 	//
@@ -353,6 +406,37 @@ if  (empty($action) || $action == 'view' || $action == 'delete') {
 	// $somethingshown=$form->showLinkedObjectBlock($object);
 	// $linktoelem = $form->showLinkToObjectBlock($object);
 	// if ($linktoelem) print '<br>'.$linktoelem;
+	
+	
+	print '<div class="fichecenter"><div class="fichehalfleft">';
+
+	// Documents
+	$ref = dol_sanitizeFileName($object->ref);
+	$file = $conf->vignoble->dir_output . '/' . $ref . '/' . $ref . '.pdf';
+	$relativepath = $ref . '/' . $ref . '.pdf';
+	$filedir = $conf->vignoble->dir_output . '/' . $ref;
+	$urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
+	$genallowed = 1;
+	//$user->rights->commande->creer;
+	$delallowed = 1;
+	//$user->rights->commande->supprimer;
+	$somethingshown = $formfile->show_documents('vignoble', $ref, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);
+
+
+	// Show links to link elements
+	//$linktoelem = $form->showLinkToObjectBlock($object, null, array('plot'));
+	//$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
+
+
+	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
+
+	// List of actions on element
+	include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
+	$formactions = new FormActions($db);
+	//$somethingshown = $formactions->showactions($object, 'plot', 0);
+
+	print '</div></div></div>';
+
 }
 
 // End of page

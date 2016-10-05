@@ -65,7 +65,11 @@ class modVignoble extends DolibarrModules
 		// Module description
 		// used if translation string 'ModuleXXXDesc' not found
 		// (where XXX is value of numeric property 'numero' of module)
+		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Vineyard Management";
+		$this->descriptionlong = "A very long description. Can be a full HTML content, not used yet";
+		$this->editor_name = 'Bruno Généré';
+		$this->editor_url = 'http://webiseasy.org';
 		// Possible values for version are: 'development', 'experimental' or version
 		$this->version = '0.1';
 		// Key used in llx_const table to save module status enabled/disabled
@@ -106,7 +110,9 @@ class modVignoble extends DolibarrModules
 		$this->getMenuEntries();
 		
 		$this->getExports();
-		// TODO how do you build imports ?
+		
+		$this->getImports();
+		
 	}
 	/**
 	 * get custom data directories in documentfolders
@@ -198,7 +204,9 @@ class modVignoble extends DolibarrModules
 	 */
 	private function getTabs()
 	{
-		$this->tabs = array();
+		$this->tabs = array(
+			'resource:+plot:Plot:vignoble@vignoble:1:/vignoble/admin/admin_vignoble.php?id=__ID__'
+		);
 	}
 
 	/**
@@ -215,6 +223,7 @@ class modVignoble extends DolibarrModules
 	 */
 	private function getPermissions()
 	{
+		// TODO change with [] assign
 		$this->rights = array();
 		$r = 0;
 		$this->rights[$r][0] = $this->numero + $r;
@@ -376,7 +385,7 @@ class modVignoble extends DolibarrModules
 			'barcode' => 0,
 			// Set this to 1 if module has its own PDF or ODT models directory
 			// add models in /core/modules/[originmodulename]/doc/[modelfile]
-			'models' => 0,
+			'models' => 1,
 			// Set this to relative path of css if module has its own css file
 			// loaded after Dolibarr CCS
 			'css' => array(
@@ -517,4 +526,47 @@ class modVignoble extends DolibarrModules
 	{
 		return $this->_load_tables('/vignoble/sql/');
 	}
+	
+	private function getImports (){
+		// Import list of third parties and attributes
+		$r=0;
+		$r++;
+		$this->import_code[$r]=$this->rights_class.'_'.$r;
+		$this->import_label[$r]='PlotImport';
+		$this->import_icon[$r]='plot@vignoble';
+		$this->import_entities_array[$r]=array();		// We define here only fields that use another icon that the one defined into import_icon
+		$this->import_tables_array[$r]=array('s'=>MAIN_DB_PREFIX.'plot','extra'=>MAIN_DB_PREFIX.'plot_extrafields');	// List of tables to insert into (insert done in same order)
+		$this->import_fields_array[$r]=array('s.ref'=>"Ref*",'s.Label'=>"Label");
+		// Add extra fields
+		$sql="SELECT name, label, fieldrequired FROM ".MAIN_DB_PREFIX."extrafields WHERE elementtype = 'plot' AND entity = ".$conf->entity;
+		$resql=$this->db->query($sql);
+		if ($resql)    // This can fail when class is used on old database (during migration for example)
+		{
+		    while ($obj=$this->db->fetch_object($resql))
+		    {
+		        $fieldname='extra.'.$obj->name;
+		        $fieldlabel=ucfirst($obj->label);
+		        $this->import_fields_array[$r][$fieldname]=$fieldlabel.($obj->fieldrequired?'*':'');
+		    }
+		}
+		// End add extra fields
+		// technical fields set-up by the process
+		$this->import_fieldshidden_array[$r]=array('s.fk_user_author'=>'user->id','extra.fk_object'=>'lastrowid-'.MAIN_DB_PREFIX.'plot');    // aliastable.field => ('user->id' or 'lastrowid-'.tableparent)
+		// foreign key management rule to get id from a label cf core/module/import/import*.php files
+		$this->import_convertvalue_array[$r]=array(
+			's.fk_typent'=>array('rule'=>'fetchidfromcodeorlabel','classfile'=>'/core/class/ctypent.class.php','class'=>'Ctypent','method'=>'fetch','dict'=>'DictionaryCompanyType'),
+			's.fk_departement'=>array('rule'=>'fetchidfromcodeid','classfile'=>'/core/class/cstate.class.php','class'=>'Cstate','method'=>'fetch','dict'=>'DictionaryState'),
+		    's.fk_pays'=>array('rule'=>'fetchidfromcodeid','classfile'=>'/core/class/ccountry.class.php','class'=>'Ccountry','method'=>'fetch','dict'=>'DictionaryCountry'),
+			's.fk_stcomm'=>array('rule'=>'zeroifnull'),
+		    's.code_client'=>array('rule'=>'getcustomercodeifauto'),
+		    's.code_fournisseur'=>array('rule'=>'getsuppliercodeifauto'),
+		    's.code_compta'=>array('rule'=>'getcustomeraccountancycodeifauto'),
+		    's.code_compta_fournisseur'=>array('rule'=>'getsupplieraccountancycodeifauto')
+		);
+		// fields validation rules using regex
+		$this->import_regex_array[$r]=array('s.status'=>'^[0|1]','s.client'=>'^[0|1|2|3]','s.fournisseur'=>'^[0|1]','s.fk_typent'=>'id@'.MAIN_DB_PREFIX.'c_typent','s.datec'=>'^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9]:[0-9][0-9])?$');
+		// example
+		$this->import_examplevalues_array[$r]=array('s.ref'=>"MyREF",'s.label'=>"Plot label");
+	}
+	
 }

@@ -48,7 +48,7 @@ $action = GETPOST('action', 'alpha');
 // $socid=0;
 // if ($user->societe_id) $socid=$user->societe_id;
 // result=restrictedArea($user,'commande',$id,'');
-// @TODO the $object name is mandatory for the includes !!!
+// the $object name is mandatory for the includes !!!
 // any change there break the code !
 $object = new plot($db);
 $result = $object->loadObject($id, $ref, true);
