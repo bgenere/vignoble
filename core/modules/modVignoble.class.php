@@ -112,14 +112,14 @@ class modVignoble extends DolibarrModules
 		$this->getExports();
 		
 		$this->getImports();
-		
 	}
+
 	/**
 	 * get custom data directories in documentfolders
 	 * directories are created when module is enabled.
 	 * Example: this->dirs = array("/module/temp");
 	 */
-	 private function getDataDirectories()
+	private function getDataDirectories()
 	{
 		$this->dirs = array();
 	}
@@ -128,13 +128,12 @@ class modVignoble extends DolibarrModules
 	 * get configuration pages url stored in config_page_url array
 	 * each entry as "<page file name>@<module name>"
 	 */
-	 private function getConfigPages()
+	private function getConfigPages()
 	{
 		$this->config_page_url = array(
 			"admin_vignoble.php@vignoble"
 		);
 	}
-
 
 	/**
 	 * get dependencies for the module
@@ -157,15 +156,13 @@ class modVignoble extends DolibarrModules
 		);
 		// Minimum version of Dolibarr required by module
 		$this->need_dolibarr_version = array(
-			4,
+			5,
 			0
 		);
 	}
 
 	/**
 	 * get module langage files url stored in langfiles
-	 * 
-	 * @todo not available in skeleton is this obsolete or a bug in skeleton ?
 	 */
 	private function getLanguageFiles()
 	{
@@ -327,21 +324,43 @@ class modVignoble extends DolibarrModules
 	{
 		// Exports
 		$r = 0;
-		$this->export_code[$r]=$this->rights_class.'_'.$r;
-		$this->export_label[$r]='Plots';	// Translation key (used only if key ExportDataset_xxx_z not found)
-        $this->export_enabled[$r]='1';                               // Condition to show export in list (ie: '$user->id==3'). Set to 1 to always show when module is enabled.
-        $this->export_icon[$r]='vignoble@vignoble';					// Put here code of icon 
-		$this->export_permission[$r]=array(array("vignoble","plot","export"));
-		$this->export_fields_array[$r]=array('p.ref'=>'Ref','p.label'=>'Label','v.label'=>'Varietal','c.label'=>'Cultivation Type');
+		$this->export_code[$r] = $this->rights_class . '_' . $r;
+		$this->export_label[$r] = 'Plots'; // Translation key (used only if key ExportDataset_xxx_z not found)
+		$this->export_enabled[$r] = '1'; // Condition to show export in list (ie: '$user->id==3'). Set to 1 to always show when module is enabled.
+		$this->export_icon[$r] = 'vignoble@vignoble'; // Put here code of icon
+		$this->export_permission[$r] = array(
+			array(
+				"vignoble",
+				"plot",
+				"export"
+			)
+		);
+		$this->export_fields_array[$r] = array(
+			'p.ref' => 'Ref',
+			'p.label' => 'Label',
+			'v.label' => 'Varietal',
+			'c.label' => 'Cultivation Type'
+		);
 		// Date, Text, Boolean or Numeric
-		$this->export_TypeFields_array[$r]=array('p.rowid'=>'Numeric', 'p.ref'=>'Text', 'p.label'=>'Text', 'v.label'=>'Text', 'c.label'=>'Text');
-		$this->export_entities_array[$r]=array('p.ref'=>'Plot','p.label'=>'Plot','v.label'=>'Plot','c.label'=>'Plot'); // table name associated to field
-		//$this->export_dependencies_array[$r]=array('invoice_line'=>'fd.rowid','product'=>'fd.rowid'); // To add unique key if we ask a field of a child to avoid the DISTINCT to discard them
-		$this->export_sql_start[$r]='SELECT DISTINCT ';
-		$this->export_sql_end[$r]  =' FROM ('.MAIN_DB_PREFIX.'plot as p, '.MAIN_DB_PREFIX.'c_varietal as v, '.MAIN_DB_PREFIX.'c_cultivationtype as c)';
-		$this->export_sql_end[$r] .=' WHERE p.fk_varietal = v.rowid AND p.fk_cultivationtype = c.rowid';
-		$this->export_sql_order[$r] .=' ORDER BY p.ref';
-		$r++;
+		$this->export_TypeFields_array[$r] = array(
+			'p.rowid' => 'Numeric',
+			'p.ref' => 'Text',
+			'p.label' => 'Text',
+			'v.label' => 'Text',
+			'c.label' => 'Text'
+		);
+		$this->export_entities_array[$r] = array(
+			'p.ref' => 'Plot',
+			'p.label' => 'Plot',
+			'v.label' => 'Plot',
+			'c.label' => 'Plot'
+		); // table name associated to field
+		                                                                                                               // $this->export_dependencies_array[$r]=array('invoice_line'=>'fd.rowid','product'=>'fd.rowid'); // To add unique key if we ask a field of a child to avoid the DISTINCT to discard them
+		$this->export_sql_start[$r] = 'SELECT DISTINCT ';
+		$this->export_sql_end[$r] = ' FROM (' . MAIN_DB_PREFIX . 'plot as p, ' . MAIN_DB_PREFIX . 'c_varietal as v, ' . MAIN_DB_PREFIX . 'c_cultivationtype as c)';
+		$this->export_sql_end[$r] .= ' WHERE p.fk_varietal = v.rowid AND p.fk_cultivationtype = c.rowid';
+		$this->export_sql_order[$r] .= ' ORDER BY p.ref';
+		$r ++;
 	}
 
 	/**
@@ -476,7 +495,6 @@ class modVignoble extends DolibarrModules
 				$conf->vignoble->enabled
 			)
 		);
-		// var_dump($this->dictionaries);
 	}
 
 	/**
@@ -526,47 +544,92 @@ class modVignoble extends DolibarrModules
 	{
 		return $this->_load_tables('/vignoble/sql/');
 	}
-	
-	private function getImports (){
+
+	private function getImports()
+	{
 		// Import list of third parties and attributes
-		$r=0;
-		$r++;
-		$this->import_code[$r]=$this->rights_class.'_'.$r;
-		$this->import_label[$r]='PlotImport';
-		$this->import_icon[$r]='plot@vignoble';
-		$this->import_entities_array[$r]=array();		// We define here only fields that use another icon that the one defined into import_icon
-		$this->import_tables_array[$r]=array('s'=>MAIN_DB_PREFIX.'plot','extra'=>MAIN_DB_PREFIX.'plot_extrafields');	// List of tables to insert into (insert done in same order)
-		$this->import_fields_array[$r]=array('s.ref'=>"Ref*",'s.Label'=>"Label");
+		$r = 0;
+		$r ++;
+		$this->import_code[$r] = $this->rights_class . '_' . $r;
+		$this->import_label[$r] = 'PlotImport';
+		$this->import_icon[$r] = 'plot@vignoble';
+		$this->import_entities_array[$r] = array(); // We define here only fields that use another icon that the one defined into import_icon
+		$this->import_tables_array[$r] = array(
+			's' => MAIN_DB_PREFIX . 'plot',
+			'extra' => MAIN_DB_PREFIX . 'plot_extrafields'
+		); // List of tables to insert into (insert done in same order)
+		$this->import_fields_array[$r] = array(
+			's.ref' => "Ref*",
+			's.Label' => "Label"
+		);
 		// Add extra fields
-		$sql="SELECT name, label, fieldrequired FROM ".MAIN_DB_PREFIX."extrafields WHERE elementtype = 'plot' AND entity = ".$conf->entity;
-		$resql=$this->db->query($sql);
-		if ($resql)    // This can fail when class is used on old database (during migration for example)
-		{
-		    while ($obj=$this->db->fetch_object($resql))
-		    {
-		        $fieldname='extra.'.$obj->name;
-		        $fieldlabel=ucfirst($obj->label);
-		        $this->import_fields_array[$r][$fieldname]=$fieldlabel.($obj->fieldrequired?'*':'');
-		    }
+		$sql = "SELECT name, label, fieldrequired FROM " . MAIN_DB_PREFIX . "extrafields WHERE elementtype = 'plot' AND entity = " . $conf->entity;
+		$resql = $this->db->query($sql);
+		if ($resql) // This can fail when class is used on old database (during migration for example)
+{
+			while ($obj = $this->db->fetch_object($resql)) {
+				$fieldname = 'extra.' . $obj->name;
+				$fieldlabel = ucfirst($obj->label);
+				$this->import_fields_array[$r][$fieldname] = $fieldlabel . ($obj->fieldrequired ? '*' : '');
+			}
 		}
 		// End add extra fields
 		// technical fields set-up by the process
-		$this->import_fieldshidden_array[$r]=array('s.fk_user_author'=>'user->id','extra.fk_object'=>'lastrowid-'.MAIN_DB_PREFIX.'plot');    // aliastable.field => ('user->id' or 'lastrowid-'.tableparent)
-		// foreign key management rule to get id from a label cf core/module/import/import*.php files
-		$this->import_convertvalue_array[$r]=array(
-			's.fk_typent'=>array('rule'=>'fetchidfromcodeorlabel','classfile'=>'/core/class/ctypent.class.php','class'=>'Ctypent','method'=>'fetch','dict'=>'DictionaryCompanyType'),
-			's.fk_departement'=>array('rule'=>'fetchidfromcodeid','classfile'=>'/core/class/cstate.class.php','class'=>'Cstate','method'=>'fetch','dict'=>'DictionaryState'),
-		    's.fk_pays'=>array('rule'=>'fetchidfromcodeid','classfile'=>'/core/class/ccountry.class.php','class'=>'Ccountry','method'=>'fetch','dict'=>'DictionaryCountry'),
-			's.fk_stcomm'=>array('rule'=>'zeroifnull'),
-		    's.code_client'=>array('rule'=>'getcustomercodeifauto'),
-		    's.code_fournisseur'=>array('rule'=>'getsuppliercodeifauto'),
-		    's.code_compta'=>array('rule'=>'getcustomeraccountancycodeifauto'),
-		    's.code_compta_fournisseur'=>array('rule'=>'getsupplieraccountancycodeifauto')
+		$this->import_fieldshidden_array[$r] = array(
+			's.fk_user_author' => 'user->id',
+			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . 'plot'
+		); // aliastable.field => ('user->id' or 'lastrowid-'.tableparent)
+		                                                                                                                                  // foreign key management rule to get id from a label cf core/module/import/import*.php files
+		$this->import_convertvalue_array[$r] = array(
+			's.fk_typent' => array(
+				'rule' => 'fetchidfromcodeorlabel',
+				'classfile' => '/core/class/ctypent.class.php',
+				'class' => 'Ctypent',
+				'method' => 'fetch',
+				'dict' => 'DictionaryCompanyType'
+			),
+			's.fk_departement' => array(
+				'rule' => 'fetchidfromcodeid',
+				'classfile' => '/core/class/cstate.class.php',
+				'class' => 'Cstate',
+				'method' => 'fetch',
+				'dict' => 'DictionaryState'
+			),
+			's.fk_pays' => array(
+				'rule' => 'fetchidfromcodeid',
+				'classfile' => '/core/class/ccountry.class.php',
+				'class' => 'Ccountry',
+				'method' => 'fetch',
+				'dict' => 'DictionaryCountry'
+			),
+			's.fk_stcomm' => array(
+				'rule' => 'zeroifnull'
+			),
+			's.code_client' => array(
+				'rule' => 'getcustomercodeifauto'
+			),
+			's.code_fournisseur' => array(
+				'rule' => 'getsuppliercodeifauto'
+			),
+			's.code_compta' => array(
+				'rule' => 'getcustomeraccountancycodeifauto'
+			),
+			's.code_compta_fournisseur' => array(
+				'rule' => 'getsupplieraccountancycodeifauto'
+			)
 		);
 		// fields validation rules using regex
-		$this->import_regex_array[$r]=array('s.status'=>'^[0|1]','s.client'=>'^[0|1|2|3]','s.fournisseur'=>'^[0|1]','s.fk_typent'=>'id@'.MAIN_DB_PREFIX.'c_typent','s.datec'=>'^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9]:[0-9][0-9])?$');
+		$this->import_regex_array[$r] = array(
+			's.status' => '^[0|1]',
+			's.client' => '^[0|1|2|3]',
+			's.fournisseur' => '^[0|1]',
+			's.fk_typent' => 'id@' . MAIN_DB_PREFIX . 'c_typent',
+			's.datec' => '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9]:[0-9][0-9])?$'
+		);
 		// example
-		$this->import_examplevalues_array[$r]=array('s.ref'=>"MyREF",'s.label'=>"Plot label");
+		$this->import_examplevalues_array[$r] = array(
+			's.ref' => "MyREF",
+			's.label' => "Plot label"
+		);
 	}
-	
 }
