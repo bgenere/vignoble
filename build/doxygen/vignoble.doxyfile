@@ -25,20 +25,20 @@ DOXYFILE_ENCODING = UTF-8
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded
 # by quotes) that should identify the project.
 
-PROJECT_NAME = vignoble
+PROJECT_NAME = Vignoble
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number.
 # This could be handy for archiving the generated documentation or
 # if some version control system is used.
 
-PROJECT_NUMBER = development
+PROJECT_NUMBER = 0.1
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
 # If a relative path is entered, it will be relative to the location
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY = ../../build
+OUTPUT_DIRECTORY = /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/doc
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create
 # 4096 sub-directories (in 2 levels) under the output directory of each output
@@ -170,7 +170,7 @@ SEPARATE_MEMBER_PAGES = NO
 # The TAB_SIZE tag can be used to set the number of spaces in a tab.
 # Doxygen uses this value to replace tabs by spaces in code fragments.
 
-TAB_SIZE = 2
+TAB_SIZE = 4
 
 # This tag can be used to specify a number of aliases that acts
 # as commands in the documentation. An alias has the form "name=value".
@@ -186,14 +186,14 @@ ALIASES =
 # For instance, some of the names that are used will be different. The list
 # of all members will be omitted, etc.
 
-OPTIMIZE_OUTPUT_FOR_C = NO
+OPTIMIZE_OUTPUT_FOR_C = 
 
 # Set the OPTIMIZE_OUTPUT_JAVA tag to YES if your project consists of Java
 # sources only. Doxygen will then generate output that is more tailored for
 # Java. For instance, namespaces will be presented as packages, qualified
 # scopes will look different, etc.
 
-OPTIMIZE_OUTPUT_JAVA = NO
+OPTIMIZE_OUTPUT_JAVA = 
 
 # Set the OPTIMIZE_FOR_FORTRAN tag to YES if your project consists of Fortran
 # sources only. Doxygen will then generate output that is more tailored for
@@ -582,7 +582,7 @@ WARN_LOGFILE = doxygen_warnings.log
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT = /opt/lampp/htdocs/dolibarr/htdocs/custom/vignoble 
+INPUT = /home/bruno/public_html/dolibarr/htdocs/custom/vignoble /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/admin /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/class /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/core/boxes /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/core/modules /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/core/modules/vignoble/doc /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/core/modules/vignoble /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/core/triggers /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/js /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/lib /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/scripts /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/sql /home/bruno/public_html/dolibarr/htdocs/custom/vignoble/tpl 
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -599,19 +599,19 @@ INPUT_ENCODING = UTF-8
 # *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx
 # *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.py *.f90
 
-FILE_PATTERNS = *.php *.pl
+FILE_PATTERNS = *.php *.pl *.sql *.md 
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories
 # should be searched for input files as well. Possible values are YES and NO.
 # If left blank NO is used.
 
-RECURSIVE = YES
+RECURSIVE = NO
 
 # The EXCLUDE tag can be used to specify files and/or directories that should
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE = ../../build ../../dev ../../doc ../../vendor 
+EXCLUDE = ./build ./dev ./doc ./test 
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or
 # directories that are symbolic links (a Unix filesystem feature) are excluded
@@ -1030,7 +1030,7 @@ ENUM_VALUES_PER_LINE = 4
 # JavaScript, DHTML, CSS and frames is required (i.e. any modern browser).
 # Windows users are probably better off using the HTML help feature.
 
-GENERATE_TREEVIEW = NO
+GENERATE_TREEVIEW = YES
 
 # By enabling USE_INLINE_TREES, doxygen will generate the Groups, Directories,
 # and Class Hierarchy pages using a tree view instead of an ordered list.
@@ -1549,7 +1549,7 @@ INCLUDED_BY_GRAPH = YES
 # the time of a run. So in most cases it will be better to enable call graphs
 # for selected functions only using the \callgraph command.
 
-CALL_GRAPH = NO
+CALL_GRAPH = YES
 
 # If the CALLER_GRAPH and HAVE_DOT tags are set to YES then
 # doxygen will generate a caller dependency graph for every global function

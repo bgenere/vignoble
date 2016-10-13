@@ -1,6 +1,5 @@
 <?php
-/* <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
+/* Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,28 +14,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// Change this following line to use the correct relative path (../, ../../, etc)
-$res = 0;
-if (! $res && file_exists("../main.inc.php"))
-	$res = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
-if (! $res && file_exists("../../main.inc.php"))
-	$res = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-if (! $res)
-	die("Include of main fails");
 
-	dol_include_once('/vignoble/core/boxes/plotsummarybox.php');
-	
-// $langs->load("orders");
-$langs->load("vignoble@vignoble");
-/*
- * View
+/** 
+ * \file index.php
+ * \brief Main page - module dashboard
+ *  
+ *  Displays the Vignoble dashboard
+ *  
+ *  \ingroup dashboard
  */
-llxHeader('', $langs->trans('Dashboard'));
 
-print('<h1> Dashboard </h1>');
-$box=new plotsummarybox($db);
-$box->loadBox(10);
-$box->showBox($box->info_box_head, $box->info_box_contents);
+@include './tpl/maindolibarr.inc.php';
 
-llxFooter();
+/*  get dashboard boxes */
+dol_include_once('/vignoble/core/boxes/plotsummarybox.php');
+	
+/* get language files */
+$langs->load("vignoble@vignoble");
+
+displayView();
+
+/* close database */
 $db->close();
+
+/**
+ * Displays the view
+ */
+function displayView()
+{
+	global $db,$conf,$langs,$user;
+	
+	llxHeader('', $langs->trans('Dashboard'));
+	
+	print('<h1> Dashboard </h1>');
+	$box=new plotsummarybox($db);
+	$box->loadBox(10);
+	$box->showBox($box->info_box_head, $box->info_box_contents);
+	
+	llxFooter();
+}

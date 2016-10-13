@@ -26,12 +26,12 @@
  */
 
 // get main includes
-$res = 0;
-if (! $res && file_exists("../main.inc.php"))
-	$res = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
-if (! $res && file_exists("../../main.inc.php"))
-	$res = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-if (! $res)
+$incresult = 0;
+if (! $incresult && file_exists("../main.inc.php"))
+	$incresult = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
+if (! $incresult && file_exists("../../main.inc.php"))
+	$incresult = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
+if (! $incresult)
 	die("Include of main fails");
 	// require_once DOL_DOCUMENT_ROOT.'/core/lib/order.lib.php';
 	// require_once DOL_DOCUMENT_ROOT .'/commande/class/commande.class.php';

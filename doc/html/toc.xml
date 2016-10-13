@@ -1,0 +1,554 @@
+<toc label="Vignoble" topic="index.html">
+  <topic label="Module Vignoble" href="md_README-FR.html"/>
+  <topic label="Vineyard Module" href="md_README.html"/>
+  <topic label="Todo List" href="todo.html"/>
+  <topic label="Deprecated List" href="deprecated.html"/>
+  <topic label="Modules" href="modules.html">
+    <topic label="Plot Management" href="db/dfe/group__plot.html">
+      <topic label="plot_card.php" href="df/d3c/plot__card_8php.html"/>
+      <topic label="plot_info.php" href="dd/d24/plot__info_8php.html"/>
+    </topic>
+    <topic label="Dashboard" href="d5/d3d/group__dashboard.html">
+      <topic label="index.php" href="de/d20/index_8php.html"/>
+    </topic>
+  </topic>
+  <topic label="Classes" href="annotated.html">
+    <topic label="Class List" href="annotated.html">
+      <topic label="ActionsVignoble" href="d3/d22/class_actions_vignoble.html">
+        <topic label="__construct" href="d3/d22/class_actions_vignoble.html#ae4679e069654532040decc85cfac0c21"/>
+        <topic label="addSearchEntry" href="d3/d22/class_actions_vignoble.html#a46d65440064e4755d63e2cf59dcf86b6"/>
+        <topic label="doActions" href="d3/d22/class_actions_vignoble.html#a6e397c700557ac33494c2205bc8added"/>
+        <topic label="$errors" href="d3/d22/class_actions_vignoble.html#a331a9e36368a9a5a83f1ffbddaf5e067"/>
+        <topic label="$resprints" href="d3/d22/class_actions_vignoble.html#a9d782a509d7db98379f09f96e205c29b"/>
+        <topic label="$results" href="d3/d22/class_actions_vignoble.html#a3e9faf64235d945481fd49053bef262c"/>
+      </topic>
+      <topic label="CommonDocGenerator" href="d8/d6e/class_common_doc_generator.html"/>
+      <topic label="CommonObject" href="db/d09/class_common_object.html"/>
+      <topic label="DolibarrModules" href="d0/d8f/class_dolibarr_modules.html"/>
+      <topic label="FormVignoble" href="d5/dbd/class_form_vignoble.html">
+        <topic label="__construct" href="d5/dbd/class_form_vignoble.html#aeb002b917856bcc7e99d49726de2cee3"/>
+        <topic label="displayDicCombo" href="d5/dbd/class_form_vignoble.html#a5fbc835e5a94e5b0c7db3949404fdf4c"/>
+        <topic label="getTabsHeader" href="d5/dbd/class_form_vignoble.html#a34f3f31211e17651edd762fb59d6b312"/>
+        <topic label="printObjectRef" href="d5/dbd/class_form_vignoble.html#a839e9e92e9a172fb55841daf0a4a7132"/>
+        <topic label="$db" href="d5/dbd/class_form_vignoble.html#a6a70fe4d556e428976ec3edb391d8e7b"/>
+        <topic label="$error" href="d5/dbd/class_form_vignoble.html#ab88822a2b9e654685ba5be7240f86375"/>
+      </topic>
+      <topic label="ModeleBoxes" href="df/dd0/class_modele_boxes.html"/>
+      <topic label="ModeleNumRefCommandes" href="dd/dae/class_modele_num_ref_commandes.html">
+        <topic label="canBeActivated" href="dd/dae/class_modele_num_ref_commandes.html#af3777ffc5a42ef7e2a96b304d7703009"/>
+        <topic label="getExample" href="dd/dae/class_modele_num_ref_commandes.html#aeda02b75fdbbc682c02153c9396a8afa"/>
+        <topic label="getNextValue" href="dd/dae/class_modele_num_ref_commandes.html#a15b74fa05cc1f913dd31bb4fad141be4"/>
+        <topic label="getVersion" href="dd/dae/class_modele_num_ref_commandes.html#ac7dbf3526f4e1ba7e8fcc3ed2ceda391"/>
+        <topic label="info" href="dd/dae/class_modele_num_ref_commandes.html#a262ab9f35572baa2d25d49eef62ba521"/>
+        <topic label="isEnabled" href="dd/dae/class_modele_num_ref_commandes.html#afcd4b8f0ba966ede6c5563a41302b251"/>
+        <topic label="$error" href="dd/dae/class_modele_num_ref_commandes.html#a5e132b64f7b43256ab58c91d0d14fdb5"/>
+      </topic>
+      <topic label="ModelePDFPlot" href="d2/dcb/class_modele_p_d_f_plot.html">
+        <topic label="liste_modeles" href="d2/dcb/class_modele_p_d_f_plot.html#a36998dbd09f567387e5ca1d459d97fa5"/>
+        <topic label="$error" href="d2/dcb/class_modele_p_d_f_plot.html#ae503ec1e3a1717f5a92c0b75c4e49e90"/>
+      </topic>
+      <topic label="ModeleVignoble" href="d7/d78/class_modele_vignoble.html">
+        <topic label="liste_modeles" href="d7/d78/class_modele_vignoble.html#a0708902726530836b6535bc9685fb032"/>
+        <topic label="$error" href="d7/d78/class_modele_vignoble.html#a65da2c4d9c568a048922f6d178978ebc"/>
+      </topic>
+      <topic label="modVignoble" href="d9/d7e/classmod_vignoble.html">
+        <topic label="__construct" href="d9/d7e/classmod_vignoble.html#ada044c2932bba560426dfcc82f84c8ec"/>
+        <topic label="getBoxes" href="d9/d7e/classmod_vignoble.html#ab8f2632e2f1339ac55a29052667f56fd"/>
+        <topic label="getConfigPages" href="d9/d7e/classmod_vignoble.html#a10339ea522e23636e3174fc86d2d8d5d"/>
+        <topic label="getConstant" href="d9/d7e/classmod_vignoble.html#ab6366de750143cc368ee9e4f880030bd"/>
+        <topic label="getDataDirectories" href="d9/d7e/classmod_vignoble.html#ae8cb766232d743c29d65e8e55eb35fa0"/>
+        <topic label="getDependencies" href="d9/d7e/classmod_vignoble.html#a85c5eb0993b7c94a50ab6f380c262f8c"/>
+        <topic label="getDictionaries" href="d9/d7e/classmod_vignoble.html#a13c6e7111456b8c0655c51872c109cf3"/>
+        <topic label="getExports" href="d9/d7e/classmod_vignoble.html#a5a2223ae6de75f689e1d68a37874e4ee"/>
+        <topic label="getImports" href="d9/d7e/classmod_vignoble.html#ae2ef9ec4b1288cbc5e290368fe47de35"/>
+        <topic label="getLanguageFiles" href="d9/d7e/classmod_vignoble.html#a26ce8f05be923a220db40f00e571c9c5"/>
+        <topic label="getMenuEntries" href="d9/d7e/classmod_vignoble.html#a8f0e02490eb598f93b4fa1e9c3455d53"/>
+        <topic label="getParts" href="d9/d7e/classmod_vignoble.html#ae723a7f6feeadc16f6893358bcd3724e"/>
+        <topic label="getPermissions" href="d9/d7e/classmod_vignoble.html#ab479f209376307097bcafefa1de9c2ee"/>
+        <topic label="getTabs" href="d9/d7e/classmod_vignoble.html#adf13eedd9ced338dd436d283219b6f3f"/>
+        <topic label="init" href="d9/d7e/classmod_vignoble.html#adfa10a82c8702bfbc4626399e523f91c"/>
+        <topic label="loadTables" href="d9/d7e/classmod_vignoble.html#afdabceb1f701f7e4a988388a3e0ee828"/>
+        <topic label="remove" href="d9/d7e/classmod_vignoble.html#a32f60fd68e5b527ed99afe918a48e495"/>
+      </topic>
+      <topic label="mybox" href="d4/dd3/classmybox.html">
+        <topic label="__construct" href="d4/dd3/classmybox.html#ab7e47ffd77bdfa1d8d95d7f5a4fb09a5"/>
+        <topic label="loadBox" href="d4/dd3/classmybox.html#a4b304de15117efbbb5a1e2527fd9392a"/>
+        <topic label="showBox" href="d4/dd3/classmybox.html#a64761dc2f805daf2ce14484b0f0133ee"/>
+        <topic label="$boxcode" href="d4/dd3/classmybox.html#a1881fc4317f53defc3ae2e976ec03808"/>
+        <topic label="$boximg" href="d4/dd3/classmybox.html#a7a7535e9c28e72fac74bb7e32a0ba2a3"/>
+        <topic label="$boxlabel" href="d4/dd3/classmybox.html#a4812b59dd6d50347b347c1ba86d1f7b3"/>
+        <topic label="$db" href="d4/dd3/classmybox.html#a8e055b492c18d5336b2c82b961e01f79"/>
+        <topic label="$depends" href="d4/dd3/classmybox.html#a75f2306d151d424da521d8047be44aa5"/>
+        <topic label="$info_box_contents" href="d4/dd3/classmybox.html#a678534b523cb0c58a5b5f47d65489cbe"/>
+        <topic label="$info_box_head" href="d4/dd3/classmybox.html#a66196a918a64360045dc28aef78fd896"/>
+        <topic label="$param" href="d4/dd3/classmybox.html#a9bf93b4b6b632cdb0de07abb2b0b9449"/>
+      </topic>
+      <topic label="pdf_plotabc" href="d8/d91/classpdf__plotabc.html">
+        <topic label="__construct" href="d8/d91/classpdf__plotabc.html#a79474200180001316ebc948484e264d5"/>
+        <topic label="_pagefoot" href="d8/d91/classpdf__plotabc.html#a0b8c63ea1fa03d4586e64febb06a39bb"/>
+        <topic label="_pagehead" href="d8/d91/classpdf__plotabc.html#a49c2ec874ea62121aac567aa9a14d948"/>
+        <topic label="_tableau" href="d8/d91/classpdf__plotabc.html#a8b91ba0dcf2a4ac01e597e7a0475470e"/>
+        <topic label="_tableau_info" href="d8/d91/classpdf__plotabc.html#a596393403ca63c2bc3ae5b0c8fa86b61"/>
+        <topic label="_tableau_tot" href="d8/d91/classpdf__plotabc.html#adcd867dcbc80d6b4872e3ffa38b42301"/>
+        <topic label="_tableau_versements" href="d8/d91/classpdf__plotabc.html#a43610953ea44bcde5bec334bc345bb79"/>
+        <topic label="write_file" href="d8/d91/classpdf__plotabc.html#a99e2da3fcf7e93da09789fdca21ab12f"/>
+        <topic label="$db" href="d8/d91/classpdf__plotabc.html#af580c1c8af5086a8a5c007966a978c96"/>
+        <topic label="$description" href="d8/d91/classpdf__plotabc.html#a6ce8c5cd63590a7ebb05dc70b2b51dab"/>
+        <topic label="$emetteur" href="d8/d91/classpdf__plotabc.html#ad2ac97431a243b3ffa060120b1460ca5"/>
+        <topic label="$format" href="d8/d91/classpdf__plotabc.html#ad5ae3d7158abacb0665d71e3cbf731a3"/>
+        <topic label="$marge_basse" href="d8/d91/classpdf__plotabc.html#ae03766d6cede762e74f1898da6f6ce54"/>
+        <topic label="$marge_droite" href="d8/d91/classpdf__plotabc.html#a2ac22cf2e044339af1baeaa7afae611d"/>
+        <topic label="$marge_gauche" href="d8/d91/classpdf__plotabc.html#a2e4c03d6074d7ef714613a6ea4515733"/>
+        <topic label="$marge_haute" href="d8/d91/classpdf__plotabc.html#af5f2d27db8ce4465266c767571cf231b"/>
+        <topic label="$name" href="d8/d91/classpdf__plotabc.html#a5d03b75f6ae27789ebbbc2c3a0f9a0f3"/>
+        <topic label="$page_hauteur" href="d8/d91/classpdf__plotabc.html#a4b3958725a7125407d2dd2c6420fef36"/>
+        <topic label="$page_largeur" href="d8/d91/classpdf__plotabc.html#adc89fff30b4d354f530121e8b50b1a1d"/>
+        <topic label="$phpmin" href="d8/d91/classpdf__plotabc.html#a2ccfaab38cab1a1c27d857fda00cf07c"/>
+        <topic label="$type" href="d8/d91/classpdf__plotabc.html#ac8c5ebe5a886b42374f7319b30e34541"/>
+        <topic label="$version" href="d8/d91/classpdf__plotabc.html#a77ccd51bc6c70afca617556bc8596f0e"/>
+      </topic>
+      <topic label="plot" href="d7/d55/classplot.html">
+        <topic label="__construct" href="d7/d55/classplot.html#af78bead6595975c3bb6308ed0ae0fe64"/>
+        <topic label="create" href="d7/d55/classplot.html#a704fe4fbe35a7269822874cf869b72a1"/>
+        <topic label="createFromClone" href="d7/d55/classplot.html#a155964ccb236a7634aae1e80fc339551"/>
+        <topic label="delete" href="d7/d55/classplot.html#a325f32dccb2369fc7168194564442468"/>
+        <topic label="fetch" href="d7/d55/classplot.html#a7e7556295c015a11145ad8c4f2a2ff0e"/>
+        <topic label="fetchAll" href="d7/d55/classplot.html#a7c688e12a185821d59618ee551aa741d"/>
+        <topic label="generateDocument" href="d7/d55/classplot.html#a6b1d377a6e9192dde6696d4f1f111b0c"/>
+        <topic label="getLibStatut" href="d7/d55/classplot.html#adb2875a850fe61b44d83145f4a1828c8"/>
+        <topic label="getNomUrl" href="d7/d55/classplot.html#a0063924b592d00573a43a9a65a125cc7"/>
+        <topic label="info" href="d7/d55/classplot.html#a1e32f123140244256cae22982c10bace"/>
+        <topic label="initAsSpecimen" href="d7/d55/classplot.html#a8559241c5a3845cd9e3e60e2e71717e4"/>
+        <topic label="LibStatut" href="d7/d55/classplot.html#aaac39a6b8e4c850f8c78b96c480bb6fb"/>
+        <topic label="loadObject" href="d7/d55/classplot.html#aed4bfac3c6af4b237f26a70d69523dbd"/>
+        <topic label="update" href="d7/d55/classplot.html#a6b585d2bf01338dd28dc90abb8982701"/>
+        <topic label="$areasize" href="d7/d55/classplot.html#a485492bf41c1a428bfce8986c990e357"/>
+        <topic label="$datec" href="d7/d55/classplot.html#a193aae74afb3fd29d31d6c43d0a86565"/>
+        <topic label="$description" href="d7/d55/classplot.html#ada4555ebe8de025faa1f17df6a59d35d"/>
+        <topic label="$element" href="d7/d55/classplot.html#aaf8d699f41f01ac5f7ef38af15fb54f3"/>
+        <topic label="$entity" href="d7/d55/classplot.html#a3f383b3418bb4f0f2109ba8acd95e622"/>
+        <topic label="$fk_cultivationtype" href="d7/d55/classplot.html#a7fe0e124122c7ff9d6ea87a235f128ed"/>
+        <topic label="$fk_rootstock" href="d7/d55/classplot.html#a11f0ab2f61e105a18839e710339fe3d8"/>
+        <topic label="$fk_user_author" href="d7/d55/classplot.html#a79393f944d94e6bac27e19b3eb1b4021"/>
+        <topic label="$fk_user_modif" href="d7/d55/classplot.html#ad194d371f1185f5a40fd6db7b9360419"/>
+        <topic label="$fk_varietal" href="d7/d55/classplot.html#a95ae08a199afe5b5e61bde4fc3567a9c"/>
+        <topic label="$label" href="d7/d55/classplot.html#a50752d0524aabeecb3993944845ac728"/>
+        <topic label="$lines" href="d7/d55/classplot.html#a1df87155e30e72a70f24bcff3e8614e1"/>
+        <topic label="$note_private" href="d7/d55/classplot.html#aaff1ee8601b6cf6eed13c4e782fc4125"/>
+        <topic label="$note_public" href="d7/d55/classplot.html#a93d68ba9bae646b7e9508382132adbe5"/>
+        <topic label="$ref" href="d7/d55/classplot.html#a63cb988ac1d0c6232efa522414b1ec0a"/>
+        <topic label="$rootsnumber" href="d7/d55/classplot.html#a25ed6e16533718e21ee789cb0b68335d"/>
+        <topic label="$spacing" href="d7/d55/classplot.html#a5fed5d874a767f2288b526e6a5ed2080"/>
+        <topic label="$table_element" href="d7/d55/classplot.html#a937b2f7d2ba87af9a032de31fc06e8e0"/>
+        <topic label="$tms" href="d7/d55/classplot.html#ac926ab1f3da8d0a7ad6d6c48b21ea93e"/>
+      </topic>
+      <topic label="plotLine" href="d4/d22/classplot_line.html">
+        <topic label="$areasize" href="d4/d22/classplot_line.html#a18b5dc9e8c37f8e484c83dd624bf90f0"/>
+        <topic label="$datec" href="d4/d22/classplot_line.html#a060242ff963400d0a8e5fba168a0dfb5"/>
+        <topic label="$description" href="d4/d22/classplot_line.html#a8fb2fe94d14676df4b4c771f09dba0de"/>
+        <topic label="$entity" href="d4/d22/classplot_line.html#a7ee8d53653804e32becf11a716ac6e77"/>
+        <topic label="$fk_cultivationtype" href="d4/d22/classplot_line.html#a285e60ea2ea93feb4631ff833e4eda51"/>
+        <topic label="$fk_rootstock" href="d4/d22/classplot_line.html#ac0afa418cde5e7d7eb1a80e594cebab2"/>
+        <topic label="$fk_user_author" href="d4/d22/classplot_line.html#a620a22c2a9a8724c77bdcef5380daf77"/>
+        <topic label="$fk_user_modif" href="d4/d22/classplot_line.html#a608fe140dc370d3d9f24b88f38e26f33"/>
+        <topic label="$fk_varietal" href="d4/d22/classplot_line.html#a03800fd360ca26b6054e96de232260da"/>
+        <topic label="$id" href="d4/d22/classplot_line.html#af5efd711d2a3ecaacdac7d30680dd734"/>
+        <topic label="$label" href="d4/d22/classplot_line.html#a4f27e2853cd7fd1ce5cdad65f164dc91"/>
+        <topic label="$note_private" href="d4/d22/classplot_line.html#a76e35f5262f18ea2ad2ee54edd1e2587"/>
+        <topic label="$note_public" href="d4/d22/classplot_line.html#a05288f90084993c0a3ef7b70b230df05"/>
+        <topic label="$ref" href="d4/d22/classplot_line.html#a6cd3d3ad4fc285c16290ffca9e674821"/>
+        <topic label="$rootsnumber" href="d4/d22/classplot_line.html#aa99fd9f7e0e2f51c55c4124528906c09"/>
+        <topic label="$spacing" href="d4/d22/classplot_line.html#abd4c2e23b4f8ab998b579958fecc31b2"/>
+        <topic label="$tms" href="d4/d22/classplot_line.html#aaffe9e3b8c27f3b44fee7feb98329391"/>
+      </topic>
+      <topic label="plotsummarybox" href="db/dcb/classplotsummarybox.html">
+        <topic label="__construct" href="db/dcb/classplotsummarybox.html#a9b1b37a9d2b32f9e5f1d3b1421123de5"/>
+        <topic label="loadBox" href="db/dcb/classplotsummarybox.html#a85c26e619cc83cb7b679fbd20f981088"/>
+        <topic label="showBox" href="db/dcb/classplotsummarybox.html#a1a120e87f1ca1d616d2749756857569e"/>
+        <topic label="$boxcode" href="db/dcb/classplotsummarybox.html#a734c199422c0514afc980b5c2907a390"/>
+        <topic label="$boximg" href="db/dcb/classplotsummarybox.html#ad56fe37a06cfa7b3c7d241cb651bc53d"/>
+        <topic label="$boxlabel" href="db/dcb/classplotsummarybox.html#acebddf3e8c956c3e50f52d0581af426f"/>
+        <topic label="$db" href="db/dcb/classplotsummarybox.html#a865c948f8b38e84a3bcf57714845b2f5"/>
+        <topic label="$depends" href="db/dcb/classplotsummarybox.html#a51c07795be87ef57539e75274c82ef3f"/>
+        <topic label="$info_box_contents" href="db/dcb/classplotsummarybox.html#a2bc11bfe4dfe4fd54f9f5aa0a7f0a95a"/>
+        <topic label="$info_box_head" href="db/dcb/classplotsummarybox.html#a664064cf2dda643d7715bbf2c8e0e7b9"/>
+        <topic label="$param" href="db/dcb/classplotsummarybox.html#aa3e8d06db390d20f379b57db1e92e72a"/>
+      </topic>
+    </topic>
+    <topic label="Class Index" href="classes.html"/>
+    <topic label="Class Hierarchy" href="hierarchy.html">
+      <topic label="ActionsVignoble" href="d3/d22/class_actions_vignoble.html"/>
+      <topic label="CommonDocGenerator" href="d8/d6e/class_common_doc_generator.html">
+        <topic label="ModelePDFPlot" href="d2/dcb/class_modele_p_d_f_plot.html">
+          <topic label="pdf_plotabc" href="d8/d91/classpdf__plotabc.html"/>
+        </topic>
+        <topic label="ModeleVignoble" href="d7/d78/class_modele_vignoble.html"/>
+      </topic>
+      <topic label="CommonObject" href="db/d09/class_common_object.html">
+        <topic label="plot" href="d7/d55/classplot.html"/>
+      </topic>
+      <topic label="DolibarrModules" href="d0/d8f/class_dolibarr_modules.html">
+        <topic label="modVignoble" href="d9/d7e/classmod_vignoble.html"/>
+      </topic>
+      <topic label="FormVignoble" href="d5/dbd/class_form_vignoble.html"/>
+      <topic label="ModeleBoxes" href="df/dd0/class_modele_boxes.html">
+        <topic label="mybox" href="d4/dd3/classmybox.html"/>
+        <topic label="plotsummarybox" href="db/dcb/classplotsummarybox.html"/>
+      </topic>
+      <topic label="ModeleNumRefCommandes" href="dd/dae/class_modele_num_ref_commandes.html"/>
+      <topic label="plotLine" href="d4/d22/classplot_line.html"/>
+    </topic>
+    <topic label="Class Members" href="functions.html">
+      <topic label="All" href="functions.html"/>
+      <topic label="Functions" href="functions_func.html"/>
+      <topic label="Variables" href="functions_vars.html"/>
+    </topic>
+  </topic>
+  <topic label="Files">
+    <topic label="File List" href="files.html">
+      <topic label="admin" href="dir_b56013ff87e0b8a9fb902ef4a07a6990.html">
+        <topic label="about.php" href="d8/dca/about_8php.html">
+          <topic label="$action" href="d8/dca/about_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4"/>
+          <topic label="$head" href="d8/dca/about_8php.html#a687ea7fcd78263867b5bd34ed56b6379"/>
+          <topic label="$langs" href="d8/dca/about_8php.html#aa8d5f7f1393448838bb2d3c81fccdd0a"/>
+          <topic label="$linkback" href="d8/dca/about_8php.html#aa8a538bac04922850b15c7460fb1bfc7"/>
+          <topic label="$page_name" href="d8/dca/about_8php.html#adc3f16c3b03bc755ab09d40e79211d08"/>
+          <topic label="$user" href="d8/dca/about_8php.html#afaa5bad6fc4d5e5dc1b474fe7a8d9bf9"/>
+          <topic label="dol_buildpath" href="d8/dca/about_8php.html#a772d739a0f0b9782c84313ad0c7c9a62"/>
+          <topic label="switch" href="d8/dca/about_8php.html#a1b45ccb5a17c95f84ace1ca2a3b97629"/>
+        </topic>
+        <topic label="admin_vignoble.php" href="d5/d09/admin__vignoble_8php.html">
+          <topic label="printView" href="d5/d09/admin__vignoble_8php.html#a3af7c5265c272c25e4ace71be5f7f1c8"/>
+          <topic label="$action" href="d5/d09/admin__vignoble_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4"/>
+          <topic label="$dirmodels" href="d5/d09/admin__vignoble_8php.html#ac1d2a523c634a33b52897268e1e066d3"/>
+          <topic label="$label" href="d5/d09/admin__vignoble_8php.html#a177af2bf70bede02de3d05a425fb8e43"/>
+          <topic label="$langs" href="d5/d09/admin__vignoble_8php.html#aa8d5f7f1393448838bb2d3c81fccdd0a"/>
+          <topic label="$scandir" href="d5/d09/admin__vignoble_8php.html#af8740e47a115ee055d40254054b37978"/>
+          <topic label="$type" href="d5/d09/admin__vignoble_8php.html#a9a4a6fba2208984cabb3afacadf33919"/>
+          <topic label="$user" href="d5/d09/admin__vignoble_8php.html#afaa5bad6fc4d5e5dc1b474fe7a8d9bf9"/>
+          <topic label="$value" href="d5/d09/admin__vignoble_8php.html#a0f298096f322952a72a50f98a74c7b60"/>
+        </topic>
+      </topic>
+      <topic label="class" href="dir_b159045c86742e23382de6113e3621b5.html">
+        <topic label="actions_vignoble.class.php" href="da/d0f/actions__vignoble_8class_8php.html">
+          <topic label="ActionsVignoble" href="d3/d22/class_actions_vignoble.html">
+            <topic label="__construct" href="d3/d22/class_actions_vignoble.html#ae4679e069654532040decc85cfac0c21"/>
+            <topic label="addSearchEntry" href="d3/d22/class_actions_vignoble.html#a46d65440064e4755d63e2cf59dcf86b6"/>
+            <topic label="doActions" href="d3/d22/class_actions_vignoble.html#a6e397c700557ac33494c2205bc8added"/>
+            <topic label="$errors" href="d3/d22/class_actions_vignoble.html#a331a9e36368a9a5a83f1ffbddaf5e067"/>
+            <topic label="$resprints" href="d3/d22/class_actions_vignoble.html#a9d782a509d7db98379f09f96e205c29b"/>
+            <topic label="$results" href="d3/d22/class_actions_vignoble.html#a3e9faf64235d945481fd49053bef262c"/>
+          </topic>
+        </topic>
+        <topic label="html.form.vignoble.class.php" href="df/d4a/html_8form_8vignoble_8class_8php.html">
+          <topic label="FormVignoble" href="d5/dbd/class_form_vignoble.html">
+            <topic label="__construct" href="d5/dbd/class_form_vignoble.html#aeb002b917856bcc7e99d49726de2cee3"/>
+            <topic label="displayDicCombo" href="d5/dbd/class_form_vignoble.html#a5fbc835e5a94e5b0c7db3949404fdf4c"/>
+            <topic label="getTabsHeader" href="d5/dbd/class_form_vignoble.html#a34f3f31211e17651edd762fb59d6b312"/>
+            <topic label="printObjectRef" href="d5/dbd/class_form_vignoble.html#a839e9e92e9a172fb55841daf0a4a7132"/>
+            <topic label="$db" href="d5/dbd/class_form_vignoble.html#a6a70fe4d556e428976ec3edb391d8e7b"/>
+            <topic label="$error" href="d5/dbd/class_form_vignoble.html#ab88822a2b9e654685ba5be7240f86375"/>
+          </topic>
+        </topic>
+        <topic label="plot.class.php" href="dc/d60/plot_8class_8php.html">
+          <topic label="plot" href="d7/d55/classplot.html">
+            <topic label="__construct" href="d7/d55/classplot.html#af78bead6595975c3bb6308ed0ae0fe64"/>
+            <topic label="create" href="d7/d55/classplot.html#a704fe4fbe35a7269822874cf869b72a1"/>
+            <topic label="createFromClone" href="d7/d55/classplot.html#a155964ccb236a7634aae1e80fc339551"/>
+            <topic label="delete" href="d7/d55/classplot.html#a325f32dccb2369fc7168194564442468"/>
+            <topic label="fetch" href="d7/d55/classplot.html#a7e7556295c015a11145ad8c4f2a2ff0e"/>
+            <topic label="fetchAll" href="d7/d55/classplot.html#a7c688e12a185821d59618ee551aa741d"/>
+            <topic label="generateDocument" href="d7/d55/classplot.html#a6b1d377a6e9192dde6696d4f1f111b0c"/>
+            <topic label="getLibStatut" href="d7/d55/classplot.html#adb2875a850fe61b44d83145f4a1828c8"/>
+            <topic label="getNomUrl" href="d7/d55/classplot.html#a0063924b592d00573a43a9a65a125cc7"/>
+            <topic label="info" href="d7/d55/classplot.html#a1e32f123140244256cae22982c10bace"/>
+            <topic label="initAsSpecimen" href="d7/d55/classplot.html#a8559241c5a3845cd9e3e60e2e71717e4"/>
+            <topic label="LibStatut" href="d7/d55/classplot.html#aaac39a6b8e4c850f8c78b96c480bb6fb"/>
+            <topic label="loadObject" href="d7/d55/classplot.html#aed4bfac3c6af4b237f26a70d69523dbd"/>
+            <topic label="update" href="d7/d55/classplot.html#a6b585d2bf01338dd28dc90abb8982701"/>
+            <topic label="$areasize" href="d7/d55/classplot.html#a485492bf41c1a428bfce8986c990e357"/>
+            <topic label="$datec" href="d7/d55/classplot.html#a193aae74afb3fd29d31d6c43d0a86565"/>
+            <topic label="$description" href="d7/d55/classplot.html#ada4555ebe8de025faa1f17df6a59d35d"/>
+            <topic label="$element" href="d7/d55/classplot.html#aaf8d699f41f01ac5f7ef38af15fb54f3"/>
+            <topic label="$entity" href="d7/d55/classplot.html#a3f383b3418bb4f0f2109ba8acd95e622"/>
+            <topic label="$fk_cultivationtype" href="d7/d55/classplot.html#a7fe0e124122c7ff9d6ea87a235f128ed"/>
+            <topic label="$fk_rootstock" href="d7/d55/classplot.html#a11f0ab2f61e105a18839e710339fe3d8"/>
+            <topic label="$fk_user_author" href="d7/d55/classplot.html#a79393f944d94e6bac27e19b3eb1b4021"/>
+            <topic label="$fk_user_modif" href="d7/d55/classplot.html#ad194d371f1185f5a40fd6db7b9360419"/>
+            <topic label="$fk_varietal" href="d7/d55/classplot.html#a95ae08a199afe5b5e61bde4fc3567a9c"/>
+            <topic label="$label" href="d7/d55/classplot.html#a50752d0524aabeecb3993944845ac728"/>
+            <topic label="$lines" href="d7/d55/classplot.html#a1df87155e30e72a70f24bcff3e8614e1"/>
+            <topic label="$note_private" href="d7/d55/classplot.html#aaff1ee8601b6cf6eed13c4e782fc4125"/>
+            <topic label="$note_public" href="d7/d55/classplot.html#a93d68ba9bae646b7e9508382132adbe5"/>
+            <topic label="$ref" href="d7/d55/classplot.html#a63cb988ac1d0c6232efa522414b1ec0a"/>
+            <topic label="$rootsnumber" href="d7/d55/classplot.html#a25ed6e16533718e21ee789cb0b68335d"/>
+            <topic label="$spacing" href="d7/d55/classplot.html#a5fed5d874a767f2288b526e6a5ed2080"/>
+            <topic label="$table_element" href="d7/d55/classplot.html#a937b2f7d2ba87af9a032de31fc06e8e0"/>
+            <topic label="$tms" href="d7/d55/classplot.html#ac926ab1f3da8d0a7ad6d6c48b21ea93e"/>
+          </topic>
+          <topic label="plotLine" href="d4/d22/classplot_line.html">
+            <topic label="$areasize" href="d4/d22/classplot_line.html#a18b5dc9e8c37f8e484c83dd624bf90f0"/>
+            <topic label="$datec" href="d4/d22/classplot_line.html#a060242ff963400d0a8e5fba168a0dfb5"/>
+            <topic label="$description" href="d4/d22/classplot_line.html#a8fb2fe94d14676df4b4c771f09dba0de"/>
+            <topic label="$entity" href="d4/d22/classplot_line.html#a7ee8d53653804e32becf11a716ac6e77"/>
+            <topic label="$fk_cultivationtype" href="d4/d22/classplot_line.html#a285e60ea2ea93feb4631ff833e4eda51"/>
+            <topic label="$fk_rootstock" href="d4/d22/classplot_line.html#ac0afa418cde5e7d7eb1a80e594cebab2"/>
+            <topic label="$fk_user_author" href="d4/d22/classplot_line.html#a620a22c2a9a8724c77bdcef5380daf77"/>
+            <topic label="$fk_user_modif" href="d4/d22/classplot_line.html#a608fe140dc370d3d9f24b88f38e26f33"/>
+            <topic label="$fk_varietal" href="d4/d22/classplot_line.html#a03800fd360ca26b6054e96de232260da"/>
+            <topic label="$id" href="d4/d22/classplot_line.html#af5efd711d2a3ecaacdac7d30680dd734"/>
+            <topic label="$label" href="d4/d22/classplot_line.html#a4f27e2853cd7fd1ce5cdad65f164dc91"/>
+            <topic label="$note_private" href="d4/d22/classplot_line.html#a76e35f5262f18ea2ad2ee54edd1e2587"/>
+            <topic label="$note_public" href="d4/d22/classplot_line.html#a05288f90084993c0a3ef7b70b230df05"/>
+            <topic label="$ref" href="d4/d22/classplot_line.html#a6cd3d3ad4fc285c16290ffca9e674821"/>
+            <topic label="$rootsnumber" href="d4/d22/classplot_line.html#aa99fd9f7e0e2f51c55c4124528906c09"/>
+            <topic label="$spacing" href="d4/d22/classplot_line.html#abd4c2e23b4f8ab998b579958fecc31b2"/>
+            <topic label="$tms" href="d4/d22/classplot_line.html#aaffe9e3b8c27f3b44fee7feb98329391"/>
+          </topic>
+        </topic>
+      </topic>
+      <topic label="core" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">
+        <topic label="boxes" href="dir_08d4655ef680a4e47e2aa2c4a6bc9f40.html">
+          <topic label="mybox.php" href="d5/dc6/mybox_8php.html">
+            <topic label="mybox" href="d4/dd3/classmybox.html">
+              <topic label="__construct" href="d4/dd3/classmybox.html#ab7e47ffd77bdfa1d8d95d7f5a4fb09a5"/>
+              <topic label="loadBox" href="d4/dd3/classmybox.html#a4b304de15117efbbb5a1e2527fd9392a"/>
+              <topic label="showBox" href="d4/dd3/classmybox.html#a64761dc2f805daf2ce14484b0f0133ee"/>
+              <topic label="$boxcode" href="d4/dd3/classmybox.html#a1881fc4317f53defc3ae2e976ec03808"/>
+              <topic label="$boximg" href="d4/dd3/classmybox.html#a7a7535e9c28e72fac74bb7e32a0ba2a3"/>
+              <topic label="$boxlabel" href="d4/dd3/classmybox.html#a4812b59dd6d50347b347c1ba86d1f7b3"/>
+              <topic label="$db" href="d4/dd3/classmybox.html#a8e055b492c18d5336b2c82b961e01f79"/>
+              <topic label="$depends" href="d4/dd3/classmybox.html#a75f2306d151d424da521d8047be44aa5"/>
+              <topic label="$info_box_contents" href="d4/dd3/classmybox.html#a678534b523cb0c58a5b5f47d65489cbe"/>
+              <topic label="$info_box_head" href="d4/dd3/classmybox.html#a66196a918a64360045dc28aef78fd896"/>
+              <topic label="$param" href="d4/dd3/classmybox.html#a9bf93b4b6b632cdb0de07abb2b0b9449"/>
+            </topic>
+          </topic>
+          <topic label="plotsummarybox.php" href="dc/d4d/plotsummarybox_8php.html">
+            <topic label="plotsummarybox" href="db/dcb/classplotsummarybox.html">
+              <topic label="__construct" href="db/dcb/classplotsummarybox.html#a9b1b37a9d2b32f9e5f1d3b1421123de5"/>
+              <topic label="loadBox" href="db/dcb/classplotsummarybox.html#a85c26e619cc83cb7b679fbd20f981088"/>
+              <topic label="showBox" href="db/dcb/classplotsummarybox.html#a1a120e87f1ca1d616d2749756857569e"/>
+              <topic label="$boxcode" href="db/dcb/classplotsummarybox.html#a734c199422c0514afc980b5c2907a390"/>
+              <topic label="$boximg" href="db/dcb/classplotsummarybox.html#ad56fe37a06cfa7b3c7d241cb651bc53d"/>
+              <topic label="$boxlabel" href="db/dcb/classplotsummarybox.html#acebddf3e8c956c3e50f52d0581af426f"/>
+              <topic label="$db" href="db/dcb/classplotsummarybox.html#a865c948f8b38e84a3bcf57714845b2f5"/>
+              <topic label="$depends" href="db/dcb/classplotsummarybox.html#a51c07795be87ef57539e75274c82ef3f"/>
+              <topic label="$info_box_contents" href="db/dcb/classplotsummarybox.html#a2bc11bfe4dfe4fd54f9f5aa0a7f0a95a"/>
+              <topic label="$info_box_head" href="db/dcb/classplotsummarybox.html#a664064cf2dda643d7715bbf2c8e0e7b9"/>
+              <topic label="$param" href="db/dcb/classplotsummarybox.html#aa3e8d06db390d20f379b57db1e92e72a"/>
+            </topic>
+          </topic>
+        </topic>
+        <topic label="modules" href="dir_a92b4f1014d7c42de412a9ce4651719e.html">
+          <topic label="vignoble" href="dir_8c1deb087e757bccfaf3d87e81d6fa06.html">
+            <topic label="doc" href="dir_c3c3278f8b586bd1d47138e6b5bf4593.html">
+              <topic label="pdf_plotabc.modules.php" href="d0/d92/pdf__plotabc_8modules_8php.html">
+                <topic label="pdf_plotabc" href="d8/d91/classpdf__plotabc.html">
+                  <topic label="__construct" href="d8/d91/classpdf__plotabc.html#a79474200180001316ebc948484e264d5"/>
+                  <topic label="_pagefoot" href="d8/d91/classpdf__plotabc.html#a0b8c63ea1fa03d4586e64febb06a39bb"/>
+                  <topic label="_pagehead" href="d8/d91/classpdf__plotabc.html#a49c2ec874ea62121aac567aa9a14d948"/>
+                  <topic label="_tableau" href="d8/d91/classpdf__plotabc.html#a8b91ba0dcf2a4ac01e597e7a0475470e"/>
+                  <topic label="_tableau_info" href="d8/d91/classpdf__plotabc.html#a596393403ca63c2bc3ae5b0c8fa86b61"/>
+                  <topic label="_tableau_tot" href="d8/d91/classpdf__plotabc.html#adcd867dcbc80d6b4872e3ffa38b42301"/>
+                  <topic label="_tableau_versements" href="d8/d91/classpdf__plotabc.html#a43610953ea44bcde5bec334bc345bb79"/>
+                  <topic label="write_file" href="d8/d91/classpdf__plotabc.html#a99e2da3fcf7e93da09789fdca21ab12f"/>
+                  <topic label="$db" href="d8/d91/classpdf__plotabc.html#af580c1c8af5086a8a5c007966a978c96"/>
+                  <topic label="$description" href="d8/d91/classpdf__plotabc.html#a6ce8c5cd63590a7ebb05dc70b2b51dab"/>
+                  <topic label="$emetteur" href="d8/d91/classpdf__plotabc.html#ad2ac97431a243b3ffa060120b1460ca5"/>
+                  <topic label="$format" href="d8/d91/classpdf__plotabc.html#ad5ae3d7158abacb0665d71e3cbf731a3"/>
+                  <topic label="$marge_basse" href="d8/d91/classpdf__plotabc.html#ae03766d6cede762e74f1898da6f6ce54"/>
+                  <topic label="$marge_droite" href="d8/d91/classpdf__plotabc.html#a2ac22cf2e044339af1baeaa7afae611d"/>
+                  <topic label="$marge_gauche" href="d8/d91/classpdf__plotabc.html#a2e4c03d6074d7ef714613a6ea4515733"/>
+                  <topic label="$marge_haute" href="d8/d91/classpdf__plotabc.html#af5f2d27db8ce4465266c767571cf231b"/>
+                  <topic label="$name" href="d8/d91/classpdf__plotabc.html#a5d03b75f6ae27789ebbbc2c3a0f9a0f3"/>
+                  <topic label="$page_hauteur" href="d8/d91/classpdf__plotabc.html#a4b3958725a7125407d2dd2c6420fef36"/>
+                  <topic label="$page_largeur" href="d8/d91/classpdf__plotabc.html#adc89fff30b4d354f530121e8b50b1a1d"/>
+                  <topic label="$phpmin" href="d8/d91/classpdf__plotabc.html#a2ccfaab38cab1a1c27d857fda00cf07c"/>
+                  <topic label="$type" href="d8/d91/classpdf__plotabc.html#ac8c5ebe5a886b42374f7319b30e34541"/>
+                  <topic label="$version" href="d8/d91/classpdf__plotabc.html#a77ccd51bc6c70afca617556bc8596f0e"/>
+                </topic>
+                <topic label="$s" href="d0/d92/pdf__plotabc_8modules_8php.html#a50b05cf2e02ef0b67fcad97106dd7634"/>
+              </topic>
+            </topic>
+            <topic label="modules_vignoble.php" href="df/dd8/modules__vignoble_8php.html">
+              <topic label="ModelePDFPlot" href="d2/dcb/class_modele_p_d_f_plot.html">
+                <topic label="liste_modeles" href="d2/dcb/class_modele_p_d_f_plot.html#a36998dbd09f567387e5ca1d459d97fa5"/>
+                <topic label="$error" href="d2/dcb/class_modele_p_d_f_plot.html#ae503ec1e3a1717f5a92c0b75c4e49e90"/>
+              </topic>
+              <topic label="ModeleVignoble" href="d7/d78/class_modele_vignoble.html">
+                <topic label="liste_modeles" href="d7/d78/class_modele_vignoble.html#a0708902726530836b6535bc9685fb032"/>
+                <topic label="$error" href="d7/d78/class_modele_vignoble.html#a65da2c4d9c568a048922f6d178978ebc"/>
+              </topic>
+              <topic label="ModeleNumRefCommandes" href="dd/dae/class_modele_num_ref_commandes.html">
+                <topic label="canBeActivated" href="dd/dae/class_modele_num_ref_commandes.html#af3777ffc5a42ef7e2a96b304d7703009"/>
+                <topic label="getExample" href="dd/dae/class_modele_num_ref_commandes.html#aeda02b75fdbbc682c02153c9396a8afa"/>
+                <topic label="getNextValue" href="dd/dae/class_modele_num_ref_commandes.html#a15b74fa05cc1f913dd31bb4fad141be4"/>
+                <topic label="getVersion" href="dd/dae/class_modele_num_ref_commandes.html#ac7dbf3526f4e1ba7e8fcc3ed2ceda391"/>
+                <topic label="info" href="dd/dae/class_modele_num_ref_commandes.html#a262ab9f35572baa2d25d49eef62ba521"/>
+                <topic label="isEnabled" href="dd/dae/class_modele_num_ref_commandes.html#afcd4b8f0ba966ede6c5563a41302b251"/>
+                <topic label="$error" href="dd/dae/class_modele_num_ref_commandes.html#a5e132b64f7b43256ab58c91d0d14fdb5"/>
+              </topic>
+              <topic label="commande_pdf_create" href="df/dd8/modules__vignoble_8php.html#abb1156b20991e04f4629605315369158"/>
+            </topic>
+          </topic>
+          <topic label="modVignoble.class.php" href="d9/d66/mod_vignoble_8class_8php.html">
+            <topic label="modVignoble" href="d9/d7e/classmod_vignoble.html">
+              <topic label="__construct" href="d9/d7e/classmod_vignoble.html#ada044c2932bba560426dfcc82f84c8ec"/>
+              <topic label="getBoxes" href="d9/d7e/classmod_vignoble.html#ab8f2632e2f1339ac55a29052667f56fd"/>
+              <topic label="getConfigPages" href="d9/d7e/classmod_vignoble.html#a10339ea522e23636e3174fc86d2d8d5d"/>
+              <topic label="getConstant" href="d9/d7e/classmod_vignoble.html#ab6366de750143cc368ee9e4f880030bd"/>
+              <topic label="getDataDirectories" href="d9/d7e/classmod_vignoble.html#ae8cb766232d743c29d65e8e55eb35fa0"/>
+              <topic label="getDependencies" href="d9/d7e/classmod_vignoble.html#a85c5eb0993b7c94a50ab6f380c262f8c"/>
+              <topic label="getDictionaries" href="d9/d7e/classmod_vignoble.html#a13c6e7111456b8c0655c51872c109cf3"/>
+              <topic label="getExports" href="d9/d7e/classmod_vignoble.html#a5a2223ae6de75f689e1d68a37874e4ee"/>
+              <topic label="getImports" href="d9/d7e/classmod_vignoble.html#ae2ef9ec4b1288cbc5e290368fe47de35"/>
+              <topic label="getLanguageFiles" href="d9/d7e/classmod_vignoble.html#a26ce8f05be923a220db40f00e571c9c5"/>
+              <topic label="getMenuEntries" href="d9/d7e/classmod_vignoble.html#a8f0e02490eb598f93b4fa1e9c3455d53"/>
+              <topic label="getParts" href="d9/d7e/classmod_vignoble.html#ae723a7f6feeadc16f6893358bcd3724e"/>
+              <topic label="getPermissions" href="d9/d7e/classmod_vignoble.html#ab479f209376307097bcafefa1de9c2ee"/>
+              <topic label="getTabs" href="d9/d7e/classmod_vignoble.html#adf13eedd9ced338dd436d283219b6f3f"/>
+              <topic label="init" href="d9/d7e/classmod_vignoble.html#adfa10a82c8702bfbc4626399e523f91c"/>
+              <topic label="loadTables" href="d9/d7e/classmod_vignoble.html#afdabceb1f701f7e4a988388a3e0ee828"/>
+              <topic label="remove" href="d9/d7e/classmod_vignoble.html#a32f60fd68e5b527ed99afe918a48e495"/>
+            </topic>
+          </topic>
+        </topic>
+        <topic label="triggers" href="dir_2c5cc2f7a80efa7a4e2ba703656567ab.html">
+          <topic label="interface_99_modMyModule_Mytrigger.class.php" href="d2/d50/interface__99__mod_my_module___mytrigger_8class_8php.html">
+            <topic label="$dolibarr_version" href="d2/d50/interface__99__mod_my_module___mytrigger_8class_8php.html#af8ca86855a4e1079cd78279cba6fafd8"/>
+          </topic>
+        </topic>
+      </topic>
+      <topic label="js" href="dir_2867b8401105090ba43035c8b1fd9c0c.html">
+        <topic label="myjs.js.php" href="d2/d77/myjs_8js_8php.html"/>
+      </topic>
+      <topic label="lib" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">
+        <topic label="vignoble.lib.php" href="db/dbd/vignoble_8lib_8php.html">
+          <topic label="vignobleAdminPrepareHead" href="db/dbd/vignoble_8lib_8php.html#ac9c9d6f3b5668a6076cbe2dab7937640"/>
+        </topic>
+      </topic>
+      <topic label="scripts" href="dir_53e6fa9553ac22a5646d2a2b2d7b97a1.html">
+        <topic label="parcelle_script.php" href="d8/d47/parcelle__script_8php.html">
+          <topic label="$error" href="d8/d47/parcelle__script_8php.html#aeba2ab722cedda53dbb7ec1a59f45550"/>
+          <topic label="$path" href="d8/d47/parcelle__script_8php.html#a0a4baf0b22973c07685c3981f0d17fc4"/>
+          <topic label="$resql" href="d8/d47/parcelle__script_8php.html#a6adc5ef389ab51c21dee69262018d615"/>
+          <topic label="$result" href="d8/d47/parcelle__script_8php.html#a112ef069ddc0454086e3d1e6d8d55d07"/>
+          <topic label="$sapi_type" href="d8/d47/parcelle__script_8php.html#a86e02f00a36d0fcbf274de973b2640d0"/>
+          <topic label="$script_file" href="d8/d47/parcelle__script_8php.html#a97b9f047572d6c50f29fbea522f6c17e"/>
+          <topic label="$sql" href="d8/d47/parcelle__script_8php.html#a047170d6020a882807665812a27e2525"/>
+          <topic label="$version" href="d8/d47/parcelle__script_8php.html#a66c3e4e7a8423764bad3dd058033576b"/>
+          <topic label="else" href="d8/d47/parcelle__script_8php.html#ad66f0bfb75032b2f6b649224093938f0"/>
+          <topic label="EVEN_IF_ONLY_LOGIN_ALLOWED" href="d8/d47/parcelle__script_8php.html#a2b87986264c1ca3cddb96a106af7b37a"/>
+          <topic label="field2" href="d8/d47/parcelle__script_8php.html#af9edfce80596a171cfb2884ba7ad01df"/>
+        </topic>
+      </topic>
+      <topic label="sql" href="dir_5bd71961b401a432086d0fb290a87f3f.html">
+        <topic label="data.sql" href="d2/d67/data_8sql.html"/>
+        <topic label="llx_c_cultivationtype.key.sql" href="d6/d8b/llx__c__cultivationtype_8key_8sql.html"/>
+        <topic label="llx_c_cultivationtype.sql" href="df/dd9/llx__c__cultivationtype_8sql.html"/>
+        <topic label="llx_c_rootstock.key.sql" href="d6/dfb/llx__c__rootstock_8key_8sql.html"/>
+        <topic label="llx_c_rootstock.sql" href="d3/dfa/llx__c__rootstock_8sql.html"/>
+        <topic label="llx_c_varietal.key.sql" href="d9/d9f/llx__c__varietal_8key_8sql.html"/>
+        <topic label="llx_c_varietal.sql" href="d9/d95/llx__c__varietal_8sql.html"/>
+        <topic label="llx_plot.key.sql" href="d6/dcf/llx__plot_8key_8sql.html"/>
+        <topic label="llx_plot.sql" href="dc/d0d/llx__plot_8sql.html"/>
+        <topic label="update_x.x.x-y.y.y.sql" href="d4/d73/update__x_8x_8x-y_8y_8y_8sql.html"/>
+      </topic>
+      <topic label="tpl" href="dir_9097c979923185181c80a7f04e7d4686.html">
+        <topic label="maindolibarr.inc.php" href="d6/d14/maindolibarr_8inc_8php.html">
+          <topic label="$incresult" href="d6/d14/maindolibarr_8inc_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
+        </topic>
+        <topic label="mytemplate.tpl.php" href="d7/d99/mytemplate_8tpl_8php.html"/>
+      </topic>
+      <topic label="index.php" href="de/d20/index_8php.html">
+        <topic label="displayView" href="de/d20/index_8php.html#aca04b3e313abfb913efaacdfb7d5d3d7"/>
+      </topic>
+      <topic label="plot_card.php" href="df/d3c/plot__card_8php.html">
+        <topic label="$action" href="df/d3c/plot__card_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+        <topic label="$backtopage" href="df/d3c/plot__card_8php.html#aced350fa7c04e841b49bea7b099f625e"/>
+        <topic label="$extrafields" href="df/d3c/plot__card_8php.html#aa659316307a821cdcd60350fd0290d6e"/>
+        <topic label="$form" href="df/d3c/plot__card_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
+        <topic label="$formactions" href="df/d3c/plot__card_8php.html#aa57dd115f90fa6e4102bb2c4174d430d"/>
+        <topic label="$formfile" href="df/d3c/plot__card_8php.html#a2452015d72b8956547b810d5c34b7095"/>
+        <topic label="$formvignoble" href="df/d3c/plot__card_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
+        <topic label="$id" href="df/d3c/plot__card_8php.html#ae97941710d863131c700f069b109991e"/>
+        <topic label="$incresult" href="df/d3c/plot__card_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
+        <topic label="$object" href="df/d3c/plot__card_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
+        <topic label="$parameters" href="df/d3c/plot__card_8php.html#ab79d246480c4ac3a0db6bbceca92ad32"/>
+        <topic label="$ref" href="df/d3c/plot__card_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
+        <topic label="$reshook" href="df/d3c/plot__card_8php.html#a9f714fd8cba1988231c5a555da5f4ea8"/>
+      </topic>
+      <topic label="plot_info.php" href="dd/d24/plot__info_8php.html">
+        <topic label="$currentPlot" href="dd/d24/plot__info_8php.html#ab774d953b394afc1b40bbc49ede6c313"/>
+        <topic label="$form" href="dd/d24/plot__info_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
+        <topic label="$formvignoble" href="dd/d24/plot__info_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
+        <topic label="$head" href="dd/d24/plot__info_8php.html#a687ea7fcd78263867b5bd34ed56b6379"/>
+        <topic label="$id" href="dd/d24/plot__info_8php.html#ae97941710d863131c700f069b109991e"/>
+        <topic label="$incresult" href="dd/d24/plot__info_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
+        <topic label="$ref" href="dd/d24/plot__info_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
+        <topic label="if" href="dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498"/>
+        <topic label="print" href="dd/d24/plot__info_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4"/>
+      </topic>
+      <topic label="plot_list.php" href="da/d01/plot__list_8php.html">
+        <topic label="addJQuery" href="da/d01/plot__list_8php.html#a8e81b4e4ac9404bc1b3030ae9369b0be"/>
+        <topic label="defineListFields" href="da/d01/plot__list_8php.html#ad9ae6ca732a8c7c0dddb1d039e62139f"/>
+        <topic label="$action" href="da/d01/plot__list_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+        <topic label="$arrayfields" href="da/d01/plot__list_8php.html#aa23221b6693987188191f6c7af329116"/>
+        <topic label="$backtopage" href="da/d01/plot__list_8php.html#a71552e61097747f0d8e8288daf9be44d"/>
+        <topic label="$extrafields" href="da/d01/plot__list_8php.html#aa659316307a821cdcd60350fd0290d6e"/>
+        <topic label="$extralabels" href="da/d01/plot__list_8php.html#ae4fd271007f71c2c9e8c619029d1158b"/>
+        <topic label="$form" href="da/d01/plot__list_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
+        <topic label="$formvignoble" href="da/d01/plot__list_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
+        <topic label="$id" href="da/d01/plot__list_8php.html#ae97941710d863131c700f069b109991e"/>
+        <topic label="$incresult" href="da/d01/plot__list_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
+        <topic label="$limit" href="da/d01/plot__list_8php.html#ae05862a0294251c88629b141b5ce329a"/>
+        <topic label="$myparam" href="da/d01/plot__list_8php.html#a191f570965e4704fc705ba0bec1534a6"/>
+        <topic label="$nbtotalofrecords" href="da/d01/plot__list_8php.html#a66917e7b7dd3cc9105e25538f3b5e23e"/>
+        <topic label="$offset" href="da/d01/plot__list_8php.html#a5acd28f2cd2759f30e461ad65c2ff2eb"/>
+        <topic label="$optioncss" href="da/d01/plot__list_8php.html#a963564795dbec8343c69d8a374ed97da"/>
+        <topic label="$page" href="da/d01/plot__list_8php.html#a0a44e6760141442bb439b1ab1395d8ff"/>
+        <topic label="$pagenext" href="da/d01/plot__list_8php.html#a858f41315ebc780cc51614bcf2558f6c"/>
+        <topic label="$pageprev" href="da/d01/plot__list_8php.html#a2aed2a7a0f1235d3a53b08dea07bd5c7"/>
+        <topic label="$parameters" href="da/d01/plot__list_8php.html#ab92e7788a3ff79e3437294ecca122ab0"/>
+        <topic label="$plot" href="da/d01/plot__list_8php.html#a5b0a06d0a335775afd5e4b1875fa1f74"/>
+        <topic label="$reshook" href="da/d01/plot__list_8php.html#a9f714fd8cba1988231c5a555da5f4ea8"/>
+        <topic label="$resql" href="da/d01/plot__list_8php.html#a6adc5ef389ab51c21dee69262018d615"/>
+        <topic label="$search_areasize" href="da/d01/plot__list_8php.html#a1909130aa10a2952447f78e0953d313a"/>
+        <topic label="$search_array_options" href="da/d01/plot__list_8php.html#a9db46c52180be765f6322b1d9f2a5612"/>
+        <topic label="$search_description" href="da/d01/plot__list_8php.html#a0ab116f72521467e8a5ea8748be364de"/>
+        <topic label="$search_entity" href="da/d01/plot__list_8php.html#a86e5ede562b0b4e2d265254862cfab4b"/>
+        <topic label="$search_fk_cultivationtype" href="da/d01/plot__list_8php.html#a354fecf5d3736dba154961cdd3d1f081"/>
+        <topic label="$search_fk_rootstock" href="da/d01/plot__list_8php.html#aba60bbf3a15cbb8ec5fb955a4a792649"/>
+        <topic label="$search_fk_varietal" href="da/d01/plot__list_8php.html#a601aade05a4af380b411d22825cdeb1c"/>
+        <topic label="$search_label" href="da/d01/plot__list_8php.html#ac283f8cbd0c3b365bb2d310384d647ea"/>
+        <topic label="$search_ref" href="da/d01/plot__list_8php.html#af1a9873316820a11c4af92c3597d352f"/>
+        <topic label="$search_rootsnumber" href="da/d01/plot__list_8php.html#a54e169a4f92e05a239dd1ac7466cb6d6"/>
+        <topic label="$search_spacing" href="da/d01/plot__list_8php.html#a6bbeca30f947b94239eda85321fa8ed1"/>
+        <topic label="$socid" href="da/d01/plot__list_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8"/>
+        <topic label="$sortfield" href="da/d01/plot__list_8php.html#ad8a3bcfb2e745be70b1e7ebe97472ce6"/>
+        <topic label="$sortorder" href="da/d01/plot__list_8php.html#a11ec75e1068cd7566eaaf44082cdd029"/>
+        <topic label="$sql" href="da/d01/plot__list_8php.html#ae08f91dd745d4d2eca470b2607f4b9a0"/>
+        <topic label="$title" href="da/d01/plot__list_8php.html#ada57e7bb7c152edad18fe2f166188691"/>
+        <topic label="else" href="da/d01/plot__list_8php.html#a9fa70a3e78555272800c62afa60fd20c"/>
+      </topic>
+      <topic label="plot_notes.php" href="d3/d16/plot__notes_8php.html">
+        <topic label="$action" href="d3/d16/plot__notes_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+        <topic label="$form" href="d3/d16/plot__notes_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
+        <topic label="$formvignoble" href="d3/d16/plot__notes_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
+        <topic label="$id" href="d3/d16/plot__notes_8php.html#ae97941710d863131c700f069b109991e"/>
+        <topic label="$incresult" href="d3/d16/plot__notes_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
+        <topic label="$object" href="d3/d16/plot__notes_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
+        <topic label="$permission" href="d3/d16/plot__notes_8php.html#aad04b6f3304fe6a13d5be37f7cd28938"/>
+        <topic label="$permissionnote" href="d3/d16/plot__notes_8php.html#a4f72bb2f0b3c02e7a9d3adbf96feae3e"/>
+        <topic label="$ref" href="d3/d16/plot__notes_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
+        <topic label="$result" href="d3/d16/plot__notes_8php.html#a112ef069ddc0454086e3d1e6d8d55d07"/>
+      </topic>
+    </topic>
+    <topic label="File Members" href="globals.html">
+      <topic label="All" href="globals.html"/>
+      <topic label="Functions" href="globals_func.html"/>
+      <topic label="Variables" href="globals_vars.html"/>
+    </topic>
+  </topic>
+</toc>

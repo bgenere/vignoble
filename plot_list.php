@@ -37,13 +37,13 @@
 // if (! defined("NOLOGIN")) define("NOLOGIN",'1'); // If this page is public (can be called outside logged session)
 
 // Change this following line to use the correct relative path (../, ../../, etc)
-$res = 0;
-if (! $res && file_exists("../main.inc.php"))
-	$res = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
-if (! $res && file_exists("../../main.inc.php"))
-	$res = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
+$incresult = 0;
+if (! $incresult && file_exists("../main.inc.php"))
+	$incresult = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
+if (! $incresult && file_exists("../../main.inc.php"))
+	$incresult = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
 
-if (! $res)
+if (! $incresult)
 	die("Include of main fails");
 	// Change this following line to use the correct relative path from htdocs
 	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');

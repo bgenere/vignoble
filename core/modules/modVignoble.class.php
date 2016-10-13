@@ -18,10 +18,20 @@
  */
 
 /**
- * \defgroup vignoble Vignoble module
- * \brief Vignoble module descriptor.
+ * \defgroup plot Plot Management
+ * 
+ * Components to manage vineyard plots
+ * 
+ * \defgroup dashboard Dashboard
+ * 
+ * Vignoble dashboard components
+ * 
+ */
+
+/**
  * \file core/modules/modVignoble.class.php
- * \ingroup vignoble
+ * \brief Vignoble module descriptor.
+ * 
  */
 include_once DOL_DOCUMENT_ROOT . "/core/modules/DolibarrModules.class.php";
 
