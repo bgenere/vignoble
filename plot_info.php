@@ -20,17 +20,16 @@
 /**
  * \file vignoble/plot_info.php
  * \ingroup plot
- * \brief Provide the Info tab for a plot
+ * \brief The plot info tab
+ * 
+ * The form displays the user information associated to the object.
+ * User attributes are in view mode only. 
+ * Top of the form is standardised to display the object identity and navigate the object list.
+ * 
  */
 
-// Change this following line to use the correct relative path (../, ../../, etc)
-$incresult = 0;
-if (! $incresult && file_exists("../main.inc.php"))
-	$incresult = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
-if (! $incresult && file_exists("../../main.inc.php"))
-	$incresult = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-if (! $incresult)
-	die("Include of main fails");
+@include './tpl/maindolibarr.inc.php';
+
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 // require_once DOL_DOCUMENT_ROOT.'/commande/class/commande.class.php';
 // require_once DOL_DOCUMENT_ROOT.'/core/lib/order.lib.php';

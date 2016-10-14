@@ -18,10 +18,14 @@
  */
 
 /**
- * \file vignoble/plot_list.php
- * \ingroup vignoble
+ * \file plot_list.php
+ * \ingroup plot
  * \brief Display the list of plots
- * List is displayed
+ * 
+ * The list of plots is paginated and could be filtered/search/sorted on displayed fields.
+ * User could select which fields to display in list.
+ * Each item of the list is selectable and link to the object form
+ * 
  */
 
 // if (! defined('NOREQUIREUSER')) define('NOREQUIREUSER','1');
@@ -36,15 +40,7 @@
 // if (! defined('NOREQUIREAJAX')) define('NOREQUIREAJAX','1');
 // if (! defined("NOLOGIN")) define("NOLOGIN",'1'); // If this page is public (can be called outside logged session)
 
-// Change this following line to use the correct relative path (../, ../../, etc)
-$incresult = 0;
-if (! $incresult && file_exists("../main.inc.php"))
-	$incresult = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
-if (! $incresult && file_exists("../../main.inc.php"))
-	$incresult = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-
-if (! $incresult)
-	die("Include of main fails");
+@include './tpl/maindolibarr.inc.php';
 	// Change this following line to use the correct relative path from htdocs
 	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
 dol_include_once('/vignoble/class/plot.class.php');

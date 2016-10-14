@@ -20,8 +20,12 @@
 /**
  * \file plot_card.php
  * \ingroup plot
- * \brief Manage the plot form.
+ * \brief The plot main form.
  * 
+ * The form displays the main attributes of the plot.
+ * Attributes are in view mode first. 
+ * The user could use the form to update, create or delete an object.
+ * Top of the form is standardised to display the object identity and navigate the object list.
  * 
  */
 
@@ -37,16 +41,9 @@
 // if (! defined('NOREQUIREAJAX')) define('NOREQUIREAJAX','1');
 // if (! defined("NOLOGIN")) define("NOLOGIN",'1'); // If this page is public (can be called outside logged session)
 
-// Change this following line to use the correct relative path (../, ../../, etc)
-$incresult = 0;
-if (! $incresult && file_exists("../main.inc.php"))
-	$incresult = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
-if (! $incresult && file_exists("../../main.inc.php"))
-	$incresult = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-if (! $incresult)
-	die("Include of main fails");
+@include './tpl/maindolibarr.inc.php';
 
-// $conf $user $lang $db variables globales
+// $conf $user $langs $db variables globales
 
 	// Change this following line to use the correct relative path from htdocs
 	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');

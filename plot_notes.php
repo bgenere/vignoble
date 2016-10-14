@@ -20,19 +20,19 @@
  */
 
 /**
- * \file htdocs/commande/plot_notes.php
- * \ingroup commande
- * \brief Fiche de notes sur une commande
+ * \file plot_notes.php
+ * \ingroup plot
+ * \brief The plot note form
+ * 
+ * The form displays the notes (public and private) of the plot.
+ * Notes are in view mode first. 
+ * The user could use the form to update, create or delete a note.
+ * Top of the form is standardised to display the object identity and navigate the object list.
+ * 
  */
 
-// get main includes
-$incresult = 0;
-if (! $incresult && file_exists("../main.inc.php"))
-	$incresult = @include '../main.inc.php'; // to work if your module directory is into dolibarr root htdocs directory
-if (! $incresult && file_exists("../../main.inc.php"))
-	$incresult = @include '../../main.inc.php'; // to work if your module directory is into a subdir of root htdocs directory
-if (! $incresult)
-	die("Include of main fails");
+@include './tpl/maindolibarr.inc.php';
+
 	// require_once DOL_DOCUMENT_ROOT.'/core/lib/order.lib.php';
 	// require_once DOL_DOCUMENT_ROOT .'/commande/class/commande.class.php';
 dol_include_once('/vignoble/class/plot.class.php');

@@ -16,13 +16,13 @@
  */
 /**
  * \file
- * \brief template to include main Dolibarr library
+ * \brief Template to include main Dolibarr library
  * 
  * Test various directory to load Main Dolibarr library so it works
  * when module directory is in <dolibarr_root>/htdocs directory or
  * in a subdir (as <dolibarr_root>/htdocs/custom).
  * 
- * \ingroup template
+ * \ingroup component
  * 
  */
 
