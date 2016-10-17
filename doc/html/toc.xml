@@ -7,9 +7,14 @@
     <topic label="Plot Management" href="db/dfe/group__plot.html">
       <topic label="plot_card.php" href="df/d3c/plot__card_8php.html"/>
       <topic label="plot_info.php" href="dd/d24/plot__info_8php.html"/>
+      <topic label="plot_list.php" href="da/d01/plot__list_8php.html"/>
+      <topic label="plot_notes.php" href="d3/d16/plot__notes_8php.html"/>
     </topic>
     <topic label="Dashboard" href="d5/d3d/group__dashboard.html">
       <topic label="index.php" href="de/d20/index_8php.html"/>
+    </topic>
+    <topic label="Reusable components" href="d0/df8/group__component.html">
+      <topic label="maindolibarr.inc.php" href="d6/d14/maindolibarr_8inc_8php.html"/>
     </topic>
   </topic>
   <topic label="Classes" href="annotated.html">
@@ -453,6 +458,7 @@
         <topic label="llx_c_varietal.sql" href="d9/d95/llx__c__varietal_8sql.html"/>
         <topic label="llx_plot.key.sql" href="d6/dcf/llx__plot_8key_8sql.html"/>
         <topic label="llx_plot.sql" href="dc/d0d/llx__plot_8sql.html"/>
+        <topic label="test.sql" href="d9/d4e/test_8sql.html"/>
         <topic label="update_x.x.x-y.y.y.sql" href="d4/d73/update__x_8x_8x-y_8y_8y_8sql.html"/>
       </topic>
       <topic label="tpl" href="dir_9097c979923185181c80a7f04e7d4686.html">
@@ -473,7 +479,6 @@
         <topic label="$formfile" href="df/d3c/plot__card_8php.html#a2452015d72b8956547b810d5c34b7095"/>
         <topic label="$formvignoble" href="df/d3c/plot__card_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
         <topic label="$id" href="df/d3c/plot__card_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$incresult" href="df/d3c/plot__card_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
         <topic label="$object" href="df/d3c/plot__card_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
         <topic label="$parameters" href="df/d3c/plot__card_8php.html#ab79d246480c4ac3a0db6bbceca92ad32"/>
         <topic label="$ref" href="df/d3c/plot__card_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
@@ -485,7 +490,6 @@
         <topic label="$formvignoble" href="dd/d24/plot__info_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
         <topic label="$head" href="dd/d24/plot__info_8php.html#a687ea7fcd78263867b5bd34ed56b6379"/>
         <topic label="$id" href="dd/d24/plot__info_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$incresult" href="dd/d24/plot__info_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
         <topic label="$ref" href="dd/d24/plot__info_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
         <topic label="if" href="dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498"/>
         <topic label="print" href="dd/d24/plot__info_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4"/>
@@ -501,7 +505,6 @@
         <topic label="$form" href="da/d01/plot__list_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
         <topic label="$formvignoble" href="da/d01/plot__list_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
         <topic label="$id" href="da/d01/plot__list_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$incresult" href="da/d01/plot__list_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
         <topic label="$limit" href="da/d01/plot__list_8php.html#ae05862a0294251c88629b141b5ce329a"/>
         <topic label="$myparam" href="da/d01/plot__list_8php.html#a191f570965e4704fc705ba0bec1534a6"/>
         <topic label="$nbtotalofrecords" href="da/d01/plot__list_8php.html#a66917e7b7dd3cc9105e25538f3b5e23e"/>
@@ -537,7 +540,6 @@
         <topic label="$form" href="d3/d16/plot__notes_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
         <topic label="$formvignoble" href="d3/d16/plot__notes_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
         <topic label="$id" href="d3/d16/plot__notes_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$incresult" href="d3/d16/plot__notes_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
         <topic label="$object" href="d3/d16/plot__notes_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
         <topic label="$permission" href="d3/d16/plot__notes_8php.html#aad04b6f3304fe6a13d5be37f7cd28938"/>
         <topic label="$permissionnote" href="d3/d16/plot__notes_8php.html#a4f72bb2f0b3c02e7a9d3adbf96feae3e"/>
