@@ -18,20 +18,27 @@
  */
 
 /**
+ * List of module components group for doxygen documentation
+ *
  * \defgroup plot Plot Management
- * 
- * Components to manage vineyard plots
- * 
+ *
+ * Components providing vineyard plots management
+ *
  * \defgroup dashboard Dashboard
- * 
- * Vignoble dashboard components
- * 
+ *
+ * Components providing the Vignoble dashboard
+ *
+ * \defgroup component Reusable components
+ *
+ * Components reused in other Vignoble components
  */
 
 /**
  * \file core/modules/modVignoble.class.php
- * \brief Vignoble module descriptor.
- * 
+ * \brief File contains the Vignoble module descriptor.
+ *
+ * The module class extends the DolibarrModule Class and define
+ * module properties and components.
  */
 include_once DOL_DOCUMENT_ROOT . "/core/modules/DolibarrModules.class.php";
 
@@ -43,7 +50,8 @@ class modVignoble extends DolibarrModules
 
 	/**
 	 * Constructor.
-	 * Define names, constants, directories, boxes, permissions
+	 * Define names, constants, directories, boxes, permissions...
+	 * all components and properties for the module
 	 *
 	 * @param DoliDB $db
 	 *        	Database handler
@@ -58,40 +66,57 @@ class modVignoble extends DolibarrModules
 		} else {
 			$this->db = $db;
 		}
-		
-		// Id for module (must be unique).
-		// Use a free id here
-		// (See http://wiki.dolibarr.org/index.php/List_of_modules_id for available ranges).
+		/**
+		 * Set up Module properties.
+		 */
+		/**
+		 * numero : Id for module (must be unique).
+		 * You should use a free id and check http://wiki.dolibarr.org/index.php/List_of_modules_id for available ranges.
+		 */
 		$this->numero = 123100;
-		// Key text used to identify module (for permissions, menus, etc...)
+		/**
+		 * rights_class : Key text used to identify module (for permissions, menus, etc...)
+		 */
 		$this->rights_class = 'vignoble';
-		// Family can be 'crm','financial','hr','projects','products','ecm','technic','other'
-		// It is used to group modules in module setup page
+		/**
+		 * family : used to group modules in module setup page.
+		 * Family can be 'crm','financial','hr','projects','products','ecm','technic','other'
+		 */
 		$this->family = "products";
-		// Module label (no space allowed)
-		// used if translation string 'ModuleXXXName' not found
-		// (where XXX is value of numeric property 'numero' of module)
+		/**
+		 * name : module name using this class name without space
+		 * used if translation string 'ModuleXXXName' not found (where XXX is value of $this->numero)
+		 */
 		$this->name = preg_replace('/^mod/i', '', get_class($this));
-		// Module description
-		// used if translation string 'ModuleXXXDesc' not found
-		// (where XXX is value of numeric property 'numero' of module)
-		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
+		/**
+		 * description : used if translation string 'ModuleXXXDesc' not found
+		 */
 		$this->description = "Vineyard Management";
+		/**
+		 * descriptionlong : Can be a full HTML content, not used yet
+		 */
 		$this->descriptionlong = "A very long description. Can be a full HTML content, not used yet";
+		/**
+		 * editor name and editor url
+		 */
 		$this->editor_name = 'Bruno Généré';
 		$this->editor_url = 'http://webiseasy.org';
-		// Possible values for version are: 'development', 'experimental' or version
+		/**
+		 * version : module version as x.x.x
+		 */
 		$this->version = '0.1';
-		// Key used in llx_const table to save module status enabled/disabled
-		// (where vignoble is value of property name of module in uppercase)
+		/**
+		 * const_name : module constant to save module status enabled/disabled
+		 */
 		$this->const_name = 'MAIN_MODULE_' . strtoupper($this->name);
-		// Name of image file used for this module.
-		// If file is in theme/yourtheme/img directory under name object_pictovalue.png
-		// use this->picto='pictovalue'
-		// If file is in module/img directory under name object_pictovalue.png
-		// use this->picto='pictovalue@module'
-		$this->picto = 'vignoble@vignoble'; // mypicto@vignoble
+		/**
+		 * picto : image file used for the module
+		 */
+		$this->picto = 'vignoble@vignoble';
 		
+		/**
+		 * Call private functions to initialize complex properties
+		 */
 		$this->getParts();
 		
 		$this->getDataDirectories();
@@ -122,11 +147,12 @@ class modVignoble extends DolibarrModules
 		$this->getExports();
 		
 		$this->getImports();
+		// var_dump($this);
 	}
 
 	/**
-	 * get custom data directories in documentfolders
-	 * directories are created when module is enabled.
+	 * Get custom data directories in document folder.
+	 * Directories are created when module is enabled.
 	 * Example: this->dirs = array("/module/temp");
 	 */
 	private function getDataDirectories()
@@ -135,8 +161,8 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * get configuration pages url stored in config_page_url array
-	 * each entry as "<page file name>@<module name>"
+	 * Get configuration pages url stored in config_page_url array.
+	 * Each entry written as "<page file name>@<module name>" should be stored in module/admin directory.
 	 */
 	private function getConfigPages()
 	{
@@ -146,33 +172,53 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * get dependencies for the module
+	 * Get dependencies attributes and arrays for the module.
 	 */
 	private function getDependencies()
 	{
-		// A condition to hide module
+		/**
+		 * Set hidden with a condition to hide module
+		 */
 		$this->hidden = false;
-		// List of modules class name as string that must be enabled if this module is enabled
-		// Example : $this->depends('modAnotherModule', 'modYetAnotherModule')
+		/**
+		 * Set depends array with list of modules class name as string that must be enabled if this module is enabled
+		 * Example : $this->depends('modAnotherModule', 'modYetAnotherModule')
+		 *
+		 * @todo check issue with Dolibarr when module needed is after current module in list
+		 */
 		$this->depends = array();
-		// List of modules id to disable if this one is disabled
+		/**
+		 * Set requiredby array with list of modules id to disable if this one is disabled
+		 */
 		$this->requiredby = array();
-		// List of modules id this module is in conflict with
+		/**
+		 * Set conflictwith array with list of modules id this module is in conflict with
+		 */
 		$this->conflictwith = array();
-		// Minimum version of PHP required by module
+		/**
+		 * Set phpmin as minimum version of PHP required by the module
+		 */
 		$this->phpmin = array(
 			5,
 			3
 		);
-		// Minimum version of Dolibarr required by module
+		/**
+		 * set need_dolibarr_version as minimum version of Dolibarr required by module
+		 *
+		 * @todo check issue when version contains -alpha
+		 *      
+		 */
 		$this->need_dolibarr_version = array(
-			5,
+			4,
+			9,
 			0
 		);
 	}
 
 	/**
-	 * get module langage files url stored in langfiles
+	 * Get module langage files url stored in langfiles array.
+	 *
+	 * Language files are stored in /langs/<language code>/<module>.lang
 	 */
 	private function getLanguageFiles()
 	{
@@ -182,57 +228,78 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * get module tabs stored in tabs array
-	 * this feature allow to add a tab to an existing objet for the module
-	 * // Example: $this->tabs = array('objecttype:+tabname1:Title1:mylangfile@mymodule:$user->rights->mymodule->read:/mymodule/mynewtab1.php?id=__ID__', // To add a new tab identified by code tabname1
-	 * // 'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@mymodule:$user->rights->othermodule->read:/mymodule/mynewtab2.php?id=__ID__', // To add another new tab identified by code tabname2.
-	 * Label will be result of calling all substitution functions on 'Title2' key.
-	 * // 'objecttype:-tabname:NU:conditiontoremove'); // To remove an existing tab identified by code tabname
-	 * // where objecttype can be
-	 * // 'categories_x' to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
-	 * // 'contact' to add a tab in contact view
-	 * // 'contract' to add a tab in contract view
-	 * // 'group' to add a tab in group view
-	 * // 'intervention' to add a tab in intervention view
-	 * // 'invoice' to add a tab in customer invoice view
-	 * // 'invoice_supplier' to add a tab in supplier invoice view
-	 * // 'member' to add a tab in fundation member view
-	 * // 'opensurveypoll' to add a tab in opensurvey poll view
-	 * // 'order' to add a tab in customer order view
-	 * // 'order_supplier' to add a tab in supplier order view
-	 * // 'payment' to add a tab in payment view
-	 * // 'payment_supplier' to add a tab in supplier payment view
-	 * // 'product' to add a tab in product view
-	 * // 'propal' to add a tab in propal view
-	 * // 'project' to add a tab in project view
-	 * // 'stock' to add a tab in stock view
-	 * // 'thirdparty' to add a tab in third party view
-	 * // 'user' to add a tab in user view
+	 * Get module tabs stored in tabs array.
+	 *
+	 * Each line in the array add a module tab to an existing object.
+	 * The following object type are supported
+	 * - 'categories_x' to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
+	 * - 'contact' to add a tab in contact view
+	 * - 'contract' to add a tab in contract view
+	 * - 'group' to add a tab in group view
+	 * - 'intervention' to add a tab in intervention view
+	 * - 'invoice' to add a tab in customer invoice view
+	 * - 'invoice_supplier' to add a tab in supplier invoice view
+	 * - 'member' to add a tab in fundation member view
+	 * - 'opensurveypoll' to add a tab in opensurvey poll view
+	 * - 'order' to add a tab in customer order view
+	 * - 'order_supplier' to add a tab in supplier order view
+	 * - 'payment' to add a tab in payment view
+	 * - 'payment_supplier' to add a tab in supplier payment view
+	 * - 'product' to add a tab in product view
+	 * - 'propal' to add a tab in propal view
+	 * - 'project' to add a tab in project view
+	 * - 'resource' to add a tab in resource view
+	 * - 'stock' to add a tab in stock view
+	 * - 'thirdparty' to add a tab in third party view
+	 * - 'user' to add a tab in user view
 	 */
 	private function getTabs()
 	{
 		$this->tabs = array(
+			/**
+			 * add plot tab to resource module
+			 */
 			'resource:+plot:Plot:vignoble@vignoble:1:/vignoble/admin/admin_vignoble.php?id=__ID__'
 		);
+		// String Examples :
+		// To add a tab identified by code tabname
+		// 'objecttype:+tabname:tabTitle:mylangfile@mymodule:$user->rights->mymodule->read:/mymodule/mytab.php?id=__ID__'
+		// To add a tab with substitution
+		// 'objecttype:+tabname:SUBSTITUTION_Title2:mylangfile@mymodule:$user->rights->othermodule->read:/mymodule/mytab.php?id=__ID__'
+		// To remove an existing tab identified by code tabname
+		// 'objecttype:-tabname:NU:conditiontoremove')
 	}
 
 	/**
-	 * get module permissions stored in Rights array
+	 * Get module permissions stored in rights array.
 	 *
-	 * // permission is defined by an id, a label, a boolean and two constant strings.
-	 * // Example:
-	 * // $this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
-	 * // $this->rights[$r][1] = 'Permision label'; // Permission label
-	 * // $this->rights[$r][3] = 1; // Permission by default for new user (0/1)
-	 * // $this->rights[$r][4] = 'level1'; // In php code, permission will be checked by test if ($user->rights->permkey->level1->level2)
-	 * // $this->rights[$r][5] = 'level2'; // In php code, permission will be checked by test if ($user->rights->permkey->level1->level2)
-	 * // $r++;
+	 * Each row is a permission defined by an id, a label, a boolean and two constant strings.
 	 */
 	private function getPermissions()
 	{
-		// TODO change with [] assign
 		$this->rights = array();
+		// Example:
+		// $this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		// $this->rights[$r][1] = 'Permision label'; // Permission label
+		// $this->rights[$r][3] = 1; // Permission by default for new user (0/1)
+		// $this->rights[$r][4] = 'level1'; // In php code, permission will be checked by test if ($user->rights->permkey->level1->level2)
+		// $this->rights[$r][5] = 'level2'; // In php code, permission will be checked by test if ($user->rights->permkey->level1->level2)
+		/**
+		 * Set read, create/modify, delete, export and import permissions for Plot
+		 */
 		$r = 0;
+		$this->rights[$r][0] = $this->numero + $r;
+		$this->rights[$r][1] = 'Read plot';
+		$this->rights[$r][3] = 1;
+		$this->rights[$r][4] = 'plot';
+		$this->rights[$r][5] = 'read';
+		$r ++;
+		$this->rights[$r][0] = $this->numero + $r;
+		$this->rights[$r][1] = 'Create/modify plot';
+		$this->rights[$r][3] = 0;
+		$this->rights[$r][4] = 'plot';
+		$this->rights[$r][5] = 'create';
+		$r ++;
 		$this->rights[$r][0] = $this->numero + $r;
 		$this->rights[$r][1] = 'Delete plot';
 		$this->rights[$r][3] = 0;
@@ -244,26 +311,43 @@ class modVignoble extends DolibarrModules
 		$this->rights[$r][3] = 0;
 		$this->rights[$r][4] = 'plot';
 		$this->rights[$r][5] = 'export';
+		$r ++;
+		$this->rights[$r][0] = $this->numero + $r;
+		$this->rights[$r][1] = 'Import plot';
+		$this->rights[$r][3] = 0;
+		$this->rights[$r][4] = 'plot';
+		$this->rights[$r][5] = 'import';
 	}
 
 	/**
-	 * get module menu entries stored in menu array
-	 * Each entry is a key, value array.
-	 * - type => ['top' for top menu | 'left' for left menu]
-	 * - mainmenu => 'main menu id'
-	 * - leftmenu => 'left menu id'
-	 * - fkmenu => [ '0' for top | main menu id for left using 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy']
-	 * - titre => 'Menu title'
-	 * - langs => 'language file for title i.e <module@file>'
-	 * - position => integer used to order left menu
-	 * - url => 'URL to open'
-	 * - target => 'HTML target' use '' to stay on same window
-	 * - user => [0 internal users only | 1 external users only | 2 both users type ]
-	 * - enabled => Use $conf-><modulename>->enabled if entry must be visible only if module is enabled
-	 * - perms => Use 'perms'=>'$user->rights-><modulename>->level1->level2 if you want your menu with a permission rules
+	 * Get module menu entries stored in a menu array.
+	 *
+	 * Each entry is a key, value array in the menu array.
+	 *
+	 * @todo add permission rules for menu entries
 	 */
 	private function getMenuEntries()
 	{
+		/*
+		 * Example !
+		 * $this->menu[] = array(
+		 * type => ['top' for top menu | 'left' for left menu]
+		 * mainmenu => 'main menu id'
+		 * leftmenu => 'left menu id'
+		 * fkmenu => [ '0' for top | main menu id for left using 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy']
+		 * titre => 'Menu title'
+		 * langs => 'language file for title i.e <module@file>'
+		 * position => integer used to order left menu
+		 * url => 'URL to open'
+		 * target => 'HTML target' use '' to stay on same window
+		 * user => [0 internal users only | 1 external users only | 2 both users type ]
+		 * enabled => Use $conf-><modulename>->enabled if entry must be visible only if module is enabled
+		 * perms => Use 'perms'=>'$user->rights-><modulename>->level1->level2 if you want your menu with a permission rules
+		 * );
+		 */
+		/**
+		 * Define Vignoble top menu entry
+		 */
 		$this->menu[] = array(
 			'type' => 'top',
 			'mainmenu' => 'vignoble',
@@ -278,7 +362,9 @@ class modVignoble extends DolibarrModules
 			'enabled' => '$conf->vignoble->enabled',
 			'perms' => '1'
 		);
-		// Left menu
+		/**
+		 * Define plot left menu
+		 */
 		$this->menu[] = array(
 			'type' => 'left',
 			'mainmenu' => 'vignoble',
@@ -293,7 +379,9 @@ class modVignoble extends DolibarrModules
 			'enabled' => '$conf->vignoble->enabled',
 			'perms' => '1'
 		);
-		// Left Menu sub-level
+		/**
+		 * Define plot left menu entry New plot
+		 */
 		$this->menu[] = array(
 			'type' => 'left',
 			'mainmenu' => 'vignoble',
@@ -308,7 +396,9 @@ class modVignoble extends DolibarrModules
 			'enabled' => '$conf->vignoble->enabled',
 			'perms' => '1'
 		);
-		// Left Menu sub-level
+		/**
+		 * Define plot left menu entry Plot List
+		 */
 		$this->menu[] = array(
 			'type' => 'left',
 			'mainmenu' => 'vignoble',
@@ -326,15 +416,19 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * get exports available for the module
+	 * Get exports available for the module.
 	 *
-	 * @todo check example in Skeleton modMyModuleClass.php
+	 * Exports definition are stored in multiple arrays. Each export is located by its main index
+	 *
+	 * @todo check example in Skeleton modMyModuleClass.php and see how to implement custom attributes
 	 */
 	private function getExports()
 	{
-		// Exports
 		$r = 0;
-		$this->export_code[$r] = $this->rights_class . '_' . $r;
+		/**
+		 * Define a simple Plot export
+		 */
+		$this->export_code[$r] = $this->rights_class . '_' . $r; // export sequential number
 		$this->export_label[$r] = 'Plots'; // Translation key (used only if key ExportDataset_xxx_z not found)
 		$this->export_enabled[$r] = '1'; // Condition to show export in list (ie: '$user->id==3'). Set to 1 to always show when module is enabled.
 		$this->export_icon[$r] = 'vignoble@vignoble'; // Put here code of icon
@@ -351,7 +445,7 @@ class modVignoble extends DolibarrModules
 			'v.label' => 'Varietal',
 			'c.label' => 'Cultivation Type'
 		);
-		// Date, Text, Boolean or Numeric
+		// supported format are Date, Text, Boolean or Numeric
 		$this->export_TypeFields_array[$r] = array(
 			'p.rowid' => 'Numeric',
 			'p.ref' => 'Text',
@@ -365,7 +459,8 @@ class modVignoble extends DolibarrModules
 			'v.label' => 'Plot',
 			'c.label' => 'Plot'
 		); // table name associated to field
-		                                                                                                               // $this->export_dependencies_array[$r]=array('invoice_line'=>'fd.rowid','product'=>'fd.rowid'); // To add unique key if we ask a field of a child to avoid the DISTINCT to discard them
+		   // $this->export_dependencies_array[$r]=array('invoice_line'=>'fd.rowid','product'=>'fd.rowid'); // To add unique key if we ask a field of a child to avoid the DISTINCT to discard them
+		   // Sql request to extract the data
 		$this->export_sql_start[$r] = 'SELECT DISTINCT ';
 		$this->export_sql_end[$r] = ' FROM (' . MAIN_DB_PREFIX . 'plot as p, ' . MAIN_DB_PREFIX . 'c_varietal as v, ' . MAIN_DB_PREFIX . 'c_cultivationtype as c)';
 		$this->export_sql_end[$r] .= ' WHERE p.fk_varietal = v.rowid AND p.fk_cultivationtype = c.rowid';
@@ -374,55 +469,67 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * Get list of particular constants to add when module is enabled
-	 * Each constant is defined by an array with
-	 * - name
-	 * - type (obsolete use ?)
-	 * - value
-	 * - description
-	 * - visibility [0 not displayed in Dolibarr configuration, 1 displayed]
-	 * - entity ['current' or 'allentities']
-	 * - delete [0 do not delete when module unactivated, 1 deleted]
+	 * Get list of custom constants from const array.
+	 *
+	 * Constant are added when module is enabled
 	 */
 	private function getConstant()
 	{
 		$this->const = array();
-		$this->const[0] = array(
-			strtoupper($this->name) . '_CONSTANT',
-			'?',
-			'Not used yet - set as example',
-			'This is a constant for module ' . $this->name,
-			1,
-			'current',
-			0
-		);
+		// Example to set a constant
+		// $this->const[] = array(
+		// strtoupper($this->name) . '_CONSTANT', // set constant name
+		// '?', // type (obsolete use ?)
+		// 'Not used yet - set as example', // value
+		// 'This is a constant for module ' . $this->name, // description
+		// 1, // visibility [0 not displayed in Dolibarr configuration, 1 displayed]
+		// 'current', // entity ['current' or 'allentities']
+		// 0 // [0 do not delete when module unactivated, 1 deleted]
+		// );
 	}
 
 	/**
-	 * Get all module parts (triggers, login, substitutions, menus, css, etc...)
+	 * Get module parts array.
+	 * Part are custom components overriding Dolibarr defaults
 	 */
 	private function getParts()
 	{
 		$this->module_parts = array(
-			// Set this to 1 if module has its own trigger directory
+			/**
+			 * Set triggers to 1 if module has its own trigger directory
+			 */
 			'triggers' => 0,
-			// Set this to 1 if module has its own login method directory
+			/**
+			 * Set login to 1 if module has its own login method directory
+			 */
 			'login' => 0,
-			// Set this to 1 if module has its own substitution function file
+			/**
+			 * Set substitutions to 1 if module has its own substitution function file
+			 */
 			'substitutions' => 0,
-			// Set this to 1 if module has its own barcode directory \TODO Check if obsolete
+			/**
+			 * Set barcode to 1 if module has its own barcode directory
+			 * \TODO Check if obsolete
+			 */
 			'barcode' => 0,
-			// Set this to 1 if module has its own PDF or ODT models directory
-			// add models in /core/modules/[originmodulename]/doc/[modelfile]
+			/**
+			 * Set models this to 1 if module has its own PDF or ODT models directory
+			 * add models in /core/modules/[originmodulename]/doc/[modelfile]
+			 */
 			'models' => 1,
-			// Set this to relative path of css if module has its own css file
-			// loaded after Dolibarr CCS
+			/**
+			 * Set css array to relative path of css if module has its own css file loaded after Dolibarr CCS
+			 */
 			'css' => array(
 				'vignoble/css/mycss.css.php'
 			),
-			// Set this to relative path of js file if module must load a js on all pages
+			/**
+			 * Set js array to relative path of js files if module must load js on all pages
+			 */
 			// 'js' => array('vignoble/js/vignoble.js'),
-			// Set here all hooks context managed by module
+			/**
+			 * Set hooks array by adding all hooks context managed by module
+			 */
 			'hooks' => array(
 				'searchform'
 			)
@@ -430,7 +537,11 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * get Array describing the module boxes that could be displayed on Dolibarr Dashboard
+	 * Get module boxes array.
+	 *
+	 * Module boxes or widgets could be displayed on Dolibarr Dashboard
+	 *
+	 * @todo Develop proper widget the one used is a mokup.
 	 */
 	private function getBoxes()
 	{
@@ -444,12 +555,20 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * get Array describing the module tables using the Dolibarr dictionary
+	 * Get module tables using the Dolibarr dictionary
+	 *
+	 * List of tables and properties are stored in dictionnaries array.
 	 */
 	private function getDictionaries($conf)
 	{
 		$this->dictionaries = array(
 			
+			/**
+			 * Define the following dictionnaries
+			 * - Cultivation Type
+			 * - Varietal
+			 * - Rootstock
+			 */
 			// List of tables we want to see into dictionnary editor
 			'tabname' => array(
 				MAIN_DB_PREFIX . "c_cultivationtype",
@@ -474,19 +593,19 @@ class modVignoble extends DolibarrModules
 				"label ASC",
 				"label ASC"
 			),
-			// List of fields (result of select to show dictionary)
+			// List of fields (result of select to read dictionary)
 			'tabfield' => array(
 				"code,label",
 				"code,label",
 				"code,label"
 			),
-			// List of fields (list of fields to edit a record)
+			// List of fields to edit a record
 			'tabfieldvalue' => array(
 				"code,label",
 				"code,label",
 				"code,label"
 			),
-			// List of fields (list of fields for insert)
+			// List of fields for insert
 			'tabfieldinsert' => array(
 				"code,label",
 				"code,label",
@@ -555,6 +674,13 @@ class modVignoble extends DolibarrModules
 		return $this->_load_tables('/vignoble/sql/');
 	}
 
+	/**
+	 * Get imports available for the module.
+	 *
+	 * Imports definition are stored in multiple arrays. Each import is located by its main index.
+	 *
+	 * @todo check example and see how to implement (extrafields
+	 */
 	private function getImports()
 	{
 		// Import list of third parties and attributes
@@ -565,31 +691,32 @@ class modVignoble extends DolibarrModules
 		$this->import_icon[$r] = 'plot@vignoble';
 		$this->import_entities_array[$r] = array(); // We define here only fields that use another icon that the one defined into import_icon
 		$this->import_tables_array[$r] = array(
-			's' => MAIN_DB_PREFIX . 'plot',
-			'extra' => MAIN_DB_PREFIX . 'plot_extrafields'
-		); // List of tables to insert into (insert done in same order)
+			's' => MAIN_DB_PREFIX . 'plot'
+		); // ,
+		   // 'extra' => MAIN_DB_PREFIX . 'plot_extrafields'
+		   // List of tables to insert into (insert done in same order)
 		$this->import_fields_array[$r] = array(
 			's.ref' => "Ref*",
 			's.Label' => "Label"
 		);
-		// Add extra fields
-		$sql = "SELECT name, label, fieldrequired FROM " . MAIN_DB_PREFIX . "extrafields WHERE elementtype = 'plot' AND entity = " . $conf->entity;
-		$resql = $this->db->query($sql);
-		if ($resql) // This can fail when class is used on old database (during migration for example)
-{
-			while ($obj = $this->db->fetch_object($resql)) {
-				$fieldname = 'extra.' . $obj->name;
-				$fieldlabel = ucfirst($obj->label);
-				$this->import_fields_array[$r][$fieldname] = $fieldlabel . ($obj->fieldrequired ? '*' : '');
-			}
-		}
-		// End add extra fields
+		// // Add extra fields
+		// $sql = "SELECT name, label, fieldrequired FROM " . MAIN_DB_PREFIX . "extrafields WHERE elementtype = 'plot' AND entity = " . $conf->entity;
+		// $resql = $this->db->query($sql);
+		// if ($resql) // This can fail when class is used on old database (during migration for example)
+		// {
+		// while ($obj = $this->db->fetch_object($resql)) {
+		// $fieldname = 'extra.' . $obj->name;
+		// $fieldlabel = ucfirst($obj->label);
+		// $this->import_fields_array[$r][$fieldname] = $fieldlabel . ($obj->fieldrequired ? '*' : '');
+		// }
+		// }
+		// // End add extra fields
 		// technical fields set-up by the process
 		$this->import_fieldshidden_array[$r] = array(
 			's.fk_user_author' => 'user->id',
 			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . 'plot'
 		); // aliastable.field => ('user->id' or 'lastrowid-'.tableparent)
-		                                                                                                                                  // foreign key management rule to get id from a label cf core/module/import/import*.php files
+		   // foreign key management rule to get id from a label cf core/module/import/import*.php files
 		$this->import_convertvalue_array[$r] = array(
 			's.fk_typent' => array(
 				'rule' => 'fetchidfromcodeorlabel',
