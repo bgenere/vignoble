@@ -1,4 +1,4 @@
--- parcelle table definition - A piece of land of the wineyard
+-- Plot table definition - A piece of land of the wineyard
 -- Copyright (C) 2016 Bruno Généré      <bgenere@webiseasy.org>
 --
 -- This program is free software: you can redistribute it and/or modify
