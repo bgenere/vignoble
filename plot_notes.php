@@ -33,8 +33,6 @@
 
 @include './tpl/maindolibarr.inc.php';
 
-	// require_once DOL_DOCUMENT_ROOT.'/core/lib/order.lib.php';
-	// require_once DOL_DOCUMENT_ROOT .'/commande/class/commande.class.php';
 dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
