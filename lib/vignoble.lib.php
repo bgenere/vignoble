@@ -33,12 +33,15 @@ function vignobleAdminPrepareHead()
 
 	$langs->load("vignoble@vignoble");
 
-	$h = 0;
 	$head = array();
-
+	$h = 0;
 	$head[$h][0] = dol_buildpath("/vignoble/admin/admin_vignoble.php", 1);
 	$head[$h][1] = $langs->trans("Settings");
 	$head[$h][2] = 'settings';
+	$h++;
+	$head[$h][0] = dol_buildpath("/vignoble/admin/plot_extrafields.php", 1);
+	$head[$h][1] = $langs->trans("Plot fields");
+	$head[$h][2] = 'plotfields';
 	$h++;
 	$head[$h][0] = dol_buildpath("/vignoble/admin/about.php", 1);
 	$head[$h][1] = $langs->trans("About");

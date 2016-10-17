@@ -20,8 +20,9 @@
 /**
  * \file admin/vignoble.php
  * \ingroup vignoble
- * \brief Setup tab for module
- * The setup is currently empty
+ * \brief Setup tab for module.
+ * 
+ * Includes the set-up of plot document model
  */
 
 // Load Dolibarr environment
