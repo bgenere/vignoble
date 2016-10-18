@@ -69,26 +69,8 @@ require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
 /*
  * View
  */
+beginForm('plotfields');
 
-// page name and header
-$page_name = "vignobleSetup";
-llxHeader('', $langs->trans($page_name));
-
-$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
-print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
-
-
-$head = vignobleAdminPrepareHead();
-// Select settings tab in tabs
-dol_fiche_head($head, 'plotfields', $langs->trans("Module123100Name"), 0, "vignoble@vignoble");
-
-/*
- * To call this template, you must define
- * $textobject
- * $langs
- * $extrafield
- * $elementtype
- */
 $textobject = $langs->transnoentitiesnoconv("Plot");
 require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 

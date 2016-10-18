@@ -27,6 +27,28 @@
  */
 
 /**
+ * Display begining of card form including : 
+ * - Dolibarr header, 
+ * - Form title with modules link back
+ * - Tabs for administration
+ * 
+ * @param string $currentTab The tab key of the tab to select/display
+ * @param string $page_title The HTML page title common to all tabs
+ */
+function beginForm($currentTab,$page_title = "Vignoble Setup")
+{
+	global $db, $langs, $conf, $user;
+	
+	llxHeader('', $langs->trans($page_title));
+	
+	$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
+	print load_fiche_titre($langs->trans($page_title), $linkback, 'title_setup');
+	
+	$tabs = vignobleAdminPrepareTabs();
+	
+	dol_fiche_head($tabs, $currentTab, $langs->trans("Module123100Name"), 0, "vignoble@vignoble");
+}
+/**
  * Perform all required operations to end properly a card form.
  */
 function endForm()
@@ -39,39 +61,35 @@ function endForm()
 }
 
 /**
- * Prepare tabs header for the admin page
- * return $head
+ * Populate tabs array with all tabs for the admin page
+ * 
+ * @return $tabs an array with one line per tab
+ * with on each line
+ * - full URL of the page for the tab
+ * - tab name to display (string)
+ * - tab key (string)
+ * 
  */
-function vignobleAdminPrepareHead()
+function vignobleAdminPrepareTabs()
 {
 	global $langs, $conf;
 	
 	$langs->load("vignoble@vignoble");
 	
-	$head = array();
+	$tabs = array();
 	$h = 0;
-	$head[$h][0] = dol_buildpath("/vignoble/admin/module_settings.php", 1);
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
+	$tabs[$h][0] = dol_buildpath("/vignoble/admin/module_settings.php", 1);
+	$tabs[$h][1] = $langs->trans("Settings");
+	$tabs[$h][2] = 'settings';
 	$h ++;
-	$head[$h][0] = dol_buildpath("/vignoble/admin/plot_extrafields.php", 1);
-	$head[$h][1] = $langs->trans("Plot fields");
-	$head[$h][2] = 'plotfields';
+	$tabs[$h][0] = dol_buildpath("/vignoble/admin/plot_extrafields.php", 1);
+	$tabs[$h][1] = $langs->trans("Plot fields");
+	$tabs[$h][2] = 'plotfields';
 	$h ++;
-	$head[$h][0] = dol_buildpath("/vignoble/admin/module_about.php", 1);
-	$head[$h][1] = $langs->trans("About");
-	$head[$h][2] = 'about';
+	$tabs[$h][0] = dol_buildpath("/vignoble/admin/module_about.php", 1);
+	$tabs[$h][1] = $langs->trans("About");
+	$tabs[$h][2] = 'about';
 	$h ++;
 	
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	// $this->tabs = array(
-	// 'entity:+tabname:Title:@vignoble:/vignoble/mypage.php?id=__ID__'
-	// ); // to add new tab
-	// $this->tabs = array(
-	// 'entity:-tabname:Title:@vignoble:/vignoble/mypage.php?id=__ID__'
-	// ); // to remove a tab
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'vignoble');
-	
-	return $head;
+	return $tabs;
 }

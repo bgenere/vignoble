@@ -23,10 +23,8 @@
  * \brief Displays module information in a Setup Tab
  * Tab content :
  * - README.md file for the module
- * - COPYING file for the module
- * - GPLV3 licence link
+ * - GPLV3 icon linking to COPYING file (licence text)
  */
-
 @include '../tpl/maindolibarr.inc.php';
 
 // Dolibar and module libraries
@@ -35,51 +33,49 @@ require_once '../lib/admin.html.lib.php';
 // md file parser
 require __DIR__ . '/../vendor/autoload.php';
 // Translations
-
 $langs->load("admin");
 $langs->load("errors");
 $langs->load("other");
 $langs->load("vignoble@vignoble");
 
-// Access control admin user only
-if (! $user->admin) {
-	accessforbidden();
-}
-
-// Parameters if any
-$action = GETPOST('action', 'alpha');
-
-/*
- * Actions
- */
-
 /*
  * View
  */
-// page name and header
-$page_name = "vignobleSetup";
-llxHeader('', $langs->trans($page_name));
+beginForm('about');
 
-// link back to module list and admin card title
-$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
-print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
-
-// Tabs configuration (in library)
-$head = vignobleAdminPrepareHead();
-// Select about tab in tabs
-dol_fiche_head($head, 'about', $langs->trans("Module123100Name"), 0, 'vignoble@vignoble');
-
-// Content start here
-
-switch ($langs->getDefaultLang()){
-	case 'fr_FR':
-		$buffer = file_get_contents(dol_buildpath('/vignoble/README-FR.md', 0));
-		break;
-	default:
-		$buffer = file_get_contents(dol_buildpath('/vignoble/README.md', 0));
-}
-echo Parsedown::instance()->text($buffer);
-// link to GPLV3 licence
-echo '<br>', '<a href="' . dol_buildpath('/vignoble/COPYING', 1) . '">', '<img src="' . dol_buildpath('/vignoble/img/gplv3.png', 1) . '"/>', '</a>';
+printREADME($langs);
+printGPLV3();
 
 endForm();
+
+/**
+ * Parse and display root README.md file.
+ * If user language is french, displays README-FR.md instead.
+ *
+ * @param $langs Dolibarr
+ *        	global array
+ */
+function printREADME($langs)
+{
+	switch ($langs->getDefaultLang()) {
+		case 'fr_FR':
+			$buffer = file_get_contents(dol_buildpath('/vignoble/README-FR.md', 0));
+			break;
+		default:
+			$buffer = file_get_contents(dol_buildpath('/vignoble/README.md', 0));
+	}
+	echo Parsedown::instance()->text($buffer);
+}
+
+/**
+ * Print GPLV3 icon and link to copying file
+ */
+function printGPLV3()
+{
+// link to GPLV3 licence
+echo '<br>'; 
+echo '<a href="' . dol_buildpath('/vignoble/COPYING', 1) . '" target="blank">';
+echo '<img src="' . dol_buildpath('/vignoble/img/gplv3.png', 1) . '"/>', '</a>';
+}
+
+

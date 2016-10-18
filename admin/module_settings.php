@@ -145,18 +145,7 @@ function printView($langs, $user)
 	
 	$form = new Form($db);
 	
-	// page name and header
-	$page_name = "vignobleSetup";
-	llxHeader('', $langs->trans($page_name));
-	
-	// page title (printed) and link to module list
-	$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
-	print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
-	
-	// Tabs configuration (in library)
-	$head = vignobleAdminPrepareHead();
-	// Select settings tab in tabs
-	dol_fiche_head($head, 'settings', $langs->trans("Module123100Name"), 0, "vignoble@vignoble");
+	beginForm('settings');
 	// echo $langs->trans("No Content Yet");
 	
 	/*
@@ -306,4 +295,7 @@ function printView($langs, $user)
 	
 	endForm();
 }
+
+
+
 

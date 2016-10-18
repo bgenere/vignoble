@@ -40,11 +40,9 @@ Licenses
 
 ### Main code
 
-![GPLv3 logo](dev/img/gplv3-127x51.png)
-
 GPLv3 or (at your option) any later version.
 
-See [COPYING](COPYING) for more information.
+Click GPLv3 icon at the bottom of this page for more information.
 
 ### Other Licenses
 
@@ -57,9 +55,3 @@ Licensed under MIT.
 
 Public domain
 
-
-#### Documentation
-
-All texts and readmes.
-
-![GFDL logo](dev/img/gfdl-129x44.png)

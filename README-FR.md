@@ -38,31 +38,22 @@ Contributions
 
 Feel free to contribute and report defects at <https://github.com/bgenere/vignoble/issues>
 
-Licenses
+Licences
 --------
 
-### Main code
+### Utilisation du Code
 
-![GPLv3 logo](dev/img/gplv3-127x51.png)
+GPLv3 ou toute version ultérieure.
 
-GPLv3 or (at your option) any later version.
+Cliquez l'icone GPLv3 en bas de cette page pour plus d'information.
 
-See [COPYING](COPYING) for more information.
-
-### Other Licenses
+### Autres licences
 
 #### [Parsedown](http://parsedown.org/)
 
-Used to display this README in the module's about page.
-Licensed under MIT.
+Utilisé pour afficher cette page.
+Licence MIT.
 
-#### [GNU Licenses logos](https://www.gnu.org/graphics/license-logos.html)
+#### [GNU logos](https://www.gnu.org/graphics/license-logos.html)
 
-Public domain
-
-
-#### Documentation
-
-All texts and readmes.
-
-![GFDL logo](dev/img/gfdl-129x44.png)
+Domaine public
