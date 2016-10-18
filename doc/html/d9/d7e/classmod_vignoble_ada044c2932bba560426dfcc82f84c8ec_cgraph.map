@@ -1,6 +1,6 @@
 <map id="modVignoble\__construct" name="modVignoble\__construct">
 <area shape="rect" id="node2" href="$d9/d7e/classmod_vignoble.html#ab8f2632e2f1339ac55a29052667f56fd" title="Get module boxes array. " alt="" coords="267,5,438,32"/>
-<area shape="rect" id="node3" href="$d9/d7e/classmod_vignoble.html#a10339ea522e23636e3174fc86d2d8d5d" title="Get configuration pages url stored in config_page_url array. " alt="" coords="248,56,457,83"/>
+<area shape="rect" id="node3" href="$d9/d7e/classmod_vignoble.html#a10339ea522e23636e3174fc86d2d8d5d" title="Get the configuration pages url stored in config_page_url array. " alt="" coords="248,56,457,83"/>
 <area shape="rect" id="node4" href="$d9/d7e/classmod_vignoble.html#ab6366de750143cc368ee9e4f880030bd" title="Get list of custom constants from const array. " alt="" coords="258,107,447,133"/>
 <area shape="rect" id="node5" href="$d9/d7e/classmod_vignoble.html#ae8cb766232d743c29d65e8e55eb35fa0" title="Get custom data directories in document folder. " alt="" coords="237,157,468,184"/>
 <area shape="rect" id="node6" href="$d9/d7e/classmod_vignoble.html#a85c5eb0993b7c94a50ab6f380c262f8c" title="Get dependencies attributes and arrays for the module. " alt="" coords="241,208,464,235"/>

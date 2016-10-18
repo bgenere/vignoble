@@ -21,38 +21,31 @@
  * \brief Include main Dolibarr library and global variables.
  *
  * Test various directory to load Main Dolibarr library.
- *
+ * 
+ * Include library when :
+ * - module is in dolibarr root htdocs directory and page is in module directory
+ * - module directory is in a subdir of root htdocs directory or page is in module sub-directory
+ * - module directory is in a subdir of root htdocs directory and page is in module sub-directory
+ * 
+ * If include fails it display a message and die the proces
+ * 
  * \ingroup component
  */
-$incresult = 0;
-/**
- * < used to check include result
- */
-/**
- * Include library if
- * module is in dolibarr root htdocs directory and
- * page is in module directory
- */
+$incresult = 0; /**< used to check include result */
 if (! $incresult && file_exists("../main.inc.php"))
 	$incresult = @include '../main.inc.php';
-/**
- * Include library if
- * module directory is in a subdir of root htdocs directory or
- * page in sub-directory
- */
+
 if (! $incresult && file_exists("../../main.inc.php"))
 	$incresult = @include '../../main.inc.php'; 
-/**
- * Include library if
- * module directory is in a subdir of root htdocs directory and
- * page in module sub-directory
- */
+
 if (! $incresult && file_exists("../../../main.inc.php"))
 	$incresult = @include '../../../main.inc.php';
-/**
- * Display message and die process if include failed
- */
+
 if (! $incresult)
 	die("Include of main Dolibarr include fails");
 
-global $db, $conf, $langs, $user;
+global 
+	$db, 	/**< Dolibarr Database environment */
+	$conf,  /**< Dolibarr configuration variable */
+	$langs, /**< Dolibarr languages table including user language */
+	$user;  /**< Dolibarr current user properties */

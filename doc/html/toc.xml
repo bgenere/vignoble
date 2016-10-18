@@ -9,9 +9,14 @@
       <topic label="plot_info.php" href="dd/d24/plot__info_8php.html"/>
       <topic label="plot_list.php" href="da/d01/plot__list_8php.html"/>
       <topic label="plot_notes.php" href="d3/d16/plot__notes_8php.html"/>
+      <topic label="plot_extrafields.php" href="d3/dd2/plot__extrafields_8php.html"/>
     </topic>
     <topic label="Dashboard" href="d5/d3d/group__dashboard.html">
       <topic label="index.php" href="de/d20/index_8php.html"/>
+    </topic>
+    <topic label="Module administration" href="d2/d86/group__admin.html">
+      <topic label="module_about.php" href="d5/da0/module__about_8php.html"/>
+      <topic label="admin.html.lib.php" href="dd/dac/admin_8html_8lib_8php.html"/>
     </topic>
     <topic label="Reusable components" href="d0/df8/group__component.html">
       <topic label="maindolibarr.inc.php" href="d6/d14/maindolibarr_8inc_8php.html"/>
@@ -212,26 +217,35 @@
   <topic label="Files">
     <topic label="File List" href="files.html">
       <topic label="admin" href="dir_b56013ff87e0b8a9fb902ef4a07a6990.html">
-        <topic label="about.php" href="d8/dca/about_8php.html">
-          <topic label="$action" href="d8/dca/about_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4"/>
-          <topic label="$head" href="d8/dca/about_8php.html#a687ea7fcd78263867b5bd34ed56b6379"/>
-          <topic label="$langs" href="d8/dca/about_8php.html#aa8d5f7f1393448838bb2d3c81fccdd0a"/>
-          <topic label="$linkback" href="d8/dca/about_8php.html#aa8a538bac04922850b15c7460fb1bfc7"/>
-          <topic label="$page_name" href="d8/dca/about_8php.html#adc3f16c3b03bc755ab09d40e79211d08"/>
-          <topic label="$user" href="d8/dca/about_8php.html#afaa5bad6fc4d5e5dc1b474fe7a8d9bf9"/>
-          <topic label="dol_buildpath" href="d8/dca/about_8php.html#a772d739a0f0b9782c84313ad0c7c9a62"/>
-          <topic label="switch" href="d8/dca/about_8php.html#a1b45ccb5a17c95f84ace1ca2a3b97629"/>
+        <topic label="module_about.php" href="d5/da0/module__about_8php.html">
+          <topic label="$action" href="d5/da0/module__about_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4"/>
+          <topic label="$head" href="d5/da0/module__about_8php.html#a687ea7fcd78263867b5bd34ed56b6379"/>
+          <topic label="$linkback" href="d5/da0/module__about_8php.html#aa8a538bac04922850b15c7460fb1bfc7"/>
+          <topic label="$page_name" href="d5/da0/module__about_8php.html#adc3f16c3b03bc755ab09d40e79211d08"/>
+          <topic label="dol_buildpath" href="d5/da0/module__about_8php.html#a772d739a0f0b9782c84313ad0c7c9a62"/>
+          <topic label="switch" href="d5/da0/module__about_8php.html#a1b45ccb5a17c95f84ace1ca2a3b97629"/>
         </topic>
-        <topic label="admin_vignoble.php" href="d5/d09/admin__vignoble_8php.html">
-          <topic label="printView" href="d5/d09/admin__vignoble_8php.html#a3af7c5265c272c25e4ace71be5f7f1c8"/>
-          <topic label="$action" href="d5/d09/admin__vignoble_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4"/>
-          <topic label="$dirmodels" href="d5/d09/admin__vignoble_8php.html#ac1d2a523c634a33b52897268e1e066d3"/>
-          <topic label="$label" href="d5/d09/admin__vignoble_8php.html#a177af2bf70bede02de3d05a425fb8e43"/>
-          <topic label="$langs" href="d5/d09/admin__vignoble_8php.html#aa8d5f7f1393448838bb2d3c81fccdd0a"/>
-          <topic label="$scandir" href="d5/d09/admin__vignoble_8php.html#af8740e47a115ee055d40254054b37978"/>
-          <topic label="$type" href="d5/d09/admin__vignoble_8php.html#a9a4a6fba2208984cabb3afacadf33919"/>
-          <topic label="$user" href="d5/d09/admin__vignoble_8php.html#afaa5bad6fc4d5e5dc1b474fe7a8d9bf9"/>
-          <topic label="$value" href="d5/d09/admin__vignoble_8php.html#a0f298096f322952a72a50f98a74c7b60"/>
+        <topic label="module_settings.php" href="db/ddc/module__settings_8php.html">
+          <topic label="printView" href="db/ddc/module__settings_8php.html#a3af7c5265c272c25e4ace71be5f7f1c8"/>
+          <topic label="$action" href="db/ddc/module__settings_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4"/>
+          <topic label="$dirmodels" href="db/ddc/module__settings_8php.html#ac1d2a523c634a33b52897268e1e066d3"/>
+          <topic label="$label" href="db/ddc/module__settings_8php.html#a177af2bf70bede02de3d05a425fb8e43"/>
+          <topic label="$scandir" href="db/ddc/module__settings_8php.html#af8740e47a115ee055d40254054b37978"/>
+          <topic label="$type" href="db/ddc/module__settings_8php.html#a9a4a6fba2208984cabb3afacadf33919"/>
+          <topic label="$value" href="db/ddc/module__settings_8php.html#a0f298096f322952a72a50f98a74c7b60"/>
+        </topic>
+        <topic label="plot_extrafields.php" href="d3/dd2/plot__extrafields_8php.html">
+          <topic label="$action" href="d3/dd2/plot__extrafields_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+          <topic label="$attrname" href="d3/dd2/plot__extrafields_8php.html#abfbdad9b87b2ada75e65cbe4db346e37"/>
+          <topic label="$elementtype" href="d3/dd2/plot__extrafields_8php.html#ad656909189fe6e0ffbb4f1747c161291"/>
+          <topic label="$extrafields" href="d3/dd2/plot__extrafields_8php.html#aa659316307a821cdcd60350fd0290d6e"/>
+          <topic label="$form" href="d3/dd2/plot__extrafields_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
+          <topic label="$head" href="d3/dd2/plot__extrafields_8php.html#a687ea7fcd78263867b5bd34ed56b6379"/>
+          <topic label="$linkback" href="d3/dd2/plot__extrafields_8php.html#aa8a538bac04922850b15c7460fb1bfc7"/>
+          <topic label="$page_name" href="d3/dd2/plot__extrafields_8php.html#adc3f16c3b03bc755ab09d40e79211d08"/>
+          <topic label="$textobject" href="d3/dd2/plot__extrafields_8php.html#ad602b63305f7427b79abf1cc108ddadc"/>
+          <topic label="$tmptype2label" href="d3/dd2/plot__extrafields_8php.html#acd29b317e8d2bf6ab84dd239e19ee6db"/>
+          <topic label="$type2label" href="d3/dd2/plot__extrafields_8php.html#a8cd5be53429175064460e9d4bb89a280"/>
         </topic>
       </topic>
       <topic label="class" href="dir_b159045c86742e23382de6113e3621b5.html">
@@ -429,8 +443,9 @@
         <topic label="myjs.js.php" href="d2/d77/myjs_8js_8php.html"/>
       </topic>
       <topic label="lib" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">
-        <topic label="vignoble.lib.php" href="db/dbd/vignoble_8lib_8php.html">
-          <topic label="vignobleAdminPrepareHead" href="db/dbd/vignoble_8lib_8php.html#ac9c9d6f3b5668a6076cbe2dab7937640"/>
+        <topic label="admin.html.lib.php" href="dd/dac/admin_8html_8lib_8php.html">
+          <topic label="endForm" href="dd/dac/admin_8html_8lib_8php.html#ac41df2ef7049e50068e22cd3a0335cb5"/>
+          <topic label="vignobleAdminPrepareHead" href="dd/dac/admin_8html_8lib_8php.html#ac9c9d6f3b5668a6076cbe2dab7937640"/>
         </topic>
       </topic>
       <topic label="scripts" href="dir_53e6fa9553ac22a5646d2a2b2d7b97a1.html">
@@ -458,12 +473,17 @@
         <topic label="llx_c_varietal.sql" href="d9/d95/llx__c__varietal_8sql.html"/>
         <topic label="llx_plot.key.sql" href="d6/dcf/llx__plot_8key_8sql.html"/>
         <topic label="llx_plot.sql" href="dc/d0d/llx__plot_8sql.html"/>
-        <topic label="test.sql" href="d9/d4e/test_8sql.html"/>
+        <topic label="llx_plot_extrafields.key.sql" href="d0/de5/llx__plot__extrafields_8key_8sql.html"/>
+        <topic label="llx_plot_extrafields.sql" href="d7/d85/llx__plot__extrafields_8sql.html"/>
         <topic label="update_x.x.x-y.y.y.sql" href="d4/d73/update__x_8x_8x-y_8y_8y_8sql.html"/>
       </topic>
       <topic label="tpl" href="dir_9097c979923185181c80a7f04e7d4686.html">
         <topic label="maindolibarr.inc.php" href="d6/d14/maindolibarr_8inc_8php.html">
+          <topic label="$conf" href="d6/d14/maindolibarr_8inc_8php.html#a10064a52f624358ea93475105245c4ac"/>
+          <topic label="$db" href="d6/d14/maindolibarr_8inc_8php.html#a907d78797a1b764e913b0c565a5097b0"/>
           <topic label="$incresult" href="d6/d14/maindolibarr_8inc_8php.html#a5e0210cf4636d7d2fe60b75fa64ec751"/>
+          <topic label="$langs" href="d6/d14/maindolibarr_8inc_8php.html#a29be2d9bc87fa3c921824a078a22e09a"/>
+          <topic label="$user" href="d6/d14/maindolibarr_8inc_8php.html#a00365e6c5f70c43fb2ed86c9bc5626e0"/>
         </topic>
         <topic label="mytemplate.tpl.php" href="d7/d99/mytemplate_8tpl_8php.html"/>
       </topic>
