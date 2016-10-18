@@ -1,4 +1,5 @@
 <map id="printView" name="printView">
-<area shape="rect" id="node2" href="$dd/dac/admin_8html_8lib_8php.html#ac41df2ef7049e50068e22cd3a0335cb5" title="Perform all required operations to end properly a card form. " alt="" coords="194,5,273,32"/>
-<area shape="rect" id="node3" href="$dd/dac/admin_8html_8lib_8php.html#ac9c9d6f3b5668a6076cbe2dab7937640" title="Prepare tabs header for the admin page return $head. " alt="" coords="133,56,333,83"/>
+<area shape="rect" id="node2" href="$dd/dac/admin_8html_8lib_8php.html#a1a0c59b71591ed7c9b97d7d370a12add" title="Display begining of card form including : " alt="" coords="133,5,224,32"/>
+<area shape="rect" id="node4" href="$dd/dac/admin_8html_8lib_8php.html#ac41df2ef7049e50068e22cd3a0335cb5" title="Perform all required operations to end properly a card form. " alt="" coords="139,56,218,83"/>
+<area shape="rect" id="node3" href="$dd/dac/admin_8html_8lib_8php.html#a94e9d446b69764f2e514d5cc6335821b" title="Populate tabs array with all tabs for the admin page. " alt="" coords="272,5,467,32"/>
 </map>
