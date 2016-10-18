@@ -24,8 +24,8 @@
 
 /**
  * \file vignoble/admin/plot_extrafields.php
- * \ingroup plot
- * \brief Page to setup plot extra fields
+ * \ingroup admin
+ * \brief Admin page to setup the Plot object extra fields.
  */
 
 @include '../tpl/maindolibarr.inc.php';
@@ -42,28 +42,31 @@ $langs->load("errors");
 $langs->load("other");
 $langs->load("vignoble@vignoble");
 
+// Only admin user
 if (! $user->admin)
 	accessforbidden();
 
-$extrafields = new ExtraFields($db);
-$form = new Form($db);
-
-// List of supported format
-$tmptype2label = ExtraFields::$type2label;
-$type2label = array(
-	''
-);
+// Initialize variables for extrafields templates 
+$elementtype = 'plot'; /**< $table_element of the object class that manage extrafield */
+$extrafields = new ExtraFields($db);	/**< Initialize a new ExtraFields class */
+$tmptype2label = ExtraFields::$type2label;/**< Supported format for extra fields*/
+$type2label = array(''); /**< Initialize translated type fields labels */
 foreach ($tmptype2label as $key => $val)
 	$type2label[$key] = $langs->trans($val);
-
-$action = GETPOST('action', 'alpha');
-$attrname = GETPOST('attrname', 'alpha');
-$elementtype = 'plot'; // Must be the $table_element of the class that manage extrafield
 
 /*
  * Actions
  */
+$action = GETPOST('action', 'alpha'); 		/**< Action tag (create, edit, add, update, delete) */
+$attrname = GETPOST('attrname', 'alpha');	/**< Attribute name to edit */
 
+/** Process extrafields actions.
+ * This template, requires
+ *  $action
+ *  $attrname
+ *  $extrafields
+ *  $elementtype
+ */
 require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
 
 /*
@@ -71,24 +74,22 @@ require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
  */
 beginForm('plotfields');
 
-$textobject = $langs->transnoentitiesnoconv("Plot");
+$textobject = $langs->transnoentitiesnoconv("Plot");/**< The Object name to which fields belong */
+
+/** Displays extrafields list with actions on attributes
+ * This template, requires
+ *  $textobject
+ *  $extrafields
+ *  $elementtype
+ */
 require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
+printButtonNewField($action);
 
-
-// Buttons
-if ($action != 'create' && $action != 'edit') {
-	print '<div class="tabsAction">';
-	print "<a class=\"butAction\" href=\"" . $_SERVER["PHP_SELF"] . "?action=create\">" . $langs->trans("NewAttribute") . "</a>";
-	print "</div>";
-}
-
-/* ************************************************************************** */
-/* */
-/* Creation of an optional field */
-/* */
-/* ************************************************************************** */
-
+/**
+ * Display new attribute form below the list
+ * when action is create.
+ */
 if ($action == 'create') {
 	print "<br>";
 	print load_fiche_titre($langs->trans('NewAttribute'));
@@ -96,11 +97,10 @@ if ($action == 'create') {
 	require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_add.tpl.php';
 }
 
-/* ************************************************************************** */
-/* */
-/* Edition of an optional field */
-/* */
-/* ************************************************************************** */
+/**
+ * Display attribute form below the list
+ * when action is edit and attrname is provided
+ */
 if ($action == 'edit' && ! empty($attrname)) {
 	print "<br>";
 	print load_fiche_titre($langs->trans("FieldEdition", $attrname));
@@ -110,5 +110,17 @@ if ($action == 'edit' && ! empty($attrname)) {
 
 endForm();
 
-
-
+/**
+ * Print New Attribute button to create a new field
+ * @param action the button is displayed only if action is not create or edit.
+ */
+function printButtonNewField($action)
+{
+	Global $langs;
+	
+	if ($action != 'create' && $action != 'edit') {
+		print '<div class="tabsAction">';
+		print "<a class=\"butAction\" href=\"" . $_SERVER["PHP_SELF"] . "?action=create\">" . $langs->trans("NewAttribute") . "</a>";
+		print "</div>";
+	}
+}
