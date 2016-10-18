@@ -43,12 +43,13 @@
 
 @include './tpl/maindolibarr.inc.php';
 
-// $conf $user $langs $db variables globales
-
 	// Change this following line to use the correct relative path from htdocs
 	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
 dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
+
+include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
+
 include_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
 

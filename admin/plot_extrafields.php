@@ -28,17 +28,12 @@
  * \brief Page to setup plot extra fields
  */
 
-// Load Dolibarr environment
-if (false === (@include '../../main.inc.php')) { // From htdocs directory
-	require '../../../main.inc.php'; // From "custom" directory
-}
-
-global $langs, $user;
+@include '../tpl/maindolibarr.inc.php';
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once '../lib/vignoble.lib.php';
+require_once '../lib/admin.html.lib.php';
 require_once '../class/plot.class.php';
 
 // Translations
@@ -97,7 +92,7 @@ dol_fiche_head($head, 'plotfields', $langs->trans("Module123100Name"), 0, "vigno
 $textobject = $langs->transnoentitiesnoconv("Plot");
 require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
-dol_fiche_end();
+
 
 // Buttons
 if ($action != 'create' && $action != 'edit') {
@@ -131,6 +126,7 @@ if ($action == 'edit' && ! empty($attrname)) {
 	require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_edit.tpl.php';
 }
 
-llxFooter();
+endForm();
 
-$db->close();
+
+

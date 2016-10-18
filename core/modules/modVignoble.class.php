@@ -27,6 +27,10 @@
  * \defgroup dashboard Dashboard
  *
  * Components providing the Vignoble dashboard
+ * 
+ * \defgroup admin	Module administration
+ * 
+ * Pages to administrate the module
  *
  * \defgroup component Reusable components
  *
@@ -39,6 +43,8 @@
  *
  * The module class extends the DolibarrModule Class and define
  * module properties and components.
+ * 
+ * File name should always be mod%ModuleName%.class.php
  */
 include_once DOL_DOCUMENT_ROOT . "/core/modules/DolibarrModules.class.php";
 
@@ -161,13 +167,14 @@ class modVignoble extends DolibarrModules
 	}
 
 	/**
-	 * Get configuration pages url stored in config_page_url array.
-	 * Each entry written as "<page file name>@<module name>" should be stored in module/admin directory.
+	 * Get the configuration pages url stored in config_page_url array.
+	 * The entry is written as "<page file name>@<module name>" and should be stored in module/admin directory.
+	 * @NOTE Only one entry is needed, others are optional and create extra links in module list.
 	 */
 	private function getConfigPages()
 	{
 		$this->config_page_url = array(
-			"admin_vignoble.php@vignoble"
+			"module_settings.php@vignoble"
 		);
 	}
 
