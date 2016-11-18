@@ -209,7 +209,7 @@ class plot extends CommonObject
 		$sql .= ' ' . (! isset($this->note_public) ? 'NULL' : "'" . $this->db->escape($this->note_public) . "'") . ',';
 		$sql .= ' ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
 		$sql .= ' ' . $user->id . ',';
-		$sql .= ' ' . $user->id . ',';
+		$sql .= ' ' . $user->id ;
 		
 		$sql .= ')';
 		
