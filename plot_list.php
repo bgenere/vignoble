@@ -67,6 +67,7 @@ $search_fk_cultivationtype = GETPOST('search_fk_cultivationtype', 'int');
 $search_fk_varietal = GETPOST('search_fk_varietal', 'int');
 $search_fk_rootstock = GETPOST('search_fk_rootstock', 'int');
 $search_entity = GETPOST('search_entity', 'int');
+$sall = GETPOST('sall', 'alpha');
 // CSS options
 $optioncss = GETPOST('optioncss', 'alpha');
 
@@ -239,6 +240,7 @@ if ($search_fk_varietal > 0)
 if ($search_fk_rootstock > 0)
 	$sql .= natural_search("fk_rootstock", $search_fk_rootstock);
 
+	//TODO define $fieldstosearchall array containing key fieldname value fieldlabel
 if ($sall)
 	$sql .= natural_search(array_keys($fieldstosearchall), $sall);
 	

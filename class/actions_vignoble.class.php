@@ -1,6 +1,6 @@
 <?php
 /* <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) <year>  <name of author>
+ * Copyright (C) 2016- Bruno Généré  <bgenere@webiseasy.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,16 @@
 
 /**
  * \file    class/actions_mymodule.class.php
- * \ingroup mymodule
- * \brief   This file is an example hook overload class file
- *          Put some comments here
+ * \ingroup Hooks
+ * \brief   Class file for Hooks provided with the module
+ *          Current content :
+ *          - Hook on search box to provide search on Parcels
+ *          
+ *           
  */
 
 /**
- * Class ActionsMyModule
+ * Class ActionsVignoble
  */
 class ActionsVignoble
 {
@@ -49,20 +52,23 @@ class ActionsVignoble
 	public function __construct()
 	{
 	}
-
 	
-	
+	/**
+	 * Add a search entry for plot in the Dolibarr select search box.
+	 * Name of the class is the name required by
+	 * 	/htdocs/core/ajax/selectsearchbox.php
+	 * 
+	 * @return number 0
+	 */
 	function addSearchEntry()
 	{
 		global $search_boxvalue;
 		global $langs;
 		
-		$this->results[] = array('img'=>'object_wine-cask', 'label'=>$langs->trans("SearchIntoplot"), 'text'=>img_picto('','object_wine-cask').' '.$langs->trans("SearchIntoplots"), 'url'=>dol_buildpath('/vignoble/plot_list.php',1).'?mainmenu=vignoblem&sall='.urlencode($search_boxvalue));
+		$this->results[] = array('img'=>'object_plot@vignoble', 'label'=>$langs->trans("Plots"), 'text'=>img_picto('','object_plot@vignoble','style="width:14px"').' '.$langs->trans("Plots"), 'url'=>dol_buildpath('/vignoble/plot_list.php',1).'?mainmenu=vignoble&sall='.urlencode($search_boxvalue));
 		
 		return 0;
 	}
-	
-	
 	
 	/**
 	 * Overloading the doActions function : replacing the parent's function with the one below

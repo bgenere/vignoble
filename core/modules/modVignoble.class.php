@@ -538,7 +538,7 @@ class modVignoble extends DolibarrModules
 			 * Set hooks array by adding all hooks context managed by module
 			 */
 			'hooks' => array(
-				'searchform'
+				'searchform' /* hook context in Dolibarr/htdocs/core/ajax/selectsearchbox.php */
 			)
 		);
 	}
