@@ -106,7 +106,7 @@ $arrayfields = defineListFields($langs);
 $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels
-$extralabels = $extrafields->fetch_name_optionals_label('vignoble');
+$extralabels = $extrafields->fetch_name_optionals_label('plot');
 $search_array_options = $extrafields->getOptionalsFromPost($extralabels, '', 'search_');
 if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 	foreach ($extrafields->attribute_label as $key => $val) {
@@ -221,7 +221,7 @@ $sql .= $hookmanager->resPrint;
 
 $sql .= " FROM " . MAIN_DB_PREFIX . "plot as t";
 if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label))
-	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "plot_extrafields as ef on (u.rowid = ef.fk_object)";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "plot_extrafields as ef on (t.rowid = ef.fk_object)";
 
 $sql .= " WHERE 1 = 1";
 // $sql.= " WHERE u.entity IN (".getEntity('mytable',1).")";
@@ -246,8 +246,6 @@ if ($search_fk_varietal > 0)
 	$sql .= natural_search("fk_varietal", $search_fk_varietal);
 if ($search_fk_rootstock > 0)
 	$sql .= natural_search("fk_rootstock", $search_fk_rootstock);
-
-	//TODO define $fieldstosearchall array containing key fieldname value fieldlabel
 if ($search_all)
 	$sql .= natural_search(array_keys($fieldstosearchall), $search_all);
 	
