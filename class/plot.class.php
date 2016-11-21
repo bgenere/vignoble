@@ -207,7 +207,7 @@ class plot extends CommonObject
 		$sql .= ' ' . (! isset($this->note_public) ? 'NULL' : "'" . $this->db->escape($this->note_public) . "'") . ',';
 		$sql .= ' ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
 		$sql .= ' ' . $user->id . ',';
-		$sql .= ' ' . $user->id ;
+		$sql .= ' ' . $user->id;
 		
 		$sql .= ')';
 		
@@ -222,6 +222,15 @@ class plot extends CommonObject
 		
 		if (! $error) {
 			$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX . $this->table_element);
+			
+			if (! $error && empty($conf->global->MAIN_EXTRAFIELDS_DISABLED)) {
+				$result = $this->insertExtraFields();
+				if ($result < 0) {
+					$error ++;
+					$this->errors[] = 'Error updating extra fields' . $this->db->lasterror();
+					dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+				}
+			}
 			
 			if (! $notrigger) {
 				// Uncomment this and change MYOBJECT to your own tag if you
@@ -316,6 +325,13 @@ class plot extends CommonObject
 				}
 				$this->db->free($resql);
 				
+				// Retreive all extrafield for current object
+				// fetch optionals attributes and labels
+				require_once (DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php');
+				$extrafields = new ExtraFields($this->db);
+				$extralabels = $extrafields->fetch_name_optionals_label($this->table_element, true);
+				$this->fetch_optionals($this->id, $extralabels);
+				
 				if ($numrows) {
 					return $this->id;
 				} else {
@@ -396,6 +412,13 @@ class plot extends CommonObject
 				$this->fk_user_modif = $obj->fk_user_modif;
 			}
 			$this->db->free($resql);
+			
+			// Retreive all extrafield for current object
+			// fetch optionals attributes and labels
+			require_once (DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php');
+			$extrafields = new ExtraFields($this->db);
+			$extralabels = $extrafields->fetch_name_optionals_label($this->table_element, true);
+			$this->fetch_optionals($this->id, $extralabels);
 			
 			if ($numrows) {
 				return 1;
@@ -560,7 +583,7 @@ class plot extends CommonObject
 		if (isset($this->fk_rootstock)) {
 			$this->fk_rootstock = trim($this->fk_rootstock);
 		}
-				
+		
 		// Check parameters
 		// Put here code to add a control on parameters values
 		
@@ -577,7 +600,7 @@ class plot extends CommonObject
 		$sql .= ' fk_varietal = ' . (isset($this->fk_varietal) ? $this->fk_varietal : "null") . ',';
 		$sql .= ' fk_rootstock = ' . (isset($this->fk_rootstock) ? $this->fk_rootstock : "null") . ',';
 		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
-		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id); 
+		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id);
 		
 		$sql .= ' WHERE rowid=' . $this->id;
 		
@@ -588,6 +611,15 @@ class plot extends CommonObject
 			$error ++;
 			$this->errors[] = 'Error ' . $this->db->lasterror();
 			dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+		}
+		
+		if (! $error && empty($conf->global->MAIN_EXTRAFIELDS_DISABLED)) {
+			$result = $this->insertExtraFields();
+			if ($result < 0) {
+				$error ++;
+				$this->errors[] = 'Error updating extra fields' . $this->db->lasterror();
+				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+			}
 		}
 		
 		if (! $error && ! $notrigger) {
@@ -650,6 +682,15 @@ class plot extends CommonObject
 			if (! $resql) {
 				$error ++;
 				$this->errors[] = 'Error ' . $this->db->lasterror();
+				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+			}
+		}
+		// Remove extrafields
+		if ((! $error) && (empty($conf->global->MAIN_EXTRAFIELDS_DISABLED))) {
+			$result = $this->deleteExtraFields();
+			if ($result < 0) {
+				$error ++;
+				$this->errors[] = 'Error removing extra fields';
 				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
 			}
 		}
@@ -864,42 +905,41 @@ class plot extends CommonObject
 			dol_print_error($this->db);
 		}
 	}
-	
-	
+
 	/**
-	 *  Create a document onto disk accordign to template module.
+	 * Create a document onto disk accordign to template module.
 	 *
-	 *  @param	    string		$modele			Force le mnodele a utiliser ('' to not force)
-	 *  @param		Translate	$outputlangs	objet lang a utiliser pour traduction
-	 *  @param      int			$hidedetails    Hide details of lines
-	 *  @param      int			$hidedesc       Hide description
-	 *  @param      int			$hideref        Hide ref
-	 *  @return     int         				0 if KO, 1 if OK
+	 * @param string $modele
+	 *        	Force le mnodele a utiliser ('' to not force)
+	 * @param Translate $outputlangs
+	 *        	objet lang a utiliser pour traduction
+	 * @param int $hidedetails
+	 *        	Hide details of lines
+	 * @param int $hidedesc
+	 *        	Hide description
+	 * @param int $hideref
+	 *        	Hide ref
+	 * @return int 0 if KO, 1 if OK
 	 */
-	public function generateDocument($modele, $outputlangs, $hidedetails=0, $hidedesc=0, $hideref=0)
+	public function generateDocument($modele, $outputlangs, $hidedetails = 0, $hidedesc = 0, $hideref = 0)
 	{
-		global $conf,$langs;
-
+		global $conf, $langs;
+		
 		$langs->load("vignoble@vignoble");
-
+		
 		// Positionne le modele sur le nom du modele a utiliser
-		if (! dol_strlen($modele))
-		{
-			if (! empty($conf->global->PLOT_ADDON_PDF))
-			{
+		if (! dol_strlen($modele)) {
+			if (! empty($conf->global->PLOT_ADDON_PDF)) {
 				$modele = $conf->global->PLOT_ADDON_PDF;
-			}
-			else
-			{
+			} else {
 				$modele = 'plot';
 			}
 		}
-
+		
 		$modelpath = "core/modules/vignoble/doc/";
-
+		
 		return $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref);
 	}
-	
 
 	/**
 	 * Initialise object with example values
@@ -911,7 +951,7 @@ class plot extends CommonObject
 	{
 		$this->id = 0;
 		
-		$this->specimen=1;
+		$this->specimen = 1;
 		$this->entity = '1';
 		$this->ref = 'PlotSpecimen';
 		$this->label = 'Plot Label';
@@ -933,8 +973,6 @@ class plot extends CommonObject
 
 /**
  * Class plotLine
- * 
- * 
  */
 class plotLine
 {

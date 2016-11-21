@@ -21,12 +21,11 @@
  * \file plot_card.php
  * \ingroup plot
  * \brief The plot main form.
- * 
+ *
  * The form displays the main attributes of the plot.
- * Attributes are in view mode first. 
+ * Attributes are in view mode first.
  * The user could use the form to update, create or delete an object.
  * Top of the form is standardised to display the object identity and navigate the object list.
- * 
  */
 
 // if (! defined('NOREQUIREUSER')) define('NOREQUIREUSER','1');
@@ -40,19 +39,17 @@
 // if (! defined('NOREQUIREHTML')) define('NOREQUIREHTML','1'); // If we don't need to load the html.form.class.php
 // if (! defined('NOREQUIREAJAX')) define('NOREQUIREAJAX','1');
 // if (! defined("NOLOGIN")) define("NOLOGIN",'1'); // If this page is public (can be called outside logged session)
-
 @include './tpl/maindolibarr.inc.php';
 
-	// Change this following line to use the correct relative path from htdocs
-	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
+// Change this following line to use the correct relative path from htdocs
+// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
 dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
-include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
+include_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
-include_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
-
+include_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
+include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
 
 // Load traductions files requiredby by page
 $langs->load("vignoble@vignoble");
@@ -67,7 +64,7 @@ $ref = GETPOST('ref', 'alpha');
 if ($ref == '') {
 	$ref = NULL;
 } // NEEDED else your record will never be populated when ref is empty !!!
-                                // echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
+  // echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
 $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // add your own parameters like this
                                      // $myparam = GETPOST('myparam','alpha');
@@ -83,6 +80,10 @@ if (empty($action) && empty($id) && empty($ref))
 	// Load object if id or ref is provided as parameter
 	// echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
 $object = new plot($db);
+$extrafields = new ExtraFields($db);
+// fetch optionals attributes and labels
+$extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
+
 // TODO create a function that populate the object when objet id or ref is provided and object is not loaded
 if (($id > 0 || ! empty($ref)) && $action != 'add') { // $action should not be there
 	$result = $object->fetch($id, $ref);
@@ -96,7 +97,6 @@ if (($id > 0 || ! empty($ref)) && $action != 'add') { // $action should not be t
 $hookmanager->initHooks(array(
 	'plot'
 ));
-$extrafields = new ExtraFields($db);
 
 /**
  * *****************************************************************
@@ -143,6 +143,11 @@ if (empty($reshook)) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Ref")), null, 'errors');
 		}
 		
+		// Get extrafields values
+		$ret = $extrafields->setOptionalsFromPost($extralabels, $object);
+		if ($ret < 0)
+			$error ++;
+		
 		if (! $error) {
 			$result = $object->create($user);
 			if ($result > 0) {
@@ -180,11 +185,14 @@ if (empty($reshook)) {
 		$object->fk_varietal = GETPOST('fk_varietal', 'int');
 		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
 		
-		
 		if (empty($object->ref)) {
 			$error ++;
 			setEventMessages($langs->transnoentitiesnoconv("ErrorFieldRequired", $langs->transnoentitiesnoconv("Ref")), null, 'errors');
 		}
+		// Fill array 'array_options' with data from add form
+		$ret = $extrafields->setOptionalsFromPost($extralabels, $object);
+		if ($ret < 0)
+			$error ++;
 		
 		if (! $error) {
 			$result = $object->update($user);
@@ -220,13 +228,12 @@ if (empty($reshook)) {
 	}
 	
 	if ($action == 'builddoc') // In get or post
-	{
+{
 		// Save last template used to generate document
 		if (GETPOST('model'))
 			$object->setDocModel($user, GETPOST('model', 'alpha'));
-        
-
-		// Define output language
+			
+			// Define output language
 		$outputlangs = $langs;
 		$newlang = '';
 		if ($conf->global->MAIN_MULTILANGS && empty($newlang) && ! empty($_REQUEST['lang_id']))
@@ -236,21 +243,18 @@ if (empty($reshook)) {
 			$outputlangs->setDefaultLang($newlang);
 		}
 		$result = $object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
-		if ($result <= 0)
-		{
+		if ($result <= 0) {
 			setEventMessages($object->error, $object->errors, 'errors');
-	        $action='';
+			$action = '';
 		}
-		$action='';
+		$action = '';
 	}
-
+	
 	// Remove file in doc form
-	if ($action == 'remove_file')
-	{
-		if ($object->id > 0)
-		{
+	if ($action == 'remove_file') {
+		if ($object->id > 0) {
 			require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-
+			
 			$langs->load("other");
 			$upload_dir = $conf->vignoble->dir_output;
 			$file = $upload_dir . '/' . GETPOST('file');
@@ -262,9 +266,7 @@ if (empty($reshook)) {
 			$action = '';
 		}
 	}
-	
 }
-
 
 /**
  * *************************************************
@@ -279,13 +281,13 @@ llxHeader('', $langs->trans('PlotCardTitle'), '');
 $form = new Form($db);
 $formvignoble = new FormVignoble($db);
 $formfile = new FormFile($db);
-$formactions=new FormActions($db);
+$formactions = new FormActions($db);
 
 // Put here content of your page
 
 // Part to create
 if ($action == 'create') {
-	print load_fiche_titre($langs->trans("New Plot"),'','object_plot@vignoble');
+	print load_fiche_titre($langs->trans("New Plot"), '', 'object_plot@vignoble');
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="add">';
@@ -304,6 +306,11 @@ if ($action == 'create') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', GETPOST('fk_cultivationtype'), 'fk_cultivationtype') . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', GETPOST('fk_varietal'), 'fk_varietal') . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', GETPOST('fk_rootstock'), 'fk_rootstock') . '</td></tr>';
+	
+	if (! empty($extrafields->attribute_label)) {
+		print $object->showOptionals($extrafields, 'edit', $parameters);
+	}
+	
 	print '</table>' . "\n";
 	
 	dol_fiche_end();
@@ -315,7 +322,7 @@ if ($action == 'create') {
 
 // Part to edit record @TODO remove test on data
 if (($id || $ref) && $action == 'edit') {
-	print load_fiche_titre($langs->trans("Edit Plot"), $object->label,'object_plot@vignoble');
+	print load_fiche_titre($langs->trans("Edit Plot"), $object->label, 'object_plot@vignoble');
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="update">';
@@ -336,6 +343,9 @@ if (($id || $ref) && $action == 'edit') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', $object->fk_varietal, 'fk_varietal') . '</td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', $object->fk_rootstock, 'fk_rootstock') . '</td></tr>';
 	
+	if (! empty($extrafields->attribute_label)) {
+		print $object->showOptionals($extrafields, 'edit', $parameters);
+	}
 	print '</table>';
 	
 	dol_fiche_end();
@@ -347,9 +357,9 @@ if (($id || $ref) && $action == 'edit') {
 	print '</form>';
 }
 
-//echo 'Before object view ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
-// show object card when action is view, delete or none 
-if  (empty($action) || $action == 'view' || $action == 'delete') {
+// echo 'Before object view ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
+// show object card when action is view, delete or none
+if (empty($action) || $action == 'view' || $action == 'delete') {
 	
 	$head = $formvignoble->getTabsHeader($langs, $object);
 	dol_fiche_head($head, 'card', $langs->trans("Plot"), 0, 'plot@vignoble');
@@ -377,6 +387,9 @@ if  (empty($action) || $action == 'view' || $action == 'delete') {
 	print '<tr><td>' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . dol_getIdFromCode($db, $object->fk_rootstock, 'c_rootstock', 'rowid', 'label') . '</td></tr>';
 	
+	if (! empty($extrafields->attribute_label)) {
+		print $object->showOptionals($extrafields, 'view', $parameters);
+	}
 	print '</table>';
 	
 	dol_fiche_end();
@@ -406,9 +419,8 @@ if  (empty($action) || $action == 'view' || $action == 'delete') {
 	// $linktoelem = $form->showLinkToObjectBlock($object);
 	// if ($linktoelem) print '<br>'.$linktoelem;
 	
-	
 	print '<div class="fichecenter"><div class="fichehalfleft">';
-
+	
 	// Documents
 	$ref = dol_sanitizeFileName($object->ref);
 	$file = $conf->vignoble->dir_output . '/' . $ref . '/' . $ref . '.pdf';
@@ -416,26 +428,23 @@ if  (empty($action) || $action == 'view' || $action == 'delete') {
 	$filedir = $conf->vignoble->dir_output . '/' . $ref;
 	$urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
 	$genallowed = 1;
-	//$user->rights->commande->creer;
+	// $user->rights->commande->creer;
 	$delallowed = 1;
-	//$user->rights->commande->supprimer;
+	// $user->rights->commande->supprimer;
 	$somethingshown = $formfile->show_documents('vignoble', $ref, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);
-
-
+	
 	// Show links to link elements
-	//$linktoelem = $form->showLinkToObjectBlock($object, null, array('plot'));
-	//$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
-
-
+	// $linktoelem = $form->showLinkToObjectBlock($object, null, array('plot'));
+	// $somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
+	
 	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-
+	
 	// List of actions on element
 	include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
 	$formactions = new FormActions($db);
-	//$somethingshown = $formactions->showactions($object, 'plot', 0);
-
+	// $somethingshown = $formactions->showactions($object, 'plot', 0);
+	
 	print '</div></div></div>';
-
 }
 
 // End of page
