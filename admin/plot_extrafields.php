@@ -27,7 +27,6 @@
  * \ingroup admin
  * \brief Admin page to setup the Plot object extra fields.
  */
-
 @include '../tpl/maindolibarr.inc.php';
 
 // Libraries
@@ -45,42 +44,71 @@ $langs->load("vignoble@vignoble");
 // Only admin user
 if (! $user->admin)
 	accessforbidden();
-
-// Initialize variables for extrafields templates 
-$elementtype = 'plot'; /**< $table_element of the object class that manage extrafield */
-$extrafields = new ExtraFields($db);	/**< Initialize a new ExtraFields class */
-$tmptype2label = ExtraFields::$type2label;/**< Supported format for extra fields*/
-$type2label = array(''); /**< Initialize translated type fields labels */
+	
+	// Initialize variables for extrafields templates
+$elementtype = 'plot';
+/**
+ * < $table_element of the object class that manage extrafield
+ */
+$extrafields = new ExtraFields($db);
+/**
+ * < Initialize a new ExtraFields class
+ */
+$tmptype2label = ExtraFields::$type2label;
+/**
+ * < Supported format for extra fields
+ */
+$type2label = array(
+	''
+);
+/**
+ * < Initialize translated type fields labels
+ */
 foreach ($tmptype2label as $key => $val)
 	$type2label[$key] = $langs->trans($val);
-
-/*
+	
+	/*
  * Actions
  */
-$action = GETPOST('action', 'alpha'); 		/**< Action tag (create, edit, add, update, delete) */
-$attrname = GETPOST('attrname', 'alpha');	/**< Attribute name to edit */
+$action = GETPOST('action', 'alpha');
+/**
+ * < Action tag (create, edit, add, update, delete, createdefault)
+ */
+$attrname = GETPOST('attrname', 'alpha');
+/**
+ * < Attribute name to edit
+ */
 
-/** Process extrafields actions.
+/**
+ * Process extrafields actions.
  * This template, requires
- *  $action
- *  $attrname
- *  $extrafields
- *  $elementtype
+ * $action
+ * $attrname
+ * $extrafields
+ * $elementtype
  */
 require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
+
+if ($action == 'createdefault') {
+	createDefaultFields($extrafields, $elementtype);
+}
 
 /*
  * View
  */
 beginForm('plotfields');
 
-$textobject = $langs->transnoentitiesnoconv("Plot");/**< The Object name to which fields belong */
+$textobject = $langs->transnoentitiesnoconv("Plot");
+/**
+ * < The Object name to which fields belong
+ */
 
-/** Displays extrafields list with actions on attributes
+/**
+ * Displays extrafields list with actions on attributes
  * This template, requires
- *  $textobject
- *  $extrafields
- *  $elementtype
+ * $textobject
+ * $extrafields
+ * $elementtype
  */
 require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
@@ -112,7 +140,9 @@ endForm();
 
 /**
  * Print New Attribute button to create a new field
- * @param action the button is displayed only if action is not create or edit.
+ *
+ * @param
+ *        	action the button is displayed only if action is not create or edit.
  */
 function printButtonNewField($action)
 {
@@ -121,6 +151,46 @@ function printButtonNewField($action)
 	if ($action != 'create' && $action != 'edit') {
 		print '<div class="tabsAction">';
 		print "<a class=\"butAction\" href=\"" . $_SERVER["PHP_SELF"] . "?action=create\">" . $langs->trans("NewAttribute") . "</a>";
+		print "<a class=\"butAction\" href=\"" . $_SERVER["PHP_SELF"] . "?action=createdefault\">" . $langs->trans("AddDefaultAttributes") . "</a>";
 		print "</div>";
+	}
+}
+
+/**
+ *	Create the default extrafields for the plot object
+ * @param array  $extrafields        	
+ * @param string $elementtype      	
+ */
+function createDefaultFields($extrafields, $elementtype)
+{
+	Global $db, $langs;
+	
+	$result = $extrafields->addExtraField('areasize', 'Size (ha)', 'double', 1, '10,2', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 1, '', 0, 0);
+	if ($result <= 0) {
+		setEventMessages('areasize field not added', null, 'warnings');
+	}
+	$result = $extrafields->addExtraField('rootsnumber', 'Number of Roots', 'int', 2, '10', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 1, '', 0, 0);
+	if ($result <= 0) {
+		setEventMessages('rootsnumber field not added', null, 'warnings');
+	}
+	$result = $extrafields->addExtraField('spacing', 'Spacing (cm)', 'double', 3, '3,0', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 1, '', 0, 0);
+	if ($result <= 0) {
+		setEventMessages('spacing field not added', null, 'warnings');
+	}
+	$result = $extrafields->addExtraField('cultivationtype', 'Cultivation type', 'sellist', 4, '', $elementtype, 0, 1,'', 'a:1:{s:7:\"options\";a:1:{s:38:\"c_cultivationtype:label:code::active=1\";N;}}', 1, '', 0, 0);
+	if ($result <= 0) {
+		setEventMessages('cultivationtype field not added', null, 'warnings');
+	}
+	$result = $extrafields->addExtraField('varietal', 'Varietal', 'sellist', 5, '', $elementtype, 0, 1, '', 'a:1:{s:7:\"options\";a:1:{s:31:\"c_varietal:label:code::active=1\";N;}}', 1, '', 0, 0);
+	if ($result <= 0) {
+		setEventMessages('varietal field not added', null, 'warnings');
+	}
+	$result = $extrafields->addExtraField('rootstock', 'Root Stock', 'sellist', 6, '', $elementtype, 0, 1, '', 'a:1:{s:7:\"options\";a:1:{s:32:\"c_rootstock:label:code::active=1\";N;}}', 1, '', 0, 0);
+	if ($result <= 0) {
+		setEventMessages('rootstock field not added', null, 'warnings');
+	}
+	
+	if ($result > 0) {
+		setEventMessages('Default fields added, allready existing have been kept', null);
 	}
 }

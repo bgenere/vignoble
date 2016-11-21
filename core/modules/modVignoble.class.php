@@ -27,9 +27,9 @@
  * \defgroup dashboard Dashboard
  *
  * Components providing the Vignoble dashboard
- * 
- * \defgroup admin	Module administration
- * 
+ *
+ * \defgroup admin Module administration
+ *
  * Pages to administrate the module
  *
  * \defgroup component Reusable components
@@ -43,7 +43,7 @@
  *
  * The module class extends the DolibarrModule Class and define
  * module properties and components.
- * 
+ *
  * File name should always be mod%ModuleName%.class.php
  */
 include_once DOL_DOCUMENT_ROOT . "/core/modules/DolibarrModules.class.php";
@@ -649,6 +649,8 @@ class modVignoble extends DolibarrModules
 		
 		$result = $this->loadTables();
 		
+		setEventMessage('Vignoble module activated');
+		
 		return $this->_init($sql, $options);
 	}
 
@@ -664,6 +666,8 @@ class modVignoble extends DolibarrModules
 	public function remove($options = '')
 	{
 		$sql = array();
+		
+		setEventMessage('Vignoble module unactivated');
 		
 		return $this->_remove($sql, $options);
 	}
@@ -777,3 +781,7 @@ class modVignoble extends DolibarrModules
 		);
 	}
 }
+
+
+
+
