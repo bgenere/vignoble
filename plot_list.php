@@ -67,7 +67,7 @@ $search_fk_cultivationtype = GETPOST('search_fk_cultivationtype', 'int');
 $search_fk_varietal = GETPOST('search_fk_varietal', 'int');
 $search_fk_rootstock = GETPOST('search_fk_rootstock', 'int');
 $search_entity = GETPOST('search_entity', 'int');
-$sall = GETPOST('sall', 'alpha');
+$search_all = GETPOST('sall', 'alpha');
 // CSS options
 $optioncss = GETPOST('optioncss', 'alpha');
 
@@ -118,6 +118,13 @@ if (is_array($extrafields->attribute_label) && count($extrafields->attribute_lab
 		);
 	}
 }
+
+// List of fields to search into when doing a "search in all"
+$fieldstosearchall = array(
+    't.ref'=>'Ref',
+    't.label'=>'Label',
+	't.description'=>'Description',
+);
 
 /**
  * *****************************************************************
@@ -241,8 +248,8 @@ if ($search_fk_rootstock > 0)
 	$sql .= natural_search("fk_rootstock", $search_fk_rootstock);
 
 	//TODO define $fieldstosearchall array containing key fieldname value fieldlabel
-if ($sall)
-	$sql .= natural_search(array_keys($fieldstosearchall), $sall);
+if ($search_all)
+	$sql .= natural_search(array_keys($fieldstosearchall), $search_all);
 	
 	// Add where from extra fields
 foreach ($search_array_options as $key => $val) {
@@ -328,10 +335,10 @@ if ($resql) {
 	print '<input type="hidden" name="sortfield" value="' . $sortfield . '">';
 	print '<input type="hidden" name="sortorder" value="' . $sortorder . '">';
 	
-	if ($sall) {
+	if ($search_all) {
 		foreach ($fieldstosearchall as $key => $val)
 			$fieldstosearchall[$key] = $langs->trans($val);
-		print $langs->trans("FilterOnInto", $all) . join(', ', $fieldstosearchall);
+		print $langs->trans("FilterOnInto", $search_all) . join(', ', $fieldstosearchall);
 	}
 	
 	if (! empty($moreforfilter)) {

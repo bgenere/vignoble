@@ -21,20 +21,18 @@
  */
 
 /**
- * \file vignoble/plot.class.php
- * \ingroup vignoble
+ * \file vignoble/class/plot.class.php
+ * \ingroup Plot Management
  * \brief CRUD class file for the Plot object (Create/Read/Update/Delete)
  */
 
-// Put here all includes required by your class file
+// inherits from common object class
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-// require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-// require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
  * Class plot
  *
- * Put here description of your class
+ * Define the object and the CRUD methods and some more.
  *
  * @see CommonObject
  */
@@ -935,6 +933,8 @@ class plot extends CommonObject
 
 /**
  * Class plotLine
+ * 
+ * 
  */
 class plotLine
 {
