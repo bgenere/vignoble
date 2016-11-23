@@ -21,8 +21,3 @@ ALTER TABLE llx_plot ADD INDEX idx_plot_label (label);
 -- index on user
 ALTER TABLE llx_plot ADD INDEX idx_plot_fk_user_author (fk_user_author);
 ALTER TABLE llx_plot ADD INDEX idx_plot_fk_user_modif (fk_user_modif);
-
--- constraints 
-ALTER TABLE  llx_plot ADD CONSTRAINT fk_plot_fk_cultivationtype FOREIGN KEY (fk_cultivationtype) REFERENCES  llx_c_cultivationtype (rowid);
-ALTER TABLE  llx_plot ADD CONSTRAINT fk_plot_fk_rootstock FOREIGN KEY (fk_rootstock) REFERENCES  llx_c_rootstock (rowid);
-ALTER TABLE  llx_plot ADD CONSTRAINT fk_plot_fk_varietal FOREIGN KEY (fk_varietal) REFERENCES  llx_c_varietal (rowid);

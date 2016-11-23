@@ -70,7 +70,7 @@ $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // $myparam = GETPOST('myparam','alpha');
                                      
 // Prevent direct access through URL
-if ($user->societe_id > 0 || $user->rights->vignoble->level1->level2 == 0) {
+if ($user->socid > 0 || $user->rights->vignoble->level1->level2 == 0) {
 	// accessforbidden();
 }
 
@@ -82,7 +82,7 @@ if (empty($action) && empty($id) && empty($ref))
 $object = new plot($db);
 $extrafields = new ExtraFields($db);
 // fetch optionals attributes and labels
-$extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
+$extrafieldslabels = $extrafields->fetch_name_optionals_label($object->table_element);
 
 // TODO create a function that populate the object when objet id or ref is provided and object is not loaded
 if (($id > 0 || ! empty($ref)) && $action != 'add') { // $action should not be there
@@ -128,13 +128,13 @@ if (empty($reshook)) {
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
 		$object->description = GETPOST('description', 'alpha');
-		$object->areasize = GETPOST('areasize', 'alpha');
-		$object->rootsnumber = GETPOST('rootsnumber', 'int');
-		$object->spacing = GETPOST('spacing', 'alpha');
-		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
-		$object->fk_varietal = GETPOST('fk_varietal', 'int');
-		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
-		$object->note_private = GETPOST('note_private', 'alpha');
+// 		$object->areasize = GETPOST('areasize', 'alpha');
+// 		$object->rootsnumber = GETPOST('rootsnumber', 'int');
+// 		$object->spacing = GETPOST('spacing', 'alpha');
+// 		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
+// 		$object->fk_varietal = GETPOST('fk_varietal', 'int');
+// 		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
+// 		$object->note_private = GETPOST('note_private', 'alpha');
 		$object->fk_user_author = $user->id;
 		$object->fk_user_modif = $user->id;
 		
@@ -144,7 +144,7 @@ if (empty($reshook)) {
 		}
 		
 		// Get extrafields values
-		$ret = $extrafields->setOptionalsFromPost($extralabels, $object);
+		$ret = $extrafields->setOptionalsFromPost($extrafieldslabels, $object);
 		if ($ret < 0)
 			$error ++;
 		
@@ -178,19 +178,19 @@ if (empty($reshook)) {
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
 		$object->description = GETPOST('description', 'alpha');
-		$object->areasize = GETPOST('areasize', 'alpha');
-		$object->rootsnumber = GETPOST('rootsnumber', 'int');
-		$object->spacing = GETPOST('spacing', 'alpha');
-		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
-		$object->fk_varietal = GETPOST('fk_varietal', 'int');
-		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
+// 		$object->areasize = GETPOST('areasize', 'alpha');
+// 		$object->rootsnumber = GETPOST('rootsnumber', 'int');
+// 		$object->spacing = GETPOST('spacing', 'alpha');
+// 		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
+// 		$object->fk_varietal = GETPOST('fk_varietal', 'int');
+// 		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
 		
 		if (empty($object->ref)) {
 			$error ++;
 			setEventMessages($langs->transnoentitiesnoconv("ErrorFieldRequired", $langs->transnoentitiesnoconv("Ref")), null, 'errors');
 		}
 		// Fill array 'array_options' with data from add form
-		$ret = $extrafields->setOptionalsFromPost($extralabels, $object);
+		$ret = $extrafields->setOptionalsFromPost($extrafieldslabels, $object);
 		if ($ret < 0)
 			$error ++;
 		
@@ -295,17 +295,15 @@ if ($action == 'create') {
 	
 	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
-	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
-	//
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . GETPOST('ref') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . GETPOST('label') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . GETPOST('description') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . GETPOST('areasize') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . GETPOST('rootsnumber') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . GETPOST('spacing') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', GETPOST('fk_cultivationtype'), 'fk_cultivationtype') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', GETPOST('fk_varietal'), 'fk_varietal') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', GETPOST('fk_rootstock'), 'fk_rootstock') . '</td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . GETPOST('areasize') . '"></td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . GETPOST('rootsnumber') . '"></td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . GETPOST('spacing') . '"></td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', GETPOST('fk_cultivationtype'), 'fk_cultivationtype') . '</td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', GETPOST('fk_varietal'), 'fk_varietal') . '</td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', GETPOST('fk_rootstock'), 'fk_rootstock') . '</td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
@@ -336,12 +334,12 @@ if (($id || $ref) && $action == 'edit') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . $object->ref . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . $object->label . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . $object->description . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . $object->areasize . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . $object->rootsnumber . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . $object->spacing . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', $object->fk_cultivationtype, 'fk_cultivationtype') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', $object->fk_varietal, 'fk_varietal') . '</td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', $object->fk_rootstock, 'fk_rootstock') . '</td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . $object->areasize . '"></td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . $object->rootsnumber . '"></td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . $object->spacing . '"></td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', $object->fk_cultivationtype, 'fk_cultivationtype') . '</td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', $object->fk_varietal, 'fk_varietal') . '</td></tr>';
+// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', $object->fk_rootstock, 'fk_rootstock') . '</td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
@@ -380,12 +378,12 @@ if (empty($action) || $action == 'view' || $action == 'delete') {
 	
 	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td>' . $object->label . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td>' . $object->description . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldareasize") . '</td><td>' . $object->areasize . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldrootsnumber") . '</td><td>' . $object->rootsnumber . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldspacing") . '</td><td>' . $object->spacing . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . dol_getIdFromCode($db, $object->fk_cultivationtype, 'c_cultivationtype', 'rowid', 'label') . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . dol_getIdFromCode($db, $object->fk_rootstock, 'c_rootstock', 'rowid', 'label') . '</td></tr>';
+// 	print '<tr><td>' . $langs->trans("Fieldareasize") . '</td><td>' . $object->areasize . '</td></tr>';
+// 	print '<tr><td>' . $langs->trans("Fieldrootsnumber") . '</td><td>' . $object->rootsnumber . '</td></tr>';
+// 	print '<tr><td>' . $langs->trans("Fieldspacing") . '</td><td>' . $object->spacing . '</td></tr>';
+// 	print '<tr><td>' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . dol_getIdFromCode($db, $object->fk_cultivationtype, 'c_cultivationtype', 'rowid', 'label') . '</td></tr>';
+// 	print '<tr><td>' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
+// 	print '<tr><td>' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . dol_getIdFromCode($db, $object->fk_rootstock, 'c_rootstock', 'rowid', 'label') . '</td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'view', $parameters);

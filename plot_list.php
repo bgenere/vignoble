@@ -21,11 +21,10 @@
  * \file plot_list.php
  * \ingroup plot
  * \brief Display the list of plots
- * 
+ *
  * The list of plots is paginated and could be filtered/search/sorted on displayed fields.
  * User could select which fields to display in list.
  * Each item of the list is selectable and link to the object form
- * 
  */
 
 // if (! defined('NOREQUIREUSER')) define('NOREQUIREUSER','1');
@@ -39,10 +38,8 @@
 // if (! defined('NOREQUIREHTML')) define('NOREQUIREHTML','1'); // If we don't need to load the html.form.class.php
 // if (! defined('NOREQUIREAJAX')) define('NOREQUIREAJAX','1');
 // if (! defined("NOLOGIN")) define("NOLOGIN",'1'); // If this page is public (can be called outside logged session)
-
 @include './tpl/maindolibarr.inc.php';
-	// Change this following line to use the correct relative path from htdocs
-	// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
+
 dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
@@ -60,15 +57,9 @@ $myparam = GETPOST('myparam', 'alpha');
 $search_ref = GETPOST('search_ref', 'alpha');
 $search_label = GETPOST('search_label', 'alpha');
 $search_description = GETPOST('search_description', 'alpha');
-$search_areasize = GETPOST('search_areasize', 'alpha');
-$search_rootsnumber = GETPOST('search_rootsnumber', 'int');
-$search_spacing = GETPOST('search_spacing', 'alpha');
-$search_fk_cultivationtype = GETPOST('search_fk_cultivationtype', 'int');
-$search_fk_varietal = GETPOST('search_fk_varietal', 'int');
-$search_fk_rootstock = GETPOST('search_fk_rootstock', 'int');
-$search_entity = GETPOST('search_entity', 'int');
+// Get search all option
 $search_all = GETPOST('sall', 'alpha');
-// CSS options
+// Get CSS options
 $optioncss = GETPOST('optioncss', 'alpha');
 
 // Load variable for pagination
@@ -83,48 +74,45 @@ $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortfield)
-	$sortfield = "t.rowid"; // default search field
+	$sortfield = "t.rowid"; // default sort field
 if (! $sortorder)
-	$sortorder = "ASC";
-	
-	// Protection if external user
+	$sortorder = "ASC"; // default sort order
+		                    
+// Protection if external user
 $socid = 0;
-if ($user->societe_id > 0) { // défini pour utilisateur externe, Id du tiers société vide sinon
-	$socid = $user->societe_id; //$socid est souvent dans l'url
-	// accessforbidden();
+if ($user->socid > 0) { // défini pour utilisateur externe, Id du tiers société vide sinon
+	$socid = $user->socid; // $socid est souvent dans l'url
+		                       // accessforbidden();
 }
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
 $hookmanager->initHooks(array(
 	'plotlist'
 ));
-
-$arrayfields = defineListFields($langs);
-
-// Extra fields
-// Get extrafields for the object
+/**
+ *
+ * @var ExtraFields $extrafields Instanciate the extrafields class
+ */
 $extrafields = new ExtraFields($db);
+// fetch extra labels and add to search options
+$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
+$search_array_extrafields = $extrafields->getOptionalsFromPost($extrafieldslabels, '', 'search_');
 
-// fetch optionals attributes and labels
-$extralabels = $extrafields->fetch_name_optionals_label('plot');
-$search_array_options = $extrafields->getOptionalsFromPost($extralabels, '', 'search_');
-if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
-	foreach ($extrafields->attribute_label as $key => $val) {
-		$arrayfields["ef." . $key] = array(
-			'label' => $extrafields->attribute_label[$key],
-			'checked' => $extrafields->attribute_list[$key],
-			'position' => $extrafields->attribute_pos[$key],
-			'enabled' => $extrafields->attribute_perms[$key]
-		);
-	}
-}
-
-// List of fields to search into when doing a "search in all"
+/**
+ *
+ * @var array $fieldstosearchall List of fields to search into when doing a "search in all"
+ */
 $fieldstosearchall = array(
-    't.ref'=>'Ref',
-    't.label'=>'Label',
-	't.description'=>'Description',
+	't.ref' => 'Ref',
+	't.label' => 'Label',
+	't.description' => 'Description'
 );
+//
+/**
+ *
+ * @var array $arrayfields List of fields that could be displayed in the list
+ */
+$arrayfields = defineListFields($langs, $extrafields);
 
 /**
  * *****************************************************************
@@ -148,16 +136,9 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 	$search_ref = '';
 	$search_label = '';
 	$search_description = '';
-	$search_areasize = '';
-	$search_rootsnumber = '';
-	$search_spacing = '';
-	$search_fk_cultivationtype = '';
-	$search_fk_varietal = '';
-	$search_fk_rootstock = '';
-	$search_entity = '';
-	$search_array_options = array();
+	$search_array_extrafields = array();
 }
-
+// TODO Check if action 'confirm_delete' make sense on a list without line tick box
 if (empty($reshook)) {
 	// Action to delete
 	if ($action == 'confirm_delete') {
@@ -193,7 +174,7 @@ $plot = new plot($db);
 // Put here content of your page
 $title = $langs->trans('Plots List');
 
-addJQuery();
+// addJQuery();
 
 $sql = "SELECT";
 $sql .= " t.rowid,";
@@ -201,12 +182,6 @@ $sql .= " t.entity,";
 $sql .= " t.ref,";
 $sql .= " t.label,";
 $sql .= " t.description,";
-$sql .= " t.areasize,";
-$sql .= " t.rootsnumber,";
-$sql .= " t.spacing,";
-$sql .= " t.fk_cultivationtype,";
-$sql .= " t.fk_varietal,";
-$sql .= " t.fk_rootstock,";
 $sql .= " t.tms as date_update,";
 $sql .= " t.datec as date_creation";
 
@@ -234,23 +209,11 @@ if ($search_label)
 	$sql .= natural_search("label", $search_label);
 if ($search_description)
 	$sql .= natural_search("description", $search_description);
-if ($search_areasize)
-	$sql .= natural_search("areasize", $search_areasize);
-if ($search_rootsnumber)
-	$sql .= natural_search("rootsnumber", $search_rootsnumber);
-if ($search_spacing)
-	$sql .= natural_search("spacing", $search_spacing);
-if ($search_fk_cultivationtype > 0) // Means a value has been selected in combo
-	$sql .= natural_search("fk_cultivationtype", $search_fk_cultivationtype);
-if ($search_fk_varietal > 0)
-	$sql .= natural_search("fk_varietal", $search_fk_varietal);
-if ($search_fk_rootstock > 0)
-	$sql .= natural_search("fk_rootstock", $search_fk_rootstock);
 if ($search_all)
 	$sql .= natural_search(array_keys($fieldstosearchall), $search_all);
 	
-	// Add where from extra fields
-foreach ($search_array_options as $key => $val) {
+	// Add search from extra fields
+foreach ($search_array_extrafields as $key => $val) {
 	$crit = $val;
 	$tmpkey = preg_replace('/search_options_/', '', $key);
 	$typ = $extrafields->attribute_type[$tmpkey];
@@ -261,7 +224,8 @@ foreach ($search_array_options as $key => $val) {
 	)))
 		$mode = 1; // Search on a numeric
 	if ($val && (($crit != '' && ! in_array($typ, array(
-		'select'
+		'select',
+		'sellist'
 	))) || ! empty($crit))) {
 		$sql .= natural_search('ef.' . $tmpkey, $crit, $mode);
 	}
@@ -273,7 +237,7 @@ $sql .= $hookmanager->resPrint;
 
 $sql .= $db->order($sortfield, $sortorder);
 
-//echo var_dump($sql);
+// echo var_dump($sql);
 
 // Count total nb of records
 $nbtotalofrecords = 0;
@@ -285,6 +249,9 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST)) {
 $sql .= $db->plimit($conf->liste_limit + 1, $offset);
 
 dol_syslog($script_file, LOG_DEBUG);
+/**
+ * @var $resql List result set to display on the page
+ */
 $resql = $db->query($sql);
 
 if ($resql) {
@@ -300,31 +267,18 @@ if ($resql) {
 		$params .= '&amp;search_label=' . urlencode($search_label);
 	if ($search_description != '')
 		$params .= '&amp;search_description=' . urlencode($search_description);
-	if ($search_areasize != '')
-		$params .= '&amp;search_areasize=' . urlencode($search_areasize);
-	if ($search_rootsnumber != '')
-		$params .= '&amp;search_rootsnumber=' . urlencode($search_rootsnumber);
-	if ($search_spacing != '')
-		$params .= '&amp;search_spacing=' . urlencode($search_spacing);
-	if ($search_fk_cultivationtype != '')
-		$params .= '&amp;search_fk_cultivationtype=' . urlencode($search_fk_cultivationtype);
-	if ($search_fk_varietal != '')
-		$params .= '&amp;search_fk_varietal=' . urlencode($search_fk_varietal);
-	if ($search_fk_rootstock != '')
-		$params .= '&amp;search_fk_rootstock=' . urlencode($search_fk_rootstock);
-	
-	if ($optioncss != '')
-		$param .= '&optioncss=' . $optioncss;
-		// Add $param from extra fields
-	foreach ($search_array_options as $key => $val) {
-		$crit = $val;
+	foreach ($search_array_extrafields as $key => $val) {
 		$tmpkey = preg_replace('/search_options_/', '', $key);
 		if ($val != '')
 			$param .= '&search_options_' . $tmpkey . '=' . urlencode($val);
+		
+		if ($optioncss != '')
+			$param .= '&optioncss=' . $optioncss;
+		
 	}
 	
 	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $params, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'object_plot@vignoble');
-	
+	// selection form
 	print '<form method="GET" id="searchFormList" action="' . $_SERVER["PHP_SELF"] . '">';
 	if ($optioncss != '')
 		print '<input type="hidden" name="optioncss" value="' . $optioncss . '">';
@@ -332,13 +286,13 @@ if ($resql) {
 	print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 	print '<input type="hidden" name="sortfield" value="' . $sortfield . '">';
 	print '<input type="hidden" name="sortorder" value="' . $sortorder . '">';
-	
+	// message when global selection activated
 	if ($search_all) {
 		foreach ($fieldstosearchall as $key => $val)
 			$fieldstosearchall[$key] = $langs->trans($val);
 		print $langs->trans("FilterOnInto", $search_all) . join(', ', $fieldstosearchall);
 	}
-	
+	// message when list not fully displayed 
 	if (! empty($moreforfilter)) {
 		print '<div class="liste_titre liste_titre_bydiv centpercent">';
 		print $moreforfilter;
@@ -353,7 +307,7 @@ if ($resql) {
 	
 	print '<table class="liste ' . ($moreforfilter ? "listwithfilterbefore" : "") . '">';
 	
-	// Fields title
+	// print Fields title
 	print '<tr class="liste_titre">';
 	
 	if (! empty($arrayfields['t.entity']['checked']))
@@ -364,25 +318,11 @@ if ($resql) {
 		print_liste_field_titre($arrayfields['t.label']['label'], $_SERVER['PHP_SELF'], 't.label', '', $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.description']['checked']))
 		print_liste_field_titre($arrayfields['t.description']['label'], $_SERVER['PHP_SELF'], 't.description', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.areasize']['checked']))
-		print_liste_field_titre($arrayfields['t.areasize']['label'], $_SERVER['PHP_SELF'], 't.areasize', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.rootsnumber']['checked']))
-		print_liste_field_titre($arrayfields['t.rootsnumber']['label'], $_SERVER['PHP_SELF'], 't.rootsnumber', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.spacing']['checked']))
-		print_liste_field_titre($arrayfields['t.spacing']['label'], $_SERVER['PHP_SELF'], 't.spacing', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
-		print_liste_field_titre($arrayfields['t.fk_cultivationtype']['label'], $_SERVER['PHP_SELF'], 't.fk_cultivationtype', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.fk_varietal']['checked']))
-		print_liste_field_titre($arrayfields['t.fk_varietal']['label'], $_SERVER['PHP_SELF'], 't.fk_varietal', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.fk_rootstock']['checked']))
-		print_liste_field_titre($arrayfields['t.fk_rootstock']['label'], $_SERVER['PHP_SELF'], 't.fk_rootstock', '', $param, '', $sortfield, $sortorder);
-		
-		// Extra fields
 	if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 		foreach ($extrafields->attribute_label as $key => $val) {
 			if (! empty($arrayfields["ef." . $key]['checked'])) {
 				$align = $extrafields->getAlignFlag($key);
-				print_liste_field_titre($extralabels[$key], $_SERVER["PHP_SELF"], "ef." . $key, "", $param, ($align ? 'align="' . $align . '"' : ''), $sortfield, $sortorder);
+				print_liste_field_titre($extrafieldslabels[$key], $_SERVER["PHP_SELF"], "ef." . $key, "", $param, ($align ? 'align="' . $align . '"' : ''), $sortfield, $sortorder);
 			}
 		}
 	}
@@ -396,11 +336,11 @@ if ($resql) {
 		print_liste_field_titre($langs->trans("DateCreationShort"), $_SERVER["PHP_SELF"], "t.datec", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.tms']['checked']))
 		print_liste_field_titre($langs->trans("DateModificationShort"), $_SERVER["PHP_SELF"], "t.tms", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
-		// if (! empty($arrayfields['t.status']['checked'])) print_liste_field_titre($langs->trans("Status"),$_SERVER["PHP_SELF"],"t.status","",$param,'align="center"',$sortfield,$sortorder);
+// 	if (! empty($arrayfields['t.status']['checked'])) print_liste_field_titre($langs->trans("Status"),$_SERVER["PHP_SELF"],"t.status","",$param,'align="center"',$sortfield,$sortorder);
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', 'align="right"', $sortfield, $sortorder, 'maxwidthsearch ');
 	print '</tr>' . "\n";
 	
-	// Search Fields in title
+	// print Search Fields boxes in title
 	print '<tr class="liste_titre">';
 	
 	if (! empty($arrayfields['t.entity']['checked']))
@@ -411,55 +351,47 @@ if ($resql) {
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_label" value="' . $search_label . '" size="10"></td>';
 	if (! empty($arrayfields['t.description']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_description" value="' . $search_description . '" size="10"></td>';
-	if (! empty($arrayfields['t.areasize']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_areasize" value="' . $search_areasize . '" size="10"></td>';
-	if (! empty($arrayfields['t.rootsnumber']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_rootsnumber" value="' . $search_rootsnumber . '" size="10"></td>';
-	if (! empty($arrayfields['t.spacing']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_spacing" value="' . $search_spacing . '" size="10"></td>';
-	if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
-		print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_cultivationtype', 'cultivationtype', $search_fk_cultivationtype, 'search_fk_cultivationtype', true) . '</td>';
-	if (! empty($arrayfields['t.fk_varietal']['checked']))
-		print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_varietal', 'varietal', $search_fk_varietal, 'search_fk_varietal', true) . '</td>';
-	if (! empty($arrayfields['t.fk_rootstock']['checked']))
-		print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock', true) . '</td>';
-	if (! empty($arrayfields['t.note_private']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_note_private" value="' . $search_note_private . '" size="10"></td>';
-	if (! empty($arrayfields['t.note_public']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_note_public" value="' . $search_note_public . '" size="10"></td>';
-	if (! empty($arrayfields['t.fk_user_author']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_user_author" value="' . $search_fk_user_author . '" size="10"></td>';
-	if (! empty($arrayfields['t.fk_user_modif']['checked']))
-		print '<td class="liste_titre"><input type="text" class="flat" name="search_fk_user_modif" value="' . $search_fk_user_modif . '" size="10"></td>';
+
+	// example of a combobox selection for search
+	// if (! empty($arrayfields['t.fk_rootstock']['checked']))
+	// print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock', true) . '</td>';
 		
-		// Search on Extra fields in title
+	// Search box for Extra fields in title
 	if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 		foreach ($extrafields->attribute_label as $key => $val) {
 			if (! empty($arrayfields["ef." . $key]['checked'])) {
 				$align = $extrafields->getAlignFlag($key);
 				$typeofextrafield = $extrafields->attribute_type[$key];
+				
 				print '<td class="liste_titre' . ($align ? ' ' . $align : '') . '">';
-				if (in_array($typeofextrafield, array(
-					'varchar',
-					'int',
-					'double',
-					'select'
-				))) {
-					$crit = $val;
-					$tmpkey = preg_replace('/search_options_/', '', $key);
-					$searchclass = '';
-					if (in_array($typeofextrafield, array(
-						'varchar',
-						'select'
-					)))
-						$searchclass = 'searchstring';
-					if (in_array($typeofextrafield, array(
-						'int',
-						'double'
-					)))
-						$searchclass = 'searchnum';
-					print '<input class="flat' . ($searchclass ? ' ' . $searchclass : '') . '" size="4" type="text" name="search_options_' . $tmpkey . '" value="' . dol_escape_htmltag($search_array_options['search_options_' . $tmpkey]) . '">';
-				}
+				// get search value if any
+				$tmpkey = preg_replace('/search_options_/', '', $key);
+				$value = dol_escape_htmltag($search_array_extrafields['search_options_' . $tmpkey]);
+				//
+				print $extrafields->showInputField($key,$value,null,'','search_',4);
+// 				if (in_array($typeofextrafield, array(
+// 					'varchar',
+// 					'int',
+// 					'double',
+// 					'select',
+// 					'sellist'
+// 				))) {
+// 					$crit = $val;
+// 					$tmpkey = preg_replace('/search_options_/', '', $key);
+// 					$searchclass = '';
+// 					if (in_array($typeofextrafield, array(
+// 						'varchar',
+// 						'select',
+// 						'sellist'
+// 					)))
+// 						$searchclass = 'searchstring';
+// 					if (in_array($typeofextrafield, array(
+// 						'int',
+// 						'double'
+// 					)))
+// 						$searchclass = 'searchnum';
+// 					print '<input class="flat' . ($searchclass ? ' ' . $searchclass : '') . '" size="4" type="text" name="search_options_' . $tmpkey . '" value="' . dol_escape_htmltag($search_array_extrafields['search_options_' . $tmpkey]) . '">';
+// 				}
 				print '</td>';
 			}
 		}
@@ -495,12 +427,13 @@ if ($resql) {
 	print '<input type="image" class="liste_titre" name="button_removefilter" src="' . img_picto($langs->trans("Search"), 'searchclear.png', '', '', 1) . '" value="' . dol_escape_htmltag($langs->trans("RemoveFilter")) . '" title="' . dol_escape_htmltag($langs->trans("RemoveFilter")) . '">';
 	print '</td>';
 	print '</tr>' . "\n";
-	
+	/*
+	 * Fetch the result set and print lines
+	 */
 	$i = 0;
 	while ($i < $num) {
 		$obj = $db->fetch_object($resql);
 		if ($obj) {
-			// You can use here results
 			print '<tr>';
 			$plot->fetch($obj->rowid);
 			if (! empty($arrayfields['t.entity']['checked']))
@@ -511,20 +444,7 @@ if ($resql) {
 				print '<td>' . $obj->label . '</td>';
 			if (! empty($arrayfields['t.description']['checked']))
 				print '<td>' . $obj->description . '</td>';
-			if (! empty($arrayfields['t.areasize']['checked']))
-				print '<td>' . $obj->areasize . '</td>';
-			if (! empty($arrayfields['t.rootsnumber']['checked']))
-				print '<td>' . $obj->rootsnumber . '</td>';
-			if (! empty($arrayfields['t.spacing']['checked']))
-				print '<td>' . $obj->spacing . '</td>';
-			if (! empty($arrayfields['t.fk_cultivationtype']['checked']))
-				print '<td>' . dol_getIdFromCode($db, $obj->fk_cultivationtype, 'c_cultivationtype', 'rowid', 'label') . '</td>';
-			if (! empty($arrayfields['t.fk_varietal']['checked']))
-				print '<td>' . dol_getIdFromCode($db, $obj->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td>';
-			if (! empty($arrayfields['t.fk_rootstock']['checked']))
-				print '<td>' . dol_getIdFromCode($db, $obj->fk_rootstock, 'c_rootstock', 'rowid', 'label') . '</td>';
-				
-				// Extra fields
+			// Extra fields
 			if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 				foreach ($extrafields->attribute_label as $key => $val) {
 					if (! empty($arrayfields["ef." . $key]['checked'])) {
@@ -567,6 +487,7 @@ if ($resql) {
 			 * }
 			 */
 			// Action column
+			// TODO check if example of action column exist
 			print '<td></td>';
 			print '</tr>';
 		}
@@ -603,62 +524,47 @@ $db->close();
  * enabled => [ NULL or 1 field is usable| 0 field not usable]
  * position => int to order the column
  */
-function defineListFields($langs)
+function defineListFields($langs, $extrafields)
 {
-	$arrayfields = array(
-		
-		't.ref' => array(
-			'label' => $langs->trans("Fieldref"),
-			'checked' => 1
-		),
-		't.label' => array(
-			'label' => $langs->trans("Fieldlabel"),
-			'checked' => 1
-		),
-		't.description' => array(
-			'label' => $langs->trans("Fielddescription"),
-			'checked' => 0
-		),
-		't.areasize' => array(
-			'label' => $langs->trans("Fieldareasize"),
-			'checked' => 1
-		),
-		't.rootsnumber' => array(
-			'label' => $langs->trans("Fieldrootsnumber"),
-			'checked' => 1
-		),
-		't.spacing' => array(
-			'label' => $langs->trans("Fieldspacing"),
-			'checked' => 1
-		),
-		't.fk_cultivationtype' => array(
-			'label' => $langs->trans("Fieldfk_cultivationtype"),
-			'checked' => 1
-		),
-		't.fk_varietal' => array(
-			'label' => $langs->trans("Fieldfk_varietal"),
-			'checked' => 1
-		),
-		't.fk_rootstock' => array(
-			'label' => $langs->trans("Fieldfk_rootstock"),
-			'checked' => 1
-		),
-		't.entity' => array(
-			'label' => $langs->trans("Entity"),
-			'checked' => 1,
-			'enabled' => (! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))
-		),
-		't.datec' => array(
-			'label' => $langs->trans("DateCreation"),
-			'checked' => 0,
-			'position' => 500
-		),
-		't.tms' => array(
-			'label' => $langs->trans("DateModificationShort"),
-			'checked' => 0,
-			'position' => 500
-		)
+	$arrayfields['t.ref'] = array(
+		'label' => $langs->trans("Fieldref"),
+		'checked' => 1
 	);
+	$arrayfields['t.label'] = array(
+		'label' => $langs->trans("Fieldlabel"),
+		'checked' => 1
+	);
+	$arrayfields['t.description'] = array(
+		'label' => $langs->trans("Fielddescription"),
+		'checked' => 0
+	);
+	// add extrafields attributes and labels
+	if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+		foreach ($extrafields->attribute_label as $key => $val) {
+			$arrayfields["ef." . $key] = array(
+				'label' => $extrafields->attribute_label[$key],
+				'checked' => $extrafields->attribute_list[$key],
+				'position' => $extrafields->attribute_pos[$key],
+				'enabled' => $extrafields->attribute_perms[$key]
+			);
+		}
+	}
+	$arrayfields['t.entity'] = array(
+		'label' => $langs->trans("Entity"),
+		'checked' => 1,
+		'enabled' => (! empty($conf->multicompany->enabled) && empty($conf->multicompany->transverse_mode))
+	);
+	$arrayfields['t.datec'] = array(
+		'label' => $langs->trans("DateCreation"),
+		'checked' => 0,
+		'position' => 500
+	);
+	$arrayfields['t.tms'] = array(
+		'label' => $langs->trans("DateModificationShort"),
+		'checked' => 0,
+		'position' => 500
+	);
+	
 	return $arrayfields;
 }
 

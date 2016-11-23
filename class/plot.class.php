@@ -69,18 +69,6 @@ class plot extends CommonObject
 
 	public $description;
 
-	public $areasize;
-
-	public $rootsnumber;
-
-	public $spacing;
-
-	public $fk_cultivationtype;
-
-	public $fk_varietal;
-
-	public $fk_rootstock;
-
 	public $note_private;
 
 	public $note_public;
@@ -138,24 +126,7 @@ class plot extends CommonObject
 		if (isset($this->description)) {
 			$this->description = trim($this->description);
 		}
-		if (isset($this->areasize)) {
-			$this->areasize = trim($this->areasize);
-		}
-		if (isset($this->rootsnumber)) {
-			$this->rootsnumber = trim($this->rootsnumber);
-		}
-		if (isset($this->spacing)) {
-			$this->spacing = trim($this->spacing);
-		}
-		if (isset($this->fk_cultivationtype)) {
-			$this->fk_cultivationtype = trim($this->fk_cultivationtype);
-		}
-		if (isset($this->fk_varietal)) {
-			$this->fk_varietal = trim($this->fk_varietal);
-		}
-		if (isset($this->fk_rootstock)) {
-			$this->fk_rootstock = trim($this->fk_rootstock);
-		}
+
 		if (isset($this->note_private)) {
 			$this->note_private = trim($this->note_private);
 		}
@@ -179,12 +150,6 @@ class plot extends CommonObject
 		$sql .= 'ref,';
 		$sql .= 'label,';
 		$sql .= 'description,';
-		$sql .= 'areasize,';
-		$sql .= 'rootsnumber,';
-		$sql .= 'spacing,';
-		$sql .= 'fk_cultivationtype,';
-		$sql .= 'fk_varietal,';
-		$sql .= 'fk_rootstock,';
 		$sql .= 'note_private,';
 		$sql .= 'note_public,';
 		$sql .= 'datec,';
@@ -197,12 +162,6 @@ class plot extends CommonObject
 		$sql .= ' ' . (! isset($this->ref) ? 'NULL' : "'" . $this->db->escape($this->ref) . "'") . ',';
 		$sql .= ' ' . (! isset($this->label) ? 'NULL' : "'" . $this->db->escape($this->label) . "'") . ',';
 		$sql .= ' ' . (! isset($this->description) ? 'NULL' : "'" . $this->db->escape($this->description) . "'") . ',';
-		$sql .= ' ' . (! isset($this->areasize) ? 'NULL' : "'" . $this->areasize . "'") . ',';
-		$sql .= ' ' . (! isset($this->rootsnumber) ? 'NULL' : $this->rootsnumber) . ',';
-		$sql .= ' ' . (! isset($this->spacing) ? 'NULL' : "'" . $this->spacing . "'") . ',';
-		$sql .= ' ' . (! isset($this->fk_cultivationtype) ? 'NULL' : $this->fk_cultivationtype) . ',';
-		$sql .= ' ' . (! isset($this->fk_varietal) ? 'NULL' : $this->fk_varietal) . ',';
-		$sql .= ' ' . (! isset($this->fk_rootstock) ? 'NULL' : $this->fk_rootstock) . ',';
 		$sql .= ' ' . (! isset($this->note_private) ? 'NULL' : "'" . $this->db->escape($this->note_private) . "'") . ',';
 		$sql .= ' ' . (! isset($this->note_public) ? 'NULL' : "'" . $this->db->escape($this->note_public) . "'") . ',';
 		$sql .= ' ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
@@ -279,12 +238,6 @@ class plot extends CommonObject
 			$sql .= " t.ref,";
 			$sql .= " t.label,";
 			$sql .= " t.description,";
-			$sql .= " t.areasize,";
-			$sql .= " t.rootsnumber,";
-			$sql .= " t.spacing,";
-			$sql .= " t.fk_cultivationtype,";
-			$sql .= " t.fk_varietal,";
-			$sql .= " t.fk_rootstock,";
 			$sql .= " t.note_private,";
 			$sql .= " t.note_public,";
 			$sql .= " t.tms,";
@@ -310,12 +263,6 @@ class plot extends CommonObject
 					$this->ref = $obj->ref;
 					$this->label = $obj->label;
 					$this->description = $obj->description;
-					$this->areasize = $obj->areasize;
-					$this->rootsnumber = $obj->rootsnumber;
-					$this->spacing = $obj->spacing;
-					$this->fk_cultivationtype = $obj->fk_cultivationtype;
-					$this->fk_varietal = $obj->fk_varietal;
-					$this->fk_rootstock = $obj->fk_rootstock;
 					$this->note_private = $obj->note_private;
 					$this->note_public = $obj->note_public;
 					$this->tms = $this->db->jdate($obj->tms);
@@ -367,12 +314,6 @@ class plot extends CommonObject
 		$sql .= " t.ref,";
 		$sql .= " t.label,";
 		$sql .= " t.description,";
-		$sql .= " t.areasize,";
-		$sql .= " t.rootsnumber,";
-		$sql .= " t.spacing,";
-		$sql .= " t.fk_cultivationtype,";
-		$sql .= " t.fk_varietal,";
-		$sql .= " t.fk_rootstock,";
 		$sql .= " t.note_private,";
 		$sql .= " t.note_public,";
 		$sql .= " t.tms,";
@@ -398,12 +339,6 @@ class plot extends CommonObject
 				$this->ref = $obj->ref;
 				$this->label = $obj->label;
 				$this->description = $obj->description;
-				$this->areasize = $obj->areasize;
-				$this->rootsnumber = $obj->rootsnumber;
-				$this->spacing = $obj->spacing;
-				$this->fk_cultivationtype = $obj->fk_cultivationtype;
-				$this->fk_varietal = $obj->fk_varietal;
-				$this->fk_rootstock = $obj->fk_rootstock;
 				$this->note_private = $obj->note_private;
 				$this->note_public = $obj->note_public;
 				$this->tms = $this->db->jdate($obj->tms);
@@ -462,12 +397,6 @@ class plot extends CommonObject
 		$sql .= " t.ref,";
 		$sql .= " t.label,";
 		$sql .= " t.description,";
-		$sql .= " t.areasize,";
-		$sql .= " t.rootsnumber,";
-		$sql .= " t.spacing,";
-		$sql .= " t.fk_cultivationtype,";
-		$sql .= " t.fk_varietal,";
-		$sql .= " t.fk_rootstock,";
 		$sql .= " t.note_private,";
 		$sql .= " t.note_public,";
 		$sql .= " t.tms,";
@@ -509,12 +438,6 @@ class plot extends CommonObject
 				$line->ref = $obj->ref;
 				$line->label = $obj->label;
 				$line->description = $obj->description;
-				$line->areasize = $obj->areasize;
-				$line->rootsnumber = $obj->rootsnumber;
-				$line->spacing = $obj->spacing;
-				$line->fk_cultivationtype = $obj->fk_cultivationtype;
-				$line->fk_varietal = $obj->fk_varietal;
-				$line->fk_rootstock = $obj->fk_rootstock;
 				$line->note_private = $obj->note_private;
 				$line->note_public = $obj->note_public;
 				$line->tms = $this->db->jdate($obj->tms);
@@ -565,25 +488,7 @@ class plot extends CommonObject
 		if (isset($this->description)) {
 			$this->description = trim($this->description);
 		}
-		if (isset($this->areasize)) {
-			$this->areasize = trim($this->areasize);
-		}
-		if (isset($this->rootsnumber)) {
-			$this->rootsnumber = trim($this->rootsnumber);
-		}
-		if (isset($this->spacing)) {
-			$this->spacing = trim($this->spacing);
-		}
-		if (isset($this->fk_cultivationtype)) {
-			$this->fk_cultivationtype = trim($this->fk_cultivationtype);
-		}
-		if (isset($this->fk_varietal)) {
-			$this->fk_varietal = trim($this->fk_varietal);
-		}
-		if (isset($this->fk_rootstock)) {
-			$this->fk_rootstock = trim($this->fk_rootstock);
-		}
-		
+
 		// Check parameters
 		// Put here code to add a control on parameters values
 		
@@ -593,12 +498,6 @@ class plot extends CommonObject
 		$sql .= ' ref = ' . (isset($this->ref) ? "'" . $this->db->escape($this->ref) . "'" : "null") . ',';
 		$sql .= ' label = ' . (isset($this->label) ? "'" . $this->db->escape($this->label) . "'" : "null") . ',';
 		$sql .= ' description = ' . (isset($this->description) ? "'" . $this->db->escape($this->description) . "'" : "null") . ',';
-		$sql .= ' areasize = ' . (isset($this->areasize) ? $this->areasize : "null") . ',';
-		$sql .= ' rootsnumber = ' . (isset($this->rootsnumber) ? $this->rootsnumber : "null") . ',';
-		$sql .= ' spacing = ' . (isset($this->spacing) ? $this->spacing : "null") . ',';
-		$sql .= ' fk_cultivationtype = ' . (isset($this->fk_cultivationtype) ? $this->fk_cultivationtype : "null") . ',';
-		$sql .= ' fk_varietal = ' . (isset($this->fk_varietal) ? $this->fk_varietal : "null") . ',';
-		$sql .= ' fk_rootstock = ' . (isset($this->fk_rootstock) ? $this->fk_rootstock : "null") . ',';
 		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
 		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id);
 		
@@ -956,12 +855,6 @@ class plot extends CommonObject
 		$this->ref = 'PlotSpecimen';
 		$this->label = 'Plot Label';
 		$this->description = '';
-		$this->areasize = '';
-		$this->rootsnumber = '';
-		$this->spacing = '';
-		$this->fk_cultivationtype = '';
-		$this->fk_varietal = '';
-		$this->fk_rootstock = '';
 		$this->note_private = '';
 		$this->note_public = 'This is a public note';
 		$this->tms = '';
@@ -976,17 +869,8 @@ class plot extends CommonObject
  */
 class plotLine
 {
-
-	/**
-	 *
-	 * @var int ID
-	 */
 	public $id;
 
-	/**
-	 *
-	 * @var mixed Sample line property 1
-	 */
 	public $entity;
 
 	public $ref;
@@ -994,18 +878,6 @@ class plotLine
 	public $label;
 
 	public $description;
-
-	public $areasize;
-
-	public $rootsnumber;
-
-	public $spacing;
-
-	public $fk_cultivationtype;
-
-	public $fk_varietal;
-
-	public $fk_rootstock;
 
 	public $note_private;
 
@@ -1019,8 +891,4 @@ class plotLine
 
 	public $fk_user_modif;
 
-/**
- *
- * @var mixed Sample line property 2
- */
 }

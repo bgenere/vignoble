@@ -18,18 +18,10 @@ CREATE TABLE llx_plot(
 	-- object keys
 	rowid INTEGER AUTO_INCREMENT PRIMARY KEY,  
 	entity INTEGER DEFAULT 1 NOT NULL, -- multi company id
-
+	-- default attributes
  	ref VARCHAR(125),				   -- unique reference
 	label VARCHAR(255),
 	description TEXT,
-	-- attributes
-	areasize real,						-- area size
-	rootsnumber INTEGER NOT NULL,			-- number of wine roots
-	spacing real, 					-- distance between 2 rows
-	-- attributes (in dictionnary) 
-	fk_cultivationtype 	INTEGER NOT NULL, 
-	fk_varietal 	INTEGER NOT NULL,
-	fk_rootstock INTEGER NOT NULL,
 	-- private note
 	note_private TEXT,
 	note_public TEXT,
