@@ -250,6 +250,7 @@ $sql .= $db->plimit($conf->liste_limit + 1, $offset);
 
 dol_syslog($script_file, LOG_DEBUG);
 /**
+ *
  * @var $resql List result set to display on the page
  */
 $resql = $db->query($sql);
@@ -274,7 +275,6 @@ if ($resql) {
 		
 		if ($optioncss != '')
 			$param .= '&optioncss=' . $optioncss;
-		
 	}
 	
 	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $params, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'object_plot@vignoble');
@@ -292,7 +292,7 @@ if ($resql) {
 			$fieldstosearchall[$key] = $langs->trans($val);
 		print $langs->trans("FilterOnInto", $search_all) . join(', ', $fieldstosearchall);
 	}
-	// message when list not fully displayed 
+	// message when list not fully displayed
 	if (! empty($moreforfilter)) {
 		print '<div class="liste_titre liste_titre_bydiv centpercent">';
 		print $moreforfilter;
@@ -336,7 +336,7 @@ if ($resql) {
 		print_liste_field_titre($langs->trans("DateCreationShort"), $_SERVER["PHP_SELF"], "t.datec", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.tms']['checked']))
 		print_liste_field_titre($langs->trans("DateModificationShort"), $_SERVER["PHP_SELF"], "t.tms", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
-// 	if (! empty($arrayfields['t.status']['checked'])) print_liste_field_titre($langs->trans("Status"),$_SERVER["PHP_SELF"],"t.status","",$param,'align="center"',$sortfield,$sortorder);
+		// if (! empty($arrayfields['t.status']['checked'])) print_liste_field_titre($langs->trans("Status"),$_SERVER["PHP_SELF"],"t.status","",$param,'align="center"',$sortfield,$sortorder);
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', 'align="right"', $sortfield, $sortorder, 'maxwidthsearch ');
 	print '</tr>' . "\n";
 	
@@ -351,10 +351,10 @@ if ($resql) {
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_label" value="' . $search_label . '" size="10"></td>';
 	if (! empty($arrayfields['t.description']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_description" value="' . $search_description . '" size="10"></td>';
-
-	// example of a combobox selection for search
-	// if (! empty($arrayfields['t.fk_rootstock']['checked']))
-	// print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock', true) . '</td>';
+		
+		// example of a combobox selection for search
+		// if (! empty($arrayfields['t.fk_rootstock']['checked']))
+		// print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock', true) . '</td>';
 		
 	// Search box for Extra fields in title
 	if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
@@ -364,34 +364,36 @@ if ($resql) {
 				$typeofextrafield = $extrafields->attribute_type[$key];
 				
 				print '<td class="liste_titre' . ($align ? ' ' . $align : '') . '">';
-				// get search value if any
-				$tmpkey = preg_replace('/search_options_/', '', $key);
-				$value = dol_escape_htmltag($search_array_extrafields['search_options_' . $tmpkey]);
-				//
-				print $extrafields->showInputField($key,$value,null,'','search_',4);
-// 				if (in_array($typeofextrafield, array(
-// 					'varchar',
-// 					'int',
-// 					'double',
-// 					'select',
-// 					'sellist'
-// 				))) {
-// 					$crit = $val;
-// 					$tmpkey = preg_replace('/search_options_/', '', $key);
-// 					$searchclass = '';
-// 					if (in_array($typeofextrafield, array(
-// 						'varchar',
-// 						'select',
-// 						'sellist'
-// 					)))
-// 						$searchclass = 'searchstring';
-// 					if (in_array($typeofextrafield, array(
-// 						'int',
-// 						'double'
-// 					)))
-// 						$searchclass = 'searchnum';
-// 					print '<input class="flat' . ($searchclass ? ' ' . $searchclass : '') . '" size="4" type="text" name="search_options_' . $tmpkey . '" value="' . dol_escape_htmltag($search_array_extrafields['search_options_' . $tmpkey]) . '">';
-// 				}
+				
+				if (in_array($typeofextrafield, array(
+					'varchar',
+					'int',
+					'double',
+					'select',
+					'sellist'
+				))) { // print a search box
+				      // get search value if any
+					$tmpkey = preg_replace('/search_options_/', '', $key);
+					$value = dol_escape_htmltag($search_array_extrafields['search_options_' . $tmpkey]);
+					$searchclass = '';
+					switch ($typeofextrafield) {
+						case 'select':
+							print $extrafields->showInputField($key, $value, null, '', 'search_', searchstring);
+							break;
+						case 'sellist':
+							print $extrafields->showInputField($key, $value, null, '', 'search_', searchstring);
+							break;
+						case 'varchar':
+							print '<input class="flat searchstring" size="4" type="text" name="search_options_' . $tmpkey . '" value="' . $value . '">';
+							break;
+						case 'int':
+							print '<input class="flat searchnum" size="4" type="text" name="search_options_' . $tmpkey . '" value="' . $value . '">';
+							break;
+						case 'double':
+							print '<input class="flat searchnum" size="4" type="text" name="search_options_' . $tmpkey . '" value="' . $value . '">';
+							break;
+					}
+				}
 				print '</td>';
 			}
 		}
@@ -444,7 +446,7 @@ if ($resql) {
 				print '<td>' . $obj->label . '</td>';
 			if (! empty($arrayfields['t.description']['checked']))
 				print '<td>' . $obj->description . '</td>';
-			// Extra fields
+				// Extra fields
 			if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 				foreach ($extrafields->attribute_label as $key => $val) {
 					if (! empty($arrayfields["ef." . $key]['checked'])) {
