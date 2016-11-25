@@ -22,7 +22,7 @@
 
 /**
  * \file vignoble/class/plot.class.php
- * \ingroup Plot Management
+ * \ingroup plot
  * \brief CRUD class file for the Plot object (Create/Read/Update/Delete)
  */
 

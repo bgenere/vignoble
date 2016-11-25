@@ -689,96 +689,162 @@ class modVignoble extends DolibarrModules
 	 * Get imports available for the module.
 	 *
 	 * Imports definition are stored in multiple arrays. Each import is located by its main index.
-	 *
-	 * @todo check example and see how to implement (extrafields
 	 */
 	private function getImports()
 	{
-		// Import list of third parties and attributes
-		$r = 0;
-		$r ++;
+		global $db;
+		/**
+		 * Import Plots
+		 */
+		$r = 'plot';
 		$this->import_code[$r] = $this->rights_class . '_' . $r;
 		$this->import_label[$r] = 'PlotImport';
-		$this->import_icon[$r] = 'plot@vignoble';
+		$this->import_icon[$r] = 'plot14@vignoble';
 		$this->import_entities_array[$r] = array(); // We define here only fields that use another icon that the one defined into import_icon
+		/**
+		 * Get extrafields
+		 */
+		$extrafields = new ExtraFields($db);
+		$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
+		// if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+		// foreach ($extrafields->attribute_label as $key => $val) {
+		// var_dump($key);
+		// var_dump($extrafields->attribute_label[$key]);
+		// var_dump($extrafields->attribute_type[$key]);
+		// print "<br >";
+		// }
+		// }
+		$type2import = array(
+			'varchar' => 'string',
+			'text' => 'string',
+			'int' => 'number',
+			'double' => 'number',
+			'date' => 'date',
+			'datetime' => 'datetime',
+			'boolean' => 'boolean',
+			'price' => 'number',
+			'phone' => 'string',
+			'mail' => 'string',
+			'url' => 'number',
+			'select' => 'select',
+			'sellist' => 'sellist',
+			'radio' => 'ExtrafieldRadio',
+			'checkbox' => 'ExtrafieldCheckBox',
+			'chkbxlst' => 'ExtrafieldCheckBoxFromList',
+			'link' => 'ExtrafieldLink',
+			'password' => 'ExtrafieldPassword',
+			'separate' => 'ExtrafieldSeparator'
+		);
+		/**
+		 * Define List of tables to insert into (insert done in same order)
+		 */
 		$this->import_tables_array[$r] = array(
-			's' => MAIN_DB_PREFIX . 'plot'
-		); // ,
-		   // 'extra' => MAIN_DB_PREFIX . 'plot_extrafields'
-		   // List of tables to insert into (insert done in same order)
+			's' => MAIN_DB_PREFIX . $r
+		);
+		// Add extra fields table
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			$this->import_tables_array[$r]['extra'] = MAIN_DB_PREFIX . $r . '_extrafields';
+		}
+		/**
+		 * Define List of fields updated by import
+		 */
 		$this->import_fields_array[$r] = array(
 			's.ref' => "Ref*",
-			's.Label' => "Label"
+			's.label' => "Label",
+			's.description' => "Description",
+			's.note_private' => "Private Note",
+			's.note_public' => "Public Note"
 		);
-		// // Add extra fields
-		// $sql = "SELECT name, label, fieldrequired FROM " . MAIN_DB_PREFIX . "extrafields WHERE elementtype = 'plot' AND entity = " . $conf->entity;
-		// $resql = $this->db->query($sql);
-		// if ($resql) // This can fail when class is used on old database (during migration for example)
-		// {
-		// while ($obj = $this->db->fetch_object($resql)) {
-		// $fieldname = 'extra.' . $obj->name;
-		// $fieldlabel = ucfirst($obj->label);
-		// $this->import_fields_array[$r][$fieldname] = $fieldlabel . ($obj->fieldrequired ? '*' : '');
-		// }
-		// }
-		// // End add extra fields
-		// technical fields set-up by the process
+		// Add extra fields
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			foreach ($extrafields->attribute_label as $key => $val) {
+				$fieldname = 'extra.' . $key;
+				$fieldlabel = ucfirst($extrafields->attribute_label[$key]);
+				$this->import_fields_array[$r][$fieldname] = $fieldlabel . ($extrafields->attribute_required[$key] ? '*' : '');
+			}
+		}
+		/**
+		 * Fields to be populated using a value set-up by the process
+		 * syntax is
+		 * aliastable.field => 'user->id' // to get current user
+		 * or aliastable.field => 'lastrowid-'.tableparent // to get parent row id
+		 */
 		$this->import_fieldshidden_array[$r] = array(
 			's.fk_user_author' => 'user->id',
-			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . 'plot'
-		); // aliastable.field => ('user->id' or 'lastrowid-'.tableparent)
-		   // foreign key management rule to get id from a label cf core/module/import/import*.php files
-		$this->import_convertvalue_array[$r] = array(
-			's.fk_typent' => array(
-				'rule' => 'fetchidfromcodeorlabel',
-				'classfile' => '/core/class/ctypent.class.php',
-				'class' => 'Ctypent',
-				'method' => 'fetch',
-				'dict' => 'DictionaryCompanyType'
-			),
-			's.fk_departement' => array(
-				'rule' => 'fetchidfromcodeid',
-				'classfile' => '/core/class/cstate.class.php',
-				'class' => 'Cstate',
-				'method' => 'fetch',
-				'dict' => 'DictionaryState'
-			),
-			's.fk_pays' => array(
-				'rule' => 'fetchidfromcodeid',
-				'classfile' => '/core/class/ccountry.class.php',
-				'class' => 'Ccountry',
-				'method' => 'fetch',
-				'dict' => 'DictionaryCountry'
-			),
-			's.fk_stcomm' => array(
-				'rule' => 'zeroifnull'
-			),
-			's.code_client' => array(
-				'rule' => 'getcustomercodeifauto'
-			),
-			's.code_fournisseur' => array(
-				'rule' => 'getsuppliercodeifauto'
-			),
-			's.code_compta' => array(
-				'rule' => 'getcustomeraccountancycodeifauto'
-			),
-			's.code_compta_fournisseur' => array(
-				'rule' => 'getsupplieraccountancycodeifauto'
-			)
+			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . $r . '_extrafields'
 		);
-		// fields validation rules using regex
-		$this->import_regex_array[$r] = array(
-			's.status' => '^[0|1]',
-			's.client' => '^[0|1|2|3]',
-			's.fournisseur' => '^[0|1]',
-			's.fk_typent' => 'id@' . MAIN_DB_PREFIX . 'c_typent',
-			's.datec' => '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9]:[0-9][0-9])?$'
-		);
-		// example
+		
+		// foreign key management rule to get id from a label cf core/module/import/import*.php files
+		$this->import_convertvalue_array[$r] = array();
+		// 's.fk_typent' => array(
+		// 'rule' => 'fetchidfromcodeorlabel',
+		// 'classfile' => '/core/class/ctypent.class.php',
+		// 'class' => 'Ctypent',
+		// 'method' => 'fetch',
+		// 'dict' => 'DictionaryCompanyType'
+		// ),
+		// 's.fk_departement' => array(
+		// 'rule' => 'fetchidfromcodeid',
+		// 'classfile' => '/core/class/cstate.class.php',
+		// 'class' => 'Cstate',
+		// 'method' => 'fetch',
+		// 'dict' => 'DictionaryState'
+		// ),
+		// 's.fk_pays' => array(
+		// 'rule' => 'fetchidfromcodeid',
+		// 'classfile' => '/core/class/ccountry.class.php',
+		// 'class' => 'Ccountry',
+		// 'method' => 'fetch',
+		// 'dict' => 'DictionaryCountry'
+		// ),
+		// 's.fk_stcomm' => array(
+		// 'rule' => 'zeroifnull'
+		// ),
+		// 's.code_client' => array(
+		// 'rule' => 'getcustomercodeifauto'
+		// ),
+		// 's.code_fournisseur' => array(
+		// 'rule' => 'getsuppliercodeifauto'
+		// ),
+		// 's.code_compta' => array(
+		// 'rule' => 'getcustomeraccountancycodeifauto'
+		// ),
+		// 's.code_compta_fournisseur' => array(
+		// 'rule' => 'getsupplieraccountancycodeifauto'
+		// )
+		
+		/**
+		 * Populate validation rules using regex
+		 */
+		$this->import_regex_array[$r] = array();
+		// 's.status' => '^[0|1]',
+		// 's.client' => '^[0|1|2|3]',
+		// 's.fk_typent' => 'id@' . MAIN_DB_PREFIX . 'c_typent',
+		// 's.datec' => '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9]:[0-9][0-9])?$'
+		
+		/**
+		 * Populate values for the example file
+		 */
 		$this->import_examplevalues_array[$r] = array(
-			's.ref' => "MyREF",
-			's.label' => "Plot label"
+			's.ref' => '"'.ucfirst($r) . ' ref %%%"',
+			's.label' => '"Label for ' . $r . ' %%%"',
+			's.description' => '"Description for ' . $r . ' %%%"',
+			's.note_private' => '"Private Note for ' . $r . ' %%%"',
+			's.note_public' => '"Public Note for  ' . $r . ' %%%"'
 		);
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			foreach ($extrafields->attribute_label as $key => $val) {
+				$fieldname = 'extra.' . $key;
+				$fieldlabel = ucfirst($extrafields->attribute_label[$key]);
+				$fieldtype = $extrafields->attribute_type[$key];
+				if (in_array($fieldtype, array('varchar','text')))			
+					$this->import_examplevalues_array[$r][$fieldname] = '"'.$fieldlabel . ' for ' . $r . ' %%% "';
+				elseif (in_array($fieldtype, array('int','float','double','price')))
+					$this->import_examplevalues_array[$r][$fieldname] = 0;
+				else
+					$this->import_examplevalues_array[$r][$fieldname] = $fieldtype." value"." p: ".$extrafields->attribute_param[$key];
+			}
+		}
 	}
 }
 
