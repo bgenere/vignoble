@@ -826,7 +826,7 @@ class modVignoble extends DolibarrModules
 		 * Populate values for the example file
 		 */
 		$this->import_examplevalues_array[$r] = array(
-			's.ref' => '"'.ucfirst($r) . ' ref %%%"',
+			's.ref' => '"' . ucfirst($r) . ' ref %%%"',
 			's.label' => '"Label for ' . $r . ' %%%"',
 			's.description' => '"Description for ' . $r . ' %%%"',
 			's.note_private' => '"Private Note for ' . $r . ' %%%"',
@@ -837,12 +837,40 @@ class modVignoble extends DolibarrModules
 				$fieldname = 'extra.' . $key;
 				$fieldlabel = ucfirst($extrafields->attribute_label[$key]);
 				$fieldtype = $extrafields->attribute_type[$key];
-				if (in_array($fieldtype, array('varchar','text')))			
-					$this->import_examplevalues_array[$r][$fieldname] = '"'.$fieldlabel . ' for ' . $r . ' %%% "';
-				elseif (in_array($fieldtype, array('int','float','double','price')))
+				if (in_array($fieldtype, array(
+					'varchar',
+					'text'
+				)))
+					$this->import_examplevalues_array[$r][$fieldname] = '"' . $fieldlabel . ' for ' . $r . ' %%% "';
+				elseif (in_array($fieldtype, array(
+					'int',
+					'float',
+					'double',
+					'price'
+				)))
 					$this->import_examplevalues_array[$r][$fieldname] = 0;
-				else
-					$this->import_examplevalues_array[$r][$fieldname] = $fieldtype." value"." p: ".$extrafields->attribute_param[$key];
+				elseif (in_array($fieldtype, array(
+					'select'
+				))) {
+					$out = '[';
+					foreach ($extrafields->attribute_param[$key]['options'] as $optkey => $optval) {
+						$out .= $optkey . '|';
+					}
+					$out = rtrim($out, '|');
+					$out .= ']';
+					$this->import_examplevalues_array[$r][$fieldname] = $out;
+				} elseif (in_array($fieldtype, array(
+					'sellist'
+				))) {
+					$out = '[';
+					foreach ($extrafields->attribute_param[$key]['options'] as $optkey => $optval) {
+						$out .= $optkey;
+					}
+					$out .= ']';
+					$this->import_examplevalues_array[$r][$fieldname] = $out;
+				} else {
+					$this->import_examplevalues_array[$r][$fieldname] = 'enter a ' . $fieldtype . " value";
+				}
 			}
 		}
 	}
