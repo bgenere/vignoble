@@ -431,14 +431,15 @@ class modVignoble extends DolibarrModules
 	 */
 	private function getExports()
 	{
+		Global $db;
 		$r = 0;
 		/**
-		 * Define a simple Plot export
+		 * Define Plot export
 		 */
 		$this->export_code[$r] = $this->rights_class . '_' . $r; // export sequential number
 		$this->export_label[$r] = 'Plots'; // Translation key (used only if key ExportDataset_xxx_z not found)
 		$this->export_enabled[$r] = '1'; // Condition to show export in list (ie: '$user->id==3'). Set to 1 to always show when module is enabled.
-		$this->export_icon[$r] = 'vignoble@vignoble'; // Put here code of icon
+		$this->export_icon[$r] = 'plot14@vignoble'; // Put here code of icon
 		$this->export_permission[$r] = array(
 			array(
 				"vignoble",
@@ -446,32 +447,99 @@ class modVignoble extends DolibarrModules
 				"export"
 			)
 		);
+		/**
+		 * Get extrafields
+		 */
+		$extrafields = new ExtraFields($db);
+		$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
+		/**
+		 * Define export fields
+		 */
 		$this->export_fields_array[$r] = array(
 			'p.ref' => 'Ref',
 			'p.label' => 'Label',
-			'v.label' => 'Varietal',
-			'c.label' => 'Cultivation Type'
+			'p.description' => 'Description',
+			'p.note_private' => "Private Note",
+			'p.note_public' => "Public Note"
 		);
-		// supported format are Date, Text, Boolean or Numeric
+		// Add extra fields
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			foreach ($extrafields->attribute_label as $key => $val) {
+				$fieldname = 'extra.' . $key;
+				$fieldlabel = ucfirst($extrafields->attribute_label[$key]);
+				$this->export_fields_array[$r][$fieldname] = $fieldlabel;
+			}
+		}
+		/**
+		 * Define export type for fields
+		 * supported format are Date, Text, Boolean or Numeric
+		 */
 		$this->export_TypeFields_array[$r] = array(
-			'p.rowid' => 'Numeric',
 			'p.ref' => 'Text',
 			'p.label' => 'Text',
-			'v.label' => 'Text',
-			'c.label' => 'Text'
+			'p.description' => 'Text',
+			'p.note_private' => "Text",
+			'p.note_public' => "Text"
 		);
+		$type2export = array(
+			'varchar' => 'Text',
+			'text' => 'Text',
+			'int' => 'Numeric',
+			'double' => 'Numeric',
+			'date' => 'Date',
+			'datetime' => 'Date',
+			'boolean' => 'Boolean',
+			'price' => 'Numeric',
+			'phone' => 'Text',
+			'mail' => 'Text',
+			'url' => 'Text',
+			'select' => 'Text',
+			'sellist' => 'Text',
+			'radio' => 'Boolean',
+			'checkbox' => 'Text',
+			'chkbxlst' => 'Text',
+			'link' => 'Text',
+			'password' => 'Text',
+			'separate' => 'Text'
+		);
+		// Add extra fields
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			foreach ($extrafields->attribute_type as $key => $val) {
+				$fieldname = 'extra.' . $key;
+				$fieldtype = $type2export[$val];
+				$this->export_TypeFields_array[$r][$fieldname] = $fieldtype;
+			}
+		}
+		//var_dump($this->export_TypeFields_array);
+		/**
+		 * Define export entities for fields
+		 * (all from Plots)
+		 */
 		$this->export_entities_array[$r] = array(
 			'p.ref' => 'Plot',
 			'p.label' => 'Plot',
-			'v.label' => 'Plot',
-			'c.label' => 'Plot'
-		); // table name associated to field
-		   // $this->export_dependencies_array[$r]=array('invoice_line'=>'fd.rowid','product'=>'fd.rowid'); // To add unique key if we ask a field of a child to avoid the DISTINCT to discard them
-		   // Sql request to extract the data
+			'p.description' => 'Plot',
+			'p.note_private' => 'Plot',
+			'p.note_public' => 'Plot'
+		);
+		// Add extra fields
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			foreach ($extrafields->attribute_label as $key => $val) {
+				$fieldname = 'extra.' . $key;
+				$this->export_entities_array[$r][$fieldname] = 'Plot';
+			}
+		}
+		/**
+		 * To add unique key if we ask a field of a child to avoid the DISTINCT to discard them
+		 */
+		// $this->export_dependencies_array[$r]=array('invoice_line'=>'fd.rowid','product'=>'fd.rowid');
+		/**
+		 * sql request to extract the data
+		 */
 		$this->export_sql_start[$r] = 'SELECT DISTINCT ';
-		$this->export_sql_end[$r] = ' FROM (' . MAIN_DB_PREFIX . 'plot as p, ' . MAIN_DB_PREFIX . 'c_varietal as v, ' . MAIN_DB_PREFIX . 'c_cultivationtype as c)';
-		$this->export_sql_end[$r] .= ' WHERE p.fk_varietal = v.rowid AND p.fk_cultivationtype = c.rowid';
-		$this->export_sql_order[$r] .= ' ORDER BY p.ref';
+		$this->export_sql_end[$r] = ' FROM (' . MAIN_DB_PREFIX . 'plot as p, ' . MAIN_DB_PREFIX . 'plot_extrafields as extra)';
+		$this->export_sql_end[$r] .= ' WHERE p.rowid = extra.fk_object ';
+		$this->export_sql_order[$r] .= ' ORDER BY 1';
 		$r ++;
 	}
 
