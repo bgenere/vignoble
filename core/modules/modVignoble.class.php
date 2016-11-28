@@ -766,7 +766,7 @@ class modVignoble extends DolibarrModules
 		 */
 		$r = 'plot';
 		$this->import_code[$r] = $this->rights_class . '_' . $r;
-		$this->import_label[$r] = 'PlotImport';
+		$this->import_label[$r] = 'Plots';
 		$this->import_icon[$r] = 'plot14@vignoble';
 		$this->import_entities_array[$r] = array(); // We define here only fields that use another icon that the one defined into import_icon
 		/**
@@ -839,7 +839,8 @@ class modVignoble extends DolibarrModules
 		 */
 		$this->import_fieldshidden_array[$r] = array(
 			's.fk_user_author' => 'user->id',
-			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . $r . '_extrafields'
+			's.fk_user_modif'=> 'user->id',
+			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . $r  
 		);
 		
 		// foreign key management rule to get id from a label cf core/module/import/import*.php files

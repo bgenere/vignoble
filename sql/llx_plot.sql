@@ -29,6 +29,6 @@ CREATE TABLE llx_plot(
 	tms	timestamp,
   	datec	datetime,                   -- creation date
     fk_user_author INTEGER NOT NULL,
-	fk_user_modif 	INTEGER NOT NULL   
-	
+	fk_user_modif 	INTEGER NOT NULL,
+	import_key                varchar(14)                          		-- import key
 )ENGINE=innodb;
