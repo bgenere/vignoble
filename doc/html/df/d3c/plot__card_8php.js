@@ -3,6 +3,7 @@ var plot__card_8php =
     [ "$action", "df/d3c/plot__card_8php.html#aa698a3e72116e8e778be0e95d908ee30", null ],
     [ "$backtopage", "df/d3c/plot__card_8php.html#aced350fa7c04e841b49bea7b099f625e", null ],
     [ "$extrafields", "df/d3c/plot__card_8php.html#aa659316307a821cdcd60350fd0290d6e", null ],
+    [ "$extrafieldslabels", "df/d3c/plot__card_8php.html#ae96e6dfc92fc5390a16e5bb5b4e1b2be", null ],
     [ "$form", "df/d3c/plot__card_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4", null ],
     [ "$formactions", "df/d3c/plot__card_8php.html#aa57dd115f90fa6e4102bb2c4174d430d", null ],
     [ "$formfile", "df/d3c/plot__card_8php.html#a2452015d72b8956547b810d5c34b7095", null ],

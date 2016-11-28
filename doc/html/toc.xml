@@ -9,6 +9,7 @@
       <topic label="plot_info.php" href="dd/d24/plot__info_8php.html"/>
       <topic label="plot_list.php" href="da/d01/plot__list_8php.html"/>
       <topic label="plot_notes.php" href="d3/d16/plot__notes_8php.html"/>
+      <topic label="plot.class.php" href="dc/d60/plot_8class_8php.html"/>
     </topic>
     <topic label="Dashboard" href="d5/d3d/group__dashboard.html">
       <topic label="index.php" href="de/d20/index_8php.html"/>
@@ -132,43 +133,31 @@
         <topic label="LibStatut" href="d7/d55/classplot.html#aaac39a6b8e4c850f8c78b96c480bb6fb"/>
         <topic label="loadObject" href="d7/d55/classplot.html#aed4bfac3c6af4b237f26a70d69523dbd"/>
         <topic label="update" href="d7/d55/classplot.html#a6b585d2bf01338dd28dc90abb8982701"/>
-        <topic label="$areasize" href="d7/d55/classplot.html#a485492bf41c1a428bfce8986c990e357"/>
         <topic label="$datec" href="d7/d55/classplot.html#a193aae74afb3fd29d31d6c43d0a86565"/>
         <topic label="$description" href="d7/d55/classplot.html#ada4555ebe8de025faa1f17df6a59d35d"/>
         <topic label="$element" href="d7/d55/classplot.html#aaf8d699f41f01ac5f7ef38af15fb54f3"/>
         <topic label="$entity" href="d7/d55/classplot.html#a3f383b3418bb4f0f2109ba8acd95e622"/>
-        <topic label="$fk_cultivationtype" href="d7/d55/classplot.html#a7fe0e124122c7ff9d6ea87a235f128ed"/>
-        <topic label="$fk_rootstock" href="d7/d55/classplot.html#a11f0ab2f61e105a18839e710339fe3d8"/>
         <topic label="$fk_user_author" href="d7/d55/classplot.html#a79393f944d94e6bac27e19b3eb1b4021"/>
         <topic label="$fk_user_modif" href="d7/d55/classplot.html#ad194d371f1185f5a40fd6db7b9360419"/>
-        <topic label="$fk_varietal" href="d7/d55/classplot.html#a95ae08a199afe5b5e61bde4fc3567a9c"/>
         <topic label="$label" href="d7/d55/classplot.html#a50752d0524aabeecb3993944845ac728"/>
         <topic label="$lines" href="d7/d55/classplot.html#a1df87155e30e72a70f24bcff3e8614e1"/>
         <topic label="$note_private" href="d7/d55/classplot.html#aaff1ee8601b6cf6eed13c4e782fc4125"/>
         <topic label="$note_public" href="d7/d55/classplot.html#a93d68ba9bae646b7e9508382132adbe5"/>
         <topic label="$ref" href="d7/d55/classplot.html#a63cb988ac1d0c6232efa522414b1ec0a"/>
-        <topic label="$rootsnumber" href="d7/d55/classplot.html#a25ed6e16533718e21ee789cb0b68335d"/>
-        <topic label="$spacing" href="d7/d55/classplot.html#a5fed5d874a767f2288b526e6a5ed2080"/>
         <topic label="$table_element" href="d7/d55/classplot.html#a937b2f7d2ba87af9a032de31fc06e8e0"/>
         <topic label="$tms" href="d7/d55/classplot.html#ac926ab1f3da8d0a7ad6d6c48b21ea93e"/>
       </topic>
       <topic label="plotLine" href="d4/d22/classplot_line.html">
-        <topic label="$areasize" href="d4/d22/classplot_line.html#a18b5dc9e8c37f8e484c83dd624bf90f0"/>
         <topic label="$datec" href="d4/d22/classplot_line.html#a060242ff963400d0a8e5fba168a0dfb5"/>
         <topic label="$description" href="d4/d22/classplot_line.html#a8fb2fe94d14676df4b4c771f09dba0de"/>
         <topic label="$entity" href="d4/d22/classplot_line.html#a7ee8d53653804e32becf11a716ac6e77"/>
-        <topic label="$fk_cultivationtype" href="d4/d22/classplot_line.html#a285e60ea2ea93feb4631ff833e4eda51"/>
-        <topic label="$fk_rootstock" href="d4/d22/classplot_line.html#ac0afa418cde5e7d7eb1a80e594cebab2"/>
         <topic label="$fk_user_author" href="d4/d22/classplot_line.html#a620a22c2a9a8724c77bdcef5380daf77"/>
         <topic label="$fk_user_modif" href="d4/d22/classplot_line.html#a608fe140dc370d3d9f24b88f38e26f33"/>
-        <topic label="$fk_varietal" href="d4/d22/classplot_line.html#a03800fd360ca26b6054e96de232260da"/>
         <topic label="$id" href="d4/d22/classplot_line.html#af5efd711d2a3ecaacdac7d30680dd734"/>
         <topic label="$label" href="d4/d22/classplot_line.html#a4f27e2853cd7fd1ce5cdad65f164dc91"/>
         <topic label="$note_private" href="d4/d22/classplot_line.html#a76e35f5262f18ea2ad2ee54edd1e2587"/>
         <topic label="$note_public" href="d4/d22/classplot_line.html#a05288f90084993c0a3ef7b70b230df05"/>
         <topic label="$ref" href="d4/d22/classplot_line.html#a6cd3d3ad4fc285c16290ffca9e674821"/>
-        <topic label="$rootsnumber" href="d4/d22/classplot_line.html#aa99fd9f7e0e2f51c55c4124528906c09"/>
-        <topic label="$spacing" href="d4/d22/classplot_line.html#abd4c2e23b4f8ab998b579958fecc31b2"/>
         <topic label="$tms" href="d4/d22/classplot_line.html#aaffe9e3b8c27f3b44fee7feb98329391"/>
       </topic>
       <topic label="plotsummarybox" href="db/dcb/classplotsummarybox.html">
@@ -231,6 +220,7 @@
           <topic label="$value" href="db/ddc/module__settings_8php.html#a0f298096f322952a72a50f98a74c7b60"/>
         </topic>
         <topic label="plot_extrafields.php" href="d3/dd2/plot__extrafields_8php.html">
+          <topic label="createDefaultFields" href="d3/dd2/plot__extrafields_8php.html#a0c7cd133d50e36fa1c1054591371116c"/>
           <topic label="printButtonNewField" href="d3/dd2/plot__extrafields_8php.html#ae74293552a55944d8758ee1cbe27b3d3"/>
           <topic label="$action" href="d3/dd2/plot__extrafields_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
           <topic label="$attrname" href="d3/dd2/plot__extrafields_8php.html#abfbdad9b87b2ada75e65cbe4db346e37"/>
@@ -278,43 +268,31 @@
             <topic label="LibStatut" href="d7/d55/classplot.html#aaac39a6b8e4c850f8c78b96c480bb6fb"/>
             <topic label="loadObject" href="d7/d55/classplot.html#aed4bfac3c6af4b237f26a70d69523dbd"/>
             <topic label="update" href="d7/d55/classplot.html#a6b585d2bf01338dd28dc90abb8982701"/>
-            <topic label="$areasize" href="d7/d55/classplot.html#a485492bf41c1a428bfce8986c990e357"/>
             <topic label="$datec" href="d7/d55/classplot.html#a193aae74afb3fd29d31d6c43d0a86565"/>
             <topic label="$description" href="d7/d55/classplot.html#ada4555ebe8de025faa1f17df6a59d35d"/>
             <topic label="$element" href="d7/d55/classplot.html#aaf8d699f41f01ac5f7ef38af15fb54f3"/>
             <topic label="$entity" href="d7/d55/classplot.html#a3f383b3418bb4f0f2109ba8acd95e622"/>
-            <topic label="$fk_cultivationtype" href="d7/d55/classplot.html#a7fe0e124122c7ff9d6ea87a235f128ed"/>
-            <topic label="$fk_rootstock" href="d7/d55/classplot.html#a11f0ab2f61e105a18839e710339fe3d8"/>
             <topic label="$fk_user_author" href="d7/d55/classplot.html#a79393f944d94e6bac27e19b3eb1b4021"/>
             <topic label="$fk_user_modif" href="d7/d55/classplot.html#ad194d371f1185f5a40fd6db7b9360419"/>
-            <topic label="$fk_varietal" href="d7/d55/classplot.html#a95ae08a199afe5b5e61bde4fc3567a9c"/>
             <topic label="$label" href="d7/d55/classplot.html#a50752d0524aabeecb3993944845ac728"/>
             <topic label="$lines" href="d7/d55/classplot.html#a1df87155e30e72a70f24bcff3e8614e1"/>
             <topic label="$note_private" href="d7/d55/classplot.html#aaff1ee8601b6cf6eed13c4e782fc4125"/>
             <topic label="$note_public" href="d7/d55/classplot.html#a93d68ba9bae646b7e9508382132adbe5"/>
             <topic label="$ref" href="d7/d55/classplot.html#a63cb988ac1d0c6232efa522414b1ec0a"/>
-            <topic label="$rootsnumber" href="d7/d55/classplot.html#a25ed6e16533718e21ee789cb0b68335d"/>
-            <topic label="$spacing" href="d7/d55/classplot.html#a5fed5d874a767f2288b526e6a5ed2080"/>
             <topic label="$table_element" href="d7/d55/classplot.html#a937b2f7d2ba87af9a032de31fc06e8e0"/>
             <topic label="$tms" href="d7/d55/classplot.html#ac926ab1f3da8d0a7ad6d6c48b21ea93e"/>
           </topic>
           <topic label="plotLine" href="d4/d22/classplot_line.html">
-            <topic label="$areasize" href="d4/d22/classplot_line.html#a18b5dc9e8c37f8e484c83dd624bf90f0"/>
             <topic label="$datec" href="d4/d22/classplot_line.html#a060242ff963400d0a8e5fba168a0dfb5"/>
             <topic label="$description" href="d4/d22/classplot_line.html#a8fb2fe94d14676df4b4c771f09dba0de"/>
             <topic label="$entity" href="d4/d22/classplot_line.html#a7ee8d53653804e32becf11a716ac6e77"/>
-            <topic label="$fk_cultivationtype" href="d4/d22/classplot_line.html#a285e60ea2ea93feb4631ff833e4eda51"/>
-            <topic label="$fk_rootstock" href="d4/d22/classplot_line.html#ac0afa418cde5e7d7eb1a80e594cebab2"/>
             <topic label="$fk_user_author" href="d4/d22/classplot_line.html#a620a22c2a9a8724c77bdcef5380daf77"/>
             <topic label="$fk_user_modif" href="d4/d22/classplot_line.html#a608fe140dc370d3d9f24b88f38e26f33"/>
-            <topic label="$fk_varietal" href="d4/d22/classplot_line.html#a03800fd360ca26b6054e96de232260da"/>
             <topic label="$id" href="d4/d22/classplot_line.html#af5efd711d2a3ecaacdac7d30680dd734"/>
             <topic label="$label" href="d4/d22/classplot_line.html#a4f27e2853cd7fd1ce5cdad65f164dc91"/>
             <topic label="$note_private" href="d4/d22/classplot_line.html#a76e35f5262f18ea2ad2ee54edd1e2587"/>
             <topic label="$note_public" href="d4/d22/classplot_line.html#a05288f90084993c0a3ef7b70b230df05"/>
             <topic label="$ref" href="d4/d22/classplot_line.html#a6cd3d3ad4fc285c16290ffca9e674821"/>
-            <topic label="$rootsnumber" href="d4/d22/classplot_line.html#aa99fd9f7e0e2f51c55c4124528906c09"/>
-            <topic label="$spacing" href="d4/d22/classplot_line.html#abd4c2e23b4f8ab998b579958fecc31b2"/>
             <topic label="$tms" href="d4/d22/classplot_line.html#aaffe9e3b8c27f3b44fee7feb98329391"/>
           </topic>
         </topic>
@@ -488,6 +466,7 @@
         <topic label="$action" href="df/d3c/plot__card_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
         <topic label="$backtopage" href="df/d3c/plot__card_8php.html#aced350fa7c04e841b49bea7b099f625e"/>
         <topic label="$extrafields" href="df/d3c/plot__card_8php.html#aa659316307a821cdcd60350fd0290d6e"/>
+        <topic label="$extrafieldslabels" href="df/d3c/plot__card_8php.html#ae96e6dfc92fc5390a16e5bb5b4e1b2be"/>
         <topic label="$form" href="df/d3c/plot__card_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
         <topic label="$formactions" href="df/d3c/plot__card_8php.html#aa57dd115f90fa6e4102bb2c4174d430d"/>
         <topic label="$formfile" href="df/d3c/plot__card_8php.html#a2452015d72b8956547b810d5c34b7095"/>
@@ -510,12 +489,13 @@
       </topic>
       <topic label="plot_list.php" href="da/d01/plot__list_8php.html">
         <topic label="addJQuery" href="da/d01/plot__list_8php.html#a8e81b4e4ac9404bc1b3030ae9369b0be"/>
-        <topic label="defineListFields" href="da/d01/plot__list_8php.html#ad9ae6ca732a8c7c0dddb1d039e62139f"/>
+        <topic label="defineListFields" href="da/d01/plot__list_8php.html#add5d5af4046c5c82d5164cdac1f0c779"/>
         <topic label="$action" href="da/d01/plot__list_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
         <topic label="$arrayfields" href="da/d01/plot__list_8php.html#aa23221b6693987188191f6c7af329116"/>
         <topic label="$backtopage" href="da/d01/plot__list_8php.html#a71552e61097747f0d8e8288daf9be44d"/>
         <topic label="$extrafields" href="da/d01/plot__list_8php.html#aa659316307a821cdcd60350fd0290d6e"/>
-        <topic label="$extralabels" href="da/d01/plot__list_8php.html#ae4fd271007f71c2c9e8c619029d1158b"/>
+        <topic label="$extrafieldslabels" href="da/d01/plot__list_8php.html#ae96e6dfc92fc5390a16e5bb5b4e1b2be"/>
+        <topic label="$fieldstosearchall" href="da/d01/plot__list_8php.html#a70e3956653e459060d2a8c7ef784cda2"/>
         <topic label="$form" href="da/d01/plot__list_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
         <topic label="$formvignoble" href="da/d01/plot__list_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
         <topic label="$id" href="da/d01/plot__list_8php.html#ae97941710d863131c700f069b109991e"/>
@@ -527,21 +507,15 @@
         <topic label="$page" href="da/d01/plot__list_8php.html#a0a44e6760141442bb439b1ab1395d8ff"/>
         <topic label="$pagenext" href="da/d01/plot__list_8php.html#a858f41315ebc780cc51614bcf2558f6c"/>
         <topic label="$pageprev" href="da/d01/plot__list_8php.html#a2aed2a7a0f1235d3a53b08dea07bd5c7"/>
-        <topic label="$parameters" href="da/d01/plot__list_8php.html#ab92e7788a3ff79e3437294ecca122ab0"/>
+        <topic label="$parameters" href="da/d01/plot__list_8php.html#aa096f9b89527e67d6f7b2f3bd61ff9b5"/>
         <topic label="$plot" href="da/d01/plot__list_8php.html#a5b0a06d0a335775afd5e4b1875fa1f74"/>
         <topic label="$reshook" href="da/d01/plot__list_8php.html#a9f714fd8cba1988231c5a555da5f4ea8"/>
         <topic label="$resql" href="da/d01/plot__list_8php.html#a6adc5ef389ab51c21dee69262018d615"/>
-        <topic label="$search_areasize" href="da/d01/plot__list_8php.html#a1909130aa10a2952447f78e0953d313a"/>
-        <topic label="$search_array_options" href="da/d01/plot__list_8php.html#a9db46c52180be765f6322b1d9f2a5612"/>
+        <topic label="$search_all" href="da/d01/plot__list_8php.html#a6bd4f3a71bf800d6d634f01d7fe2acf1"/>
+        <topic label="$search_array_extrafields" href="da/d01/plot__list_8php.html#a626da623bbf6027c72b56bc325667554"/>
         <topic label="$search_description" href="da/d01/plot__list_8php.html#a0ab116f72521467e8a5ea8748be364de"/>
-        <topic label="$search_entity" href="da/d01/plot__list_8php.html#a86e5ede562b0b4e2d265254862cfab4b"/>
-        <topic label="$search_fk_cultivationtype" href="da/d01/plot__list_8php.html#a354fecf5d3736dba154961cdd3d1f081"/>
-        <topic label="$search_fk_rootstock" href="da/d01/plot__list_8php.html#aba60bbf3a15cbb8ec5fb955a4a792649"/>
-        <topic label="$search_fk_varietal" href="da/d01/plot__list_8php.html#a601aade05a4af380b411d22825cdeb1c"/>
         <topic label="$search_label" href="da/d01/plot__list_8php.html#ac283f8cbd0c3b365bb2d310384d647ea"/>
         <topic label="$search_ref" href="da/d01/plot__list_8php.html#af1a9873316820a11c4af92c3597d352f"/>
-        <topic label="$search_rootsnumber" href="da/d01/plot__list_8php.html#a54e169a4f92e05a239dd1ac7466cb6d6"/>
-        <topic label="$search_spacing" href="da/d01/plot__list_8php.html#a6bbeca30f947b94239eda85321fa8ed1"/>
         <topic label="$socid" href="da/d01/plot__list_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8"/>
         <topic label="$sortfield" href="da/d01/plot__list_8php.html#ad8a3bcfb2e745be70b1e7ebe97472ce6"/>
         <topic label="$sortorder" href="da/d01/plot__list_8php.html#a11ec75e1068cd7566eaaf44082cdd029"/>

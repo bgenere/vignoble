@@ -762,7 +762,7 @@ class modVignoble extends DolibarrModules
 	{
 		global $db;
 		/**
-		 * Import Plots
+		 * Define Plots Import
 		 */
 		$r = 'plot';
 		$this->import_code[$r] = $this->rights_class . '_' . $r;
@@ -770,7 +770,7 @@ class modVignoble extends DolibarrModules
 		$this->import_icon[$r] = 'plot14@vignoble';
 		$this->import_entities_array[$r] = array(); // We define here only fields that use another icon that the one defined into import_icon
 		/**
-		 * Get extrafields
+		 *  - Get Plot extrafields
 		 */
 		$extrafields = new ExtraFields($db);
 		$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
@@ -804,7 +804,7 @@ class modVignoble extends DolibarrModules
 			'separate' => 'ExtrafieldSeparator'
 		);
 		/**
-		 * Define List of tables to insert into (insert done in same order)
+		 * - Define List of tables to insert into (insert done in same order)
 		 */
 		$this->import_tables_array[$r] = array(
 			's' => MAIN_DB_PREFIX . $r

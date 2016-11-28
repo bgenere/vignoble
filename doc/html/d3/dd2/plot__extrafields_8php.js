@@ -1,5 +1,6 @@
 var plot__extrafields_8php =
 [
+    [ "createDefaultFields", "d3/dd2/plot__extrafields_8php.html#a0c7cd133d50e36fa1c1054591371116c", null ],
     [ "printButtonNewField", "d3/dd2/plot__extrafields_8php.html#ae74293552a55944d8758ee1cbe27b3d3", null ],
     [ "$action", "d3/dd2/plot__extrafields_8php.html#aa698a3e72116e8e778be0e95d908ee30", null ],
     [ "$attrname", "d3/dd2/plot__extrafields_8php.html#abfbdad9b87b2ada75e65cbe4db346e37", null ],
