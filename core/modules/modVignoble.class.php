@@ -774,35 +774,6 @@ class modVignoble extends DolibarrModules
 		 */
 		$extrafields = new ExtraFields($db);
 		$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
-		// if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
-		// foreach ($extrafields->attribute_label as $key => $val) {
-		// var_dump($key);
-		// var_dump($extrafields->attribute_label[$key]);
-		// var_dump($extrafields->attribute_type[$key]);
-		// print "<br >";
-		// }
-		// }
-		$type2import = array(
-			'varchar' => 'string',
-			'text' => 'string',
-			'int' => 'number',
-			'double' => 'number',
-			'date' => 'date',
-			'datetime' => 'datetime',
-			'boolean' => 'boolean',
-			'price' => 'number',
-			'phone' => 'string',
-			'mail' => 'string',
-			'url' => 'number',
-			'select' => 'select',
-			'sellist' => 'sellist',
-			'radio' => 'ExtrafieldRadio',
-			'checkbox' => 'ExtrafieldCheckBox',
-			'chkbxlst' => 'ExtrafieldCheckBoxFromList',
-			'link' => 'ExtrafieldLink',
-			'password' => 'ExtrafieldPassword',
-			'separate' => 'ExtrafieldSeparator'
-		);
 		/**
 		 * - Define List of tables to insert into (insert done in same order)
 		 */
@@ -886,11 +857,51 @@ class modVignoble extends DolibarrModules
 		 * - Populate validation rules using regex
 		 */
 		$this->import_regex_array[$r] = array();
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			foreach ($extrafields->attribute_label as $key => $val) {
+				$fieldname = 'extra.' . $key;
+				$fieldtype = $extrafields->attribute_type[$key];
+				if (in_array($fieldtype, array(
+					'select'
+				))) {
+					$out = '^';
+					foreach ($extrafields->attribute_param[$key]['options'] as $optkey => $optval) {
+						$out .= $optkey . '|';
+					}
+					$out = rtrim($out, '|');
+					$out .= '$';
+					$this->import_regex_array[$r][$fieldname] = $out;
+				} elseif (in_array($fieldtype, array(
+					'sellist'
+				))) {
+					$out = '^';
+					foreach ($extrafields->attribute_param[$key]['options'] as $optkey => $optval) {
+						$dict = explode(':', $optkey);
+						$sql = 'SELECT ' . $dict[2] . ' FROM ' . MAIN_DB_PREFIX . $dict[0] . ' WHERE ' . $dict[4] . ' ORDER BY 1';
+						$resql = $this->db->query($sql);
+						if ($resql) {
+							while ($obj = $this->db->fetch_object($resql)) {
+								foreach ($obj as $key => $value) {
+									$out .= $value . '|';
+								}
+							}
+							$this->db->free($resql);
+						} else {
+							$this->errors[] = 'Error ' . $this->db->lasterror();
+							dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+						}
+					}
+					$out = rtrim($out, '|');
+					$out .= '$';
+					$this->import_regex_array[$r][$fieldname] = $out;
+				} 
+			}
+		}
 		// 's.status' => '^[0|1]',
 		// 's.client' => '^[0|1|2|3]',
 		// 's.fk_typent' => 'id@' . MAIN_DB_PREFIX . 'c_typent',
 		// 's.datec' => '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9]:[0-9][0-9])?$'
-		
+		// 'fieldname' => '^codea|codeb$'
 		/**
 		 * - Populate values for the example file
 		 */
