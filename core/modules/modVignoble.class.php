@@ -510,7 +510,7 @@ class modVignoble extends DolibarrModules
 				$this->export_TypeFields_array[$r][$fieldname] = $fieldtype;
 			}
 		}
-		//var_dump($this->export_TypeFields_array);
+		// var_dump($this->export_TypeFields_array);
 		/**
 		 * Define export entities for fields
 		 * (all from Plots)
@@ -770,7 +770,7 @@ class modVignoble extends DolibarrModules
 		$this->import_icon[$r] = 'plot14@vignoble';
 		$this->import_entities_array[$r] = array(); // We define here only fields that use another icon that the one defined into import_icon
 		/**
-		 *  - Get Plot extrafields
+		 * - Get Plot extrafields
 		 */
 		$extrafields = new ExtraFields($db);
 		$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
@@ -814,7 +814,7 @@ class modVignoble extends DolibarrModules
 			$this->import_tables_array[$r]['extra'] = MAIN_DB_PREFIX . $r . '_extrafields';
 		}
 		/**
-		 * Define List of fields updated by import
+		 * - Define List of fields updated by import
 		 */
 		$this->import_fields_array[$r] = array(
 			's.ref' => "Ref*",
@@ -832,15 +832,15 @@ class modVignoble extends DolibarrModules
 			}
 		}
 		/**
-		 * Fields to be populated using a value set-up by the process
-		 * syntax is
-		 * aliastable.field => 'user->id' // to get current user
-		 * or aliastable.field => 'lastrowid-'.tableparent // to get parent row id
+		 * - define rules to populate user and key fields
+		 * - use aliastable.field =>'user->id' to get current user
+		 * - use aliastable.field => 'lastrowid-'.tableparent to get parent row id
+		 * .
 		 */
 		$this->import_fieldshidden_array[$r] = array(
 			's.fk_user_author' => 'user->id',
-			's.fk_user_modif'=> 'user->id',
-			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . $r  
+			's.fk_user_modif' => 'user->id',
+			'extra.fk_object' => 'lastrowid-' . MAIN_DB_PREFIX . $r
 		);
 		
 		// foreign key management rule to get id from a label cf core/module/import/import*.php files
@@ -883,7 +883,7 @@ class modVignoble extends DolibarrModules
 		// )
 		
 		/**
-		 * Populate validation rules using regex
+		 * - Populate validation rules using regex
 		 */
 		$this->import_regex_array[$r] = array();
 		// 's.status' => '^[0|1]',
@@ -892,7 +892,7 @@ class modVignoble extends DolibarrModules
 		// 's.datec' => '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9]:[0-9][0-9])?$'
 		
 		/**
-		 * Populate values for the example file
+		 * - Populate values for the example file
 		 */
 		$this->import_examplevalues_array[$r] = array(
 			's.ref' => '"' . ucfirst($r) . ' ref %%%"',
@@ -933,8 +933,22 @@ class modVignoble extends DolibarrModules
 				))) {
 					$out = '[';
 					foreach ($extrafields->attribute_param[$key]['options'] as $optkey => $optval) {
-						$out .= $optkey;
+						$dict = explode(':', $optkey);
+						$sql = 'SELECT ' . $dict[2] . ' FROM ' . MAIN_DB_PREFIX . $dict[0] . ' WHERE ' . $dict[4] . ' ORDER BY 1';
+						$resql = $this->db->query($sql);
+						if ($resql) {
+							while ($obj = $this->db->fetch_object($resql)) {
+								foreach ($obj as $key => $value) {
+									$out .= $value . '|';
+								}
+							}
+							$this->db->free($resql);
+						} else {
+							$this->errors[] = 'Error ' . $this->db->lasterror();
+							dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+						}
 					}
+					$out = rtrim($out, '|');
 					$out .= ']';
 					$this->import_examplevalues_array[$r][$fieldname] = $out;
 				} else {
