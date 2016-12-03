@@ -764,16 +764,33 @@ class modVignoble extends DolibarrModules
 		/**
 		 * Define Plots Import
 		 */
-		$r = 'plot';
+		$r = 'Plot';
 		$this->import_code[$r] = $this->rights_class . '_' . $r;
 		$this->import_label[$r] = 'Plots';
 		$this->import_icon[$r] = 'plot14@vignoble';
-		$this->import_entities_array[$r] = array(); // We define here only fields that use another icon that the one defined into import_icon
 		/**
 		 * - Get Plot extrafields
 		 */
 		$extrafields = new ExtraFields($db);
 		$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
+		/**
+		 * - Define imported entities for each field (needed to fix Dolibarr issue) 
+		 */
+		$this->import_entities_array[$r] = array(
+			's.ref' => $r,
+			's.label' => $r,
+			's.description' => $r,
+			's.note_private' => $r,
+			's.note_public' => $r
+		);
+		// Add extra fields
+		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
+			foreach ($extrafields->attribute_label as $key => $val) {
+				$fieldname = 'extra.' . $key;
+				$this->import_entities_array[$r][$fieldname] = $r;
+			}
+		}
+		;
 		/**
 		 * - Define List of tables to insert into (insert done in same order)
 		 */
@@ -894,7 +911,7 @@ class modVignoble extends DolibarrModules
 					$out = rtrim($out, '|');
 					$out .= '$';
 					$this->import_regex_array[$r][$fieldname] = $out;
-				} 
+				}
 			}
 		}
 		// 's.status' => '^[0|1]',
