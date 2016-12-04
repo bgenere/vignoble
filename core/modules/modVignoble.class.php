@@ -28,9 +28,9 @@
  *
  * Components providing the Vignoble dashboard
  *
- * \defgroup admin Module administration
+ * \defgroup admin Administration
  *
- * Pages to administrate the module
+ * Pages to administrate the module. Displayed from module settings.
  *
  * \defgroup component Reusable components
  *

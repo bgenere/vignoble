@@ -18,9 +18,9 @@
 
 /**
  * 	\file		core/boxes/mybox.php
- * 	\ingroup	mymodule
- * 	\brief		This file is a sample box definition file
- * 				Put some comments here
+ * 	\ingroup	component
+ * 	\brief		This file is a sample box definition file.
+ * 				To be used for development
  */
 include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
 

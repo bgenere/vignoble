@@ -18,9 +18,9 @@
 
 /**
  * 	\file		core/boxes/plotsummarybox.php
- * 	\ingroup	plotsummarymodule
- * 	\brief		This file is a sample box definition file
- * 				Put some comments here
+ * 	\ingroup	dashboard
+ * 	\brief		Get Last Plots modified
+ * 				
  */
 include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
 
@@ -30,18 +30,18 @@ include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
  * Warning: for the box to be detected correctly by dolibarr,
  * the filename should be the lowercase classname
  */
-class plotsummarybox extends ModeleBoxes
+class plotslastchanged extends ModeleBoxes
 {
 	/**
 	 * @var string Alphanumeric ID. Populated by the constructor.
 	 */
-	public $boxcode = "plotsummarybox";
+	public $boxcode = "lastplotsmodified";
 
 	/**
 	 * @var string Box icon (in configuration page)
 	 * Automatically calls the icon named with the corresponding "object_" prefix
 	 */
-	public $boximg = "plotsummarymodule@vignoble";
+	public $boximg = "plot@vignoble";
 
 	/**
 	 * @var string Box label (in configuration page)
@@ -106,7 +106,7 @@ class plotsummarybox extends ModeleBoxes
 		//include_once DOL_DOCUMENT_ROOT . "/plotsummarymodule/class/plotsummarymodule.class.php";
 
 		// Populate the head at runtime
-		$text = $langs->trans("Plots", $max);
+		$text = $langs->trans("LastPlotsModified", $max);
 		$this->info_box_head = array(
 			// Title text
 			'text' => $text,
@@ -135,9 +135,9 @@ class plotsummarybox extends ModeleBoxes
 					// HTML properties of the TD element
 					'td'           => '',
 					// Fist line logo
-					'logo'         => 'plotsummarymodule@vignoble',
+					'logo'         => 'plot14@vignoble',
 					// Main text
-					'text'         => 'plotsummary text',
+					'text'         => 'LastModified',
 					// Secondary text
 					'text2'        => '<p><strong>Another text</strong></p>',
 					// Unformatted text, usefull to load javascript elements
@@ -175,7 +175,7 @@ class plotsummarybox extends ModeleBoxes
 	}
 
 	/**
-	 * Method to show box. Called by Dolibarr eatch time it wants to display the box.
+	 * Method to show box. Called by Dolibarr each time it wants to display the box.
 	 *
 	 * @param array $head Array with properties of box title
 	 * @param array $contents Array with properties of box lines
