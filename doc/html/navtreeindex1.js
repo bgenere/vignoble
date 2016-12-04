@@ -1,6 +1,6 @@
 var NAVTREEINDEX1 =
 {
-"db/dcb/classplotsummarybox.html#ad56fe37a06cfa7b3c7d241cb651bc53d":[5,0,14,4],
+"db/d09/class_common_object.html":[5,0,2],
 "db/ddc/module__settings_8php.html":[6,0,0,1],
 "db/ddc/module__settings_8php.html#a0f298096f322952a72a50f98a74c7b60":[6,0,0,1,6],
 "db/ddc/module__settings_8php.html#a177af2bf70bede02de3d05a425fb8e43":[6,0,0,1,3],
@@ -13,8 +13,6 @@ var NAVTREEINDEX1 =
 "db/dfe/group__plot.html":[4,0],
 "dc/d0d/llx__plot_8sql.html":[6,0,6,8],
 "dc/d0d/llx__plot_8sql_source.html":[6,0,6,8],
-"dc/d4d/plotsummarybox_8php.html":[6,0,2,0,1],
-"dc/d4d/plotsummarybox_8php_source.html":[6,0,2,0,1],
 "dc/d60/plot_8class_8php.html":[6,0,1,2],
 "dc/d60/plot_8class_8php_source.html":[6,0,1,2],
 "dd/d24/plot__info_8php.html":[6,0,10],
@@ -67,6 +65,8 @@ var NAVTREEINDEX1 =
 "df/dd8/modules__vignoble_8php_source.html":[6,0,2,1,0,1],
 "df/dd9/llx__c__cultivationtype_8sql.html":[6,0,6,2],
 "df/dd9/llx__c__cultivationtype_8sql_source.html":[6,0,6,2],
+"df/de9/mytemplatebox_8php.html":[6,0,2,0,0],
+"df/de9/mytemplatebox_8php_source.html":[6,0,2,0,0],
 "dir_08d4655ef680a4e47e2aa2c4a6bc9f40.html":[6,0,2,0],
 "dir_2867b8401105090ba43035c8b1fd9c0c.html":[6,0,3],
 "dir_2c5cc2f7a80efa7a4e2ba703656567ab.html":[6,0,2,2],

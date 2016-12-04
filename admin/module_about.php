@@ -20,8 +20,8 @@
 /**
  * \file admin/module_about.php
  * \ingroup admin
- * \brief Displays module information in a Setup Tab
- * Tab content :
+ * \brief Admin page to displays module information.
+ * Contains :
  * - README.md file for the module
  * - GPLV3 icon linking to COPYING file (licence text)
  */

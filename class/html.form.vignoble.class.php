@@ -21,7 +21,7 @@
 
 /**
  * \file htdocs/core/class/html.form.vignoble.class.php
- * \ingroup core
+ * \ingroup component
  * \brief File of class to build HTML component for third parties management
  */
 

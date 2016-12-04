@@ -25,7 +25,7 @@
 /**
  * \file vignoble/admin/plot_extrafields.php
  * \ingroup admin
- * \brief Admin page to setup the Plot object extra fields.
+ * \brief Admin page to setup the extra fields for the plot object.
  */
 @include '../tpl/maindolibarr.inc.php';
 
@@ -45,47 +45,43 @@ $langs->load("vignoble@vignoble");
 if (! $user->admin)
 	accessforbidden();
 	
-	// Initialize variables for extrafields templates
 $elementtype = 'plot';
 /**
- * < $table_element of the object class that manage extrafield
+ * Initialize a new ExtraFields class
  */
 $extrafields = new ExtraFields($db);
 /**
- * < Initialize a new ExtraFields class
+ * Supported format for extra fields
  */
 $tmptype2label = ExtraFields::$type2label;
-/**
- * < Supported format for extra fields
- */
 $type2label = array(
 	''
 );
 /**
- * < Initialize translated type fields labels
+ * Initialize translated type fields labels
  */
 foreach ($tmptype2label as $key => $val)
 	$type2label[$key] = $langs->trans($val);
 	
-	/*
+/**
  * Actions
  */
 $action = GETPOST('action', 'alpha');
 /**
- * < Action tag (create, edit, add, update, delete, createdefault)
+ * Action tag (create, edit, add, update, delete, createdefault)
  */
 $attrname = GETPOST('attrname', 'alpha');
 /**
- * < Attribute name to edit
+ * Attribute name to edit
  */
 
 /**
- * Process extrafields actions.
- * This template, requires
- * $action
- * $attrname
- * $extrafields
- * $elementtype
+ * Process extrafields actions using template.
+ * Requires :
+ * - $action
+ * - $attrname
+ * - $extrafields
+ * - $elementtype
  */
 require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
 

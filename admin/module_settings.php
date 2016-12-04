@@ -20,8 +20,7 @@
 /**
  * \file admin/module_setting.php
  * \ingroup admin
- * \brief Setup tab for module.
- *
+ * \brief Setup tab for the module.
  * Includes the set-up of plot document model
  */
 
@@ -50,10 +49,13 @@ $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scandir', 'alpha');
 $type = 'plot';
 
-/*
- * Actions
+/**
+ * Process Actions
+ * - specimen : define a pdf specimen document
+ * - set : activate a document model
+ * - del : delete a document model
+ * - setdoc : set a default document model
  */
-// echo $action;
 
 if ($action == 'specimen') {
 	$modele = GETPOST('module', 'alpha');
@@ -126,8 +128,8 @@ else
 				}
 			}
 
-/*
- * View
+/**
+ * Display document model view
  */
 
 $dirmodels = array_merge(array(
@@ -137,7 +139,7 @@ $dirmodels = array_merge(array(
 printView($langs, $user);
 
 /**
- * generate and print the view
+ * Generate and print the view
  */
 function printView($langs, $user)
 {

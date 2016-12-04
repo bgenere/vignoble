@@ -16,7 +16,7 @@ var hierarchy =
     [ "FormVignoble", "d5/dbd/class_form_vignoble.html", null ],
     [ "ModeleBoxes", "df/dd0/class_modele_boxes.html", [
       [ "mybox", "d4/dd3/classmybox.html", null ],
-      [ "plotsummarybox", "db/dcb/classplotsummarybox.html", null ]
+      [ "plotslastchanged", "d7/d8d/classplotslastchanged.html", null ]
     ] ],
     [ "ModeleNumRefCommandes", "dd/dae/class_modele_num_ref_commandes.html", null ],
     [ "plotLine", "d4/d22/classplot_line.html", null ]

@@ -30,7 +30,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"db/dcb/classplotsummarybox.html#ad56fe37a06cfa7b3c7d241cb651bc53d"
+"db/d09/class_common_object.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

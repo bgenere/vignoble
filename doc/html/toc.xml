@@ -14,7 +14,7 @@
     <topic label="Dashboard" href="d5/d3d/group__dashboard.html">
       <topic label="index.php" href="de/d20/index_8php.html"/>
     </topic>
-    <topic label="Module administration" href="d2/d86/group__admin.html">
+    <topic label="Administration" href="d2/d86/group__admin.html">
       <topic label="module_about.php" href="d5/da0/module__about_8php.html"/>
       <topic label="plot_extrafields.php" href="d3/dd2/plot__extrafields_8php.html"/>
       <topic label="admin.html.lib.php" href="dd/dac/admin_8html_8lib_8php.html"/>
@@ -160,18 +160,18 @@
         <topic label="$ref" href="d4/d22/classplot_line.html#a6cd3d3ad4fc285c16290ffca9e674821"/>
         <topic label="$tms" href="d4/d22/classplot_line.html#aaffe9e3b8c27f3b44fee7feb98329391"/>
       </topic>
-      <topic label="plotsummarybox" href="db/dcb/classplotsummarybox.html">
-        <topic label="__construct" href="db/dcb/classplotsummarybox.html#a9b1b37a9d2b32f9e5f1d3b1421123de5"/>
-        <topic label="loadBox" href="db/dcb/classplotsummarybox.html#a85c26e619cc83cb7b679fbd20f981088"/>
-        <topic label="showBox" href="db/dcb/classplotsummarybox.html#a1a120e87f1ca1d616d2749756857569e"/>
-        <topic label="$boxcode" href="db/dcb/classplotsummarybox.html#a734c199422c0514afc980b5c2907a390"/>
-        <topic label="$boximg" href="db/dcb/classplotsummarybox.html#ad56fe37a06cfa7b3c7d241cb651bc53d"/>
-        <topic label="$boxlabel" href="db/dcb/classplotsummarybox.html#acebddf3e8c956c3e50f52d0581af426f"/>
-        <topic label="$db" href="db/dcb/classplotsummarybox.html#a865c948f8b38e84a3bcf57714845b2f5"/>
-        <topic label="$depends" href="db/dcb/classplotsummarybox.html#a51c07795be87ef57539e75274c82ef3f"/>
-        <topic label="$info_box_contents" href="db/dcb/classplotsummarybox.html#a2bc11bfe4dfe4fd54f9f5aa0a7f0a95a"/>
-        <topic label="$info_box_head" href="db/dcb/classplotsummarybox.html#a664064cf2dda643d7715bbf2c8e0e7b9"/>
-        <topic label="$param" href="db/dcb/classplotsummarybox.html#aa3e8d06db390d20f379b57db1e92e72a"/>
+      <topic label="plotslastchanged" href="d7/d8d/classplotslastchanged.html">
+        <topic label="__construct" href="d7/d8d/classplotslastchanged.html#a1829edaa0c184356fbd00a3ae1042802"/>
+        <topic label="loadBox" href="d7/d8d/classplotslastchanged.html#afb244d35e2bca75b1836491541ef3805"/>
+        <topic label="showBox" href="d7/d8d/classplotslastchanged.html#a0035fd1c5967b6a18ee766da13a55523"/>
+        <topic label="$boxcode" href="d7/d8d/classplotslastchanged.html#a601981565ad2854b2c668859a56e4208"/>
+        <topic label="$boximg" href="d7/d8d/classplotslastchanged.html#aecc6417c10e3d408c173835e681f7c52"/>
+        <topic label="$boxlabel" href="d7/d8d/classplotslastchanged.html#a9cf51f0cf19745c22598f25b0c613065"/>
+        <topic label="$db" href="d7/d8d/classplotslastchanged.html#a07d2c27612b42474167f811c74c973c6"/>
+        <topic label="$depends" href="d7/d8d/classplotslastchanged.html#afcaf1b70bdd226e53d7fa63cf45fd8d3"/>
+        <topic label="$info_box_contents" href="d7/d8d/classplotslastchanged.html#ad4e30897177be4bde9e9d16c814dab91"/>
+        <topic label="$info_box_head" href="d7/d8d/classplotslastchanged.html#a8f6e4308ad702ce0a35cd08260ae3d51"/>
+        <topic label="$param" href="d7/d8d/classplotslastchanged.html#a3cd71c1fefdd2ff128e6b002714430e4"/>
       </topic>
     </topic>
     <topic label="Class Index" href="classes.html"/>
@@ -192,7 +192,7 @@
       <topic label="FormVignoble" href="d5/dbd/class_form_vignoble.html"/>
       <topic label="ModeleBoxes" href="df/dd0/class_modele_boxes.html">
         <topic label="mybox" href="d4/dd3/classmybox.html"/>
-        <topic label="plotsummarybox" href="db/dcb/classplotsummarybox.html"/>
+        <topic label="plotslastchanged" href="d7/d8d/classplotslastchanged.html"/>
       </topic>
       <topic label="ModeleNumRefCommandes" href="dd/dae/class_modele_num_ref_commandes.html"/>
       <topic label="plotLine" href="d4/d22/classplot_line.html"/>
@@ -299,7 +299,7 @@
       </topic>
       <topic label="core" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">
         <topic label="boxes" href="dir_08d4655ef680a4e47e2aa2c4a6bc9f40.html">
-          <topic label="mybox.php" href="d5/dc6/mybox_8php.html">
+          <topic label="mytemplatebox.php" href="df/de9/mytemplatebox_8php.html">
             <topic label="mybox" href="d4/dd3/classmybox.html">
               <topic label="__construct" href="d4/dd3/classmybox.html#ab7e47ffd77bdfa1d8d95d7f5a4fb09a5"/>
               <topic label="loadBox" href="d4/dd3/classmybox.html#a4b304de15117efbbb5a1e2527fd9392a"/>
@@ -314,19 +314,19 @@
               <topic label="$param" href="d4/dd3/classmybox.html#a9bf93b4b6b632cdb0de07abb2b0b9449"/>
             </topic>
           </topic>
-          <topic label="plotsummarybox.php" href="dc/d4d/plotsummarybox_8php.html">
-            <topic label="plotsummarybox" href="db/dcb/classplotsummarybox.html">
-              <topic label="__construct" href="db/dcb/classplotsummarybox.html#a9b1b37a9d2b32f9e5f1d3b1421123de5"/>
-              <topic label="loadBox" href="db/dcb/classplotsummarybox.html#a85c26e619cc83cb7b679fbd20f981088"/>
-              <topic label="showBox" href="db/dcb/classplotsummarybox.html#a1a120e87f1ca1d616d2749756857569e"/>
-              <topic label="$boxcode" href="db/dcb/classplotsummarybox.html#a734c199422c0514afc980b5c2907a390"/>
-              <topic label="$boximg" href="db/dcb/classplotsummarybox.html#ad56fe37a06cfa7b3c7d241cb651bc53d"/>
-              <topic label="$boxlabel" href="db/dcb/classplotsummarybox.html#acebddf3e8c956c3e50f52d0581af426f"/>
-              <topic label="$db" href="db/dcb/classplotsummarybox.html#a865c948f8b38e84a3bcf57714845b2f5"/>
-              <topic label="$depends" href="db/dcb/classplotsummarybox.html#a51c07795be87ef57539e75274c82ef3f"/>
-              <topic label="$info_box_contents" href="db/dcb/classplotsummarybox.html#a2bc11bfe4dfe4fd54f9f5aa0a7f0a95a"/>
-              <topic label="$info_box_head" href="db/dcb/classplotsummarybox.html#a664064cf2dda643d7715bbf2c8e0e7b9"/>
-              <topic label="$param" href="db/dcb/classplotsummarybox.html#aa3e8d06db390d20f379b57db1e92e72a"/>
+          <topic label="plotslastchanged.php" href="d2/d7d/plotslastchanged_8php.html">
+            <topic label="plotslastchanged" href="d7/d8d/classplotslastchanged.html">
+              <topic label="__construct" href="d7/d8d/classplotslastchanged.html#a1829edaa0c184356fbd00a3ae1042802"/>
+              <topic label="loadBox" href="d7/d8d/classplotslastchanged.html#afb244d35e2bca75b1836491541ef3805"/>
+              <topic label="showBox" href="d7/d8d/classplotslastchanged.html#a0035fd1c5967b6a18ee766da13a55523"/>
+              <topic label="$boxcode" href="d7/d8d/classplotslastchanged.html#a601981565ad2854b2c668859a56e4208"/>
+              <topic label="$boximg" href="d7/d8d/classplotslastchanged.html#aecc6417c10e3d408c173835e681f7c52"/>
+              <topic label="$boxlabel" href="d7/d8d/classplotslastchanged.html#a9cf51f0cf19745c22598f25b0c613065"/>
+              <topic label="$db" href="d7/d8d/classplotslastchanged.html#a07d2c27612b42474167f811c74c973c6"/>
+              <topic label="$depends" href="d7/d8d/classplotslastchanged.html#afcaf1b70bdd226e53d7fa63cf45fd8d3"/>
+              <topic label="$info_box_contents" href="d7/d8d/classplotslastchanged.html#ad4e30897177be4bde9e9d16c814dab91"/>
+              <topic label="$info_box_head" href="d7/d8d/classplotslastchanged.html#a8f6e4308ad702ce0a35cd08260ae3d51"/>
+              <topic label="$param" href="d7/d8d/classplotslastchanged.html#a3cd71c1fefdd2ff128e6b002714430e4"/>
             </topic>
           </topic>
         </topic>

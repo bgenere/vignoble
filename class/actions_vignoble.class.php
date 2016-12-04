@@ -18,31 +18,31 @@
 
 /**
  * \file    class/actions_mymodule.class.php
- * \ingroup Hooks
- * \brief   Class file for Hooks provided with the module
- *          Current content :
- *          - Hook on search box to provide search on Parcels
+ * \ingroup component
+ * \brief   Class file for Hooks provided with the module.
+ *  Contains :
+ * - Hook on search box to provide search on Parcels
  *          
  *           
  */
 
 /**
- * Class ActionsVignoble
+ * Class ActionsVignoble define the hooks provided with the module.
  */
 class ActionsVignoble
 {
 	/**
-	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
+	 * Array Hook results. Propagated to $hookmanager->resArray for later reuse
 	 */
 	public $results = array();
 
 	/**
-	 * @var string String displayed by executeHook() immediately after return
+	 * String displayed by executeHook() immediately after return
 	 */
 	public $resprints;
 
 	/**
-	 * @var array Errors
+	 * Array collecting Errors
 	 */
 	public $errors = array();
 
