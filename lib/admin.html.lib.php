@@ -83,7 +83,7 @@ function vignobleAdminPrepareTabs()
 	$tabs[$h][2] = 'settings';
 	$h ++;
 	$tabs[$h][0] = dol_buildpath("/vignoble/admin/plot_extrafields.php", 1);
-	$tabs[$h][1] = $langs->trans("Plot fields");
+	$tabs[$h][1] = $langs->trans("PlotExtraFields");
 	$tabs[$h][2] = 'plotfields';
 	$h ++;
 	$tabs[$h][0] = dol_buildpath("/vignoble/admin/module_about.php", 1);

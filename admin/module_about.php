@@ -41,7 +41,7 @@ $langs->load("vignoble@vignoble");
 /*
  * View
  */
-beginForm('about');
+beginForm('about','VignobleSetup');
 
 printREADME($langs);
 printGPLV3();

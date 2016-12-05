@@ -28,9 +28,10 @@ Module123001Desc = Add all features to manage a Wine Yard estate
 #
 # Admin page
 #
-MyModuleSetup = VineYard setup
+VignobleSetup = VineYard module setup
 Settings = Settings
 NoContentYet = No content yet.
+PlotModelModule = Plot models available
 
 #
 # Index page
@@ -60,6 +61,8 @@ PlotListTitle = VineYard - Plots List
 PlotCardTitle = VineYard - Plot Card
 LastPlotsModified= Last plots modified
  
+PlotExtraFields= Plot Attributes
+AddDefaultAttributes = Add Default Attributes
 Fieldref = Reference
 Fieldlabel = Label
 Fielddescription = Description

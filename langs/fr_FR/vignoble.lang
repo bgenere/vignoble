@@ -28,9 +28,10 @@ Module123100Desc = Ajoute toute les fonctions spécifiques à la gestion d'un vi
 #
 # Page d'administration
 #
-vignobleSetup = Configuration du module Vignoble
+VignobleSetup = Configuration du module Vignoble
 Settings = Réglages
 NoContentYet = Pas de contenu pour l'instant.
+PlotModelModule = Modèles disponibles pour parcelle
 
 #
 # Page accueil
@@ -60,6 +61,8 @@ PlotListTitle = Vignoble - Liste des parcelles
 PlotCardTitle = Vignoble - Formulaire Parcelle
 LastPlotsModified = Dernières parcelles modifiées
 
+PlotExtraFields= Attributs de Parcelle
+AddDefaultAttributes = Ajouter les attributs par défaut
 Fieldref = Référence
 Fieldlabel = Libellé
 Fielddescription = Description

@@ -21,7 +21,7 @@
  * \file admin/module_setting.php
  * \ingroup admin
  * \brief Setup tab for the module.
- * Includes the set-up of plot document model
+ * - Includes the set-up of plot document model
  */
 
 @include '../tpl/maindolibarr.inc.php';
@@ -146,10 +146,8 @@ function printView($langs, $user)
 	global $db, $conf, $dirmodels;
 	
 	$form = new Form($db);
-	
-	beginForm('settings');
-	// echo $langs->trans("NoContentYet");
-	
+	beginForm('settings','VignobleSetup');
+		
 	/*
 	 * Document templates generators
 	 */

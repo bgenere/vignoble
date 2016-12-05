@@ -92,19 +92,15 @@ if ($action == 'createdefault') {
 /*
  * View
  */
-beginForm('plotfields');
-
-$textobject = $langs->transnoentitiesnoconv("Plot");
-/**
- * < The Object name to which fields belong
- */
-
+beginForm('plotfields','VignobleSetup');
+// 
+$textobject = $langs->transnoentitiesnoconv("Plots");
 /**
  * Displays extrafields list with actions on attributes
  * This template, requires
- * $textobject
- * $extrafields
- * $elementtype
+ * - $textobject : object name (plural)
+ * - $extrafields
+ * - $elementtype : object type
  */
 require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
