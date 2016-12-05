@@ -615,15 +615,17 @@ class modVignoble extends DolibarrModules
 	 * Get module boxes array.
 	 *
 	 * Module boxes or widgets could be displayed on Dolibarr Dashboard
-	 *
-	 * @todo Develop proper widget the one used is a mokup.
+	 *	- file contains the box class file name
+	 *	- note displays in widget set-up page
+	 *	- enablebydefaulton to have widget on home page
+	 * 
 	 */
 	private function getBoxes()
 	{
 		$this->boxes = array(
 			0 => array(
 				'file' => 'plotslastchanged.php@vignoble',
-				'note' => 'Last5PlotsModified',
+				'note' => '',
 				'enabledbydefaulton' => 'home'
 			)
 		);
@@ -764,7 +766,7 @@ class modVignoble extends DolibarrModules
 		/**
 		 * Define Plots Import
 		 */
-		$r = 'Plot';
+		$r = 'plot';
 		$this->import_code[$r] = $this->rights_class . '_' . $r;
 		$this->import_label[$r] = 'Plots';
 		$this->import_icon[$r] = 'plot14@vignoble';

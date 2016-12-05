@@ -421,7 +421,7 @@ class plot extends CommonObject
 			$sql .= $this->db->order($sortfield, $sortorder);
 		}
 		if (! empty($limit)) {
-			$sql .= ' ' . $this->db->plimit($limit + 1, $offset);
+			$sql .= ' ' . $this->db->plimit($limit , $offset);
 		}
 		$this->lines = array();
 		

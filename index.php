@@ -24,11 +24,12 @@
  */
 @include './tpl/maindolibarr.inc.php';
 
-/* get dashboard boxes */
+/* get dashboard boxes classes */
 dol_include_once('/vignoble/core/boxes/plotslastchanged.php');
 
 /* get language files */
 $langs->load("vignoble@vignoble");
+$langs->load("other");
 
 displayView();
 
@@ -44,20 +45,34 @@ function displayView()
 	
 	llxHeader('', $langs->trans('VineYardArea'));
 	print load_fiche_titre($langs->trans("VineYardArea"), '', 'object_vignoble@vignoble');
-	
+	/**
+	 * - Get boxes
+	 * 
+	 */
 	$plotslastchanged = new plotslastchanged($db);
 	$plotslastchanged->loadBox(10);
-	// $box->showBox($box->info_box_head, $box->info_box_contents);
-	/*
-	 * Show boxes
+	
+	/**
+	 * - Display boxes
 	 */
-	print '<div class="fichecenter"><div class="fichethirdleft">';
+	print '<div class="fichecenter">'; // frame
+	print '<div class="fichethirdleft">'; // left column
+	
+	print '<div class="ficheaddleft">';
 	$plotslastchanged->showBox($plotslastchanged->info_box_head, $plotslastchanged->info_box_contents);
-	$plotslastchanged->showBox($plotslastchanged->info_box_head, $plotslastchanged->info_box_contents);
-	print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
-	$plotslastchanged->showBox($plotslastchanged->info_box_head, $plotslastchanged->info_box_contents);
-	$plotslastchanged->showBox($plotslastchanged->info_box_head, $plotslastchanged->info_box_contents);
-	print '</div></div>';
+	print '</div>';
+	
+		
+	print '</div>'; // left column end
+	
+	print '<div class="fichetwothirdright">'; // right column
+	
+	print '<div class="ficheaddleft">';
+	
+	print '</div>';
+	
+	print '</div>'; // right column end
+	print '</div>'; // frame end
 	
 	llxFooter();
 }
