@@ -20,9 +20,7 @@
 /**
  * \file plot_card.php
  * \ingroup plot
- * \brief The plot main form.
- *
- * The form displays the main attributes of the plot.
+ * \brief The plot card displays the main attributes of the plot.
  * Attributes are in view mode first.
  * The user could use the form to update, create or delete an object.
  * Top of the form is standardised to display the object identity and navigate the object list.
@@ -64,7 +62,8 @@ $ref = GETPOST('ref', 'alpha');
 if ($ref == '') {
 	$ref = NULL;
 } // NEEDED else your record will never be populated when ref is empty !!!
-  // echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
+
+// echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
 $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // add your own parameters like this
                                      // $myparam = GETPOST('myparam','alpha');
@@ -77,8 +76,8 @@ if ($user->socid > 0 || $user->rights->vignoble->level1->level2 == 0) {
 if (empty($action) && empty($id) && empty($ref))
 	$action = 'view';
 	
-	// Load object if id or ref is provided as parameter
-	// echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
+// Load object if id or ref is provided as parameter
+// echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
 $object = new plot($db);
 $extrafields = new ExtraFields($db);
 // fetch optionals attributes and labels
@@ -282,8 +281,8 @@ if ($action == 'create') {
 	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . GETPOST('ref') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . GETPOST('label') . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . GETPOST('description') . '"></td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . GETPOST('label') . '"></td></tr>';
+	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . GETPOST('description') . '"></td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
@@ -310,8 +309,8 @@ if (($id || $ref) && $action == 'edit') {
 	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . $object->ref . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . $object->label . '"></td></tr>';
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . $object->description . '"></td></tr>';
+	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . $object->label . '"></td></tr>';
+	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . $object->description . '"></td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
