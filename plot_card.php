@@ -41,11 +41,11 @@
 // if (! defined("NOLOGIN")) define("NOLOGIN",'1'); // If this page is public (can be called outside logged session)
 @include './tpl/maindolibarr.inc.php';
 
-// Change this following line to use the correct relative path from htdocs
-// include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
+// load mobule libraries
 dol_include_once('/vignoble/class/plot.class.php');
 dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
+// load Dolibarr libraries
 include_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
@@ -128,13 +128,6 @@ if (empty($reshook)) {
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
 		$object->description = GETPOST('description', 'alpha');
-// 		$object->areasize = GETPOST('areasize', 'alpha');
-// 		$object->rootsnumber = GETPOST('rootsnumber', 'int');
-// 		$object->spacing = GETPOST('spacing', 'alpha');
-// 		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
-// 		$object->fk_varietal = GETPOST('fk_varietal', 'int');
-// 		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
-// 		$object->note_private = GETPOST('note_private', 'alpha');
 		$object->fk_user_author = $user->id;
 		$object->fk_user_modif = $user->id;
 		
@@ -178,13 +171,7 @@ if (empty($reshook)) {
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
 		$object->description = GETPOST('description', 'alpha');
-// 		$object->areasize = GETPOST('areasize', 'alpha');
-// 		$object->rootsnumber = GETPOST('rootsnumber', 'int');
-// 		$object->spacing = GETPOST('spacing', 'alpha');
-// 		$object->fk_cultivationtype = GETPOST('fk_cultivationtype', 'int');
-// 		$object->fk_varietal = GETPOST('fk_varietal', 'int');
-// 		$object->fk_rootstock = GETPOST('fk_rootstock', 'int');
-		
+		//
 		if (empty($object->ref)) {
 			$error ++;
 			setEventMessages($langs->transnoentitiesnoconv("ErrorFieldRequired", $langs->transnoentitiesnoconv("Ref")), null, 'errors');
@@ -227,8 +214,7 @@ if (empty($reshook)) {
 		}
 	}
 	
-	if ($action == 'builddoc') // In get or post
-{
+	if ($action == 'builddoc') {
 		// Save last template used to generate document
 		if (GETPOST('model'))
 			$object->setDocModel($user, GETPOST('model', 'alpha'));
@@ -287,7 +273,7 @@ $formactions = new FormActions($db);
 
 // Part to create
 if ($action == 'create') {
-	print load_fiche_titre($langs->trans("New Plot"), '', 'object_plot@vignoble');
+	print load_fiche_titre($langs->trans("NewPlot"), '', 'object_plot@vignoble');
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="add">';
@@ -298,12 +284,6 @@ if ($action == 'create') {
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . GETPOST('ref') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . GETPOST('label') . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . GETPOST('description') . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . GETPOST('areasize') . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . GETPOST('rootsnumber') . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . GETPOST('spacing') . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', GETPOST('fk_cultivationtype'), 'fk_cultivationtype') . '</td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', GETPOST('fk_varietal'), 'fk_varietal') . '</td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', GETPOST('fk_rootstock'), 'fk_rootstock') . '</td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
@@ -320,7 +300,7 @@ if ($action == 'create') {
 
 // Part to edit record @TODO remove test on data
 if (($id || $ref) && $action == 'edit') {
-	print load_fiche_titre($langs->trans("Edit Plot"), $object->label, 'object_plot@vignoble');
+	print load_fiche_titre($langs->trans("EditPlot"), $object->label, 'object_plot@vignoble');
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
 	print '<input type="hidden" name="action" value="update">';
@@ -329,17 +309,9 @@ if (($id || $ref) && $action == 'edit') {
 	
 	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
-	// print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td><input class="flat" type="text" size="36" name="label" value="'.$label.'"></td></tr>';
-	//
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . $object->ref . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . $object->label . '"></td></tr>';
 	print '<tr><td class="fieldrequired">' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . $object->description . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldareasize") . '</td><td><input class="flat" type="text" name="areasize" value="' . $object->areasize . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldrootsnumber") . '</td><td><input class="flat" type="text" name="rootsnumber" value="' . $object->rootsnumber . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldspacing") . '</td><td><input class="flat" type="text" name="spacing" value="' . $object->spacing . '"></td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . $formvignoble->displayDicCombo('c_cultivationtype', 'Cultivation Type', $object->fk_cultivationtype, 'fk_cultivationtype') . '</td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_varietal") . '</td><td>' . $formvignoble->displayDicCombo('c_varietal', 'Varietal', $object->fk_varietal, 'fk_varietal') . '</td></tr>';
-// 	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . $formvignoble->displayDicCombo('c_rootstock', 'Rootstock', $object->fk_rootstock, 'fk_rootstock') . '</td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
@@ -378,12 +350,6 @@ if (empty($action) || $action == 'view' || $action == 'delete') {
 	
 	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td>' . $object->label . '</td></tr>';
 	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td>' . $object->description . '</td></tr>';
-// 	print '<tr><td>' . $langs->trans("Fieldareasize") . '</td><td>' . $object->areasize . '</td></tr>';
-// 	print '<tr><td>' . $langs->trans("Fieldrootsnumber") . '</td><td>' . $object->rootsnumber . '</td></tr>';
-// 	print '<tr><td>' . $langs->trans("Fieldspacing") . '</td><td>' . $object->spacing . '</td></tr>';
-// 	print '<tr><td>' . $langs->trans("Fieldfk_cultivationtype") . '</td><td>' . dol_getIdFromCode($db, $object->fk_cultivationtype, 'c_cultivationtype', 'rowid', 'label') . '</td></tr>';
-// 	print '<tr><td>' . $langs->trans("Fieldfk_varietal") . '</td><td>' . dol_getIdFromCode($db, $object->fk_varietal, 'c_varietal', 'rowid', 'label') . '</td></tr>';
-// 	print '<tr><td>' . $langs->trans("Fieldfk_rootstock") . '</td><td>' . dol_getIdFromCode($db, $object->fk_rootstock, 'c_rootstock', 'rowid', 'label') . '</td></tr>';
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'view', $parameters);
