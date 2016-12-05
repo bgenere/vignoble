@@ -30,14 +30,18 @@ Module123100Desc = Ajoute toute les fonctions spécifiques à la gestion d'un vi
 #
 vignobleSetup = Configuration du module Vignoble
 Settings = Réglages
-No Content Yet = Pas de contenu pour l'instant.
+NoContentYet = Pas de contenu pour l'instant.
+
+#
+# Page accueil
+#
+VineYardArea=Vignoble
 
 #
 # Page À propos
 #
 About = À propos
 vignobleAbout = À propos du module Vignoble
-
 
 #
 # Page d'exemple
@@ -49,24 +53,22 @@ MyPageName = Vignoble - page d'exemple
 #
 Plot = Parcelle
 Plots = Parcelles
-Plots List = Liste des parcelles
-New Plot = Nouvelle parcelle
-Edit Plot = Modifier Parcelle
+PlotsList = Liste des parcelles
+NewPlot = Nouvelle parcelle
+EditPlot = Modifier Parcelle
 PlotListTitle = Vignoble - Liste des parcelles
 PlotCardTitle = Vignoble - Formulaire Parcelle
+LastPlotsModified = Dernières parcelles modifiées
 
 Fieldref = Référence
 Fieldlabel = Libellé
 Fielddescription = Description
-Fieldareasize = Surface
-Fieldrootsnumber = Nb de pieds
-Fieldspacing = Ecartement
-Fieldfk_cultivationtype = Assolement
-Fieldfk_varietal = Cépage
-Fieldfk_rootstock = Porte greffe
+
+
+
 #
 # Dictionnaires
 #
 Varietal = Cépages
-Cultivation Type = Assolements
+CultivationType = Assolements
 Rootstock = Portes greffe
