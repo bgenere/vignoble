@@ -148,7 +148,7 @@ function printView($langs, $user)
 	$form = new Form($db);
 	
 	beginForm('settings');
-	// echo $langs->trans("No Content Yet");
+	// echo $langs->trans("NoContentYet");
 	
 	/*
 	 * Document templates generators
