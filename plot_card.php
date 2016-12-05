@@ -45,7 +45,7 @@ dol_include_once('/vignoble/class/html.form.vignoble.class.php');
 
 // load Dolibarr libraries
 include_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-
+include_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
 
@@ -62,7 +62,7 @@ $ref = GETPOST('ref', 'alpha');
 if ($ref == '') {
 	$ref = NULL;
 } // NEEDED else your record will never be populated when ref is empty !!!
-
+  
 // echo 'URL param ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
 $backtopage = GETPOST('backtopage'); // page to redirect when process is done
                                      // add your own parameters like this
@@ -76,8 +76,8 @@ if ($user->socid > 0 || $user->rights->vignoble->level1->level2 == 0) {
 if (empty($action) && empty($id) && empty($ref))
 	$action = 'view';
 	
-// Load object if id or ref is provided as parameter
-// echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
+	// Load object if id or ref is provided as parameter
+	// echo 'Before object fetch id ';var_dump($id);echo '$ref ';var_dump($ref);echo '$action ';var_dump($action);echo '<br />';
 $object = new plot($db);
 $extrafields = new ExtraFields($db);
 // fetch optionals attributes and labels
@@ -126,7 +126,7 @@ if (empty($reshook)) {
 		$object->entity = $conf->entity;
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
-		$object->description = GETPOST('description', 'alpha');
+		$object->description = dol_htmlcleanlastbr(GETPOST('description'));
 		$object->fk_user_author = $user->id;
 		$object->fk_user_modif = $user->id;
 		
@@ -169,7 +169,8 @@ if (empty($reshook)) {
 		$object->id = GETPOST('id', 'int');
 		$object->ref = GETPOST('ref', 'alpha');
 		$object->label = GETPOST('label', 'alpha');
-		$object->description = GETPOST('description', 'alpha');
+		//$object->description = GETPOST('description', 'alpha');
+		$object->description = dol_htmlcleanlastbr(GETPOST('description'));
 		//
 		if (empty($object->ref)) {
 			$error ++;
@@ -254,11 +255,10 @@ if (empty($reshook)) {
 }
 
 /**
- * *************************************************
- * VIEW
+ * Build View
  *
- * Put here all code to build page
- * **************************************************
+ * 
+ * 
  */
 
 llxHeader('', $langs->trans('PlotCardTitle'), '');
@@ -268,9 +268,11 @@ $formvignoble = new FormVignoble($db);
 $formfile = new FormFile($db);
 $formactions = new FormActions($db);
 
-// Put here content of your page
 
-// Part to create
+
+/**
+ * - create view : card in edit mode for a new object 
+ */
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewPlot"), '', 'object_plot@vignoble');
 	
@@ -280,9 +282,19 @@ if ($action == 'create') {
 	
 	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . GETPOST('ref') . '"></td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . GETPOST('label') . '"></td></tr>';
-	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . GETPOST('description') . '"></td></tr>';
+	
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td>';
+	print '<input class="flat" type="text" name="ref" value="' . GETPOST('ref') . '">';
+	print '</td></tr>';
+	
+	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td>';
+	print '<input class="flat" type="text" name="label" value="' . GETPOST('label') . '">';
+	print '</td></tr>';
+	
+	print '<tr><td class="tdtop" width="25%">' . $langs->trans("Description") . '</td><td>';
+	$doleditor = new DolEditor('description', GETPOST('description'),'', 160, 'dolibarr_notes', '', false, true, $conf->global->FCKEDITOR_ENABLE_SOCIETE, ROWS_4, '99%');
+	$doleditor->Create();
+	print "</td></tr>";
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
@@ -297,7 +309,9 @@ if ($action == 'create') {
 	print '</form>';
 }
 
-// Part to edit record @TODO remove test on data
+/**
+ * - edit view : card in edit mode for an existing object 
+ */
 if (($id || $ref) && $action == 'edit') {
 	print load_fiche_titre($langs->trans("EditPlot"), $object->label, 'object_plot@vignoble');
 	
@@ -308,9 +322,19 @@ if (($id || $ref) && $action == 'edit') {
 	
 	dol_fiche_head();
 	print '<table class="border centpercent">' . "\n";
-	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td><input class="flat" type="text" name="ref" value="' . $object->ref . '"></td></tr>';
-	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td><input class="flat" type="text" name="label" value="' . $object->label . '"></td></tr>';
-	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td><input class="flat" type="text" name="description" value="' . $object->description . '"></td></tr>';
+	
+	print '<tr><td class="fieldrequired">' . $langs->trans("Fieldref") . '</td><td>';
+	print '<input class="flat" type="text" name="ref" value="' . $object->ref . '">';
+	print '</td></tr>';
+	
+	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td>';
+	print '<input class="flat" type="text" name="label" value="' . $object->label . '">';
+	print '</td></tr>';
+	
+	print '<tr><td class="tdtop" width="25%">' . $langs->trans("Description") . '</td><td>';
+	$doleditor = new DolEditor('description', $object->description, '', 160, 'dolibarr_notes', '', false, true, $conf->global->FCKEDITOR_ENABLE_SOCIETE, ROWS_4, '(50%');
+	$doleditor->Create();
+	print "</td></tr>";
 	
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'edit', $parameters);
@@ -326,10 +350,14 @@ if (($id || $ref) && $action == 'edit') {
 	print '</form>';
 }
 
-// echo 'Before object view ';var_dump($id);var_dump($ref);var_dump($action);echo '<br />';
-// show object card when action is view, delete or none
+/**
+ * - default view : card in view mode for an existing object when action is view, delete or none
+ */
 if (empty($action) || $action == 'view' || $action == 'delete') {
-	
+	/**
+	 * 	- Display the card
+	 * 
+	 */
 	$head = $formvignoble->getTabsHeader($langs, $object);
 	dol_fiche_head($head, 'card', $langs->trans("Plot"), 0, 'plot@vignoble');
 	
@@ -346,10 +374,8 @@ if (empty($action) || $action == 'view' || $action == 'delete') {
 	print '<tr><td class="titlefield">' . $langs->trans("Ref") . '</td><td>';
 	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref');
 	print '</td></tr>';
-	
 	print '<tr><td>' . $langs->trans("Fieldlabel") . '</td><td>' . $object->label . '</td></tr>';
-	print '<tr><td>' . $langs->trans("Fielddescription") . '</td><td>' . $object->description . '</td></tr>';
-	
+	print '<tr><td class="tdtop" width="25%">' . $langs->trans("Fielddescription") . '</td><td>' .(dol_textishtml($object->description)?$object->description:dol_nl2br($object->description,1,true)). '</td></tr>';
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'view', $parameters);
 	}
@@ -357,7 +383,9 @@ if (empty($action) || $action == 'view' || $action == 'delete') {
 	
 	dol_fiche_end();
 	
-	// Buttons
+	/**
+	 * 	- Displays edit and delete buttons below the card
+	 */
 	print '<div class="tabsAction">' . "\n";
 	$parameters = array();
 	$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
@@ -365,9 +393,11 @@ if (empty($action) || $action == 'view' || $action == 'delete') {
 		setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 	
 	if (empty($reshook)) {
-		// if ($user->rights->vignoble->level1->level2) {
+		if ($user->rights->vignoble->plot->create) {
 		print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=edit">' . $langs->trans("Modify") . '</a></div>' . "\n";
-		// }
+		 } else {
+			print '<div class="inline-block divButAction"><a class="butActionRefused" href="#">' . $langs->trans('Modify') . '</a></div>' . "\n";
+		}
 		
 		if ($user->rights->vignoble->plot->delete) {
 			print '<div class="inline-block divButAction"><a class="butActionDelete" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a></div>' . "\n";
@@ -377,37 +407,45 @@ if (empty($action) || $action == 'view' || $action == 'delete') {
 	}
 	print '</div>' . "\n";
 	
-	// Example 2 : Adding links to objects
-	// $somethingshown=$form->showLinkedObjectBlock($object);
-	// $linktoelem = $form->showLinkToObjectBlock($object);
-	// if ($linktoelem) print '<br>'.$linktoelem;
+	/**
+	 * 	- Display generic features
+	 */
+	print '<div class="fichecenter">'; // global frame
+	print '<div class="fichehalfleft">'; // left column
+	/**
+	 * 		- Display generated documents
+	 */
+// 	print 'Generated Documentss<br/>';
+// 	$ref = dol_sanitizeFileName($object->ref);
+// 	$file = $conf->vignoble->dir_output . '/' . $ref . '/' . $ref . '.pdf';
+// 	$relativepath = $ref . '/' . $ref . '.pdf';
+// 	$filedir = $conf->vignoble->dir_output . '/' . $ref;
+// 	$urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
+// 	$genallowed = $user->rights->vignoble->plot->create;
+// 	$delallowed = $user->rights->vignoble->plot->delete;
+// 	$somethingshown = $formfile->show_documents('vignoble', $ref, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);
 	
-	print '<div class="fichecenter"><div class="fichehalfleft">';
-	
-	// Documents
-	$ref = dol_sanitizeFileName($object->ref);
-	$file = $conf->vignoble->dir_output . '/' . $ref . '/' . $ref . '.pdf';
-	$relativepath = $ref . '/' . $ref . '.pdf';
-	$filedir = $conf->vignoble->dir_output . '/' . $ref;
-	$urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
-	$genallowed = 1;
-	// $user->rights->commande->creer;
-	$delallowed = 1;
-	// $user->rights->commande->supprimer;
-	$somethingshown = $formfile->show_documents('vignoble', $ref, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);
-	
-	// Show links to link elements
-	// $linktoelem = $form->showLinkToObjectBlock($object, null, array('plot'));
-	// $somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
-	
-	print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-	
-	// List of actions on element
-	include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
-	$formactions = new FormActions($db);
-	// $somethingshown = $formactions->showactions($object, 'plot', 0);
-	
-	print '</div></div></div>';
+	print '</div>';// left column end
+	print '<div class="fichehalfright">'; //right column
+	/**
+	 * 		- Display links to other objects (order or invoice)
+	 */
+// 	print '<div class="ficheaddleft">';
+// 	print 'Linked Orders/Invoice<br/>';
+// 	$linktoelem = $form->showLinkToObjectBlock($object,array());
+// 	$somethingshown=$form->showLinkedObjectBlock($object,$linktoelem);
+// 	print '</div>';
+	/**
+	 * 		- Display links to events
+	 */
+// 	print '<div class="ficheaddleft">';
+// 	print 'Linked Events<br/>';
+// 	include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
+// 	$formactions = new FormActions($db);
+// 	$somethingshown = $formactions->showactions($object, 'plot', $user->socid,1);
+// 	print '</div>';
+	print '</div>'; //right column end
+	print '</div>'; //fichecenter
 }
 
 // End of page

@@ -71,7 +71,7 @@ dol_fiche_head($head, 'info', $langs->trans("Plot"), 0, 'plot@vignoble');
 
 $formvignoble->printObjectRef($form, $langs, $currentPlot);
 print '<table width="100%"><tr><td>';
-dol_print_object_info($currentPlot);
+dol_print_object_info($currentPlot,1);
 print '</td></tr></table>';
 
 print '</div>';

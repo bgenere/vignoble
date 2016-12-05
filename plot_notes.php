@@ -52,16 +52,19 @@ $object = new plot($db);
 $result = $object->loadObject($id, $ref, true);
 //echo 'after object load id: ';var_dump($id);echo ' $ref: ';var_dump($ref);echo ' object: ';var_dump($object);echo'<br />';
 	
-// $permissionnote=$user->rights->vignoble->creer;
-	// Used by the include of actions_setnotes.inc.php
-$permission = true;
-$permissionnote = true;
+/**
+ * Define tab permission
+ * - permission : display the button
+ * - permissionnote : allow for changing value
+ */
+$permission = $user->rights->vignoble->plot->create;
+$permissionnote = $user->rights->vignoble->plot->create;
 
 /*
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
+include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; 
 
 /*
  * View
