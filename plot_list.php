@@ -172,7 +172,7 @@ $formvignoble = new FormVignoble($db);
 $plot = new plot($db);
 
 // Put here content of your page
-$title = $langs->trans('Plots List');
+$title = $langs->trans('PlotsList');
 
 // addJQuery();
 
