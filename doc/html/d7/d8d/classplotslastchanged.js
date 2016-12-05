@@ -1,6 +1,6 @@
 var classplotslastchanged =
 [
-    [ "__construct", "d7/d8d/classplotslastchanged.html#a1829edaa0c184356fbd00a3ae1042802", null ],
+    [ "__construct", "d7/d8d/classplotslastchanged.html#a761031b9b71e0e91aec4965007f92e67", null ],
     [ "loadBox", "d7/d8d/classplotslastchanged.html#afb244d35e2bca75b1836491541ef3805", null ],
     [ "showBox", "d7/d8d/classplotslastchanged.html#a0035fd1c5967b6a18ee766da13a55523", null ],
     [ "$boxcode", "d7/d8d/classplotslastchanged.html#a601981565ad2854b2c668859a56e4208", null ],

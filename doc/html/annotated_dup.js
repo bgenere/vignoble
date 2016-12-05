@@ -14,5 +14,6 @@ var annotated_dup =
     [ "pdf_plotabc", "d8/d91/classpdf__plotabc.html", "d8/d91/classpdf__plotabc" ],
     [ "plot", "d7/d55/classplot.html", "d7/d55/classplot" ],
     [ "plotLine", "d4/d22/classplot_line.html", "d4/d22/classplot_line" ],
-    [ "plotslastchanged", "d7/d8d/classplotslastchanged.html", "d7/d8d/classplotslastchanged" ]
+    [ "plotslastchanged", "d7/d8d/classplotslastchanged.html", "d7/d8d/classplotslastchanged" ],
+    [ "vignoblebox", "d0/de1/classvignoblebox.html", "d0/de1/classvignoblebox" ]
 ];

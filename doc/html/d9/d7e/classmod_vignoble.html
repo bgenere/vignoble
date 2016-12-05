@@ -199,7 +199,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00065">65</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00621">getBoxes()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00174">getConfigPages()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00551">getConstant()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00164">getDataDirectories()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00184">getDependencies()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00637">getDictionaries()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00432">getExports()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00761">getImports()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00230">getLanguageFiles()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00336">getMenuEntries()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00570">getParts()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00285">getPermissions()</a>, and <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00263">getTabs()</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00623">getBoxes()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00174">getConfigPages()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00551">getConstant()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00164">getDataDirectories()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00184">getDependencies()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00639">getDictionaries()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00432">getExports()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00763">getImports()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00230">getLanguageFiles()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00336">getMenuEntries()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00570">getParts()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00285">getPermissions()</a>, and <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00263">getTabs()</a>.</p>
 
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="../../closed.png" alt="+"/> Here is the call graph for this function:</div>
@@ -250,10 +250,13 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get module boxes array. </p>
-<p>Module boxes or widgets could be displayed on Dolibarr Dashboard</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000005">Todo:</a></b></dt><dd>Develop proper widget the one used is a mokup. </dd></dl>
+<p>Module boxes or widgets could be displayed on Dolibarr Dashboard</p><ul>
+<li>file contains the box class file name</li>
+<li>note displays in widget set-up page</li>
+<li>enablebydefaulton to have widget on home page </li>
+</ul>
 
-<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00621">621</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00623">623</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
 <p>Referenced by <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00065">__construct()</a>.</p>
 
@@ -416,7 +419,7 @@ Private Member Functions</h2></td></tr>
 <li>Rootstock</li>
 </ul>
 
-<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00637">637</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00639">639</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
 <p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>.</p>
 
@@ -458,7 +461,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00432">432</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00083">$extrafields</a>, and <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00085">$extrafieldslabels</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00082">$extrafields</a>, and <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00084">$extrafieldslabels</a>.</p>
 
 <p>Referenced by <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00065">__construct()</a>.</p>
 
@@ -502,9 +505,9 @@ Private Member Functions</h2></td></tr>
 <li>Populate values for the example file</li>
 </ul>
 
-<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00761">761</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00763">763</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00083">$extrafields</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00085">$extrafieldslabels</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00256">$resql</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00179">$sql</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00047">$value</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00082">$extrafields</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00084">$extrafieldslabels</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00256">$resql</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00179">$sql</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00047">$value</a>.</p>
 
 <p>Referenced by <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00065">__construct()</a>.</p>
 
@@ -720,9 +723,9 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int 1 if OK, 0 if KO </dd></dl>
 
-<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00714">714</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00716">716</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
-<p>References <a class="el" href="../../d3/d16/plot__notes_8php_source.html#l00052">$result</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00179">$sql</a>, and <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00751">loadTables()</a>.</p>
+<p>References <a class="el" href="../../d3/d16/plot__notes_8php_source.html#l00052">$result</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00179">$sql</a>, and <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00753">loadTables()</a>.</p>
 
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="../../closed.png" alt="+"/> Here is the call graph for this function:</div>
@@ -762,9 +765,9 @@ Private Member Functions</h2></td></tr>
 <p>Create tables, keys and data required by module Files llx_table1.sql, llx_table1.key.sql llx_data.sql with create table, create keys and create data commands must be stored in directory /vignoble/sql/ This function is called by this-&gt;init. </p>
 <dl class="section return"><dt>Returns</dt><dd>int &lt;=0 if KO, &gt;0 if OK </dd></dl>
 
-<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00751">751</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00753">753</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00714">init()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00716">init()</a>.</p>
 
 </div>
 </div>
@@ -792,7 +795,7 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int 1 if OK, 0 if KO </dd></dl>
 
-<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00734">734</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00736">736</a> of file <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html">modVignoble.class.php</a>.</p>
 
 <p>References <a class="el" href="../../da/d01/plot__list_8php_source.html#l00179">$sql</a>.</p>
 
@@ -807,7 +810,7 @@ Private Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d9/d7e/classmod_vignoble.html">modVignoble</a></li>
-    <li class="footer">Generated on Sun Dec 4 2016 18:36:11 for Vignoble by
+    <li class="footer">Generated on Mon Dec 5 2016 18:25:16 for Vignoble by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
