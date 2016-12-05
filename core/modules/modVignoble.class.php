@@ -394,7 +394,7 @@ class modVignoble extends DolibarrModules
 			'mainmenu' => 'vignoble',
 			'leftmenu' => 'plot_create',
 			'fk_menu' => 'fk_mainmenu=vignoble,fk_leftmenu=plots',
-			'titre' => 'New Plot',
+			'titre' => 'NewPlot',
 			'langs' => 'vignoble@vignoble',
 			'position' => 20,
 			'url' => '/vignoble/plot_card.php?action=create',
@@ -622,8 +622,8 @@ class modVignoble extends DolibarrModules
 	{
 		$this->boxes = array(
 			0 => array(
-				'file' => 'plotsummarybox.php@vignoble',
-				'note' => 'This box is experimental',
+				'file' => 'plotslastchanged.php@vignoble',
+				'note' => 'Last5PlotsModified',
 				'enabledbydefaulton' => 'home'
 			)
 		);
