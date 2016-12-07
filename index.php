@@ -26,6 +26,7 @@
 
 /* get dashboard boxes classes */
 dol_include_once('/vignoble/core/boxes/plotslastchanged.php');
+dol_include_once('/vignoble/core/boxes/vignoblebox.php');
 
 /* get language files */
 $langs->load("vignoble@vignoble");
@@ -52,6 +53,9 @@ function displayView()
 	$plotslastchanged = new plotslastchanged($db);
 	$plotslastchanged->loadBox(10);
 	
+	$vignoblebox= new vignoblebox($db);
+	$vignoblebox->loadBox(5);
+	
 	/**
 	 * - Display boxes
 	 */
@@ -68,7 +72,7 @@ function displayView()
 	print '<div class="fichetwothirdright">'; // right column
 	
 	print '<div class="ficheaddleft">';
-	
+	$vignoblebox->showBox($vignoblebox->info_box_head, $vignoblebox->info_box_contents);
 	print '</div>';
 	
 	print '</div>'; // right column end

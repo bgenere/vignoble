@@ -43,6 +43,10 @@ VineYardArea=Vine Yard area
 #
 About = About
 vignobleAbout = About the VineYard Module
+vignobleAuthor = Author : Bruno Généré
+doxyDocumentation = Open developer documentation generated with Doxygen
+GetModuleRelease = Download latest module release on GitHub
+SubmitIssue = Submit an issue - bug fix or enhancement - on GitHub
 
 #
 # Sample page

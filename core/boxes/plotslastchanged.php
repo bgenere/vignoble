@@ -121,8 +121,6 @@ class plotslastchanged extends ModeleBoxes
 		// Use configuration value for max lines count
 		$this->max = $max;
 		
-		// include_once DOL_DOCUMENT_ROOT . "/plotsummarymodule/class/plotsummarymodule.class.php";
-		
 		// Populate the head at runtime
 		$text = $langs->trans("LastPlotsModified", $max);
 		$this->info_box_head = array(

@@ -43,6 +43,10 @@ VineYardArea=Vignoble
 #
 About = À propos
 vignobleAbout = À propos du module Vignoble
+vignobleAuthor = Module crée par Bruno Généré
+doxyDocumentation = Documentation développeur générée avec Doxygen (en Anglais)
+GetModuleRelease = Obtenir la dernière version du module depuis GitHub
+SubmitIssue = Soumettre une demande - correction ou amélioration - sur GitHub
 
 #
 # Page d'exemple
