@@ -110,7 +110,7 @@ class modVignoble extends DolibarrModules
 		/**
 		 * version : module version as x.x.x
 		 */
-		$this->version = '0.1';
+		$this->version = '0.2';
 		/**
 		 * const_name : module constant to save module status enabled/disabled
 		 */
@@ -217,7 +217,7 @@ class modVignoble extends DolibarrModules
 		 */
 		$this->need_dolibarr_version = array(
 			4,
-			9,
+			0,
 			0
 		);
 	}
