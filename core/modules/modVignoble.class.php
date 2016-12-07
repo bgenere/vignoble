@@ -654,7 +654,7 @@ class modVignoble extends DolibarrModules
 			),
 			// Label of tables
 			'tablib' => array(
-				"Cultivation Type",
+				"CultivationType",
 				"Varietal",
 				"Rootstock"
 			),
