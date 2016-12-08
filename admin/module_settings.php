@@ -23,7 +23,6 @@
  * \brief Setup tab for the module.
  * - Includes the set-up of plot document model
  */
-
 @include '../tpl/maindolibarr.inc.php';
 
 // Libraries
@@ -49,105 +48,25 @@ $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scandir', 'alpha');
 $type = 'plot';
 
-/**
- * Process Actions
- * - specimen : define a pdf specimen document
- * - set : activate a document model
- * - del : delete a document model
- * - setdoc : set a default document model
- */
-
-if ($action == 'specimen') {
-	$modele = GETPOST('module', 'alpha');
-	
-	$plot = new Plot($db);
-	$plot->initAsSpecimen();
-	
-	// Search template files
-	$file = '';
-	$classname = '';
-	$filefound = 0;
-	$dirmodels = array_merge(array(
-		'/'
-	), (array) $conf->modules_parts['models']);
-	foreach ($dirmodels as $reldir) {
-		$file = dol_buildpath('/vignoble/core/modules/vignoble/doc/pdf_' . $modele . ".modules.php", 0);
-		if (file_exists($file)) {
-			$filefound = 1;
-			$classname = "pdf_" . $modele;
-			break;
-		}
-	}
-	
-	if ($filefound) {
-		require_once $file;
-		
-		$module = new $classname($db);
-		
-		if ($module->write_file($plot, $langs) > 0) {
-			header("Location: " . DOL_URL_ROOT . "/document.php?modulepart=vignoble&file=SPECIMEN.pdf");
-			return;
-		} else {
-			setEventMessages($module->error, null, 'errors');
-			dol_syslog($module->error, LOG_ERR);
-		}
-	} else {
-		setEventMessages($langs->trans("ErrorModuleNotFound"), null, 'errors');
-		dol_syslog($langs->trans("ErrorModuleNotFound"), LOG_ERR);
-	}
-} 
-
-// Activate a model
-else 
-	if ($action == 'set') {
-		$ret = addDocumentModel($value, $type, $label, $scandir);
-	} 
-
-	else 
-		if ($action == 'del') {
-			$ret = delDocumentModel($value, $type);
-			if ($ret > 0) {
-				if ($conf->global->PLOT_ADDON_PDF == "$value")
-					dolibarr_del_const($db, 'PLOT_ADDON_PDF', $conf->entity);
-			}
-		} 		
-
-		// Set default model
-		else 
-			if ($action == 'setdoc') {
-				if (dolibarr_set_const($db, "PLOT_ADDON_PDF", $value, 'chaine', 0, '', $conf->entity)) {
-					// The constant that was read before the new set
-					// We therefore requires a variable to have a coherent view
-					$conf->global->PLOT_ADDON_PDF = $value;
-				}
-				
-				// On active le modele
-				$ret = delDocumentModel($value, $type);
-				if ($ret > 0) {
-					$ret = addDocumentModel($value, $type, $label, $scandir);
-				}
-			}
 
 /**
- * Display document model view
+ * Prepare and display document model for Plot
+ * 
  */
+$dirmodels = prepareDocumentModel($action);
 
-$dirmodels = array_merge(array(
-	'/'
-), (array) $conf->modules_parts['models']);
-
-printView($langs, $user);
+printDocumentModelView($dirmodels);
 
 /**
- * Generate and print the view
+ * Generate and print the document model view
  */
-function printView($langs, $user)
+function printDocumentModelView($dirmodels)
 {
-	global $db, $conf, $dirmodels;
+	Global $db, $conf, $langs, $user;
 	
 	$form = new Form($db);
-	beginForm('settings','VignobleSetup');
-		
+	beginForm('settings', 'VignobleSetup');
+	
 	/*
 	 * Document templates generators
 	 */
@@ -296,6 +215,100 @@ function printView($langs, $user)
 	endForm();
 }
 
+/**
+ * prepare Document Model Actions
+ */
+function prepareDocumentModel($action)
+{
+	Global $db, $conf, $langs, $user;
+	/**
+	 * Process Actions
+	 * - specimen : define a pdf specimen document
+	 * - set : activate a document model
+	 * - del : delete a document model
+	 * - setdoc : set a default document model
+	 */
+	
+	if ($action == 'specimen') {
+		$modele = GETPOST('module', 'alpha');
+		
+		$plot = new Plot($db);
+		$plot->initAsSpecimen();
+		
+		// Search template files
+		$file = '';
+		$classname = '';
+		$filefound = 0;
+		$dirmodels = array_merge(array(
+			'/'
+		), (array) $conf->modules_parts['models']);
+		foreach ($dirmodels as $reldir) {
+			$file = dol_buildpath('/vignoble/core/modules/vignoble/doc/pdf_' . $modele . ".modules.php", 0);
+			if (file_exists($file)) {
+				$filefound = 1;
+				$classname = "pdf_" . $modele;
+				break;
+			}
+		}
+		
+		if ($filefound) {
+			require_once $file;
+			
+			$module = new $classname($db);
+			
+			if ($module->write_file($plot, $langs) > 0) {
+				header("Location: " . DOL_URL_ROOT . "/document.php?modulepart=vignoble&file=SPECIMEN.pdf");
+				return;
+			} else {
+				setEventMessages($module->error, null, 'errors');
+				dol_syslog($module->error, LOG_ERR);
+			}
+		} else {
+			setEventMessages($langs->trans("ErrorModuleNotFound"), null, 'errors');
+			dol_syslog($langs->trans("ErrorModuleNotFound"), LOG_ERR);
+		}
+	} 	
+
+	// Activate a model
+	else 
+		if ($action == 'set') {
+			$ret = addDocumentModel($value, $type, $label, $scandir);
+		} 
+
+		else 
+			if ($action == 'del') {
+				$ret = delDocumentModel($value, $type);
+				if ($ret > 0) {
+					if ($conf->global->PLOT_ADDON_PDF == "$value")
+						dolibarr_del_const($db, 'PLOT_ADDON_PDF', $conf->entity);
+				}
+			} 			
+
+			// Set default model
+			else 
+				if ($action == 'setdoc') {
+					if (dolibarr_set_const($db, "PLOT_ADDON_PDF", $value, 'chaine', 0, '', $conf->entity)) {
+						// The constant that was read before the new set
+						// We therefore requires a variable to have a coherent view
+						$conf->global->PLOT_ADDON_PDF = $value;
+					}
+					
+					// On active le modele
+					$ret = delDocumentModel($value, $type);
+					if ($ret > 0) {
+						$ret = addDocumentModel($value, $type, $label, $scandir);
+					}
+				}
+	
+	/**
+	 * Display document model view
+	 */
+	
+	$dirmodels = array_merge(array(
+		'/'
+	), (array) $conf->modules_parts['models']);
+	return $dirmodels ;
+}
 
 
 
