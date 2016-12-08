@@ -438,7 +438,7 @@ class modVignoble extends DolibarrModules
 			'perms' => '1'
 		);
 		/**
-		 *  - Define cultivation left menu entry New task
+		 *  - Define cultivation left menu entry new cultivation task
 		 */
 		$this->menu[] = array(
 			'type' => 'left',
@@ -455,7 +455,7 @@ class modVignoble extends DolibarrModules
 			'perms' => '1'
 		);
 		/**
-		 * Define plot left menu entry Plot List
+		 * Define plot left menu entry cultivation tasks List
 		 */
 		$this->menu[] = array(
 			'type' => 'left',
@@ -676,8 +676,13 @@ class modVignoble extends DolibarrModules
 		$this->boxes = array(
 			0 => array(
 				'file' => 'plotslastchanged.php@vignoble',
-				'note' => '',
+				'note' => '5 last plots changed',
 				'enabledbydefaulton' => 'home'
+			),
+			0 => array(
+				'file' => 'vignoblebox.php@vignoble',
+				'note' => 'Links to module informations',
+				'enabledbydefaulton' => ''
 			)
 		);
 	}
