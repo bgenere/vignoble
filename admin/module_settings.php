@@ -53,7 +53,7 @@ $type = 'plot';
  * Prepare and display document model for Plot
  * 
  */
-$dirmodels = prepareDocumentModel($action);
+$dirmodels = prepareDocumentModel($action,$value,$label,$type,$scandir);
 
 printDocumentModelView($dirmodels);
 
@@ -218,7 +218,7 @@ function printDocumentModelView($dirmodels)
 /**
  * prepare Document Model Actions
  */
-function prepareDocumentModel($action)
+function prepareDocumentModel($action,$value,$label,$type,$scandir)
 {
 	Global $db, $conf, $langs, $user;
 	/**
