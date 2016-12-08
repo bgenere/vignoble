@@ -27,6 +27,7 @@
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
+require_once DOL_DOCUMENT_ROOT . "/projet/class/project.class.php";
 require_once '../lib/admin.html.lib.php';
 require_once '../class/plot.class.php';
 
@@ -35,6 +36,7 @@ $langs->load("admin");
 $langs->load("errors");
 $langs->load("other");
 $langs->load("vignoble@vignoble");
+$langs->load("projet");
 
 // Access control admin user only
 if (! $user->admin) {
@@ -46,16 +48,81 @@ $action = GETPOST('action', 'alpha');
 $value = GETPOST('value', 'alpha');
 $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scandir', 'alpha');
+
 $type = 'plot';
 
+if ($action == 'setModuleParam') {
+	$db->begin();
+	$res = 0;
+	$cultivationproject = GETPOST('cultivationproject', 'int');
+	if ($cultivationproject) {
+		$res = dolibarr_set_const($db, "VIGNOBLE_CULTIVATIONPROJECT", $cultivationproject, 'int', 0, '', $conf->entity);
+		if (! $res > 0)
+			$error ++;
+	}
+	if (! $error) {
+		$db->commit();
+	} else {
+		$db->rollback();
+	}
+}
+if ($action) {
+	if (! $res > 0)
+		$error ++;
+	
+	if (! $error) {
+		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+	} else {
+		setEventMessages($langs->trans("Error"), null, 'errors');
+	}
+}
+
+/**
+ * Display parameters
+ */
+$form = new Form($db);
+beginForm('settings', 'VignobleSetup');
+
+// print "<br>";
+print load_fiche_titre($langs->trans("Options"), '', '');
+
+print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
+print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+print '<input type="hidden" name="action" value="setModuleParam">';
+
+print '<table class="noborder" width="100%">';
+print '<tr class="liste_titre">';
+print '<td>' . $langs->trans("Parameters") . '</td>' . "\n";
+print '<td align="right" width="60">' . $langs->trans("Value") . '</td>' . "\n";
+print '<td width="80">&nbsp;</td></tr>' . "\n";
+
+$rowspan = 1;
+if (! empty($conf->global->VIGNOBLE_CULTIVATIONPROJECT)) {
+	$current_project = dolibarr_get_const($db, "VIGNOBLE_CULTIVATIONPROJECT", $conf->entity);
+}
+$project = new Project($db);
+
+$select_projects = $project->liste_array($conf->entity);
+
+print '<tr>';
+print '<td>' . $langs->trans("CultivationProject") . '</td>';
+print '<td width="60" align="right">';
+
+print $form->selectarray("cultivationproject", $select_projects, $current_project, 1);
+
+print '</td><td align="right" rowspan="' . $rowspan . '" class="nohover">';
+print '<input type="submit" class="button" value="' . $langs->trans("Modify") . '">';
+print '</td>';
+print '</tr>';
 
 /**
  * Prepare and display document model for Plot
- * 
  */
-$dirmodels = prepareDocumentModel($action,$value,$label,$type,$scandir);
+$dirmodels = prepareDocumentModel($action, $value, $label, $type, $scandir);
 
 printDocumentModelView($dirmodels);
+
+endForm();
 
 /**
  * Generate and print the document model view
@@ -63,9 +130,6 @@ printDocumentModelView($dirmodels);
 function printDocumentModelView($dirmodels)
 {
 	Global $db, $conf, $langs, $user;
-	
-	$form = new Form($db);
-	beginForm('settings', 'VignobleSetup');
 	
 	/*
 	 * Document templates generators
@@ -211,14 +275,12 @@ function printDocumentModelView($dirmodels)
 	
 	print '</table>';
 	print "<br>";
-	
-	endForm();
 }
 
 /**
  * prepare Document Model Actions
  */
-function prepareDocumentModel($action,$value,$label,$type,$scandir)
+function prepareDocumentModel($action, $value, $label, $type, $scandir)
 {
 	Global $db, $conf, $langs, $user;
 	/**
@@ -307,7 +369,7 @@ function prepareDocumentModel($action,$value,$label,$type,$scandir)
 	$dirmodels = array_merge(array(
 		'/'
 	), (array) $conf->modules_parts['models']);
-	return $dirmodels ;
+	return $dirmodels;
 }
 
 
