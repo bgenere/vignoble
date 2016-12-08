@@ -72,6 +72,12 @@ Fieldlabel = Label
 Fielddescription = Description
 
 #
+# Cultivation Task
+#
+Cultivation = Cultivation
+NewTask = New task
+
+#
 # Dictionnaires
 #
 Varietal = Varietal

@@ -71,7 +71,11 @@ Fieldref = Référence
 Fieldlabel = Libellé
 Fielddescription = Description
 
-
+#
+# Cultivation Task
+#
+Cultivation = Culture
+NewTask = Nouvelle tâche
 
 #
 # Dictionnaires
