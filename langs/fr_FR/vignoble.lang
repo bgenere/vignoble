@@ -76,6 +76,7 @@ Fielddescription = Description
 #
 Cultivation = Culture
 NewTask = Nouvelle tâche
+CultivationProject = Projet de suivi des cultures
 
 #
 # Dictionnaires

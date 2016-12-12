@@ -50,29 +50,31 @@ $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scandir', 'alpha');
 
 $type = 'plot';
-
-if ($action == 'setModuleParam') {
+/**
+ * Process actions
+ */
+if ($action) {
 	$db->begin();
 	$res = 0;
-	$cultivationproject = GETPOST('cultivationproject', 'int');
-	if ($cultivationproject) {
-		$res = dolibarr_set_const($db, "VIGNOBLE_CULTIVATIONPROJECT", $cultivationproject, 'int', 0, '', $conf->entity);
-		if (! $res > 0)
-			$error ++;
+	if ($action == 'setModuleParam') {
+		$cultivationproject = GETPOST('cultivationproject', 'int');
+		if ($cultivationproject) {
+			$res = dolibarr_set_const($db, "VIGNOBLE_CULTIVATIONPROJECT", $cultivationproject, 'int', 0, '', $conf->entity);
+			if (! $res > 0)
+				$error ++;
+		}
 	}
-	if (! $error) {
-		$db->commit();
-	} else {
-		$db->rollback();
-	}
-}
-if ($action) {
+	
+	//$dirmodels = prepareDocumentModel($action, $value, $label, $type, $scandir);
+	
 	if (! $res > 0)
 		$error ++;
 	
 	if (! $error) {
+		$db->commit();
 		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
 	} else {
+		$db->rollback();
 		setEventMessages($langs->trans("Error"), null, 'errors');
 	}
 }
@@ -118,9 +120,7 @@ print '</tr>';
 /**
  * Prepare and display document model for Plot
  */
-$dirmodels = prepareDocumentModel($action, $value, $label, $type, $scandir);
-
-printDocumentModelView($dirmodels);
+//printDocumentModelView($dirmodels);
 
 endForm();
 
