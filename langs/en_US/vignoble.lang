@@ -77,6 +77,7 @@ Fielddescription = Description
 Cultivation = Cultivation
 NewTask = New task
 CultivationProject = Current cultivation project
+CultivationProjectNotDefined = Please define the current cultivation project in the module configuration.
 
 #
 # Dictionnaires

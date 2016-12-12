@@ -77,6 +77,7 @@ Fielddescription = Description
 Cultivation = Culture
 NewTask = Nouvelle tâche
 CultivationProject = Projet de suivi des cultures
+CultivationProjectNotDefined = Veuillez définir le projet de suivi des cultures dans la configuration du module.
 
 #
 # Dictionnaires

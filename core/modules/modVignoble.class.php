@@ -266,7 +266,15 @@ class modVignoble extends DolibarrModules
 			/**
 			 * add plot tab to resource module
 			 */
-			'resource:+plot:Plot:vignoble@vignoble:1:/vignoble/admin/admin_vignoble.php?id=__ID__'
+			'resource:+plot:Plot:vignoble@vignoble:1:/vignoble/admin/admin_vignoble.php?id=__ID__',
+			/**
+			 * remove project tabs
+			 */
+			'project:-element:NU:1',
+			'project:-agenda:NU:1',
+			'project:-tasks:NU:1',
+			'project:+cultivationtasks:Tasks:project@projet:1:/vignoble/cultivationtasks.php',
+			
 		);
 		// String Examples :
 		// To add a tab identified by code tabname
@@ -431,7 +439,7 @@ class modVignoble extends DolibarrModules
 			'titre' => 'Cultivation',
 			'langs' => 'vignoble@vignoble',
 			'position' => 2,
-			'url' => '/vignoble/index.php',
+			'url' => '/vignoble/cultivationtasks.php',
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
@@ -448,7 +456,7 @@ class modVignoble extends DolibarrModules
 			'titre' => 'NewTask',
 			'langs' => 'vignoble@vignoble',
 			'position' => 20,
-			'url' => '/vignoble/index.php?action=create',
+			'url' => '/vignoble/cultivationtasks.php?action=create',
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
@@ -457,20 +465,20 @@ class modVignoble extends DolibarrModules
 		/**
 		 * Define plot left menu entry cultivation tasks List
 		 */
-		$this->menu[] = array(
-			'type' => 'left',
-			'mainmenu' => 'vignoble',
-			'leftmenu' => 'cultivationTask_list',
-			'fk_menu' => 'fk_mainmenu=vignoble,fk_leftmenu=cultivation',
-			'titre' => 'List',
-			'langs' => 'vignoble@vignoble',
-			'url' => '/vignoble/index.php',
-			'target' => '',
-			'position' => 10,
-			'user' => 2,
-			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '1'
-		);
+// 		$this->menu[] = array(
+// 			'type' => 'left',
+// 			'mainmenu' => 'vignoble',
+// 			'leftmenu' => 'cultivationTask_list',
+// 			'fk_menu' => 'fk_mainmenu=vignoble,fk_leftmenu=cultivation',
+// 			'titre' => 'List',
+// 			'langs' => 'vignoble@vignoble',
+// 			'url' => '/vignoble/cultivationtasks.php',
+// 			'target' => '',
+// 			'position' => 10,
+// 			'user' => 2,
+// 			'enabled' => '$conf->vignoble->enabled',
+// 			'perms' => '1'
+// 		);
 	}
 
 	/**
