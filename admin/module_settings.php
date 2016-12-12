@@ -104,7 +104,7 @@ if (! empty($conf->global->VIGNOBLE_CULTIVATIONPROJECT)) {
 }
 $project = new Project($db);
 
-$select_projects = $project->liste_array($conf->entity);
+$select_projects = $project->liste_array();
 
 print '<tr>';
 print '<td>' . $langs->trans("CultivationProject") . '</td>';
