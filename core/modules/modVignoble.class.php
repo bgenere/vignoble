@@ -268,13 +268,17 @@ class modVignoble extends DolibarrModules
 			 */
 			'resource:+plot:Plot:vignoble@vignoble:1:/vignoble/admin/admin_vignoble.php?id=__ID__',
 			/**
-			 * remove project tabs
+			 * remove project tabs for cultivation project
 			 */
-			'project:-element:NU:1',
-			'project:-agenda:NU:1',
-			'project:-tasks:NU:1',
-			'project:+cultivationtasks:Tasks:project@projet:1:/vignoble/cultivationtasks.php',
-			
+			'project:-project:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'project:-contact:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'project:-element:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'project:-notes:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'project:-document:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'project:-agenda:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'project:-tasks:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'project:+cultivationtasks:Tasks:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtasks.php',
+			'project:-gantt:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
 		);
 		// String Examples :
 		// To add a tab identified by code tabname

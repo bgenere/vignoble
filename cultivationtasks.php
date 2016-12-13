@@ -40,15 +40,18 @@ $langs->load("vignoble@vignoble");
 
 /**
  * Initialize project Id with default cultivation project
- * 
+ * and setup boolean for tab management
  */
 if (! empty($conf->global->VIGNOBLE_CULTIVATIONPROJECT)) {
 	$id = dolibarr_get_const($db, "VIGNOBLE_CULTIVATIONPROJECT", $conf->entity);
+	$key= "VIGNOBLE_ISCULTIVATIONPROJECT";
+	$conf->global->$key=true;
 }
 if ($id<1){
 	$id = 0;
 	setEventMessages('CultivationProjectNotDefined',null,'warnings');
 }
+
 /**
  * Get page variables
  * 
@@ -237,7 +240,7 @@ if ($id > 0 || ! empty($ref))
 
     // prepare project card
     // 
-    $linkback = '<a href="'.DOL_URL_ROOT.'/projet/list.php">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="'.DOL_URL_ROOT.'/projet/card.php?mainmenu=project&id='.$id.'">'.$langs->trans("OpenFullProject").'</a>';
     
     $morehtmlref='<div class="refidno">';
     // Title
@@ -255,8 +258,8 @@ if ($id > 0 || ! empty($ref))
         $objectsListId = $object->getProjectsAuthorizedForUser($user,0,0);
         $object->next_prev_filter=" rowid in (".(count($objectsListId)?join(',',array_keys($objectsListId)):'0').")";
     }
-    
-    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    // banner without navigation on list
+    dol_banner_tab($object, 'ref', $linkback, 0, 'ref', 'ref', $morehtmlref);
 
     print '<div class="fichecenter">';
     print '<div class="fichehalfleft">';
@@ -322,6 +325,9 @@ if ($id > 0 || ! empty($ref))
 
 if ($action == 'create' && $user->rights->projet->creer && (empty($object->thirdparty->id) || $userWrite > 0))
 {
+	/**
+	 * Display empty Task card
+	 */
 	if ($id > 0 || ! empty($ref)) print '<br>';
 
 	print load_fiche_titre($langs->trans("NewTask"), '', 'title_project');
@@ -353,21 +359,21 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 	print ($_POST["ref"]?$_POST["ref"]:$defaultref);
 	print '<input type="hidden" name="taskref" value="'.($_POST["ref"]?$_POST["ref"]:$defaultref).'">';
 	print '</td></tr>';
-
+	// task label
 	print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td>';
 	print '<input type="text" name="label" class="flat minwidth300" value="'.$label.'">';
 	print '</td></tr>';
 
-	// List of projects
-	print '<tr><td class="fieldrequired">'.$langs->trans("ChildOfTask").'</td><td>';
+	// List of projects - not needed we are on the cultivation project
+	print '<tr style="display: none;"><td>'.$langs->trans("ChildOfTask").'</td><td>';
 	print $formother->selectProjectTasks(GETPOST('task_parent'),$projectid?$projectid:$object->id, 'task_parent', 0, 0, 1, 1);
 	print '</td></tr>';
-
+	// User responsible by default the current user Id
 	print '<tr><td>'.$langs->trans("AffectedTo").'</td><td>';
 	$contactsofproject=(! empty($object->id)?$object->getListContactId('internal'):'');
 	if (count($contactsofproject))
 	{
-		print $form->select_dolusers($user->id, 'userid', 0, '', 0, '', $contactsofproject, 0, 0, 0, '', 0, '', 'maxwidth300');
+		print $form->select_dolusers($user->id, 'userid', 0, '', 0, '', $contactsofproject, '', 0, 0, '', 0, '', 'maxwidth300');
 	}
 	else
 	{
@@ -424,15 +430,12 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 }
 else if ($id > 0 || ! empty($ref))
 {
-	/*
-	 * Fiche projet en mode visu
+	/** 
+	 * Display cultivation tasks
 	 */
 
-	/*
-	 * Actions
-	 */
+	// add new task button
 	print '<div class="tabsAction">';
-
 	if ($user->rights->projet->all->creer || $user->rights->projet->creer)
 	{
 		if ($object->public || $userWrite > 0)
@@ -448,13 +451,13 @@ else if ($id > 0 || ! empty($ref))
 	{
 		print '<a class="butActionRefused" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans('AddTask').'</a>';
 	}
-
 	print '</div>';
 
-
+	// Task list
 	$title=$langs->trans("ListOfTasks");
+	// TODO change link when page ready
 	$linktotasks='<a href="'.DOL_URL_ROOT.'/projet/tasks/time.php?projectid='.$object->id.'&withproject=1">'.$langs->trans("GoToListOfTimeConsumed").'</a>';
-	//print_barre_liste($title, 0, $_SERVER["PHP_SELF"], '', $sortfield, $sortorder, $linktotasks, $num, $totalnboflines, 'title_generic.png', 0, '', '', 0, 1);
+	
 	print load_fiche_titre($title,$linktotasks,'title_generic.png');
 	
 	// Get list of tasks in tasksarray and taskarrayfiltered
@@ -469,10 +472,9 @@ else if ($id > 0 || ! empty($ref))
 	{
 		include DOL_DOCUMENT_ROOT.'/core/tpl/ajaxrow.tpl.php';
 	}
-
+	// Print task list
 	print '<table id="tablelines" class="noborder" width="100%">';
 	print '<tr class="liste_titre nodrag nodrop">';
-	// print '<td>'.$langs->trans("Project").'</td>';
 	print '<td width="100">'.$langs->trans("RefTask").'</td>';
 	print '<td>'.$langs->trans("LabelTask").'</td>';
 	print '<td align="center">'.$langs->trans("DateStart").'</td>';
@@ -500,7 +502,7 @@ else if ($id > 0 || ! empty($ref))
 	
 	    // Show all lines in taskarray (recursive function to go down on tree)
 		$j=0; $level=0;
-		$nboftaskshown=projectLinesa($j, 0, $tasksarray, $level, true, 0, $tasksrole, $object->id, 1, $object->id);
+		$nboftaskshown=showtasks($j, 0, $tasksarray, $level, true, 0, $tasksrole, $object->id, 1, $object->id);
 	}
 	else
 	{
@@ -540,3 +542,318 @@ else {
 llxFooter();
 
 $db->close();
+
+/**
+ * Show task lines with a particular parent
+ *
+ * @param	string	   	$inc				Line number (start to 0, then increased by recursive call)
+ * @param   string		$parent				Id of parent project to show (0 to show all)
+ * @param   Task[]		$lines				Array of lines
+ * @param   int			$level				Level (start to 0, then increased/decrease by recursive call), or -1 to show all level in order of $lines without the recursive groupment feature.
+ * @param 	string		$var				Color
+ * @param 	int			$showproject		Show project columns
+ * @param	int			$taskrole			Array of roles of user for each tasks
+ * @param	int			$projectsListId		List of id of project allowed to user (string separated with comma)
+ * @param	int			$addordertick		Add a tick to move task
+ * @param   int         $projectidfortotallink     0 or Id of project to use on total line (link to see all time consumed for project)
+ * @return	void
+ */
+function showtasks(&$inc, $parent, &$lines, &$level, $var, $showproject, &$taskrole, $projectsListId='', $addordertick=0, $projectidfortotallink=0)
+{
+	global $user, $bc, $langs;
+	global $projectstatic, $taskstatic;
+
+	$lastprojectid=0;
+
+	$projectsArrayId=explode(',',$projectsListId);
+
+	$numlines=count($lines);
+
+	// We declare counter as global because we want to edit them into recursive call
+	global $total_projectlinesa_spent,$total_projectlinesa_planned,$total_projectlinesa_spent_if_planned;
+	if ($level == 0)
+	{
+		$total_projectlinesa_spent=0;
+		$total_projectlinesa_planned=0;
+		$total_projectlinesa_spent_if_planned=0;
+	}
+
+	for ($i = 0 ; $i < $numlines ; $i++)
+	{
+		if ($parent == 0 && $level >= 0) $level = 0;              // if $level = -1, we dont' use sublevel recursion, we show all lines
+
+		// Process line
+		// print "i:".$i."-".$lines[$i]->fk_project.'<br>';
+
+		if ($lines[$i]->fk_parent == $parent || $level < 0)       // if $level = -1, we dont' use sublevel recursion, we show all lines
+		{
+			// Show task line.
+			$showline=1;
+			$showlineingray=0;
+
+			// If there is filters to use
+			if (is_array($taskrole))
+			{
+				// If task not legitimate to show, search if a legitimate task exists later in tree
+				if (! isset($taskrole[$lines[$i]->id]) && $lines[$i]->id != $lines[$i]->fk_parent)
+				{
+					// So search if task has a subtask legitimate to show
+					$foundtaskforuserdeeper=0;
+					searchTaskInChild($foundtaskforuserdeeper,$lines[$i]->id,$lines,$taskrole);
+					//print '$foundtaskforuserpeeper='.$foundtaskforuserdeeper.'<br>';
+					if ($foundtaskforuserdeeper > 0)
+					{
+						$showlineingray=1;		// We will show line but in gray
+					}
+					else
+					{
+						$showline=0;			// No reason to show line
+					}
+				}
+			}
+			else
+			{
+				// Caller did not ask to filter on tasks of a specific user (this probably means he want also tasks of all users, into public project
+				// or into all other projects if user has permission to).
+				if (empty($user->rights->projet->all->lire))
+				{
+					// User is not allowed on this project and project is not public, so we hide line
+					if (! in_array($lines[$i]->fk_project, $projectsArrayId))
+					{
+						// Note that having a user assigned to a task into a project user has no permission on, should not be possible
+						// because assignement on task can be done only on contact of project.
+						// If assignement was done and after, was removed from contact of project, then we can hide the line.
+						$showline=0;
+					}
+				}
+			}
+
+			if ($showline)
+			{
+				// Break on a new project
+				if ($parent == 0 && $lines[$i]->fk_project != $lastprojectid)
+				{
+					$var = !$var;
+					$lastprojectid=$lines[$i]->fk_project;
+				}
+
+				print '<tr '.$bc[$var].' id="row-'.$lines[$i]->id.'">'."\n";
+
+				if ($showproject)
+				{
+					// Project ref
+					print "<td>";
+					//if ($showlineingray) print '<i>';
+					$projectstatic->id=$lines[$i]->fk_project;
+					$projectstatic->ref=$lines[$i]->projectref;
+					$projectstatic->public=$lines[$i]->public;
+					$projectstatic->title=$lines[$i]->projectlabel;
+					if ($lines[$i]->public || in_array($lines[$i]->fk_project,$projectsArrayId) || ! empty($user->rights->projet->all->lire)) print $projectstatic->getNomUrl(1);
+					else print $projectstatic->getNomUrl(1,'nolink');
+					//if ($showlineingray) print '</i>';
+					print "</td>";
+
+					// Project status
+					print '<td>';
+					$projectstatic->statut=$lines[$i]->projectstatus;
+					print $projectstatic->getLibStatut(2);
+					print "</td>";
+				}
+
+				// Ref of task
+				print '<td>';
+				if ($showlineingray)
+				{
+					print '<i>'.img_object('','projecttask').' '.$lines[$i]->ref.'</i>';
+				}
+				else
+				{
+					$taskstatic->id=$lines[$i]->id;
+					$taskstatic->ref=$lines[$i]->ref;
+					$taskstatic->label=($taskrole[$lines[$i]->id]?$langs->trans("YourRole").': '.$taskrole[$lines[$i]->id]:'');
+					print $taskstatic->getNomUrl(1,'withproject');
+				}
+				print '</td>';
+
+				// Title of task
+				print "<td>";
+				if ($showlineingray) print '<i>';
+				//else print '<a href="'.DOL_URL_ROOT.'/projet/tasks/task.php?id='.$lines[$i]->id.'&withproject=1">';
+				for ($k = 0 ; $k < $level ; $k++)
+				{
+					print "&nbsp; &nbsp; &nbsp;";
+				}
+				print $lines[$i]->label;
+				if ($showlineingray) print '</i>';
+				//else print '</a>';
+				print "</td>\n";
+
+				// Date start
+				print '<td align="center">';
+				print dol_print_date($lines[$i]->date_start,'dayhour');
+				print '</td>';
+
+				// Date end
+				print '<td align="center">';
+				$taskstatic->projectstatus = $lines[$i]->projectstatus;
+	            $taskstatic->progress = $lines[$i]->progress;
+	            $taskstatic->fk_statut = $lines[$i]->status;
+	            $taskstatic->datee = $lines[$i]->date_end;
+	            print dol_print_date($lines[$i]->date_end,'dayhour');
+	            if ($taskstatic->hasDelay()) print img_warning($langs->trans("Late"));
+				print '</td>';
+
+				$plannedworkloadoutputformat='allhourmin';
+				$timespentoutputformat='allhourmin';
+				if (! empty($conf->global->PROJECT_PLANNED_WORKLOAD_FORMAT)) $plannedworkloadoutputformat=$conf->global->PROJECT_PLANNED_WORKLOAD_FORMAT;
+				if (! empty($conf->global->PROJECT_TIMES_SPENT_FORMAT)) $timespentoutputformat=$conf->global->PROJECT_TIME_SPENT_FORMAT;
+
+				// Planned Workload (in working hours)
+				print '<td align="right">';
+				$fullhour=convertSecondToTime($lines[$i]->planned_workload,$plannedworkloadoutputformat);
+				$workingdelay=convertSecondToTime($lines[$i]->planned_workload,'all',86400,7);	// TODO Replace 86400 and 7 to take account working hours per day and working day per weeks
+				if ($lines[$i]->planned_workload != '')
+				{
+					print $fullhour;
+					// TODO Add delay taking account of working hours per day and working day per week
+					//if ($workingdelay != $fullhour) print '<br>('.$workingdelay.')';
+				}
+				//else print '--:--';
+				print '</td>';
+
+				// Time spent
+				print '<td align="right">';
+				if ($showlineingray) print '<i>';
+				else print '<a href="'.DOL_URL_ROOT.'/projet/tasks/time.php?id='.$lines[$i]->id.($showproject?'':'&withproject=1').'">';
+				if ($lines[$i]->duration) print convertSecondToTime($lines[$i]->duration,$timespentoutputformat);
+				else print '--:--';
+				if ($showlineingray) print '</i>';
+				else print '</a>';
+				print '</td>';
+
+				// Progress calculated (Note: ->duration is time spent)
+				print '<td align="right">';
+				if ($lines[$i]->planned_workload || $lines[$i]->duration)
+				{
+					if ($lines[$i]->planned_workload) print round(100 * $lines[$i]->duration / $lines[$i]->planned_workload,2).' %';
+					else print $langs->trans('WorkloadNotDefined');
+				}
+				print '</td>';
+
+				// Progress declared
+				print '<td align="right">';
+				if ($lines[$i]->progress != '')
+				{
+					print $lines[$i]->progress.' %';
+				}
+				print '</td>';
+
+				// Tick to drag and drop
+				if ($addordertick)
+				{
+					print '<td align="center" class="tdlineupdown hideonsmartphone">&nbsp;</td>';
+				}
+
+				print "</tr>\n";
+
+				if (! $showlineingray) $inc++;
+
+				if ($level >= 0)    // Call sublevels
+				{
+    				$level++;
+    				if ($lines[$i]->id) showtasks($inc, $lines[$i]->id, $lines, $level, $var, $showproject, $taskrole, $projectsListId, $addordertick);
+    				$level--;
+				}
+				
+				$total_projectlinesa_spent += $lines[$i]->duration;
+				$total_projectlinesa_planned += $lines[$i]->planned_workload;
+				if ($lines[$i]->planned_workload) $total_projectlinesa_spent_if_planned += $lines[$i]->duration;
+			}
+		}
+		else
+		{
+			//$level--;
+		}
+	}
+
+	if (($total_projectlinesa_planned > 0 || $total_projectlinesa_spent > 0) && $level <= 0)
+	{
+		print '<tr class="liste_total nodrag nodrop">';
+		print '<td class="liste_total">'.$langs->trans("Total").'</td>';
+		if ($showproject) print '<td></td><td></td>';
+		print '<td></td>';
+		print '<td></td>';
+		print '<td></td>';
+		print '<td align="right" class="nowrap liste_total">';
+		print convertSecondToTime($total_projectlinesa_planned, 'allhourmin');
+		print '</td>';
+		print '<td align="right" class="nowrap liste_total">';
+		if ($projectidfortotallink > 0) print '<a href="'.DOL_URL_ROOT.'/projet/tasks/time.php?projectid='.$projectidfortotallink.($showproject?'':'&withproject=1').'">';
+		print convertSecondToTime($total_projectlinesa_spent, 'allhourmin');
+		if ($projectidfortotallink > 0) print '</a>';
+		print '</td>';
+		print '<td align="right" class="nowrap liste_total">';
+		if ($total_projectlinesa_planned) print round(100 * $total_projectlinesa_spent / $total_projectlinesa_planned,2).' %';
+		print '</td>';
+		print '<td></td>';
+		if ($addordertick) print '<td class="hideonsmartphone"></td>';
+		print '</tr>';
+	}
+
+	return $inc;
+}
+
+//TODO replace $this by $task and add parameter
+/**
+     *	Return clicable name (with picto eventually)
+     *
+     *	@param	int		$withpicto		0=No picto, 1=Include picto into link, 2=Only picto
+     *	@param	string	$option			'withproject' or ''
+     *  @param	string	$mode			Mode 'task', 'time', 'contact', 'note', document' define page to link to.
+     * 	@param	int		$addlabel		0=Default, 1=Add label into string, >1=Add first chars into string
+     *  @param	string	$sep			Separator between ref and label if option addlabel is set
+     *  @param	int   	$notooltip		1=Disable tooltip
+     *	@return	string					Chaine avec URL
+     */
+    function getTaskUrl($withpicto=0,$option='',$mode='cultivationtask', $addlabel=0, $sep=' - ', $notooltip=0)
+    {
+        global $conf, $langs, $user;
+
+        if (! empty($conf->dol_no_mouse_hover)) $notooltip=1;   // Force disable tooltips
+        
+        $result='';
+        $label = '<u>' . $langs->trans("ShowTask") . '</u>';
+        if (! empty($this->ref))
+            $label .= '<br><b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
+        if (! empty($this->label))
+            $label .= '<br><b>' . $langs->trans('LabelTask') . ':</b> ' . $this->label;
+        if ($this->date_start || $this->date_end)
+        {
+        	$label .= "<br>".get_date_range($this->date_start,$this->date_end,'',$langs,0);
+        }
+        
+        $url = DOL_URL_ROOT.'/custom/vignoble/'.$mode.'.php?id='.$this->id.($option=='withproject'?'&withproject=1':'');
+
+        $linkclose = '';
+        if (empty($notooltip))
+        {
+            if (! empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
+            {
+                $label=$langs->trans("ShowTask");
+                $linkclose.=' alt="'.dol_escape_htmltag($label, 1).'"';
+            }
+            $linkclose.= ' title="'.dol_escape_htmltag($label, 1).'"';
+            $linkclose.=' class="classfortooltip"';
+        }
+        
+        $linkstart = '<a href="'.$url.'"';
+        $linkstart.=$linkclose.'>';
+        $linkend='</a>';
+        
+        $picto='projecttask';
+
+        if ($withpicto) $result.=($linkstart.img_object(($notooltip?'':$label), $picto, ($notooltip?'':'class="classfortooltip"'), 0, 0, $notooltip?0:1).$linkend);
+        if ($withpicto && $withpicto != 2) $result.=' ';
+        if ($withpicto != 2) $result.=$linkstart.$this->ref.$linkend . (($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
+        return $result;
+    }
