@@ -20,9 +20,13 @@
 /**
  * List of module components group for doxygen documentation
  *
- * \defgroup plot Plot Management
- *
+ * \defgroup plot Plot management
+ * 
  * Components providing vineyard plots management
+ * 
+ * \defgroup cultivation Cultivation management
+ * 
+ * Pages to manage the cultivation project and tasks
  *
  * \defgroup dashboard Dashboard
  *
@@ -279,6 +283,12 @@ class modVignoble extends DolibarrModules
 			'project:-tasks:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
 			'project:+cultivationtasks:Tasks:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtasks.php',
 			'project:-gantt:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'task:-task_task:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'task:-task_contact:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'task:-task_time:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'task:-task_notes:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'task:-task_document:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
+			'task:+cultivationtask:Task:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtask.php?id=__ID__&withproject=1',
 		);
 		// String Examples :
 		// To add a tab identified by code tabname
@@ -379,7 +389,7 @@ class modVignoble extends DolibarrModules
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '1'
+			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
 		 * - Define plot left menu
@@ -396,7 +406,7 @@ class modVignoble extends DolibarrModules
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '1'
+			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
 		 * 	- Define plot left menu entry New plot
@@ -413,7 +423,7 @@ class modVignoble extends DolibarrModules
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '1'
+			'perms' => '$user->rights->vignoble->plot->create'
 		);
 		/**
 		 * 	- Define plot left menu entry Plot List
@@ -430,7 +440,7 @@ class modVignoble extends DolibarrModules
 			'position' => 10,
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '1'
+			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
 		 * - Define cultivation left menu
@@ -447,7 +457,7 @@ class modVignoble extends DolibarrModules
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '1'
+			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
 		 *  - Define cultivation left menu entry new cultivation task
@@ -464,7 +474,7 @@ class modVignoble extends DolibarrModules
 			'target' => '',
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '1'
+			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
 		 * Define plot left menu entry cultivation tasks List
