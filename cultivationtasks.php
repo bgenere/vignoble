@@ -146,6 +146,7 @@ if ($action == 'createtask' && $user->rights->projet->creer) {
 			
 			if ($taskid > 0) {
 				$result = $task->add_contact($_POST["userid"], 'TASKEXECUTIVE', 'internal');
+				$backtopage='cultivationtask.php?id='.$taskid.'&withproject=1';
 			} else {
 				setEventMessages($task->error, $task->errors, 'errors');
 			}

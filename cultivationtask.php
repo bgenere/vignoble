@@ -134,7 +134,7 @@ if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->s
 		$projectstatic->fetch_thirdparty();
 		
 		if ($object->delete($user) > 0) {
-			header('Location: ' . DOL_URL_ROOT . '/projet/tasks.php?id=' . $projectstatic->id . ($withproject ? '&withproject=1' : ''));
+			header('Location: cultivationtasks.php?id=' . $projectstatic->id . ($withproject ? '&withproject=1' : ''));
 			exit();
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -143,7 +143,7 @@ if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->s
 	}
 }
 
-// Retreive First Task ID of Project if withprojet is on to allow project prev next to work
+// Retrive First Task ID of Project if withprojet is on to allow project prev next to work
 if (! empty($project_ref) && ! empty($withproject)) {
 	if ($projectstatic->fetch('', $project_ref) > 0) {
 		$tasksarray = $object->getTasksArray(0, 0, $projectstatic->id, $socid, 0);
@@ -155,46 +155,46 @@ if (! empty($project_ref) && ! empty($withproject)) {
 	}
 }
 
-if ($action == 'builddoc' && $user->rights->projet->creer) {
-	/**
-	 * - Build Document
-	 */
-	$object->fetch($id, $ref);
+// if ($action == 'builddoc' && $user->rights->projet->creer) {
+// 	/**
+// 	 * - Build Document
+// 	 */
+// 	$object->fetch($id, $ref);
 	
-	// Save last template used to generate document
-	if (GETPOST('model'))
-		$object->setDocModel($user, GETPOST('model', 'alpha'));
+// 	// Save last template used to generate document
+// 	if (GETPOST('model'))
+// 		$object->setDocModel($user, GETPOST('model', 'alpha'));
 	
-	$outputlangs = $langs;
-	if (GETPOST('lang_id')) {
-		$outputlangs = new Translate("", $conf);
-		$outputlangs->setDefaultLang(GETPOST('lang_id'));
-	}
-	$result = $object->generateDocument($object->modelpdf, $outputlangs);
-	if ($result <= 0) {
-		setEventMessages($object->error, $object->errors, 'errors');
-		$action = '';
-	}
-}
+// 	$outputlangs = $langs;
+// 	if (GETPOST('lang_id')) {
+// 		$outputlangs = new Translate("", $conf);
+// 		$outputlangs->setDefaultLang(GETPOST('lang_id'));
+// 	}
+// 	$result = $object->generateDocument($object->modelpdf, $outputlangs);
+// 	if ($result <= 0) {
+// 		setEventMessages($object->error, $object->errors, 'errors');
+// 		$action = '';
+// 	}
+// }
 
-if ($action == 'remove_file' && $user->rights->projet->creer) {
-	/**
-	 * - Remove document file
-	 */
-	require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+// if ($action == 'remove_file' && $user->rights->projet->creer) {
+// 	/**
+// 	 * - Remove document file
+// 	 */
+// 	require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 	
-	if ($object->fetch($id, $ref) >= 0) {
-		$langs->load("other");
-		$upload_dir = $conf->projet->dir_output;
-		$file = $upload_dir . '/' . GETPOST('file');
+// 	if ($object->fetch($id, $ref) >= 0) {
+// 		$langs->load("other");
+// 		$upload_dir = $conf->projet->dir_output;
+// 		$file = $upload_dir . '/' . GETPOST('file');
 		
-		$ret = dol_delete_file($file);
-		if ($ret)
-			setEventMessages($langs->trans("FileWasRemoved", GETPOST('urlfile')), null, 'mesgs');
-		else
-			setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('urlfile')), null, 'errors');
-	}
-}
+// 		$ret = dol_delete_file($file);
+// 		if ($ret)
+// 			setEventMessages($langs->trans("FileWasRemoved", GETPOST('urlfile')), null, 'mesgs');
+// 		else
+// 			setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('urlfile')), null, 'errors');
+// 	}
+// }
 
 /**
  * Display View
@@ -510,8 +510,8 @@ if ($id > 0 || ! empty($ref)) {
 		}
 		
 		if ($action != 'edit') {
-			/*
-			 * Actions
+			/**
+			 * - display Actions button Edit and Delete
 			 */
 			
 			print '<div class="tabsAction">';
