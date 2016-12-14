@@ -43,7 +43,7 @@ $langs->load("vignoble@vignoble");
 $langs->load("projects");
 $langs->load("companies");
 
-$cultivationprojectid=setIsCultivationProject($id, $key);
+$cultivationprojectid=setIsCultivationProject();
 
 $id = GETPOST('id', 'int');
 $ref = GETPOST("ref", 'alpha', 1);
@@ -219,102 +219,10 @@ if ($id > 0 || ! empty($ref)) {
 		$userWrite = $projectstatic->restrictedProjectArea($user, 'write');
 		
 		if (! empty($withproject)) {
-			/**
-			 * Display project Tab
-			 * 
-			 */
 			// initialize tab to cultivationtasks
-			$tab = 'cultivationtasks';
-			$head = project_prepare_head($projectstatic);
-			//var_dump($head);
-			dol_fiche_head($head, $tab, $langs->trans("Project"), 0, ($projectstatic->public ? 'projectpub' : 'project'));
-			
-			// display only my task ?? already defined
-			$param = ($mode == 'mine' ? '&mode=mine' : '');
-			
-			// prepare project card
-			//
-			$linkback = '<a href="' . DOL_URL_ROOT . '/projet/card.php?mainmenu=project&id=' . $id . '">' . $langs->trans("OpenFullProject") . '</a>';
-			
-			$morehtmlref = '<div class="refidno">';
-			// Title
-			$morehtmlref .= $projectstatic->title;
-			// Thirdparty
-			if ($projectstatic->thirdparty->id > 0) {
-				$morehtmlref .= '<br>' . $langs->trans('ThirdParty') . ' : ' . $projectstatic->thirdparty->getNomUrl(1, 'project');
-			}
-			$morehtmlref .= '</div>';
-			
-			// Define a complementary filter for search of next/prev ref.
-			if (! $user->rights->projet->all->lire) {
-				$objectsListId = $object->getProjectsAuthorizedForUser($user, 0, 0);
-				$projectstatic->next_prev_filter = " rowid in (" . (count($objectsListId) ? join(',', array_keys($objectsListId)) : '0') . ")";
-			}
-			// banner without navigation on list
-			dol_banner_tab($projectstatic, 'ref', $linkback, 0, 'ref', 'ref', $morehtmlref);
-			
-			print '<div class="fichecenter">';
-			print '<div class="fichehalfleft">';
-			print '<div class="underbanner clearboth"></div>';
-			
-			print '<table class="border" width="100%">';
-			
-			// Visibility
-			print '<tr><td class="titlefield">' . $langs->trans("Visibility") . '</td><td>';
-			if ($projectstatic->public)
-				print $langs->trans('SharedProject');
-			else
-				print $langs->trans('PrivateProject');
-			print '</td></tr>';
-			
-			// Date start - end
-			print '<tr><td>' . $langs->trans("DateStart") . ' - ' . $langs->trans("DateEnd") . '</td><td>';
-			print dol_print_date($projectstatic->date_start, 'day');
-			$end = dol_print_date($projectstatic->date_end, 'day');
-			if ($end)
-				print ' - ' . $end;
-			print '</td></tr>';
-			
-			// Budget
-			print '<tr><td>' . $langs->trans("Budget") . '</td><td>';
-			if (strcmp($projectstatic->budget_amount, ''))
-				print price($projectstatic->budget_amount, '', $langs, 1, 0, 0, $conf->currency);
-			print '</td></tr>';
-			
-			// Other attributes
-			$cols = 2;
-			// include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';
-			
-			print '</table>';
-			
-			print '</div>';
-			print '<div class="fichehalfright">';
-			print '<div class="ficheaddleft">';
-			print '<div class="underbanner clearboth"></div>';
-			
-			print '<table class="border" width="100%">';
-			
-			// Description
-			print '<td class="titlefield tdtop">' . $langs->trans("Description") . '</td><td>';
-			print nl2br($projectstatic->description);
-			print '</td></tr>';
-			
-			// Categories
-			if ($conf->categorie->enabled) {
-				print '<tr><td valign="middle">' . $langs->trans("Categories") . '</td><td>';
-				print $form->showCategories($projectstatic->id, 'project', 1);
-				print "</td></tr>";
-			}
-			
-			print '</table>';
-			
-			print '</div>';
-			print '</div>';
-			print '</div>';
-			
-			print '<div class="clearboth"></div>';
-			
-			dol_fiche_end();
+			$tab = 'cultivationtasks';	
+			displayProjectCard($projectstatic->id, $mode, $projectstatic, $form, $tab);
+
 		}
 		
 		/**
@@ -415,7 +323,7 @@ if ($id > 0 || ! empty($ref)) {
 			$param = ($withproject ? '&withproject=1' : '');
 			$linkback = $withproject ? '<a href="cultivationtasks.php?id=' . $projectstatic->id . '">' . $langs->trans("BackToList") . '</a>' : '';
 			
-			dol_fiche_head($head, 'task_task', $langs->trans("Task"), 0, 'projecttask');
+			dol_fiche_head($head, 'cultivationtask', $langs->trans("Task"), 0, 'projecttask');
 			
 			if ($action == 'delete') {
 				print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $_GET["id"] . '&withproject=' . $withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
@@ -438,22 +346,7 @@ if ($id > 0 || ! empty($ref)) {
 			
 			// Label
 			print '<tr><td>' . $langs->trans("Label") . '</td><td colspan="3">' . $object->label . '</td></tr>';
-			
-			// Project
-			if (empty($withproject)) {
-				print '<tr><td>' . $langs->trans("Project") . '</td><td colspan="3">';
-				print $projectstatic->getNomUrl(1);
-				print '</td></tr>';
-				
-				// Third party
-				print '<td>' . $langs->trans("ThirdParty") . '</td><td colspan="3">';
-				if ($projectstatic->societe->id)
-					print $projectstatic->societe->getNomUrl(1);
-				else
-					print '&nbsp;';
-				print '</td></tr>';
-			}
-			
+					
 			// Date start
 			print '<tr><td>' . $langs->trans("DateStart") . '</td><td colspan="3">';
 			print dol_print_date($object->date_start, 'dayhour');
