@@ -38,8 +38,9 @@ require_once './lib/cultivationtask.lib.php';
 
 $langs->load("users");
 $langs->load("projects");
-$langs->load("vignoble@vignoble");
 $langs->load("companies");
+$langs->load("vignoble@vignoble");
+
 
 $cultivationprojectid = setIsCultivationProject();
 

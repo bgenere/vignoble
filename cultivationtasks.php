@@ -24,22 +24,33 @@
  * \ingroup cultivation
  * \brief List all tasks of the default cultivation project
  */
+
+// Include main Dolibarr library and global variables.
 @include './tpl/maindolibarr.inc.php';
 
+// Include project and task class
 dol_include_once('/projet/class/project.class.php');
 dol_include_once('/projet/class/task.class.php');
-dol_include_once('/core/lib/project.lib.php');
-dol_include_once('/core/lib/date.lib.php');
-dol_include_once('/core/lib/admin.lib.php');
-dol_include_once('/core/class/html.formother.class.php');
+// Include extrafields class
 dol_include_once('/core/class/extrafields.class.php');
+// Include formother class
+dol_include_once('/core/class/html.formother.class.php');
+// Include admin library
+dol_include_once('/core/lib/admin.lib.php');
+// Include project library
+dol_include_once('/core/lib/project.lib.php');
+// Include date management library
+dol_include_once('/core/lib/date.lib.php');
+// Include cultivation task library
 require_once './lib/cultivationtask.lib.php';
-
+/**
+ * get language files
+ */
 $langs->load("users");
 $langs->load("projects");
 $langs->load("vignoble@vignoble");
 
-$id=setIsCultivationProject();
+$id = setIsCultivationProject();
 
 /**
  * Get page variables
@@ -52,20 +63,28 @@ $cancel = GETPOST('cancel');
 $mode = GETPOST('mode', 'alpha');
 
 $mine = ($mode == 'mine' ? 1 : 0);
-// if (! $user->rights->projet->all->lire) $mine=1; // Special for projects
 
+/**
+ * Instanciate
+ * - object as project class
+ * - taskstatic as task class
+ *
+ * add extrafields for both.
+ */
 $object = new Project($db);
 $taskstatic = new Task($db);
-$extrafields_project = new ExtraFields($db);
 $extrafields_task = new ExtraFields($db);
 
+/**
+ *  Fetch $object using $id or $ref
+ *  $action should not be create or createtask
+ *  $cancel should be empty
+ */
 include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once
                                                                  
-// var_dump($object);
-
-if ($id > 0 || ! empty($ref)) {
-	$extralabels_projet = $extrafields_project->fetch_name_optionals_label($object->table_element);
-}
+/**
+ * Get extrafields
+ */
 $extralabels_task = $extrafields_task->fetch_name_optionals_label($taskstatic->table_element);
 
 // Security check
@@ -85,16 +104,15 @@ $label = GETPOST('label', 'alpha');
 $description = GETPOST('description');
 $planned_workload = GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60;
 
-$userAccess = 0;
-
 /**
- * Process actions
+ * Process actions : createtask
+ * else do nothing
  */
 
-/**
- * - Create new task
- */
 if ($action == 'createtask' && $user->rights->projet->creer) {
+	/**
+	 * - Create new task
+	 */
 	$error = 0;
 	
 	$date_start = dol_mktime($_POST['dateohour'], $_POST['dateomin'], 0, $_POST['dateomonth'], $_POST['dateoday'], $_POST['dateoyear'], 'user');
@@ -145,8 +163,9 @@ if ($action == 'createtask' && $user->rights->projet->creer) {
 			$taskid = $task->create($user);
 			
 			if ($taskid > 0) {
+				// add current user id as the responsible for the task
 				$result = $task->add_contact($_POST["userid"], 'TASKEXECUTIVE', 'internal');
-				$backtopage='cultivationtask.php?id='.$taskid.'&withproject=1';
+				$backtopage = 'cultivationtask.php?id=' . $taskid . '&withproject=1';
 			} else {
 				setEventMessages($task->error, $task->errors, 'errors');
 			}
@@ -181,8 +200,6 @@ if ($action == 'createtask' && $user->rights->projet->creer) {
  */
 $form = new Form($db);
 $formother = new FormOther($db);
-$taskstatic = new Task($db);
-$userstatic = new User($db);
 
 // page header (title and help url)
 $title = $langs->trans("Cultivation") . ' - ' . $langs->trans("Tasks") . ' - ' . $object->ref . ' ' . $object->title;
@@ -195,20 +212,7 @@ if ($id > 0 || ! empty($ref)) {
 	/**
 	 * Print Project Card
 	 */
-	// get current project
-	$object->fetch($id, $ref);
-	$object->fetch_thirdparty();
-	$res = $object->fetch_optionals($object->id, $extralabels_projet);
-	
-	// verify role of users
-	// $userAccess = $object->restrictedProjectArea($user,'read');
-	$userWrite = $object->restrictedProjectArea($user, 'write');
-	// $userDelete = $object->restrictedProjectArea($user,'delete');
-	// print "userAccess=".$userAccess." userWrite=".$userWrite." userDelete=".$userDelete;
-	
-	// initialize tab to cultivationtasks if not defined
 	$tab = GETPOST('tab') ? GETPOST('tab') : 'cultivationtasks';
-	
 	displayProjectCard($id, $mode, $object, $form, $tab);
 }
 
@@ -320,23 +324,23 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 		 */
 		
 		// add new task button
-// 		print '<div class="tabsAction">';
-// 		if ($user->rights->projet->all->creer || $user->rights->projet->creer) {
-// 			if ($object->public || $userWrite > 0) {
-// 				print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=create' . $param . '&backtopage=' . urlencode($_SERVER['PHP_SELF'] . '?id=' . $object->id) . '">' . $langs->trans('AddTask') . '</a>';
-// 			} else {
-// 				print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotOwnerOfProject") . '">' . $langs->trans('AddTask') . '</a>';
-// 			}
-// 		} else {
-// 			print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotEnoughPermissions") . '">' . $langs->trans('AddTask') . '</a>';
-// 		}
-// 		print '</div>';
+		// print '<div class="tabsAction">';
+		// if ($user->rights->projet->all->creer || $user->rights->projet->creer) {
+		// if ($object->public || $userWrite > 0) {
+		// print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=create' . $param . '&backtopage=' . urlencode($_SERVER['PHP_SELF'] . '?id=' . $object->id) . '">' . $langs->trans('AddTask') . '</a>';
+		// } else {
+		// print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotOwnerOfProject") . '">' . $langs->trans('AddTask') . '</a>';
+		// }
+		// } else {
+		// print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotEnoughPermissions") . '">' . $langs->trans('AddTask') . '</a>';
+		// }
+		// print '</div>';
 		
 		// Task list
 		$title = $langs->trans("ListOfTasks");
 		// TODO change link when page ready
-		//$linktotasks = '<a href="' . DOL_URL_ROOT . '/projet/tasks/time.php?projectid=' . $object->id . '&withproject=1">' . $langs->trans("GoToListOfTimeConsumed") . '</a>';
-		$linkstotasks='';
+		// $linktotasks = '<a href="' . DOL_URL_ROOT . '/projet/tasks/time.php?projectid=' . $object->id . '&withproject=1">' . $langs->trans("GoToListOfTimeConsumed") . '</a>';
+		$linkstotasks = '';
 		print load_fiche_titre($title, $linktotasks, 'title_generic.png');
 		
 		// Get list of tasks in tasksarray and taskarrayfiltered
@@ -385,8 +389,8 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 		
 		// Test if database is clean. If not we clean it.
 		// print 'mode='.$_REQUEST["mode"].' $nboftaskshown='.$nboftaskshown.' count($tasksarray)='.count($tasksarray).' count($tasksrole)='.count($tasksrole).'<br>';
-		if (! empty($user->rights->projet->all->lire)) // We make test to clean only if user has permission to see all (test may report false positive otherwise)
-{
+		if (! empty($user->rights->projet->all->lire)) { // We make test to clean only if user has permission to see all (test may report false positive otherwise)
+			
 			if ($mode == 'mine') {
 				if ($nboftaskshown < count($tasksrole)) {
 					include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
@@ -407,9 +411,6 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 llxFooter();
 
 $db->close();
-
-
-
-
-
-
+/**
+ * END
+ */
