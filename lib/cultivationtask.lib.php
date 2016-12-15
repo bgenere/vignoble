@@ -154,6 +154,36 @@ function displayProjectCard($id, $mode, $object, $form, $tab)
 	
 	dol_fiche_end();
 }
+/**
+ * print the task card
+ * 
+ * @param	object the task to display
+ * @param   projectstatic the project linked to the task	
+ * @param   form the form object to display
+ * @param	withproject true if project card already displayed
+ *        	
+ */
+function displayTaskCard($object,$projectstatic, $form, $withproject = true)
+{
+	global $db, $conf, $langs, $user;
+	
+	$param = ($withproject ? '&withproject=1' : '');
+	$linkback = $withproject ? '<a href="cultivationtasks.php?id=' . $projectstatic->id . '">' . $langs->trans("BackToList") . '</a>' : '';
+	if (! $withproject || empty($projectstatic->id)) {
+		$projectsListId = $projectstatic->getProjectsAuthorizedForUser($user, 0, 1);
+		$object->next_prev_filter = " fk_projet in (" . $projectsListId . ")";
+	} else
+		$object->next_prev_filter = " fk_projet = " . $projectstatic->id;
+	
+	print '<table class="border" width="100%">';
+		
+	// Ref
+	print '<tr><td>';
+	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', $object->label, $param);
+	print '</td></tr>';	
+	print "</table>";
+}
+
 
 
 /**

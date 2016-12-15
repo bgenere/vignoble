@@ -282,65 +282,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $_GET["lineid"] . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_delete", '', '', 1);
 		}
 		
-		print '<table class="border" width="100%">';
-		
-		$param = ($withproject ? '&withproject=1' : '');
-		$linkback = $withproject ? '<a href="cultivationtasks.php?id=' . $projectstatic->id . '">' . $langs->trans("BackToList") . '</a>' : '';
-		
-		// Ref
-		print '<tr><td class="titlefield">';
-		print $langs->trans("Ref");
-		print '</td>';
-		
-		print '<td colspan="3">';
-		if (! GETPOST('withproject') || empty($projectstatic->id)) {
-			$projectsListId = $projectstatic->getProjectsAuthorizedForUser($user, 0, 1);
-			$object->next_prev_filter = " fk_projet in (" . $projectsListId . ")";
-		} else
-			$object->next_prev_filter = " fk_projet = " . $projectstatic->id;
-		print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', '', $param);
-		print '</td></tr>';
-		
-		// Label
-		print '<tr><td>' . $langs->trans("Label") . '</td><td colspan="3">' . $object->label . '</td></tr>';
-		
-// 		// Date start
-// 		print '<tr><td>' . $langs->trans("DateStart") . '</td><td colspan="3">';
-// 		print dol_print_date($object->date_start, 'dayhour');
-// 		print '</td></tr>';
-		
-// 		// Date end
-// 		print '<tr><td>' . $langs->trans("DateEnd") . '</td><td colspan="3">';
-// 		print dol_print_date($object->date_end, 'dayhour');
-// 		if ($object->hasDelay())
-// 				print img_warning("Late");
-// 		print '</td></tr>';
-		
-// 		// Planned workload
-// 		print '<tr><td>' . $langs->trans("PlannedWorkload") . '</td><td colspan="3">';
-// 			if ($object->planned_workload != '') {
-// 				print convertSecondToTime($object->planned_workload, 'allhourmin');
-// 			}
-// 			print '</td></tr>';
-		
-// 		// Progress declared
-// 		print '<tr><td>' . $langs->trans("ProgressDeclared") . '</td><td colspan="3">';
-// 		print $object->progress . ' %';
-// 		print '</td></tr>';
-		
-// 		// Progress calculated
-// 		print '<tr><td>' . $langs->trans("ProgressCalculated") . '</td><td colspan="3">';
-// 		if ($object->planned_workload) {
-// 			$tmparray = $object->getSummaryOfTimeSpent();
-// 			if ($tmparray['total_duration'] > 0)
-// 				print round($tmparray['total_duration'] / $object->planned_workload * 100, 2) . ' %';
-// 			else
-// 				print '0 %';
-// 		} else
-// 			print '';
-		print '</td></tr>';
-		
-		print '</table>';
+		displayTaskCard($object,$projectstatic, $form );
 		
 		dol_fiche_end();
 		
