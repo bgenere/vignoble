@@ -22,33 +22,15 @@
 /**
  * \file cultivationtasks.php
  * \ingroup cultivation
- * \brief List all tasks of the default cultivation project
+ * \brief List all tasks of the default cultivation project. 
+ * Called by the cultivation option in the module menu.
+ * Also allow to create a new task using the menu link.
  */
 
 // Include main Dolibarr library and global variables.
 @include './tpl/maindolibarr.inc.php';
 
-// Include project and task class
-dol_include_once('/projet/class/project.class.php');
-dol_include_once('/projet/class/task.class.php');
-// Include extrafields class
-dol_include_once('/core/class/extrafields.class.php');
-// Include formother class
-dol_include_once('/core/class/html.formother.class.php');
-// Include admin library
-dol_include_once('/core/lib/admin.lib.php');
-// Include project library
-dol_include_once('/core/lib/project.lib.php');
-// Include date management library
-dol_include_once('/core/lib/date.lib.php');
-// Include cultivation task library
-require_once './lib/cultivationtask.lib.php';
-/**
- * get language files
- */
-$langs->load("users");
-$langs->load("projects");
-$langs->load("vignoble@vignoble");
+@include './tpl/cultivationtask.inc.php';
 
 $id = setIsCultivationProject();
 
@@ -74,12 +56,15 @@ $mine = ($mode == 'mine' ? 1 : 0);
 $object = new Project($db);
 $taskstatic = new Task($db);
 $extrafields_task = new ExtraFields($db);
-
 /**
  *  Fetch $object using $id or $ref
  *  $action should not be create or createtask
  *  $cancel should be empty
  */
+if ($cancel){ // reset to display if createtask canceled
+	$action = null;
+	$cancel = null;
+}
 include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once
                                                                  
 /**

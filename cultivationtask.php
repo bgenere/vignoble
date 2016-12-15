@@ -22,26 +22,12 @@
 /**
  * \file cultivationtask.php
  * \ingroup cultivation
- * \brief Page of a cultivation project task
+ * \brief Card page of a cultivation project task.
+ * 
  */
 @include './tpl/maindolibarr.inc.php';
 
-dol_include_once('/projet/class/project.class.php');
-dol_include_once('/projet/class/task.class.php');
-dol_include_once('/core/lib/project.lib.php');
-dol_include_once('/core/lib/date.lib.php');
-dol_include_once('/core/lib/admin.lib.php');
-dol_include_once('/core/class/html.formother.class.php');
-dol_include_once('/core/class/extrafields.class.php');
-dol_include_once('/core/class/html.formfile.class.php');
-dol_include_once('/core/modules/project/task/modules_task.php');
-require_once './lib/cultivationtask.lib.php';
-
-$langs->load("users");
-$langs->load("projects");
-$langs->load("companies");
-$langs->load("vignoble@vignoble");
-
+@include './tpl/cultivationtask.inc.php';
 
 $cultivationprojectid=setIsCultivationProject();
 
@@ -75,7 +61,7 @@ $projectstatic = new Project($db);
 $extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
 
 /**
- * Actions
+ * Actions  on task : update , delete
  */
 if ($action == 'update' && ! $_POST["cancel"] && $user->rights->projet->creer) {
 	/**
@@ -143,7 +129,7 @@ if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->s
 	}
 }
 
-// Retrive First Task ID of Project if withprojet is on to allow project prev next to work
+// Retrieve First Task ID of Project if withprojet is on to allow project prev next to work
 if (! empty($project_ref) && ! empty($withproject)) {
 	if ($projectstatic->fetch('', $project_ref) > 0) {
 		$tasksarray = $object->getTasksArray(0, 0, $projectstatic->id, $socid, 0);
@@ -155,47 +141,6 @@ if (! empty($project_ref) && ! empty($withproject)) {
 	}
 }
 
-// if ($action == 'builddoc' && $user->rights->projet->creer) {
-// 	/**
-// 	 * - Build Document
-// 	 */
-// 	$object->fetch($id, $ref);
-	
-// 	// Save last template used to generate document
-// 	if (GETPOST('model'))
-// 		$object->setDocModel($user, GETPOST('model', 'alpha'));
-	
-// 	$outputlangs = $langs;
-// 	if (GETPOST('lang_id')) {
-// 		$outputlangs = new Translate("", $conf);
-// 		$outputlangs->setDefaultLang(GETPOST('lang_id'));
-// 	}
-// 	$result = $object->generateDocument($object->modelpdf, $outputlangs);
-// 	if ($result <= 0) {
-// 		setEventMessages($object->error, $object->errors, 'errors');
-// 		$action = '';
-// 	}
-// }
-
-// if ($action == 'remove_file' && $user->rights->projet->creer) {
-// 	/**
-// 	 * - Remove document file
-// 	 */
-// 	require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-	
-// 	if ($object->fetch($id, $ref) >= 0) {
-// 		$langs->load("other");
-// 		$upload_dir = $conf->projet->dir_output;
-// 		$file = $upload_dir . '/' . GETPOST('file');
-		
-// 		$ret = dol_delete_file($file);
-// 		if ($ret)
-// 			setEventMessages($langs->trans("FileWasRemoved", GETPOST('urlfile')), null, 'mesgs');
-// 		else
-// 			setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('urlfile')), null, 'errors');
-// 	}
-// }
-
 /**
  * Display View
  */
@@ -204,7 +149,6 @@ llxHeader('', $langs->trans("Task"));
 
 $form = new Form($db);
 $formother = new FormOther($db);
-$formfile = new FormFile($db);
 
 if ($id > 0 || ! empty($ref)) {
 	if ($object->fetch($id, $ref) > 0) {
@@ -429,26 +373,6 @@ if ($id > 0 || ! empty($ref)) {
 				
 				print '</div>';
 			}
-			
-// 			print '<div class="fichecenter"><div class="fichehalfleft">';
-// 			print '<a name="builddoc"></a>'; // ancre
-			
-// 			/*
-// 			 * Documents generes
-// 			 */
-// 			$filename = dol_sanitizeFileName($projectstatic->ref) . "/" . dol_sanitizeFileName($object->ref);
-// 			$filedir = $conf->projet->dir_output . "/" . dol_sanitizeFileName($projectstatic->ref) . "/" . dol_sanitizeFileName($object->ref);
-// 			$urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
-// 			$genallowed = ($user->rights->projet->lire);
-// 			$delallowed = ($user->rights->projet->creer);
-			
-// 			$var = true;
-			
-// 			print $formfile->showdocuments('project_task', $filename, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf);
-			
-// 			print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-			
-// 			print '</div></div></div>';
 		}
 	}
 }
