@@ -26,18 +26,7 @@
  */
 @include './tpl/maindolibarr.inc.php';
 
-dol_include_once('/projet/class/project.class.php');
-dol_include_once('/projet/class/task.class.php');
-dol_include_once('/contact/class/contact.class.php');
-dol_include_once('/core/lib/admin.lib.php');
-dol_include_once('/core/lib/project.lib.php');
-dol_include_once('/core/class/html.formcompany.class.php');
-require_once './lib/cultivationtask.lib.php';
-
-$langs->load("users");
-$langs->load("projects");
-$langs->load("vignoble@vignoble");
-$langs->load("companies");
+@include './tpl/cultivationtask.inc.php';
 
 $cultivationprojectid = setIsCultivationProject();
 

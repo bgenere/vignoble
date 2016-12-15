@@ -26,12 +26,14 @@
 // Include project and task class
 dol_include_once('/projet/class/project.class.php');
 dol_include_once('/projet/class/task.class.php');
+dol_include_once('/contact/class/contact.class.php');
 
 // Include extrafields class
 dol_include_once('/core/class/extrafields.class.php');
 
 // Include formother and formfile class
 dol_include_once('/core/class/html.formother.class.php');
+dol_include_once('/core/class/html.formcompany.class.php');
 //dol_include_once('/core/class/html.formfile.class.php');
 
 // Include admin library
