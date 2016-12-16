@@ -78,16 +78,8 @@ $hookmanager->initHooks(array(
 
 $object = new Task($db);
 $projectstatic = new Project($db);
-$extrafields_project = new ExtraFields($db);
-$extrafields_task = new ExtraFields($db);
 
-if ($projectid > 0 || ! empty($ref)) {
-	// fetch optionals attributes and labels
-	$extralabels_projet = $extrafields_project->fetch_name_optionals_label($projectstatic->table_element);
-}
-$extralabels_task = $extrafields_task->fetch_name_optionals_label($object->table_element);
-
-/*
+/**
  * Actions
  */
 
@@ -118,6 +110,9 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 }
 
 if ($action == 'addtimespent' && $user->rights->projet->lire) {
+	/**
+	 * Add a line of time spent
+	 */
 	$error = 0;
 	
 	$timespent_durationhour = GETPOST('timespent_durationhour', 'int');
@@ -166,6 +161,9 @@ if ($action == 'addtimespent' && $user->rights->projet->lire) {
 }
 
 if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
+	/**
+	 *  Update an existing line
+	 */
 	$error = 0;
 	
 	if (empty($_POST["new_durationhour"]) && empty($_POST["new_durationmin"])) {
@@ -203,6 +201,9 @@ if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->cree
 }
 
 if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->creer) {
+	/**
+	 * Delete an exisisting line 
+	 */
 	$object->fetchTimeSpent($_GET['lineid']);
 	$result = $object->delTimeSpent($user);
 	
@@ -233,8 +234,8 @@ if (GETPOST('projectid')) {
 	$projectidforalltimes = GETPOST('projectid', 'int');
 }
 
-/*
- * View
+/**
+ * Display View
  */
 
 llxHeader("", $langs->trans("Task"));
@@ -261,8 +262,6 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		$object->project = clone $projectstatic;
 	}
 	
-	$userWrite = $projectstatic->restrictedProjectArea($user, 'write');
-	
 	if ($projectstatic->id > 0) {
 		if ($withproject) {
 			// initialize project tab to cultivationtasks
@@ -282,12 +281,12 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $_GET["lineid"] . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_delete", '', '', 1);
 		}
 		
-		displayTaskCard($object,$projectstatic, $form );
+		displayTaskCard($object, $projectstatic, $form);
 		
 		dol_fiche_end();
 		
-		/*
-		 * Form to add time spent
+		/**
+		 * Display Form to add time spent
 		 */
 		if ($user->rights->projet->lire) {
 			print '<br>';
@@ -310,7 +309,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			
 			print '<tr ' . $bc[false] . '>';
 			
-			// Date
+			// Date when time was spent
 			print '<td class="maxwidthonsmartphone">';
 			// $newdate=dol_mktime(12,0,0,$_POST["timemonth"],$_POST["timeday"],$_POST["timeyear"]);
 			$newdate = '';
@@ -319,12 +318,22 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			
 			// Contributor
 			print '<td class="maxwidthonsmartphone">';
-			print img_object('', 'user', 'class="hideonsmartphone"');
-			$contactsoftask = $object->getListContactId('internal');
-			var_dump($contactsoftask);
+			//print img_object('', 'user', 'class="hideonsmartphone"');
+			//$contactsoftask = $object->getListContactId('external');
+			$contactsoftask = $object->liste_contact(-1,'internal',0);
+			$contactsoftask = array_merge($contactsoftask,$object->liste_contact(-1,'external',0));
+			//var_dump($contactsoftask);
 			if (count($contactsoftask) > 0) {
-				$userid = $contactsoftask[0];
-				print $form->select_dolusers((GETPOST('userid') ? GETPOST('userid') : $userid), 'userid', 0, '', 0, '', $contactsoftask, 0, 0, 0, '', 0, $langs->trans("ResourceNotAssignedToTheTask"), 'maxwidth200');
+				$selectable = array();
+				foreach ($contactsoftask as $contact){
+					$key = $contact["socid"].':'.$contact["id"] ;
+					$value = $contact["firstname"].' '.$contact["lastname"];
+					$selectable = array_merge($selectable, array($key => $value));
+				}
+				//var_dump($selectable);
+				//$userid = $contactsoftask[0];
+				print $form->selectarray('userid', $selectable,0,0);
+				//print $form->select_dolusers((GETPOST('userid') ? GETPOST('userid') : $userid), 'userid', 0, '', 0, '', $contactsoftask, 0, 0, 0, '', 0, $langs->trans("ResourceNotAssignedToTheTask"), 'maxwidth200');
 			} else {
 				print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
 			}
@@ -352,7 +361,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print '</table></form>';
 			
 			print '<br>';
-		}
+		}// end form
 	}
 	
 	if ($projectstatic->id > 0) {
@@ -485,10 +494,10 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		if ($withproject)
 			$params .= '&amp;withproject=' . $withproject;
 		
-		$arrayofmassactions = array()
+		$arrayofmassactions = array();
 		// 'presend'=>$langs->trans("SendByMail"),
 		// 'builddoc'=>$langs->trans("PDFMerge"),
-		;
+		
 		// if ($user->rights->projet->creer) $arrayofmassactions['delete']=$langs->trans("Delete");
 		if ($massaction == 'presend')
 			$arrayofmassactions = array();
