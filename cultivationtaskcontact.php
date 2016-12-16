@@ -60,23 +60,25 @@ if ($action == 'addcontact' && $user->rights->projet->creer) {
 	
 	if ($result > 0 && $id > 0) {
 		$idfortaskuser = (GETPOST("contactid") != 0) ? GETPOST("contactid") : GETPOST("userid"); // GETPOST('contactid') may val -1 to mean empty or -2 to means "everybody"
-		if ($idfortaskuser == - 2) {
+		if ($idfortaskuser == - 2) { // everybody selected
 			$result = $projectstatic->fetch($object->fk_project);
 			if ($result <= 0) {
 				dol_print_error($db, $projectstatic->error, $projectstatic->errors);
 			} else {
 				$contactsofproject = $projectstatic->getListContactId('internal');
+				$contactsofproject = array_merge($contactsofproject, $projectstatic->getListContactId('external'));
 				foreach ($contactsofproject as $key => $val) {
 					$result = $object->add_contact($val, GETPOST("type"), GETPOST("source"));
 				}
 			}
-		} else {
+		} elseif ($idfortaskuser !== - 1) { // not empty
 			$result = $object->add_contact($idfortaskuser, GETPOST("type"), GETPOST("source"));
 		}
 	}
 	
 	if ($result >= 0) {
-		header("Location: " . $_SERVER["PHP_SELF"] . "?id=" . $object->id . ($withproject ? '&withproject=1' : ''));
+		$selectedCompany = GETPOST("newcompany") ? GETPOST("newcompany") : $projectstatic->societe->id;
+		header("Location: " . $_SERVER["PHP_SELF"] . "?id=" . $object->id . ($withproject ? '&withproject=1' : '').($selectedCompany ? '&newcompany='.$selectedCompany : ''));
 		exit();
 	} else {
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -151,7 +153,9 @@ if ($id > 0 || ! empty($ref)) {
 		$userWrite = $projectstatic->restrictedProjectArea($user, 'write');
 		
 		if (! empty($withproject)) {
-			// initialize tab to cultivationtasks
+			/**
+			 * Display project card
+			 */
 			$tab = 'cultivationtasks';
 			displayProjectCard($projectstatic->id, $mode, $projectstatic, $form, $tab);
 		}
@@ -159,45 +163,35 @@ if ($id > 0 || ! empty($ref)) {
 		/**
 		 * Display task summary card
 		 */
-		
 		$head = task_prepare_head($object);
 		dol_fiche_head($head, 'cultivationtaskcontact', $langs->trans("Task"), 0, 'projecttask');
 		
-		displayTaskCard($object,$projectstatic, $form );
+		displayTaskCard($object, $projectstatic, $form);
 		
 		dol_fiche_end();
 		
-		/*
-		 * Lignes de contacts
-		 */
 		print '<br>';
-		/*
-		 * // Contacts lines (modules that overwrite templates must declare this into descriptor)
-		 * $dirtpls=array_merge($conf->modules_parts['tpl'],array('/core/tpl'));
-		 * foreach($dirtpls as $reldir)
-		 * {
-		 * $res=@include dol_buildpath($reldir.'/contacts.tpl.php');
-		 * if ($res) break;
-		 * }
-		 */
-		
-		/*
-		 * Add a new contact line
-		 * Non affiche en mode modification de ligne
+		/**
+		 * Display contact Part
 		 */
 		print '<table class="noborder" width="100%">';
 		
-		if ($action != 'editline' && $user->rights->projet->creer) {
+		if ($user->rights->projet->creer) {
+			/**
+			 * - header to add a contact
+			 */
 			print '<tr class="liste_titre">';
 			print '<td>' . $langs->trans("Source") . '</td>';
 			print '<td>' . $langs->trans("ThirdParty") . '</td>';
 			print '<td>' . $langs->trans("ProjectContact") . '</td>';
 			print '<td>' . $langs->trans("ContactType") . '</td>';
-			print '<td colspan="3">&nbsp;</td>';
+			print '<td colspan="3">TEST&nbsp;</td>';
 			print "</tr>\n";
 			
-			$var = false;
-			
+			$var = false; // manage line color swap.
+			/**
+			 * - form to add a user contact (internal)
+			 */
 			print '<form action="' . $_SERVER["PHP_SELF"] . '?id=' . $id . '" method="POST">';
 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 			print '<input type="hidden" name="action" value="addcontact">';
@@ -205,8 +199,7 @@ if ($id > 0 || ! empty($ref)) {
 			print '<input type="hidden" name="id" value="' . $id . '">';
 			if ($withproject)
 				print '<input type="hidden" name="withproject" value="' . $withproject . '">';
-				
-				// Ligne ajout pour contact interne
+				// start line to add internal contact
 			print "<tr " . $bc[$var] . ">";
 			
 			print '<td class="nowrap">';
@@ -218,23 +211,27 @@ if ($id > 0 || ! empty($ref)) {
 			print '</td>';
 			
 			print '<td colspan="1">';
-			// On recupere les id des users deja selectionnes
+			// init filter for selection of users
 			if ($object->project->public)
-				$contactsofproject = ''; // Everybody
+				$contactsofproject = ''; // No project contact filter
 			else
-				$contactsofproject = $projectstatic->getListContactId('internal');
+				$contactsofproject = $projectstatic->getListContactId('internal'); // Only users of project.
+					                                                                   // selection of users
 			print $form->select_dolusers((GETPOST('contactid') ? GETPOST('contactid') : $user->id), 'contactid', 0, '', 0, '', $contactsofproject, 0, 0, 0, '', 1, $langs->trans("ResourceNotAssignedToProject"));
 			print '</td>';
+			
 			print '<td>';
 			$formcompany->selectTypeContact($object, '', 'type', 'internal', 'rowid');
 			print '</td>';
-			print '<td align="right" colspan="3" ><input type="submit" class="button" value="' . $langs->trans("Add") . '"></td>';
-			print '</tr>';
 			
+			print '<td align="right" colspan="3" ><input type="submit" class="button" value="' . $langs->trans("Add") . '"></td>';
+			
+			print '</tr>';
 			print '</form>';
 			
-			// Line to add an external contact. Only if project linked to a third party.
-			// if ($projectstatic->socid) {
+			/**
+			 * - form to add an external contact (linked to a third party)
+			 */
 			print '<form action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '" method="POST">';
 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 			print '<input type="hidden" name="action" value="addcontact">';
@@ -242,7 +239,7 @@ if ($id > 0 || ! empty($ref)) {
 			print '<input type="hidden" name="id" value="' . $object->id . '">';
 			if ($withproject)
 				print '<input type="hidden" name="withproject" value="' . $withproject . '">';
-			
+				// start line with style change
 			$var = ! $var;
 			print "<tr " . $bc[$var] . ">";
 			
@@ -250,27 +247,31 @@ if ($id > 0 || ! empty($ref)) {
 			print img_object('', 'contact') . ' ' . $langs->trans("ThirdPartyContacts");
 			print '</td>';
 			
-			print '<td colspan="1">';
+			print '<td>';
+			// init filters for third party selection
 			$thirdpartyofproject = $projectstatic->getListContactId('thirdparty');
-			$selectedCompany = isset($_GET["newcompany"]) ? $_GET["newcompany"] : $projectstatic->societe->id;
+			// init company when combo value has been selected
+			$selectedCompany = GETPOST("newcompany") ? GETPOST("newcompany") : $projectstatic->societe->id;
+			var_dump($selectedCompany);
 			$selectedCompany = $formcompany->selectCompaniesForNewContact($object, 'id', $selectedCompany, 'newcompany', $thirdpartyofproject, 0, '&withproject=' . $withproject);
 			print '</td>';
 			
-			print '<td colspan="1">';
+			print '<td>';
 			$contactofproject = $projectstatic->getListContactId('external');
 			$nbofcontacts = $form->select_contacts($selectedCompany, '', 'contactid', 0, '', $contactofproject);
 			print '</td>';
+			
 			print '<td>';
 			$formcompany->selectTypeContact($object, '', 'type', 'external', 'rowid');
 			print '</td>';
+			
 			print '<td align="right" colspan="3" ><input type="submit" class="button" id="add-customer-contact" value="' . $langs->trans("Add") . '"';
 			if (! $nbofcontacts)
 				print ' disabled';
 			print '></td>';
-			print '</tr>';
 			
+			print '</tr>';
 			print "</form>";
-			// }
 		}
 		
 		// Liste des contacts lies
@@ -382,6 +383,8 @@ if (is_object($hookmanager)) {
 llxFooter();
 
 $db->close();
-
+/**
+ * END
+ */
 
 
