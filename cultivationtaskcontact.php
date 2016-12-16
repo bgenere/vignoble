@@ -78,7 +78,7 @@ if ($action == 'addcontact' && $user->rights->projet->creer) {
 	
 	if ($result >= 0) {
 		$selectedCompany = GETPOST("newcompany") ? GETPOST("newcompany") : $projectstatic->societe->id;
-		header("Location: " . $_SERVER["PHP_SELF"] . "?id=" . $object->id . ($withproject ? '&withproject=1' : '').($selectedCompany ? '&newcompany='.$selectedCompany : ''));
+		header("Location: " . $_SERVER["PHP_SELF"] . "?id=" . $object->id . ($withproject ? '&withproject=1' : '') . ($selectedCompany ? '&newcompany=' . $selectedCompany : ''));
 		exit();
 	} else {
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -252,7 +252,6 @@ if ($id > 0 || ! empty($ref)) {
 			$thirdpartyofproject = $projectstatic->getListContactId('thirdparty');
 			// init company when combo value has been selected
 			$selectedCompany = GETPOST("newcompany") ? GETPOST("newcompany") : $projectstatic->societe->id;
-			var_dump($selectedCompany);
 			$selectedCompany = $formcompany->selectCompaniesForNewContact($object, 'id', $selectedCompany, 'newcompany', $thirdpartyofproject, 0, '&withproject=' . $withproject);
 			print '</td>';
 			
@@ -273,8 +272,9 @@ if ($id > 0 || ! empty($ref)) {
 			print '</tr>';
 			print "</form>";
 		}
-		
-		// Liste des contacts lies
+		/**
+		 * Display list of linked contacts
+		 */
 		print '<tr class="liste_titre">';
 		print '<td>' . $langs->trans("Source") . '</td>';
 		print '<td>' . $langs->trans("ThirdParty") . '</td>';
@@ -293,7 +293,7 @@ if ($id > 0 || ! empty($ref)) {
 		) as $source) {
 			$tab = $object->liste_contact(- 1, $source);
 			$num = count($tab);
-			
+			// process line result
 			$i = 0;
 			while ($i < $num) {
 				$var = ! $var;
@@ -308,21 +308,19 @@ if ($id > 0 || ! empty($ref)) {
 					print $langs->trans("ThirdPartyContact");
 				print '</td>';
 				
-				// Societe
+				// Third party link or Company name
 				print '<td align="left">';
 				if ($tab[$i]['socid'] > 0) {
 					$companystatic->fetch($tab[$i]['socid']);
 					print $companystatic->getNomUrl(1);
-				}
-				if ($tab[$i]['socid'] < 0) {
+				} elseif ($tab[$i]['socid'] < 0) {
 					print $conf->global->MAIN_INFO_SOCIETE_NOM;
-				}
-				if (! $tab[$i]['socid']) {
+				} elseif (! $tab[$i]['socid']) {
 					print '&nbsp;';
 				}
 				print '</td>';
 				
-				// Contact
+				// User or Contact url and full name
 				print '<td>';
 				if ($tab[$i]['source'] == 'internal') {
 					$userstatic->id = $tab[$i]['id'];
@@ -338,12 +336,12 @@ if ($id > 0 || ! empty($ref)) {
 				}
 				print '</td>';
 				
-				// Type de contact
+				// Person Role 
 				print '<td>' . $tab[$i]['libelle'] . '</td>';
 				
-				// Statut
+				// Person Statut
 				print '<td align="center">';
-				// Activation desativation du contact
+				// Swap button 
 				if ($object->statut >= 0)
 					print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=swapstatut&ligne=' . $tab[$i]['rowid'] . ($withproject ? '&withproject=1' : '') . '">';
 				print $contactstatic->LibStatut($tab[$i]['status'], 3);
@@ -351,7 +349,7 @@ if ($id > 0 || ! empty($ref)) {
 					print '</a>';
 				print '</td>';
 				
-				// Icon update et delete
+				// Delete button
 				print '<td align="center" class="nowrap">';
 				if ($user->rights->projet->creer) {
 					print '&nbsp;';
