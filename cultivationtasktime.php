@@ -213,7 +213,7 @@ if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->cree
 
 if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->creer) {
 	/**
-	 * Delete an exisisting line
+	 * Delete an existing line
 	 */
 	$object->fetchTimeSpent($_GET['lineid']);
 	$result = $object->delTimeSpent($user);
@@ -569,20 +569,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print_liste_field_titre($arrayfields['t.task_duration']['label'], $_SERVER['PHP_SELF'], 't.task_duration', '', $params, 'align="right"', $sortfield, $sortorder);
 		if (! empty($arrayfields['value']['checked']))
 			print_liste_field_titre($arrayfields['value']['label'], $_SERVER['PHP_SELF'], '', '', $params, 'align="right"', $sortfield, $sortorder);
-			// Extra fields
-			/*
-		 * if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label))
-		 * {
-		 * foreach($extrafields->attribute_label as $key => $val)
-		 * {
-		 * if (! empty($arrayfields["ef.".$key]['checked']))
-		 * {
-		 * $align=$extrafields->getAlignFlag($key);
-		 * print_liste_field_titre($extralabels[$key],$_SERVER["PHP_SELF"],"ef.".$key,"",$param,($align?'align="'.$align.'"':''),$sortfield,$sortorder);
-		 * }
-		 * }
-		 * }
-		 */
+			
 			// Hook fields
 		$parameters = array(
 			'arrayfields' => $arrayfields
@@ -612,31 +599,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print '<td class="liste_titre right"></td>';
 		if (! empty($arrayfields['value']['checked']))
 			print '<td class="liste_titre"></td>';
-			// Extra fields
-			/*
-		 * if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label))
-		 * {
-		 * foreach($extrafields->attribute_label as $key => $val)
-		 * {
-		 * if (! empty($arrayfields["ef.".$key]['checked']))
-		 * {
-		 * $align=$extrafields->getAlignFlag($key);
-		 * $typeofextrafield=$extrafields->attribute_type[$key];
-		 * print '<td class="liste_titre'.($align?' '.$align:'').'">';
-		 * if (in_array($typeofextrafield, array('varchar', 'int', 'double', 'select')))
-		 * {
-		 * $crit=$val;
-		 * $tmpkey=preg_replace('/search_options_/','',$key);
-		 * $searchclass='';
-		 * if (in_array($typeofextrafield, array('varchar', 'select'))) $searchclass='searchstring';
-		 * if (in_array($typeofextrafield, array('int', 'double'))) $searchclass='searchnum';
-		 * print '<input class="flat'.($searchclass?' '.$searchclass:'').'" size="4" type="text" name="search_options_'.$tmpkey.'" value="'.dol_escape_htmltag($search_array_options['search_options_'.$tmpkey]).'">';
-		 * }
-		 * print '</td>';
-		 * }
-		 * }
-		 * }
-		 */
+			
 			// Fields from hook
 		$parameters = array(
 			'arrayfields' => $arrayfields
