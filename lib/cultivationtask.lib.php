@@ -63,9 +63,9 @@ function displayProjectCard($id, $mode, $object, $form, $tab)
 {
 	Global $db,$conf,$user,$langs;
 	
-	$head = project_prepare_head($object);
+	//$head = project_prepare_head($object);
 	// var_dump($head);
-	dol_fiche_head($head, $tab, $langs->trans("Project"), 0, ($object->public ? 'projectpub' : 'project'));
+	//dol_fiche_head($head, $tab, $langs->trans("Project"), 0, ($object->public ? 'projectpub' : 'project'));
 	
 	// display only my task ?? already defined
 	$param = ($mode == 'mine' ? '&mode=mine' : '');
