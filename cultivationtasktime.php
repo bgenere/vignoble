@@ -115,15 +115,18 @@ if ($action == 'addtimespent' && $user->rights->projet->lire) {
 	 */
 	$error = 0;
 	
+	if (empty(GETPOST("userid"))) {
+		$langs->load("errors");
+		setEventMessages($langs->trans('ErrorUserNotAssignedToTask'), null, 'errors');
+		$error ++;
+	} else {
+		$idfortaskuser = GETPOST("userid"); // val -2 means "everybody"
+	}
+	// Check time spent is provided
 	$timespent_durationhour = GETPOST('timespent_durationhour', 'int');
 	$timespent_durationmin = GETPOST('timespent_durationmin', 'int');
 	if (empty($timespent_durationhour) && empty($timespent_durationmin)) {
 		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv("Duration")), null, 'errors');
-		$error ++;
-	}
-	if (empty($_POST["userid"])) {
-		$langs->load("errors");
-		setEventMessages($langs->trans('ErrorUserNotAssignedToTask'), null, 'errors');
 		$error ++;
 	}
 	
@@ -139,15 +142,23 @@ if ($action == 'addtimespent' && $user->rights->projet->lire) {
 			$object->progress = GETPOST('progress', 'int');
 			$object->timespent_duration = $_POST["timespent_durationhour"] * 60 * 60; // We store duration in seconds
 			$object->timespent_duration += $_POST["timespent_durationmin"] * 60; // We store duration in seconds
-			if (GETPOST("timehour") != '' && GETPOST("timehour") >= 0) // If hour was entered
-{
+			if (GETPOST("timehour") != '' && GETPOST("timehour") >= 0) { // If hour was entered
 				$object->timespent_date = dol_mktime(GETPOST("timehour"), GETPOST("timemin"), 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
 				$object->timespent_withhour = 1;
 			} else {
 				$object->timespent_date = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
 			}
-			$object->timespent_fk_user = $_POST["userid"];
-			$result = $object->addTimeSpent($user);
+			
+			if ($idfortaskuser == - 2) { // everybody selected
+				$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
+				foreach ($contactsoftask as $userid) {
+					$object->timespent_fk_user = $userid;
+					$result = $object->addTimeSpent($user);
+				}
+			} elseif ($idfortaskuser !== - 1) { // not empty
+				$object->timespent_fk_user = $idfortaskuser;
+				$result = $object->addTimeSpent($user);
+			}
 			if ($result >= 0) {
 				setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
 			} else {
@@ -162,7 +173,7 @@ if ($action == 'addtimespent' && $user->rights->projet->lire) {
 
 if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
 	/**
-	 *  Update an existing line
+	 * Update an existing line
 	 */
 	$error = 0;
 	
@@ -202,7 +213,7 @@ if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->cree
 
 if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->creer) {
 	/**
-	 * Delete an exisisting line 
+	 * Delete an exisisting line
 	 */
 	$object->fetchTimeSpent($_GET['lineid']);
 	$result = $object->delTimeSpent($user);
@@ -318,22 +329,22 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			
 			// Contributor
 			print '<td class="maxwidthonsmartphone">';
-			//print img_object('', 'user', 'class="hideonsmartphone"');
-			//$contactsoftask = $object->getListContactId('external');
-			$contactsoftask = $object->liste_contact(-1,'internal',0);
-			$contactsoftask = array_merge($contactsoftask,$object->liste_contact(-1,'external',0));
-			//var_dump($contactsoftask);
+			print img_object('', 'user', 'class="hideonsmartphone"');
+			// $contactsoftask = $object->getListContactId('external');
+			$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
+			// $contactsoftask = array_merge($contactsoftask,$object->liste_contact(-1,'external',0));
+			// var_dump($contactsoftask);
 			if (count($contactsoftask) > 0) {
-				$selectable = array();
-				foreach ($contactsoftask as $contact){
-					$key = $contact["socid"].':'.$contact["id"] ;
-					$value = $contact["firstname"].' '.$contact["lastname"];
-					$selectable = array_merge($selectable, array($key => $value));
-				}
-				//var_dump($selectable);
-				//$userid = $contactsoftask[0];
-				print $form->selectarray('userid', $selectable,0,0);
-				//print $form->select_dolusers((GETPOST('userid') ? GETPOST('userid') : $userid), 'userid', 0, '', 0, '', $contactsoftask, 0, 0, 0, '', 0, $langs->trans("ResourceNotAssignedToTheTask"), 'maxwidth200');
+				// $selectable = array();
+				// foreach ($contactsoftask as $contact){
+				// $key = $contact["socid"].':'.$contact["id"] ;
+				// $value = $contact["firstname"].' '.$contact["lastname"];
+				// $selectable = array_merge($selectable, array($key => $value));
+				// }
+				// var_dump($selectable);
+				// $userid = $contactsoftask[0];
+				// print $form->selectarray('userid', $selectable,0,0);
+				print $form->select_dolusers((GETPOST('userid') ? GETPOST('userid') : $userid), 'userid', 0, '', 0, '', $contactsoftask, 0, 0, 0, '', 1, $langs->trans("ResourceNotAssignedToTheTask"), 'maxwidth200');
 			} else {
 				print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
 			}
@@ -341,7 +352,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			
 			// Note
 			print '<td>';
-			print '<textarea name="timespent_note" class="maxwidth100onsmartphone" rows="' . ROWS_2 . '">' . ($_POST['timespent_note'] ? $_POST['timespent_note'] : '') . '</textarea>';
+			print '<textarea name="timespent_note" class="maxwidth100onsmartphone" rows="' . ROWS_1 . '">' . ($_POST['timespent_note'] ? $_POST['timespent_note'] : '') . '</textarea>';
 			print '</td>';
 			
 			// Progress declared
@@ -361,7 +372,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print '</table></form>';
 			
 			print '<br>';
-		}// end form
+		} // end form
 	}
 	
 	if ($projectstatic->id > 0) {

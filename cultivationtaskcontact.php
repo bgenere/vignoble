@@ -185,7 +185,7 @@ if ($id > 0 || ! empty($ref)) {
 			print '<td>' . $langs->trans("ThirdParty") . '</td>';
 			print '<td>' . $langs->trans("ProjectContact") . '</td>';
 			print '<td>' . $langs->trans("ContactType") . '</td>';
-			print '<td colspan="3">TEST&nbsp;</td>';
+			print '<td colspan="3">&nbsp;</td>';
 			print "</tr>\n";
 			
 			$var = false; // manage line color swap.
@@ -231,46 +231,47 @@ if ($id > 0 || ! empty($ref)) {
 			
 			/**
 			 * - form to add an external contact (linked to a third party)
+			 *   removed as it is not possible to follow time on contact (only user) is supported
 			 */
-			print '<form action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '" method="POST">';
-			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
-			print '<input type="hidden" name="action" value="addcontact">';
-			print '<input type="hidden" name="source" value="external">';
-			print '<input type="hidden" name="id" value="' . $object->id . '">';
-			if ($withproject)
-				print '<input type="hidden" name="withproject" value="' . $withproject . '">';
-				// start line with style change
-			$var = ! $var;
-			print "<tr " . $bc[$var] . ">";
+// 			print '<form action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '" method="POST">';
+// 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+// 			print '<input type="hidden" name="action" value="addcontact">';
+// 			print '<input type="hidden" name="source" value="external">';
+// 			print '<input type="hidden" name="id" value="' . $object->id . '">';
+// 			if ($withproject)
+// 				print '<input type="hidden" name="withproject" value="' . $withproject . '">';
+// 				// start line with style change
+// 			$var = ! $var;
+// 			print "<tr " . $bc[$var] . ">";
 			
-			print '<td class="nowrap">';
-			print img_object('', 'contact') . ' ' . $langs->trans("ThirdPartyContacts");
-			print '</td>';
+// 			print '<td class="nowrap">';
+// 			print img_object('', 'contact') . ' ' . $langs->trans("ThirdPartyContacts");
+// 			print '</td>';
 			
-			print '<td>';
-			// init filters for third party selection
-			$thirdpartyofproject = $projectstatic->getListContactId('thirdparty');
-			// init company when combo value has been selected
-			$selectedCompany = GETPOST("newcompany") ? GETPOST("newcompany") : $projectstatic->societe->id;
-			$selectedCompany = $formcompany->selectCompaniesForNewContact($object, 'id', $selectedCompany, 'newcompany', $thirdpartyofproject, 0, '&withproject=' . $withproject);
-			print '</td>';
+// 			print '<td>';
+// 			// init filters for third party selection
+// 			$thirdpartyofproject = $projectstatic->getListContactId('thirdparty');
+// 			// init company when combo value has been selected
+// 			$selectedCompany = GETPOST("newcompany") ? GETPOST("newcompany") : $projectstatic->societe->id;
+// 			$selectedCompany = $formcompany->selectCompaniesForNewContact($object, 'id', $selectedCompany, 'newcompany', $thirdpartyofproject, 0, '&withproject=' . $withproject);
+// 			print '</td>';
 			
-			print '<td>';
-			$contactofproject = $projectstatic->getListContactId('external');
-			$nbofcontacts = $form->select_contacts($selectedCompany, '', 'contactid', 0, '', $contactofproject);
-			print '</td>';
+// 			print '<td>';
+// 			$contactofproject = $projectstatic->getListContactId('external');
+// 			$nbofcontacts = $form->select_contacts($selectedCompany, '', 'contactid', 0, '', $contactofproject);
+// 			print '</td>';
 			
-			print '<td>';
-			$formcompany->selectTypeContact($object, '', 'type', 'external', 'rowid');
-			print '</td>';
+// 			print '<td>';
+// 			$formcompany->selectTypeContact($object, '', 'type', 'external', 'rowid');
+// 			print '</td>';
 			
-			print '<td align="right" colspan="3" ><input type="submit" class="button" id="add-customer-contact" value="' . $langs->trans("Add") . '"';
-			if (! $nbofcontacts)
-				print ' disabled';
-			print '></td>';
+// 			print '<td align="right" colspan="3" ><input type="submit" class="button" id="add-customer-contact" value="' . $langs->trans("Add") . '"';
+// 			if (! $nbofcontacts)
+// 				print ' disabled';
+// 			print '></td>';
 			
-			print '</tr>';
-			print "</form>";
+// 			print '</tr>';
+// 			print "</form>";
 		}
 		/**
 		 * Display list of linked contacts
