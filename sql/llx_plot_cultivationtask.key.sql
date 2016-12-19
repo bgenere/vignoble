@@ -14,10 +14,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- unique index on reference
-ALTER TABLE llx_plot ADD UNIQUE INDEX uk_plot_ref (ref, entity);
--- index for label search
-ALTER TABLE llx_plot ADD INDEX idx_plot_label (label);
+-- unique index on link fields
+ALTER TABLE llx_plot_cultivationtask ADD INDEX uk_plot_cultivationtask_plot (fk_plot);
+ALTER TABLE llx_plot_cultivationtask ADD INDEX uk_plot_cultivationtask_task (fk_task);
+-- index for note search
+ALTER TABLE llx_plot_cultivationtask ADD INDEX idx_plot_cultivationtask_note (note);
 -- index on user
-ALTER TABLE llx_plot ADD INDEX idx_plot_fk_user_author (fk_user_author);
-ALTER TABLE llx_plot ADD INDEX idx_plot_fk_user_modif (fk_user_modif);
+ALTER TABLE llx_plot_cultivationtask ADD INDEX idx_plot_cultivationtask_fk_user_author (fk_user_author);
+ALTER TABLE llx_plot_cultivationtask ADD INDEX idx_plot_cultivationtask_fk_user_modif (fk_user_modif);
+
