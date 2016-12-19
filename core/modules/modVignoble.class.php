@@ -291,6 +291,7 @@ class modVignoble extends DolibarrModules
 			'task:+cultivationtask:Task:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtask.php?id=__ID__&withproject=1',
 			'task:+cultivationtaskcontact:Contact:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtaskcontact.php?id=__ID__&withproject=1',
 			'task:+cultivationtasktime:Time:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtasktime.php?id=__ID__&withproject=1',
+			'task:+cultivationtaskplot:Plot:project@projet:1:/vignoble/cultivationtaskplot.php?id=__ID__&withproject=1',
 		);
 		// String Examples :
 		// To add a tab identified by code tabname
