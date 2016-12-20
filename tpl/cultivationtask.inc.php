@@ -29,8 +29,8 @@ dol_include_once('/projet/class/task.class.php');
 dol_include_once('/contact/class/contact.class.php');
 
 //Include vignoble class
-dol_include_once('./class/plot.class.php');
-dol_include_once('./class/plotcultivationtask.class.php');
+require_once './class/plot.class.php';
+require_once './class/plotcultivationtask.class.php';
 
 // Include extrafields class
 dol_include_once('/core/class/extrafields.class.php');

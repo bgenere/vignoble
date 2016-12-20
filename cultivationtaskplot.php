@@ -39,13 +39,8 @@ $confirm = GETPOST('confirm', 'alpha');
 $withproject = GETPOST('withproject', 'int');
 $project_ref = GETPOST('project_ref', 'alpha');
 
-$search_dateday = GETPOST('search_dateday');
-$search_datemonth = GETPOST('search_datemonth');
-$search_dateyear = GETPOST('search_dateyear');
-$search_datehour = '';
-$search_datewithhour = '';
 $search_note = GETPOST('search_note', 'alpha');
-$search_duration = GETPOST('search_duration', 'int');
+$search_coverage = GETPOST('search_coverage', 'int');
 $search_value = GETPOST('search_value', 'int');
 
 // Security check
@@ -66,7 +61,7 @@ $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortfield)
-	$sortfield = 't.task_date,t.task_datehour,t.rowid';
+	$sortfield = 't.fk_task,t.fk_plot,t.rowid';
 if (! $sortorder)
 	$sortorder = 'DESC';
 	
@@ -87,39 +82,34 @@ include DOL_DOCUMENT_ROOT . '/core/actions_changeselectedfields.inc.php';
 // Purge search criteria
 if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter")) // All test are required to be compatible with all browsers
 {
-	$search_date = '';
-	$search_datehour = '';
-	$search_datewithhour = '';
 	$search_note = '';
-	$search_duration = '';
+	$search_coverage = '';
 	$search_value = '';
-	$search_date_creation = '';
-	$search_date_update = '';
 	$toselect = '';
 	$search_array_options = array();
 	$action = '';
 }
 
-if ($action == 'addtimespent' && $user->rights->projet->lire) {
+if ($action == 'addplot' && $user->rights->projet->lire) {
 	/**
-	 * Add a line of time spent
+	 * Add a plot
 	 */
 	$error = 0;
 	
-	if (empty(GETPOST("userid"))) {
-		$langs->load("errors");
-		setEventMessages($langs->trans('ErrorUserNotAssignedToTask'), null, 'errors');
-		$error ++;
-	} else {
-		$idfortaskuser = GETPOST("userid"); // val -2 means "everybody"
-	}
-	// Check time spent is provided
-	$timespent_durationhour = GETPOST('timespent_durationhour', 'int');
-	$timespent_durationmin = GETPOST('timespent_durationmin', 'int');
-	if (empty($timespent_durationhour) && empty($timespent_durationmin)) {
-		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv("Duration")), null, 'errors');
-		$error ++;
-	}
+// 	if (empty(GETPOST("userid"))) {
+// 		$langs->load("errors");
+// 		setEventMessages($langs->trans('ErrorUserNotAssignedToTask'), null, 'errors');
+// 		$error ++;
+// 	} else {
+// 		$idfortaskuser = GETPOST("userid"); // val -2 means "everybody"
+// 	}
+// 	// Check time spent is provided
+// 	$timespent_durationhour = GETPOST('timespent_durationhour', 'int');
+// 	$timespent_durationmin = GETPOST('timespent_durationmin', 'int');
+// 	if (empty($timespent_durationhour) && empty($timespent_durationmin)) {
+// 		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv("Duration")), null, 'errors');
+// 		$error ++;
+// 	}
 	
 	if (! $error) {
 		$object->fetch($id, $ref);
@@ -141,8 +131,8 @@ if ($action == 'addtimespent' && $user->rights->projet->lire) {
 			}
 			
 			if ($idfortaskuser == - 2) { // everybody selected
-				$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
-				foreach ($contactsoftask as $userid) {
+				$plotsoftask = $object->liste_contact(- 1, 'internal', 1);
+				foreach ($plotsoftask as $userid) {
 					$object->timespent_fk_user = $userid;
 					$result = $object->addTimeSpent($user);
 				}
@@ -231,10 +221,10 @@ if (! empty($project_ref) && ! empty($withproject)) {
 }
 
 // To show all time lines for project
-$projectidforalltimes = 0;
-if (GETPOST('projectid')) {
-	$projectidforalltimes = GETPOST('projectid', 'int');
-}
+// $projectidforalltimes = 0;
+// if (GETPOST('projectid')) {
+// 	$projectidforalltimes = GETPOST('projectid', 'int');
+// }
 
 /**
  * Display View
@@ -295,14 +285,14 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			
 			print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
-			print '<input type="hidden" name="action" value="addtimespent">';
+			print '<input type="hidden" name="action" value="addplot">';
 			print '<input type="hidden" name="id" value="' . $object->id . '">';
 			print '<input type="hidden" name="withproject" value="' . $withproject . '">';
 			
 			print '<table class="noborder nohover" width="100%">';
 			
 			print '<tr class="liste_titre">';
-			print '<td>' . $langs->trans("Plot") . '</td>';
+			print '<td>' . $langs->trans("Plots") . '</td>';
 			print '<td>' . $langs->trans("Note") . '</td>';
 			print '<td>' . $langs->trans("ProgressDeclared") . '</td>';
 			print '<td>'."&nbsp".'</td>';
@@ -310,27 +300,20 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			
 			print '<tr ' . $bc[false] . '>';
 				
-			// Plot
+			// Plot selection
+			$plot = new plot($db);
 			print '<td class="maxwidthonsmartphone">';
-			print img_object('', 'plot', 'class="hideonsmartphone"');
-			// $contactsoftask = $object->getListContactId('external');
-			$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
-			// $contactsoftask = array_merge($contactsoftask,$object->liste_contact(-1,'external',0));
-			// var_dump($contactsoftask);
-			if (count($contactsoftask) > 0) {
-				// $selectable = array();
-				// foreach ($contactsoftask as $contact){
-				// $key = $contact["socid"].':'.$contact["id"] ;
-				// $value = $contact["firstname"].' '.$contact["lastname"];
-				// $selectable = array_merge($selectable, array($key => $value));
-				// }
-				// var_dump($selectable);
-				// $userid = $contactsoftask[0];
-				// print $form->selectarray('userid', $selectable,0,0);
-				print $form->select_dolusers((GETPOST('userid') ? GETPOST('userid') : $userid), 'userid', 0, '', 0, '', $contactsoftask, 0, 0, 0, '', 1, $langs->trans("ResourceNotAssignedToTheTask"), 'maxwidth200');
-			} else {
-				print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
-			}
+			print img_object('', 'plot14@vignoble', 'class="hideonsmartphone"');
+			
+			if ($plot->fetchAll("ASC","ref") > 0) {
+				$plots = array('-2' => $langs->trans("All") );
+				foreach ($plot->lines as $plotLine){
+					$key = $plotLine->id;
+					$value = $plotLine->ref;
+					$plots = array_merge($plots,array($key => $value));
+				}
+				print $form->multiselectarray('multi_plots', $plots,$plots,0,0,'',0,'240') ;
+			} 
 			print '</td>';
 			
 			// Note
@@ -358,8 +341,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $_GET["lineid"] . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_delete", '', '', 1);
 		}
 		
-		$extrafields = new ExtraFields($db);
-		
+			
 		// Definition of fields for list
 		$arrayfields = array();
 		$arrayfields['t.task_date'] = array(
@@ -393,61 +375,12 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			'checked' => 1,
 			'enabled' => $conf->salaries->enabled
 		);
-		// Extra fields
-		if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
-			foreach ($extrafields->attribute_label as $key => $val) {
-				$arrayfields["ef." . $key] = array(
-					'label' => $extrafields->attribute_label[$key],
-					'checked' => $extrafields->attribute_list[$key],
-					'position' => $extrafields->attribute_pos[$key],
-					'enabled' => $extrafields->attribute_perms[$key]
-				);
-			}
-		}
+		
 		
 		/*
-		 * List of time spent
+		 * List of plots and coverage
 		 */
-		$tasks = array();
 		
-		$sql = "SELECT t.rowid, t.fk_task, t.task_date, t.task_datehour, t.task_date_withhour, t.task_duration, t.fk_user, t.note, t.thm,";
-		$sql .= " pt.ref, pt.label,";
-		$sql .= " u.lastname, u.firstname";
-		$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t, " . MAIN_DB_PREFIX . "projet_task as pt, " . MAIN_DB_PREFIX . "user as u";
-		$sql .= " WHERE t.fk_user = u.rowid AND t.fk_task = pt.rowid";
-		if (empty($projectidforalltimes))
-			$sql .= " AND t.fk_task =" . $object->id;
-		else
-			$sql .= " AND pt.fk_projet IN (" . $projectidforalltimes . ")";
-		if ($search_ref)
-			$sql .= natural_search('c.ref', $search_ref);
-		if ($search_note)
-			$sql .= natural_search('t.note', $search_note);
-		$sql .= $db->order($sortfield, $sortorder);
-		
-		$var = true;
-		$resql = $db->query($sql);
-		if ($resql) {
-			$num = $db->num_rows($resql);
-			$totalnboflines = $num;
-			
-			if (! empty($projectidforalltimes)) {
-				$title = $langs->trans("ListTaskTimeUserProject");
-				$linktotasks = '<a href="' . DOL_URL_ROOT . '/projet/tasks.php?id=' . $projectstatic->id . '">' . $langs->trans("GoToListOfTasks") . '</a>';
-				// print_barre_liste($title, 0, $_SERVER["PHP_SELF"], '', $sortfield, $sortorder, $linktotasks, $num, $totalnboflines, 'title_generic.png', 0, '', '', 0, 1);
-				print load_fiche_titre($title, $linktotasks, 'title_generic.png');
-			}
-			
-			$i = 0;
-			while ($i < $num) {
-				$row = $db->fetch_object($resql);
-				$tasks[$i] = $row;
-				$i ++;
-			}
-			$db->free($resql);
-		} else {
-			dol_print_error($db);
-		}
 		
 		$arrayofselected = is_array($toselect) ? $toselect : array();
 		
@@ -458,8 +391,8 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			$param .= '&limit=' . $limit;
 		if ($search_note != '')
 			$params .= '&amp;search_note=' . urlencode($search_note);
-		if ($search_duration != '')
-			$params .= '&amp;search_field2=' . urlencode($search_duration);
+		if ($search_coverage != '')
+			$params .= '&amp;search_field2=' . urlencode($search_coverage);
 		if ($optioncss != '')
 			$param .= '&optioncss=' . $optioncss;
 			// Add $param from extra fields
@@ -543,12 +476,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		if (! empty($arrayfields['value']['checked']))
 			print_liste_field_titre($arrayfields['value']['label'], $_SERVER['PHP_SELF'], '', '', $params, 'align="right"', $sortfield, $sortorder);
 			
-			// Hook fields
-		$parameters = array(
-			'arrayfields' => $arrayfields
-		);
-		$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook
-		print $hookmanager->resPrint;
+			
 		print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', 'align="right"', $sortfield, $sortorder, 'maxwidthsearch ');
 		print "</tr>\n";
 		
@@ -640,13 +568,13 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 				if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
 					if (empty($object->id))
 						$object->fetch($id);
-					$contactsoftask = $object->getListContactId('internal');
-					if (! in_array($task_time->fk_user, $contactsoftask)) {
-						$contactsoftask[] = $task_time->fk_user;
+					$plotsoftask = $object->getListContactId('internal');
+					if (! in_array($task_time->fk_user, $plotsoftask)) {
+						$plotsoftask[] = $task_time->fk_user;
 					}
-					if (count($contactsoftask) > 0) {
+					if (count($plotsoftask) > 0) {
 						print img_object('', 'user', 'class="hideonsmartphone"');
-						print $form->select_dolusers($task_time->fk_user, 'userid_line', 0, '', 0, '', $contactsoftask);
+						print $form->select_dolusers($task_time->fk_user, 'userid_line', 0, '', 0, '', $plotsoftask);
 					} else {
 						print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
 					}

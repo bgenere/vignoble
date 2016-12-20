@@ -31,13 +31,13 @@
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**
- * Class plotcultivationtask 
+ * Class Plotcultivationtask 
  *
  * Define the object and the CRUD methods and some more.
  *
  * @see CommonObject
  */
-class plotcultivationtask extends CommonObject
+class Plotcultivationtask extends CommonObject
 {
 
 	/**
@@ -190,7 +190,6 @@ class plotcultivationtask extends CommonObject
 				// if ($result < 0) $error++;
 				// // End call triggers
 			}
-		}
 		
 		// Commit or rollback
 		if ($error) {

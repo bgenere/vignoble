@@ -36,6 +36,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
  *
  * @see CommonObject
  */
+// TODO write plot as Plot for classe name
 class plot extends CommonObject
 {
 
