@@ -54,7 +54,7 @@ class plotcultivationtask extends CommonObject
 
 	/**
 	 *
-	 * @var plotLine[] Lines
+	 * @var Line[] Lines
 	 */
 	public $lines = array();
 
@@ -122,12 +122,12 @@ class plotcultivationtask extends CommonObject
 		if (isset($this->fk_task)) {
 			$this->fk_task = trim($this->fk_task);
 		}
-		if (isset($this->description)) {
-			$this->description = trim($this->description);
+		if (isset($this->coverage)) {
+			$this->coverage = trim($this->coverage);
 		}
 
-		if (isset($this->note_private)) {
-			$this->note_private = trim($this->note_private);
+		if (isset($this->note)) {
+			$this->note = trim($this->note);
 		}
 		if (isset($this->note_public)) {
 			$this->note_public = trim($this->note_public);
@@ -148,9 +148,8 @@ class plotcultivationtask extends CommonObject
 		$sql .= 'entity,';
 		$sql .= 'fk_plot,';
 		$sql .= 'fk_task,';
-		$sql .= 'description,';
-		$sql .= 'note_private,';
-		$sql .= 'note_public,';
+		$sql .= 'coverage,';
+		$sql .= 'note,';
 		$sql .= 'datec,';
 		$sql .= 'fk_user_author,';
 		$sql .= 'fk_user_modif';
@@ -160,9 +159,8 @@ class plotcultivationtask extends CommonObject
 		$sql .= ' ' . ((! isset($this->entity) || empty($this->entity)) ? '1' : $this->entity) . ',';
 		$sql .= ' ' . (! isset($this->fk_plot) ? 'NULL' : "'" . $this->db->escape($this->fk_plot) . "'") . ',';
 		$sql .= ' ' . (! isset($this->fk_task) ? 'NULL' : "'" . $this->db->escape($this->fk_task) . "'") . ',';
-		$sql .= ' ' . (! isset($this->description) ? 'NULL' : "'" . $this->db->escape($this->description) . "'") . ',';
-		$sql .= ' ' . (! isset($this->note_private) ? 'NULL' : "'" . $this->db->escape($this->note_private) . "'") . ',';
-		$sql .= ' ' . (! isset($this->note_public) ? 'NULL' : "'" . $this->db->escape($this->note_public) . "'") . ',';
+		$sql .= ' ' . (! isset($this->coverage) ? 'NULL' : "'" . $this->db->escape($this->coverage) . "'") . ',';
+		$sql .= ' ' . (! isset($this->note) ? 'NULL' : "'" . $this->db->escape($this->note) . "'") . ',';
 		$sql .= ' ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
 		$sql .= ' ' . $user->id . ',';
 		$sql .= ' ' . $user->id;
@@ -181,13 +179,6 @@ class plotcultivationtask extends CommonObject
 		if (! $error) {
 			$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX . $this->table_element);
 			
-			if (! $error && empty($conf->global->MAIN_EXTRAFIELDS_DISABLED)) {
-				$result = $this->insertExtraFields();
-				if ($result < 0) {
-					$error ++;
-					$this->errors[] = 'Error updating extra fields' . $this->db->lasterror();
-					dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
-				}
 			}
 			
 			if (! $notrigger) {
@@ -218,7 +209,7 @@ class plotcultivationtask extends CommonObject
 	 *
 	 * @param int $id
 	 *        	Object Id
-	 * @param string $fk_plot
+	 * @param string $ref always null for this object
 	 *        	Object Reference
 	 * @param $force True,
 	 *        	force SELECT in DB when $this->id is not empty
@@ -236,8 +227,8 @@ class plotcultivationtask extends CommonObject
 			$sql .= " t.entity,";
 			$sql .= " t.fk_plot,";
 			$sql .= " t.fk_task,";
-			$sql .= " t.description,";
-			$sql .= " t.note_private,";
+			$sql .= " t.coverage,";
+			$sql .= " t.note,";
 			$sql .= " t.note_public,";
 			$sql .= " t.tms,";
 			$sql .= " t.datec,";
@@ -245,11 +236,7 @@ class plotcultivationtask extends CommonObject
 			$sql .= " t.fk_user_modif";
 			
 			$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
-			if (! empty($ref)) {
-				$sql .= ' WHERE t.ref = ' . '\'' . $ref . '\'';
-			} else {
-				$sql .= ' WHERE t.rowid = ' . $id;
-			}
+			$sql .= ' WHERE t.rowid = ' . $id;
 			
 			$resql = $this->db->query($sql);
 			if ($resql) {
@@ -261,22 +248,14 @@ class plotcultivationtask extends CommonObject
 					$this->entity = $obj->entity;
 					$this->fk_plot = $obj->fk_plot;
 					$this->fk_task = $obj->fk_task;
-					$this->description = $obj->description;
-					$this->note_private = $obj->note_private;
-					$this->note_public = $obj->note_public;
+					$this->coverage = $obj->coverage;
+					$this->note = $obj->note;
 					$this->tms = $this->db->jdate($obj->tms);
 					$this->datec = $this->db->jdate($obj->datec);
 					$this->fk_user_author = $obj->fk_user_author;
 					$this->fk_user_modif = $obj->fk_user_modif;
 				}
 				$this->db->free($resql);
-				
-				// Retreive all extrafield for current object
-				// fetch optionals attributes and labels
-				require_once (DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php');
-				$extrafields = new ExtraFields($this->db);
-				$extralabels = $extrafields->fetch_name_optionals_label($this->table_element, true);
-				$this->fetch_optionals($this->id, $extralabels);
 				
 				if ($numrows) {
 					return $this->id;
@@ -312,21 +291,16 @@ class plotcultivationtask extends CommonObject
 		$sql .= " t.entity,";
 		$sql .= " t.fk_plot,";
 		$sql .= " t.fk_task,";
-		$sql .= " t.description,";
-		$sql .= " t.note_private,";
-		$sql .= " t.note_public,";
+		$sql .= " t.coverage,";
+		$sql .= " t.note,";
 		$sql .= " t.tms,";
 		$sql .= " t.datec,";
 		$sql .= " t.fk_user_author,";
 		$sql .= " t.fk_user_modif";
 		
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
-		if (null !== $ref) {
-			$sql .= ' WHERE t.ref = ' . '\'' . $ref . '\'';
-		} else {
-			$sql .= ' WHERE t.rowid = ' . $id;
-		}
-		
+		$sql .= ' WHERE t.rowid = ' . $id;
+	
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			$numrows = $this->db->num_rows($resql);
@@ -337,22 +311,14 @@ class plotcultivationtask extends CommonObject
 				$this->entity = $obj->entity;
 				$this->fk_plot = $obj->fk_plot;
 				$this->fk_task = $obj->fk_task;
-				$this->description = $obj->description;
-				$this->note_private = $obj->note_private;
-				$this->note_public = $obj->note_public;
+				$this->coverage = $obj->coverage;
+				$this->note = $obj->note;
 				$this->tms = $this->db->jdate($obj->tms);
 				$this->datec = $this->db->jdate($obj->datec);
 				$this->fk_user_author = $obj->fk_user_author;
 				$this->fk_user_modif = $obj->fk_user_modif;
 			}
 			$this->db->free($resql);
-			
-			// Retreive all extrafield for current object
-			// fetch optionals attributes and labels
-			require_once (DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php');
-			$extrafields = new ExtraFields($this->db);
-			$extralabels = $extrafields->fetch_name_optionals_label($this->table_element, true);
-			$this->fetch_optionals($this->id, $extralabels);
 			
 			if ($numrows) {
 				return 1;
@@ -395,9 +361,8 @@ class plotcultivationtask extends CommonObject
 		$sql .= " t.entity,";
 		$sql .= " t.fk_plot,";
 		$sql .= " t.fk_task,";
-		$sql .= " t.description,";
-		$sql .= " t.note_private,";
-		$sql .= " t.note_public,";
+		$sql .= " t.coverage,";
+		$sql .= " t.note,";
 		$sql .= " t.tms,";
 		$sql .= " t.datec,";
 		$sql .= " t.fk_user_author,";
@@ -429,16 +394,15 @@ class plotcultivationtask extends CommonObject
 			$num = $this->db->num_rows($resql);
 			
 			while ($obj = $this->db->fetch_object($resql)) {
-				$line = new plotLine();
+				$line = new plotcultivationtaskLine();
 				
 				$line->id = $obj->rowid;
 				
 				$line->entity = $obj->entity;
 				$line->fk_plot = $obj->fk_plot;
 				$line->fk_task = $obj->fk_task;
-				$line->description = $obj->description;
-				$line->note_private = $obj->note_private;
-				$line->note_public = $obj->note_public;
+				$line->coverage = $obj->coverage;
+				$line->note = $obj->note;
 				$line->tms = $this->db->jdate($obj->tms);
 				$line->datec = $this->db->jdate($obj->datec);
 				$line->fk_user_author = $obj->fk_user_author;
@@ -484,8 +448,11 @@ class plotcultivationtask extends CommonObject
 		if (isset($this->fk_task)) {
 			$this->fk_task = trim($this->fk_task);
 		}
-		if (isset($this->description)) {
-			$this->description = trim($this->description);
+		if (isset($this->coverage)) {
+			$this->coverage = trim($this->coverage);
+		}
+	if (isset($this->note)) {
+			$this->note = trim($this->note);
 		}
 
 		// Check parameters
@@ -496,7 +463,8 @@ class plotcultivationtask extends CommonObject
 		
 		$sql .= ' fk_plot = ' . (isset($this->fk_plot) ? "'" . $this->db->escape($this->fk_plot) . "'" : "null") . ',';
 		$sql .= ' fk_task = ' . (isset($this->fk_task) ? "'" . $this->db->escape($this->fk_task) . "'" : "null") . ',';
-		$sql .= ' description = ' . (isset($this->description) ? "'" . $this->db->escape($this->description) . "'" : "null") . ',';
+		$sql .= ' coverage = ' . (isset($this->coverage) ? "'" . $this->db->escape($this->coverage) . "'" : "null") . ',';
+		$sql .= ' note = ' . (isset($this->note) ? "'" . $this->db->escape($this->note) . "'" : "null") . ',';
 		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
 		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id);
 		
@@ -511,14 +479,6 @@ class plotcultivationtask extends CommonObject
 			dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
 		}
 		
-		if (! $error && empty($conf->global->MAIN_EXTRAFIELDS_DISABLED)) {
-			$result = $this->insertExtraFields();
-			if ($result < 0) {
-				$error ++;
-				$this->errors[] = 'Error updating extra fields' . $this->db->lasterror();
-				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
-			}
-		}
 		
 		if (! $error && ! $notrigger) {
 			// Uncomment this and change MYOBJECT to your own tag if you
@@ -583,16 +543,7 @@ class plotcultivationtask extends CommonObject
 				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
 			}
 		}
-		// Remove extrafields
-		if ((! $error) && (empty($conf->global->MAIN_EXTRAFIELDS_DISABLED))) {
-			$result = $this->deleteExtraFields();
-			if ($result < 0) {
-				$error ++;
-				$this->errors[] = 'Error removing extra fields';
-				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
-			}
-		}
-		
+			
 		// Commit or rollback
 		if ($error) {
 			$this->db->rollback();
@@ -770,12 +721,8 @@ class plotcultivationtask extends CommonObject
 	{
 		$sql = 'SELECT c.rowid, datec as datec, tms as datem,';
 		$sql .= ' fk_user_author, fk_user_modif';
-		$sql .= ' FROM ' . MAIN_DB_PREFIX . 'plot as c';
-		if (! empty($ref)) {
-			$sql .= ' WHERE c.ref = ' . '\'' . $ref . '\'';
-		} else {
-			$sql .= ' WHERE c.rowid = ' . $id;
-		}
+		$sql .= ' FROM ' . MAIN_DB_PREFIX . 'plotcultivationtask as c';
+		$sql .= ' WHERE c.rowid = ' . $id;
 		
 		$result = $this->db->query($sql);
 		if ($result) {
@@ -814,7 +761,7 @@ class plotcultivationtask extends CommonObject
 	 * @param int $hidedetails
 	 *        	Hide details of lines
 	 * @param int $hidedesc
-	 *        	Hide description
+	 *        	Hide coverage
 	 * @param int $hideref
 	 *        	Hide ref
 	 * @return int 0 if KO, 1 if OK
@@ -853,9 +800,8 @@ class plotcultivationtask extends CommonObject
 		$this->entity = '1';
 		$this->fk_plot = '1';
 		$this->fk_task = '1';
-		$this->description = '';
-		$this->note_private = '';
-		$this->note_public = 'This is a public note';
+		$this->coverage = '100';
+		$this->note = 'This is a note on task for the plot';
 		$this->tms = '';
 		$this->datec = '';
 		$this->fk_user_author = '';
@@ -864,7 +810,7 @@ class plotcultivationtask extends CommonObject
 }
 
 /**
- * Class plotLine
+ * Class plotcultivationtaskLine
  */
 class plotcultivationtaskLine
 {
