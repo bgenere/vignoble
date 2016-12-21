@@ -106,20 +106,30 @@ if ($action == 'addplot' && $user->rights->projet->lire) {
 	}
 	
 	if (! $error) {
+		$object->fetch($id, $ref);
+		$object->fetch_projet();
+		
 		$plot = new plot($db);
 		$plotcultivation = new Plotcultivationtask($db);
 		$all = array_search(0, $multiplots);
-		var_dump($all);
+		//var_dump($all);
 		if ($all === false) { // list of plot in array
 			foreach ($multiplots as $plotid) {
-				var_dump($plotid);
+				$plotcultivation->fk_plot = $plotid;
+				$plotcultivation->fk_task = $object->id;
+				$plotcultivation->note = $note;
+				$plotcultivation->coverage = $coverage;
+				$result=$plotcultivation->create($user);		
 			}
 		} else { // all plots selected
 			$result = $plot->fetchAll('ASC', 'ref');
 			foreach ($plot->lines as $plotLine){
-				var_dump($plotLine);
-			};
-			
+				$plotcultivation->fk_plot = $plotLine->id;
+				$plotcultivation->fk_task = $object->id;
+				$plotcultivation->note = $note;
+				$plotcultivation->coverage = $coverage;
+				$result=$plotcultivation->create($user);
+			};		
 		}
 	}
 	if ($result >= 0) {
@@ -409,11 +419,10 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		
 		$plottask = new Plotcultivationtask($db);
 		
-		$plotfilter = array();
-		$plotfilter[] = '';
+		$taskfilter = array();
+		$taskfilter[] = "t.fk_task = '".$object->id."'";
 		
-		if ($plottask->fetchAll('', '', 0, 0, $plotfilter)) {
-			
+		if ($plottask->fetchAll('', '', 0, 0, $taskfilter)) {
 			$i = 0;
 			$total = 0;
 			$totalvalue = 0;
@@ -425,11 +434,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 				// Plot
 				if (! empty($arrayfields['t.plot']['checked'])) {
 					print '<td class="nowrap">';
-					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-						print $form->select_date(($date2 ? $date2 : $date1), 'timeline', 1, 1, 2, "timespent_date", 1, 0, 1);
-					} else {
-						print dol_print_date(($date2 ? $date2 : $date1), ($task_time->task_date_withhour ? 'dayhour' : 'day'));
-					}
+					print $currplot->id.' '.$currplot->fk_plot;
 					print '</td>';
 					if (! $i)
 						$totalarray['nbfield'] ++;
@@ -462,54 +467,29 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 					}
 				}
 				
-				// User
-				if (! empty($arrayfields['author']['checked'])) {
-					print '<td>';
-					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-						if (empty($object->id))
-							$object->fetch($id);
-						$plotsoftask = $object->getListContactId('internal');
-						if (! in_array($task_time->fk_user, $plotsoftask)) {
-							$plotsoftask[] = $task_time->fk_user;
-						}
-						if (count($plotsoftask) > 0) {
-							print img_object('', 'user', 'class="hideonsmartphone"');
-							print $form->select_dolusers($task_time->fk_user, 'userid_line', 0, '', 0, '', $plotsoftask);
-						} else {
-							print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
-						}
-					} else {
-						$userstatic->id = $task_time->fk_user;
-						$userstatic->lastname = $task_time->lastname;
-						$userstatic->firstname = $task_time->firstname;
-						print $userstatic->getNomUrl(1);
-					}
-					print '</td>';
-					if (! $i)
-						$totalarray['nbfield'] ++;
-				}
+				
 				
 				// Note
 				if (! empty($arrayfields['t.note']['checked'])) {
 					print '<td align="left">';
-					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-						print '<textarea name="timespent_note_line" width="95%" rows="' . ROWS_2 . '">' . $task_time->note . '</textarea>';
+					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $currplot->id) {
+						print '<textarea name="timespent_note_line" width="95%" rows="' . ROWS_1 . '">' . $currplot->note . '</textarea>';
 					} else {
-						print dol_nl2br($task_time->note);
+						print dol_nl2br($currplot->note);
 					}
 					print '</td>';
 					if (! $i)
 						$totalarray['nbfield'] ++;
 				}
 				
-				// Time spent
-				if (! empty($arrayfields['t.task_duration']['checked'])) {
-					print '<td align="right">';
-					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-						print '<input type="hidden" name="old_duration" value="' . $task_time->task_duration . '">';
-						print $form->select_duration('new_duration', $task_time->task_duration, 0, 'text');
+				// Coverage
+				if (! empty($arrayfields['t.coverage']['checked'])) {
+					print '<td>';
+					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $currplot->id) {
+						print '<input type="hidden" name="old_coverage" value="' . $currplot->coverage . '">';
+						print $formother->select_percent(GETPOST('coverage', 'int') ? GETPOST('coverage') : $currplot->coverage, 'coverage');
 					} else {
-						print convertSecondToTime($task_time->task_duration, 'allhourmin');
+						print $currplot->coverage.'%';
 					}
 					print '</td>';
 					if (! $i)
@@ -518,20 +498,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 						$totalarray['totaldurationfield'] = $totalarray['nbfield'];
 					$totalarray['totalduration'] += $task_time->task_duration;
 				}
-				
-				// Value spent
-				if (! empty($arrayfields['value']['checked'])) {
-					print '<td align="right">';
-					$value = price2num($task_time->thm * $task_time->task_duration / 3600);
-					print price($value, 1, $langs, 1, - 1, - 1, $conf->currency);
-					print '</td>';
-					if (! $i)
-						$totalarray['nbfield'] ++;
-					if (! $i)
-						$totalarray['totalvaluefield'] = $totalarray['nbfield'];
-					$totalarray['totalvalue'] += $value;
-				}
-				
+								
 				// Action column
 				print '<td class="right" valign="middle" width="80">';
 				if ($action == 'editline' && $_GET['lineid'] == $task_time->rowid) {
