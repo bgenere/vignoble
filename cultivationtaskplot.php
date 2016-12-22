@@ -112,34 +112,34 @@ if ($action == 'addplot' && $user->rights->projet->lire) {
 		$plot = new plot($db);
 		$plotcultivation = new Plotcultivationtask($db);
 		$all = array_search(0, $multiplots);
-		//var_dump($all);
+		// var_dump($all);
 		if ($all === false) { // list of plot in array
 			foreach ($multiplots as $plotid) {
 				$plotcultivation->fk_plot = $plotid;
 				$plotcultivation->fk_task = $object->id;
 				$plotcultivation->note = $note;
 				$plotcultivation->coverage = $coverage;
-				$result=$plotcultivation->create($user);		
+				$result = $plotcultivation->create($user);
 			}
 		} else { // all plots selected
 			$result = $plot->fetchAll('ASC', 'ref');
-			foreach ($plot->lines as $plotLine){
+			foreach ($plot->lines as $plotLine) {
 				$plotcultivation->fk_plot = $plotLine->id;
 				$plotcultivation->fk_task = $object->id;
 				$plotcultivation->note = $note;
 				$plotcultivation->coverage = $coverage;
-				$result=$plotcultivation->create($user);
-			};		
+				$result = $plotcultivation->create($user);
+			}
+			;
 		}
 	}
 	if ($result >= 0) {
 		setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+		$action = '';
 	} else {
-		setEventMessages(null, $langs->trans($object->errors), 'errors');
+		setEventMessages(null, $langs->trans($plotcultivation->errors), 'errors');
 		$error ++;
 	}
-} else {
-	$action = '';
 }
 
 if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
@@ -147,38 +147,21 @@ if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->cree
 	 * Update an existing line
 	 */
 	$error = 0;
+	$plotcultivation = new Plotcultivationtask($db);
+	$lineid = GETPOST('lineid', int);
+	if ($plotcultivation->fetch($lineid)) {
+		$plotcultivation->note = GETPOST('note', 'alpha');
+		$plotcultivation->coverage = GETPOST('coverage', 'int');
+		$result = $plotcultivation->update($user);
+	} else
+		$result = - 1;
 	
-	if (empty($_POST["new_durationhour"]) && empty($_POST["new_durationmin"])) {
-		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv("Duration")), null, 'errors');
-		$error ++;
-	}
-	
-	if (! $error) {
-		$object->fetch($id, $ref);
-		
-		$object->timespent_id = $_POST["lineid"];
-		$object->timespent_note = $_POST["timespent_note_line"];
-		$object->timespent_old_duration = $_POST["old_duration"];
-		$object->timespent_duration = $_POST["new_durationhour"] * 60 * 60; // We store duration in seconds
-		$object->timespent_duration += $_POST["new_durationmin"] * 60; // We store duration in seconds
-		if (GETPOST("timelinehour") != '' && GETPOST("timelinehour") >= 0) // If hour was entered
-{
-			$object->timespent_date = dol_mktime(GETPOST("timelinehour"), GETPOST("timelinemin"), 0, GETPOST("timelinemonth"), GETPOST("timelineday"), GETPOST("timelineyear"));
-			$object->timespent_withhour = 1;
-		} else {
-			$object->timespent_date = dol_mktime(12, 0, 0, GETPOST("timelinemonth"), GETPOST("timelineday"), GETPOST("timelineyear"));
-		}
-		$object->timespent_fk_user = $_POST["userid_line"];
-		
-		$result = $object->updateTimeSpent($user);
-		if ($result >= 0) {
-			setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
-		} else {
-			setEventMessages($langs->trans($object->error), null, 'errors');
-			$error ++;
-		}
-	} else {
+	if ($result >= 0) {
+		setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
 		$action = '';
+	} else {
+		setEventMessages(null, $langs->trans($plotcultivation->errors), 'errors');
+		$error ++;
 	}
 }
 
@@ -186,12 +169,16 @@ if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->c
 	/**
 	 * Delete an existing line
 	 */
-	$object->fetchTimeSpent($_GET['lineid']);
-	$result = $object->delTimeSpent($user);
+	$plotcultivation = new Plotcultivationtask($db);
+	$lineid = GETPOST('lineid', int);
+	if ($plotcultivation->fetch($lineid)) {
+		$result = $plotcultivation->delete($user);
+	} else
+		$result = - 1;
 	
 	if ($result < 0) {
 		$langs->load("errors");
-		setEventMessages($langs->trans($object->error), null, 'errors');
+		setEventMessages(null, $langs->trans($plotcultivation->errors), 'errors');
 		$error ++;
 		$action = '';
 	}
@@ -220,7 +207,7 @@ $form = new Form($db);
 $formother = new FormOther($db);
 $userstatic = new User($db);
 
-if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
+if (($id > 0 || ! empty($ref))) {
 	/**
 	 * - Display project summary card
 	 */
@@ -246,7 +233,13 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 	displayTaskCard($object, $projectstatic, $form);
 	
 	if ($action == 'deleteline') {
-		print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . GETPOST("lineid", "int") . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteAPlot"), $langs->trans("ConfirmDeleteAPlot"), "confirm_delete", '', '', 1);
+		$lineid = GETPOST('lineid', 'int');
+		$currplot = new Plotcultivationtask($db);
+		if ($currplot->fetch($lineid)) {
+			$plot = new plot($db);
+			$plot->fetch($currplot->fk_plot);
+			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteLinktoPlot"), $langs->trans("ConfirmDeleteLinktoPlot"). ' ' . $plot->ref, "confirm_delete", '', '', 1);
+		}
 	}
 	
 	dol_fiche_end();
@@ -314,9 +307,6 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 	} // end form
 	
 	if ($projectstatic->id > 0) {
-		if ($action == 'deleteline') {
-			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . GETPOST('lineid', 'int') . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteAPlot"), $langs->trans("ConfirmDeleteAPlot"), "confirm_delete", '', '', 1);
-		}
 		
 		// Definition of fields for Plot list
 		$arrayfields = array();
@@ -372,7 +362,6 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		print '<input type="hidden" name="sortfield" value="' . $sortfield . '">';
 		print '<input type="hidden" name="sortorder" value="' . $sortorder . '">';
 		print '<input type="hidden" name="id" value="' . $id . '">';
-		print '<input type="hidden" name="projectid" value="' . $projectidforalltimes . '">';
 		print '<input type="hidden" name="withproject" value="' . $withproject . '">';
 		
 		$moreforfilter = '';
@@ -412,144 +401,75 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			
 			// Action column
 		print '<td class="liste_titre" align="right">';
-		$searchpitco = $form->showFilterAndCheckAddButtons($massactionbutton ? 1 : 0, 'checkforselect', 1);
-		print $searchpitco;
+		$searchpicto = $form->showFilterAndCheckAddButtons($massactionbutton ? 1 : 0, 'checkforselect', 1);
+		print $searchpicto;
 		print '</td>';
 		print '</tr>' . "\n";
 		
 		$plottask = new Plotcultivationtask($db);
 		
-		$taskfilter = array();
-		$taskfilter[] = "t.fk_task = '".$object->id."'";
+		$plotfilter = array();
+		$plotfilter[] = "t.fk_task = '" . $object->id . "'";
+		if (!empty($search_note)) $plotfilter[] = "t.note LIKE %" . $search_note . "%";
+		if (!empty($search_coverage)) $plotfilter[] = "t.coverage =" . $search_coverage ;
 		
-		if ($plottask->fetchAll('', '', 0, 0, $taskfilter)) {
-			$i = 0;
-			$total = 0;
-			$totalvalue = 0;
-			$totalarray = array();
+		if ($plottask->fetchAll('', '', 0, 0, $plotfilter)) {
 			foreach ($plottask->lines as $currplot) {
 				$var = ! $var;
 				print "<tr " . $bc[$var] . ">";
-				
-				// Plot
+				// Plot url
 				if (! empty($arrayfields['t.plot']['checked'])) {
+					$plot = new plot($db);
+					$plot->fetch($currplot->fk_plot);
 					print '<td class="nowrap">';
-					print $currplot->id.' '.$currplot->fk_plot;
+					print $plot->getNomUrl(1, 'plot');
 					print '</td>';
-					if (! $i)
-						$totalarray['nbfield'] ++;
 				}
-				
-				// Task ref
-				if (! empty($arrayfields['t.task_ref']['checked'])) {
-					if ((empty($id) && empty($ref)) || ! empty($projectidforalltimes)) // Not a dedicated task
-{
-						print '<td class="nowrap">';
-						$plottask->id = $task_time->fk_task;
-						$plottask->ref = $task_time->ref;
-						$plottask->label = $task_time->label;
-						print $plottask->getNomUrl(1, 'withproject', 'time');
-						print '</td>';
-						if (! $i)
-							$totalarray['nbfield'] ++;
-					}
-				}
-				
-				// Task label
-				if (! empty($arrayfields['t.task_label']['checked'])) {
-					if ((empty($id) && empty($ref)) || ! empty($projectidforalltimes)) // Not a dedicated task
-{
-						print '<td class="nowrap">';
-						print $task_time->label;
-						print '</td>';
-						if (! $i)
-							$totalarray['nbfield'] ++;
-					}
-				}
-				
-				
-				
 				// Note
 				if (! empty($arrayfields['t.note']['checked'])) {
 					print '<td align="left">';
-					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $currplot->id) {
-						print '<textarea name="timespent_note_line" width="95%" rows="' . ROWS_1 . '">' . $currplot->note . '</textarea>';
+					if (GETPOST('action') == 'editline' && GETPOST('lineid') == $currplot->id) {
+						print '<textarea name="note" width="95%" rows="' . ROWS_1 . '">' . $currplot->note . '</textarea>';
 					} else {
 						print dol_nl2br($currplot->note);
 					}
 					print '</td>';
-					if (! $i)
-						$totalarray['nbfield'] ++;
 				}
 				
 				// Coverage
 				if (! empty($arrayfields['t.coverage']['checked'])) {
 					print '<td>';
-					if ($_GET['action'] == 'editline' && $_GET['lineid'] == $currplot->id) {
+					if (GETPOST('action') == 'editline' && GETPOST('lineid') == $currplot->id) {
 						print '<input type="hidden" name="old_coverage" value="' . $currplot->coverage . '">';
 						print $formother->select_percent(GETPOST('coverage', 'int') ? GETPOST('coverage') : $currplot->coverage, 'coverage');
 					} else {
-						print $currplot->coverage.'%';
+						print $currplot->coverage . '%';
 					}
 					print '</td>';
-					if (! $i)
-						$totalarray['nbfield'] ++;
-					if (! $i)
-						$totalarray['totaldurationfield'] = $totalarray['nbfield'];
-					$totalarray['totalduration'] += $task_time->task_duration;
 				}
-								
+				
 				// Action column
 				print '<td class="right" valign="middle" width="80">';
-				if ($action == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-					print '<input type="hidden" name="lineid" value="' . $_GET['lineid'] . '">';
+				if ($action == 'editline' && GETPOST('lineid') == $currplot->id) {
+					print '<input type="hidden" name="lineid" value="' . GETPOST('lineid') . '">';
 					print '<input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
 					print '<br>';
 					print '<input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '">';
 				} else 
 					if ($user->rights->projet->creer) {
 						print '&nbsp;';
-						print '<a href="' . $_SERVER["PHP_SELF"] . '?' . ($projectidforalltimes ? 'projectid=' . $projectidforalltimes . '&amp;' : '') . 'id=' . $task_time->fk_task . '&amp;action=editline&amp;lineid=' . $task_time->rowid . ($withproject ? '&amp;withproject=1' : '') . '">';
+						print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $currplot->fk_task . '&amp;action=editline&amp;lineid=' . $currplot->id . ($withproject ? '&amp;withproject=1' : '') . '">';
 						print img_edit();
 						print '</a>';
 						
 						print '&nbsp;';
-						print '<a href="' . $_SERVER["PHP_SELF"] . '?' . ($projectidforalltimes ? 'projectid=' . $projectidforalltimes . '&amp;' : '') . 'id=' . $task_time->fk_task . '&amp;action=deleteline&amp;lineid=' . $task_time->rowid . ($withproject ? '&amp;withproject=1' : '') . '">';
+						print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $currplot->fk_task . '&amp;action=deleteline&amp;lineid=' . $currplot->id . ($withproject ? '&amp;withproject=1' : '') . '">';
 						print img_delete();
 						print '</a>';
 					}
 				print '</td>';
-				if (! $i)
-					$totalarray['nbfield'] ++;
-				
-				print "</tr>\n";
-				
-				$i ++;
 			}
-			
-			// Show total line
-			if (isset($totalarray['totaldurationfield']) || isset($totalarray['totalvaluefield'])) {
-				print '<tr class="liste_total">';
-				$i = 0;
-				while ($i < $totalarray['nbfield']) {
-					$i ++;
-					if ($i == 1) {
-						if ($num < $limit)
-							print '<td align="left">' . $langs->trans("Total") . '</td>';
-						else
-							print '<td align="left">' . $langs->trans("Totalforthispage") . '</td>';
-					} elseif ($totalarray['totaldurationfield'] == $i)
-						print '<td align="right">' . convertSecondToTime($totalarray['totalduration'], 'allhourmin') . '</td>';
-					elseif ($totalarray['totalvaluefield'] == $i)
-						print '<td align="right">' . price($totalarray['totalvalue']) . '</td>';
-					else
-						print '<td></td>';
-				}
-				print '</tr>';
-			}
-			
-			print '</tr>';
-			
+			print '</tr>';		
 			print "</table>";
 		}
 		print '</div>';
