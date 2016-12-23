@@ -289,7 +289,7 @@ class modVignoble extends DolibarrModules
 			'task:-task_notes:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
 			'task:-task_document:NU:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT',
 			'task:+cultivationtask:Task:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtask.php?id=__ID__&withproject=1',
-			'task:+cultivationtaskplot:Plots:project@projet:1:/vignoble/cultivationtaskplot.php?id=__ID__&withproject=1',
+			'task:+cultivationtaskplot:Plots:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtaskplot.php?id=__ID__&withproject=1',
 			'task:+cultivationtaskcontact:Contacts:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtaskcontact.php?id=__ID__&withproject=1',
 			'task:+cultivationtasktime:Time:project@projet:$conf->global->VIGNOBLE_ISCULTIVATIONPROJECT:/vignoble/cultivationtasktime.php?id=__ID__&withproject=1',
 			
