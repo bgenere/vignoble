@@ -39,7 +39,6 @@ $confirm = GETPOST('confirm', 'alpha');
 $withproject = GETPOST('withproject', 'int');
 $project_ref = GETPOST('project_ref', 'alpha');
 
-$search_plot = GETPOST('search_plot', 'alpha');
 $search_note = GETPOST('search_note', 'alpha');
 $search_coverage = GETPOST('search_coverage', 'int');
 $search_value = GETPOST('search_value', 'int');
@@ -279,11 +278,9 @@ if (($id > 0 || ! empty($ref))) {
 			foreach ($plot->lines as $plotLine) {
 				$key = $plotLine->id;
 				$value = $plotLine->ref;
-				$plots = array_merge($plots, array(
-					$key => $value
-				));
+				$plots[$key] = $value;
 			}
-			print $form->multiselectarray('multiplots', $plots, $plots, 0, 0, '', 0, '240');
+			print $form->multiselectarray('multiplots', $plots, '', 1, 0, '', 0, '240');
 		}
 		print '</td>';
 		
@@ -392,8 +389,7 @@ if (($id > 0 || ! empty($ref))) {
 		// Fields title search
 		print '<tr class="liste_titre">';
 		// LIST_OF_TD_TITLE_SEARCH
-		if (! empty($arrayfields['t.plot']['checked']))
-			print '<td class="liste_titre"><input type="text" class="flat" name="search_plot" value="' . $search_plot . '"></td>';
+		print '<td class="liste_titre"> </td>';
 		if (! empty($arrayfields['t.note']['checked']))
 			print '<td class="liste_titre"><input type="text" class="flat" name="search_note" value="' . $search_note . '"></td>';
 		if (! empty($arrayfields['t.coverage']['checked']))
@@ -413,7 +409,7 @@ if (($id > 0 || ! empty($ref))) {
 		if (!empty($search_note)) $plotfilter[] = "t.note LIKE %" . $search_note . "%";
 		if (!empty($search_coverage)) $plotfilter[] = "t.coverage =" . $search_coverage ;
 		
-		if ($plottask->fetchAll('', '', 0, 0, $plotfilter)) {
+		if ($plottask->fetchAll('', '', 0, 0, $plotfilter,'AND')) {
 			foreach ($plottask->lines as $currplot) {
 				$var = ! $var;
 				print "<tr " . $bc[$var] . ">";

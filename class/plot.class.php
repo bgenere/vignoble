@@ -334,7 +334,6 @@ class plot extends CommonObject
 			$numrows = $this->db->num_rows($resql);
 			if ($numrows) {
 				$obj = $this->db->fetch_object($resql);
-				
 				$this->id = $obj->rowid;
 				$this->entity = $obj->entity;
 				$this->ref = $obj->ref;
@@ -348,7 +347,7 @@ class plot extends CommonObject
 				$this->fk_user_modif = $obj->fk_user_modif;
 			}
 			$this->db->free($resql);
-			
+
 			// Retreive all extrafield for current object
 			// fetch optionals attributes and labels
 			require_once (DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php');
