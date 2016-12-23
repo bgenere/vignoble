@@ -8,7 +8,8 @@ var hierarchy =
       [ "ModeleVignoble", "d7/d78/class_modele_vignoble.html", null ]
     ] ],
     [ "CommonObject", "db/d09/class_common_object.html", [
-      [ "plot", "d7/d55/classplot.html", null ]
+      [ "plot", "d7/d55/classplot.html", null ],
+      [ "Plotcultivationtask", "de/d1c/class_plotcultivationtask.html", null ]
     ] ],
     [ "DolibarrModules", "d0/d8f/class_dolibarr_modules.html", [
       [ "modVignoble", "d9/d7e/classmod_vignoble.html", null ]
@@ -20,5 +21,6 @@ var hierarchy =
       [ "vignoblebox", "d0/de1/classvignoblebox.html", null ]
     ] ],
     [ "ModeleNumRefCommandes", "dd/dae/class_modele_num_ref_commandes.html", null ],
+    [ "plotcultivationtaskLine", "d3/d16/classplotcultivationtask_line.html", null ],
     [ "plotLine", "d4/d22/classplot_line.html", null ]
 ];

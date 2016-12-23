@@ -1,6 +1,6 @@
 var classvignoblebox =
 [
-    [ "__construct", "d0/de1/classvignoblebox.html#a3bf98fd32f63d02346fa7ce3fea99289", null ],
+    [ "__construct", "d0/de1/classvignoblebox.html#a9efd18ca7bab86cf1856b428ce52930a", null ],
     [ "loadBox", "d0/de1/classvignoblebox.html#aab33135685056711fe05c0f102e341c0", null ],
     [ "showBox", "d0/de1/classvignoblebox.html#a71db077f9c5a03f3763002410d78aba3", null ],
     [ "$boxcode", "d0/de1/classvignoblebox.html#a2f116d94ca1e4fd0de5f2c83889aba43", null ],

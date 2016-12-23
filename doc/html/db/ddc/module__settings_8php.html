@@ -78,13 +78,16 @@ $(document).ready(function(){initNavTree('db/ddc/module__settings_8php.html','..
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3af7c5265c272c25e4ace71be5f7f1c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a3af7c5265c272c25e4ace71be5f7f1c8">printView</a> ($langs, $user)</td></tr>
-<tr class="memdesc:a3af7c5265c272c25e4ace71be5f7f1c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate and print the view.  <a href="#a3af7c5265c272c25e4ace71be5f7f1c8">More...</a><br /></td></tr>
-<tr class="separator:a3af7c5265c272c25e4ace71be5f7f1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adad8bacc8ce7baea8b5c302ea7ebde70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#adad8bacc8ce7baea8b5c302ea7ebde70">printDocumentModelView</a> ($dirmodels)</td></tr>
+<tr class="memdesc:adad8bacc8ce7baea8b5c302ea7ebde70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate and print the document model view.  <a href="#adad8bacc8ce7baea8b5c302ea7ebde70">More...</a><br /></td></tr>
+<tr class="separator:adad8bacc8ce7baea8b5c302ea7ebde70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7077e2123c4223b76a0428843dfcb2cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a7077e2123c4223b76a0428843dfcb2cb">prepareDocumentModel</a> ($action, $value, $label, $type, $scandir)</td></tr>
+<tr class="memdesc:a7077e2123c4223b76a0428843dfcb2cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">prepare Document Model Actions  <a href="#a7077e2123c4223b76a0428843dfcb2cb">More...</a><br /></td></tr>
+<tr class="separator:a7077e2123c4223b76a0428843dfcb2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a216b7ebc5b4bc31337f03c9d80e941c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a>(!$user-&gt;admin)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4">$action</a> = GETPOST('action', 'alpha')</td></tr>
+<tr class="memitem:a216b7ebc5b4bc31337f03c9d80e941c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147">if</a>(!$user-&gt;admin)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a216b7ebc5b4bc31337f03c9d80e941c4">$action</a> = GETPOST('action', 'alpha')</td></tr>
 <tr class="separator:a216b7ebc5b4bc31337f03c9d80e941c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f298096f322952a72a50f98a74c7b60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a0f298096f322952a72a50f98a74c7b60">$value</a> = GETPOST('value', 'alpha')</td></tr>
 <tr class="separator:a0f298096f322952a72a50f98a74c7b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,26 +97,58 @@ Variables</h2></td></tr>
 <tr class="separator:af8740e47a115ee055d40254054b37978"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a4a6fba2208984cabb3afacadf33919"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a9a4a6fba2208984cabb3afacadf33919">$type</a> = '<a class="el" href="../../d7/d55/classplot.html">plot</a>'</td></tr>
 <tr class="separator:a9a4a6fba2208984cabb3afacadf33919"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1d2a523c634a33b52897268e1e066d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a>($action== 'specimen') <a class="el" href="../../d8/d47/parcelle__script_8php.html#ad66f0bfb75032b2f6b649224093938f0">else</a> <a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a>($action== 'set') <a class="el" href="../../d8/d47/parcelle__script_8php.html#ad66f0bfb75032b2f6b649224093938f0">else</a> <a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a>($action== 'del') <a class="el" href="../../d8/d47/parcelle__script_8php.html#ad66f0bfb75032b2f6b649224093938f0">else</a> <a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a>($action== 'setdoc')&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#ac1d2a523c634a33b52897268e1e066d3">$dirmodels</a></td></tr>
-<tr class="memdesc:ac1d2a523c634a33b52897268e1e066d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process Actions.  <a href="#ac1d2a523c634a33b52897268e1e066d3">More...</a><br /></td></tr>
-<tr class="separator:ac1d2a523c634a33b52897268e1e066d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a839c8d35ca13835f2c80c4feb7d9358a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147">if</a>($action)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a839c8d35ca13835f2c80c4feb7d9358a">$form</a> = new Form($db)</td></tr>
+<tr class="memdesc:a839c8d35ca13835f2c80c4feb7d9358a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process actions.  <a href="#a839c8d35ca13835f2c80c4feb7d9358a">More...</a><br /></td></tr>
+<tr class="separator:a839c8d35ca13835f2c80c4feb7d9358a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3d7411a13c5a83e66dfca7c88f6c555"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#aa3d7411a13c5a83e66dfca7c88f6c555">$_SERVER</a> ['PHP_SELF']</td></tr>
+<tr class="separator:aa3d7411a13c5a83e66dfca7c88f6c555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bd5ae013692e812718783620cbc01ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a2bd5ae013692e812718783620cbc01ad">$_SESSION</a> ['newtoken']</td></tr>
+<tr class="separator:a2bd5ae013692e812718783620cbc01ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ad3a4240c0f97c7e85aff5c52a454d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a></td></tr>
+<tr class="separator:a3ad3a4240c0f97c7e85aff5c52a454d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1b2829a7425bcec97d0ab4e6b3c77f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#ab1b2829a7425bcec97d0ab4e6b3c77f2">n</a></td></tr>
+<tr class="separator:ab1b2829a7425bcec97d0ab4e6b3c77f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68e7dbabe5ebdbc401d74ca569b4ece7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a68e7dbabe5ebdbc401d74ca569b4ece7">$rowspan</a> = 1</td></tr>
+<tr class="separator:a68e7dbabe5ebdbc401d74ca569b4ece7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0a23bdd8efb521d6cd76515722fa9b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147">if</a>(!empty($conf-&gt;global-&gt;VIGNOBLE_CULTIVATIONPROJECT))&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#af0a23bdd8efb521d6cd76515722fa9b9">$project</a> = new Project($db)</td></tr>
+<tr class="separator:af0a23bdd8efb521d6cd76515722fa9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e9f42d0233686595b6beb4d52ba098"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/ddc/module__settings_8php.html#a87e9f42d0233686595b6beb4d52ba098">$select_projects</a> = $project-&gt;liste_array()</td></tr>
+<tr class="separator:a87e9f42d0233686595b6beb4d52ba098"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a3af7c5265c272c25e4ace71be5f7f1c8"></a>
+<a class="anchor" id="a7077e2123c4223b76a0428843dfcb2cb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">printView </td>
+          <td class="memname">prepareDocumentModel </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$langs</em>, </td>
+          <td class="paramname"><em>$action</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$user</em>&#160;</td>
+          <td class="paramname"><em>$value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$scandir</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -123,65 +158,106 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generate and print the view. </p>
+<p>prepare Document Model Actions </p>
+<p>Process Actions</p><ul>
+<li>specimen : define a pdf specimen document</li>
+<li>set : activate a document model</li>
+<li>del : delete a document model</li>
+<li>setdoc : set a default document model</li>
+</ul>
+<p>Display document model view</p>
 
-<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00144">144</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00283">283</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00135">$dirmodels</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00266">$form</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00256">$resql</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00179">$sql</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00050">$type</a>, <a class="el" href="../../dd/dac/admin_8html_8lib_8php_source.html#l00038">beginForm()</a>, <a class="el" href="../../dd/dac/admin_8html_8lib_8php_source.html#l00054">endForm()</a>, and <a class="el" href="../../dd/d24/plot__info_8php_source.html#l00073">print</a>.</p>
+<p>References <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00047">$action</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00049">$label</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00172">$plot</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00050">$scandir</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00052">$type</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00048">$value</a>.</p>
 
-<p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="../../closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="../../db/ddc/module__settings_8php_a3af7c5265c272c25e4ace71be5f7f1c8_cgraph.png" border="0" usemap="#db/ddc/module__settings_8php_a3af7c5265c272c25e4ace71be5f7f1c8_cgraph" alt=""/></div>
-<map name="db/ddc/module__settings_8php_a3af7c5265c272c25e4ace71be5f7f1c8_cgraph" id="db/ddc/module__settings_8php_a3af7c5265c272c25e4ace71be5f7f1c8_cgraph">
-<area shape="rect" id="node2" href="../../dd/dac/admin_8html_8lib_8php.html#a1a0c59b71591ed7c9b97d7d370a12add" title="Display begining of card form including : " alt="" coords="133,5,224,32"/>
-<area shape="rect" id="node4" href="../../dd/dac/admin_8html_8lib_8php.html#ac41df2ef7049e50068e22cd3a0335cb5" title="Perform all required operations to end properly a card form. " alt="" coords="139,56,218,83"/>
-<area shape="rect" id="node3" href="../../dd/dac/admin_8html_8lib_8php.html#a94e9d446b69764f2e514d5cc6335821b" title="Populate tabs array with all tabs for the admin page. " alt="" coords="272,5,467,32"/>
-</map>
 </div>
-</p>
+<a class="anchor" id="adad8bacc8ce7baea8b5c302ea7ebde70"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">printDocumentModelView </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$dirmodels</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate and print the document model view. </p>
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00130">130</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+<p>References <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00091">$_SERVER</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00085">$form</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00256">$resql</a>, <a class="el" href="../../da/d01/plot__list_8php_source.html#l00179">$sql</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00052">$type</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00093">print</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="aa3d7411a13c5a83e66dfca7c88f6c555"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a> $_SERVER['PHP_SELF']</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00091">91</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d3/dd2/plot__extrafields_8php_source.html#l00139">printButtonNewField()</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00130">printDocumentModelView()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2bd5ae013692e812718783620cbc01ad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a> $_SESSION['newtoken']</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00092">92</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a216b7ebc5b4bc31337f03c9d80e941c4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a> (!$user-&gt;admin) $action = GETPOST('action', 'alpha')</td>
+          <td class="memname"><a class="el" href="../../dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147">if</a> (!$user-&gt;admin) $action = GETPOST('action', 'alpha')</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00046">46</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00047">47</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+<p>Referenced by <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00283">prepareDocumentModel()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac1d2a523c634a33b52897268e1e066d3"></a>
+<a class="anchor" id="a839c8d35ca13835f2c80c4feb7d9358a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a> ($action== 'specimen') <a class="el" href="../../d8/d47/parcelle__script_8php.html#ad66f0bfb75032b2f6b649224093938f0">else</a> <a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a> ($action== 'set') <a class="el" href="../../d8/d47/parcelle__script_8php.html#ad66f0bfb75032b2f6b649224093938f0">else</a> <a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a> ($action== 'del') <a class="el" href="../../d8/d47/parcelle__script_8php.html#ad66f0bfb75032b2f6b649224093938f0">else</a> <a class="el" href="../../dd/d24/plot__info_8php.html#ab5d5adbe1dca7f5fb479297691e56498">if</a> ($action== 'setdoc') $dirmodels</td>
+          <td class="memname"><a class="el" href="../../dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147">if</a> ($action) $form = new Form($db)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= array_merge(array(</div><div class="line">    <span class="charliteral">&#39;/&#39;</span></div><div class="line">), (array) <a class="code" href="../../d6/d14/maindolibarr_8inc_8php.html#a10064a52f624358ea93475105245c4ac">$conf</a>-&gt;modules_parts[<span class="stringliteral">&#39;models&#39;</span>])</div><div class="ttc" id="maindolibarr_8inc_8php_html_a10064a52f624358ea93475105245c4ac"><div class="ttname"><a href="../../d6/d14/maindolibarr_8inc_8php.html#a10064a52f624358ea93475105245c4ac">$conf</a></div><div class="ttdeci">global $conf</div><div class="ttdoc">Dolibarr configuration variable. </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">maindolibarr.inc.php:48</a></div></div>
-</div><!-- fragment -->
-<p>Process Actions. </p>
-<ul>
-<li>specimen : define a pdf specimen document</li>
-<li>set : activate a document model</li>
-<li>del : delete a document model</li>
-<li>setdoc : set a default document model Display document model view </li>
-</ul>
 
-<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00135">135</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+<p>Process actions. </p>
+<p>Display parameters </p>
 
-<p>Referenced by <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00144">printView()</a>.</p>
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00085">85</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+<p>Referenced by <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00130">printDocumentModelView()</a>.</p>
 
 </div>
 </div>
@@ -195,7 +271,37 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00048">48</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00049">49</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+<p>Referenced by <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00283">prepareDocumentModel()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af0a23bdd8efb521d6cd76515722fa9b9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147">if</a> (!empty($conf-&gt;global-&gt;VIGNOBLE_CULTIVATIONPROJECT)) $project = new Project($db)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00105">105</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a68e7dbabe5ebdbc401d74ca569b4ece7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a> $rowspan = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00101">101</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
 
 </div>
 </div>
@@ -209,7 +315,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00049">49</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00050">50</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+<p>Referenced by <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00283">prepareDocumentModel()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a87e9f42d0233686595b6beb4d52ba098"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$select_projects = $project-&gt;liste_array()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00107">107</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
 
 </div>
 </div>
@@ -223,9 +345,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00050">50</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00052">52</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/dd8/modules__vignoble_8php_source.html#l00051">ModelePDFPlot\liste_modeles()</a>, <a class="el" href="../../df/dd8/modules__vignoble_8php_source.html#l00082">ModeleVignoble\liste_modeles()</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00144">printView()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/dd8/modules__vignoble_8php_source.html#l00051">ModelePDFPlot\liste_modeles()</a>, <a class="el" href="../../df/dd8/modules__vignoble_8php_source.html#l00082">ModeleVignoble\liste_modeles()</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00283">prepareDocumentModel()</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00130">printDocumentModelView()</a>.</p>
 
 </div>
 </div>
@@ -239,9 +361,39 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00047">47</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00048">48</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00389">plot\fetchAll()</a>, and <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00763">modVignoble\getImports()</a>.</p>
+<p>Referenced by <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00389">plot\fetchAll()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00845">modVignoble\getImports()</a>, and <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00283">prepareDocumentModel()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab1b2829a7425bcec97d0ab4e6b3c77f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../db/ddc/module__settings_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a> n</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00099">99</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3ad3a4240c0f97c7e85aff5c52a454d4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">print</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00093">93</a> of file <a class="el" href="../../db/ddc/module__settings_8php_source.html">module_settings.php</a>.</p>
+
+<p>Referenced by <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00130">printDocumentModelView()</a>.</p>
 
 </div>
 </div>
@@ -251,7 +403,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_b56013ff87e0b8a9fb902ef4a07a6990.html">admin</a></li><li class="navelem"><a class="el" href="../../db/ddc/module__settings_8php.html">module_settings.php</a></li>
-    <li class="footer">Generated on Mon Dec 5 2016 18:25:16 for Vignoble by
+    <li class="footer">Generated on Fri Dec 23 2016 15:27:18 for Vignoble by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

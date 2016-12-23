@@ -13,6 +13,8 @@ var annotated_dup =
     [ "mybox", "d4/dd3/classmybox.html", "d4/dd3/classmybox" ],
     [ "pdf_plotabc", "d8/d91/classpdf__plotabc.html", "d8/d91/classpdf__plotabc" ],
     [ "plot", "d7/d55/classplot.html", "d7/d55/classplot" ],
+    [ "Plotcultivationtask", "de/d1c/class_plotcultivationtask.html", "de/d1c/class_plotcultivationtask" ],
+    [ "plotcultivationtaskLine", "d3/d16/classplotcultivationtask_line.html", "d3/d16/classplotcultivationtask_line" ],
     [ "plotLine", "d4/d22/classplot_line.html", "d4/d22/classplot_line" ],
     [ "plotslastchanged", "d7/d8d/classplotslastchanged.html", "d7/d8d/classplotslastchanged" ],
     [ "vignoblebox", "d0/de1/classvignoblebox.html", "d0/de1/classvignoblebox" ]
