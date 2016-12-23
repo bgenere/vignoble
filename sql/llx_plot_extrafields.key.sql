@@ -17,4 +17,4 @@
 -- ===================================================================
 
 
-ALTER TABLE llx_plot_extrafields ADD INDEX idx_plot_extrafields (fk_object);
+ALTER TABLE llx_plot_extrafields ADD UNIQUE INDEX idx_plot_extrafields (fk_object);

@@ -15,7 +15,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -- unique index on link fields
-ALTER TABLE llx_plot_cultivationtask ADD INDEX uk_plot_cultivationtask_plot (fk_plot);
+ALTER TABLE llx_plot_cultivationtask ADD UNIQUE INDEX uk_plot_cultivationtask_plot (fk_plot, fk_task);
 ALTER TABLE llx_plot_cultivationtask ADD INDEX uk_plot_cultivationtask_task (fk_task);
 -- index for note search
 ALTER TABLE llx_plot_cultivationtask ADD INDEX idx_plot_cultivationtask_note (note);
