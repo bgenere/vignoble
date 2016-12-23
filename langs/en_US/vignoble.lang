@@ -64,6 +64,9 @@ EditPlot = Edit Plot
 PlotListTitle = VineYard - Plots List
 PlotCardTitle = VineYard - Plot Card
 LastPlotsModified= Last plots modified
+OpenFullProject = Open full project (default interface)
+DeleteLinktoPlot = Delete link to plot
+ConfirmDeleteLinktoPlot = Confirm you want to delete link to plot
  
 PlotExtraFields= Plot Attributes
 AddDefaultAttributes = Add Default Attributes

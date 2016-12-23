@@ -64,6 +64,9 @@ EditPlot = Modifier Parcelle
 PlotListTitle = Vignoble - Liste des parcelles
 PlotCardTitle = Vignoble - Formulaire Parcelle
 LastPlotsModified = Dernières parcelles modifiées
+OpenFullProject = Ouvrir le projet complet (Interface standard)
+DeleteLinktoPlot = Supprimer le lien vers la parcelle
+ConfirmDeleteLinktoPlot = Confirmez que vous voulez supprimer le lien vers la parcelle
 
 PlotExtraFields= Attributs de Parcelle
 AddDefaultAttributes = Ajouter les attributs par défaut
