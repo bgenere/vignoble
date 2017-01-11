@@ -17,16 +17,16 @@
  */
 
 /**
- * \file index.php
- * \brief Main page - Displays the Vignoble dashboard
+ * \file productsordersandshipments.php
+ * \brief Main page - Displays products orders and shipments numbers between 2 dates
  *
  * \ingroup dashboard
  */
 @include './tpl/maindolibarr.inc.php';
 
 /* get dashboard boxes classes */
-dol_include_once('/vignoble/core/boxes/plotslastchanged.php');
-dol_include_once('/vignoble/core/boxes/vignoblebox.php');
+//dol_include_once('/vignoble/core/boxes/plotslastchanged.php');
+//dol_include_once('/vignoble/core/boxes/vignoblebox.php');
 
 /* get language files */
 $langs->load("vignoble@vignoble");
@@ -44,38 +44,18 @@ function displayView()
 {
 	global $db, $conf, $langs, $user;
 	
-	llxHeader('', $langs->trans('VineYardArea'));
-	print load_fiche_titre($langs->trans("VineYardArea"), '', 'object_vignoble@vignoble');
+	llxHeader('', $langs->trans('ProductsOrdersandShipments'));
+	print load_fiche_titre($langs->trans("ProductsOrdersandShipments"), '', 'object_vignoble@vignoble');
 	/**
-	 * - Get boxes
+	 * - Display selection
 	 * 
 	 */
-	$plotslastchanged = new plotslastchanged($db);
-	$plotslastchanged->loadBox(10);
 	
-	$vignoblebox= new vignoblebox($db);
-	$vignoblebox->loadBox(5);
 	
 	/**
-	 * - Display boxes
+	 * - Display table
 	 */
-	print '<div class="fichecenter">'; // frame
-	print '<div class="fichethirdleft">'; // left column
 	
-	print '<div class="ficheaddleft">';
-	$plotslastchanged->showBox($plotslastchanged->info_box_head, $plotslastchanged->info_box_contents);
-	print '</div>';
-			
-	print '</div>'; // left column end
-	
-	print '<div class="fichetwothirdright">'; // right column
-	
-	print '<div class="ficheaddleft">';
-	$vignoblebox->showBox($vignoblebox->info_box_head, $vignoblebox->info_box_contents);
-	print '</div>';
-	
-	print '</div>'; // right column end
-	print '</div>'; // frame end
 	
 	llxFooter();
 }

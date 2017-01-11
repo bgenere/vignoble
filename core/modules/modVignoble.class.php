@@ -473,7 +473,7 @@ class modVignoble extends DolibarrModules
 			'fk_menu' => 'fk_mainmenu=vignoble,fk_leftmenu=cultivation',
 			'titre' => 'NewTask',
 			'langs' => 'vignoble@vignoble',
-			'position' => 20,
+			'position' => 10,
 			'url' => '/vignoble/cultivationtasks.php?action=create',
 			'target' => '',
 			'user' => 2,
@@ -481,22 +481,22 @@ class modVignoble extends DolibarrModules
 			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
-		 * Define plot left menu entry cultivation tasks List
+		 *  - Define plot left menu entry Orders and Shipment
 		 */
-// 		$this->menu[] = array(
-// 			'type' => 'left',
-// 			'mainmenu' => 'vignoble',
-// 			'leftmenu' => 'cultivationTask_list',
-// 			'fk_menu' => 'fk_mainmenu=vignoble,fk_leftmenu=cultivation',
-// 			'titre' => 'List',
-// 			'langs' => 'vignoble@vignoble',
-// 			'url' => '/vignoble/cultivationtasks.php',
-// 			'target' => '',
-// 			'position' => 10,
-// 			'user' => 2,
-// 			'enabled' => '$conf->vignoble->enabled',
-// 			'perms' => '1'
-// 		);
+		$this->menu[] = array(
+			'type' => 'left',
+			'mainmenu' => 'vignoble',
+			'leftmenu' => 'ProductsOrders&Shipments',
+			'fk_menu' => 'fk_mainmenu=vignoble',
+			'titre' => 'ProductsOrders&Shipments',
+			'langs' => 'vignoble@vignoble',
+			'url' => '/vignoble/productsordersandshipments.php',
+			'target' => '',
+			'position' => 3,
+			'user' => 2,
+			'enabled' => '$conf->vignoble->enabled',
+			'perms' => '$user->rights->vignoble->plot->read'
+		);
 	}
 
 	/**
