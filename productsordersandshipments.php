@@ -24,23 +24,37 @@
  */
 @include './tpl/maindolibarr.inc.php';
 
-/* get dashboard boxes classes */
-//dol_include_once('/vignoble/core/boxes/plotslastchanged.php');
-//dol_include_once('/vignoble/core/boxes/vignoblebox.php');
+/* get library */
+dol_include_once('/vignoble/lib/productsordersandshipments.lib.php');
 
 /* get language files */
 $langs->load("vignoble@vignoble");
 $langs->load("other");
 
-displayView();
+/* Filter variable */
+$datebegin = '2016-01-01';
+$dateend = '2017-12-01';
+$productselected = array();
+
+$ordersfilter = array();
+if (!empty($datebegin)){$ordersfilter[]=" commande.date_commande >= '.$datebegin.' ";}
+if (!empty($dateend)){$ordersfilter[]=" commande.date_commande <= '.$dateend.' ";}
+	
+$orderlines = fetchProductsOrders('ASC','productRef','','',$ordersfilter,'AND');
+
+$shipmentlines = fetchProductsShipments();
+
+displayView($orderlines);
 
 /* close database */
 $db->close();
 
+/* Function List */
+
 /**
  * Displays the view
  */
-function displayView()
+function displayView($lines)
 {
 	global $db, $conf, $langs, $user;
 	
@@ -55,7 +69,7 @@ function displayView()
 	/**
 	 * - Display table
 	 */
-	
+	var_dump($lines);
 	
 	llxFooter();
 }
