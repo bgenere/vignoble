@@ -53,10 +53,10 @@ function fetchProductsOrders($sortorder = '', $sortfield = '', $limit = 0, $offs
 	// WHERE commandedet.fk_product > 0 GROUP BY product.ref,product.label,commande.date_commande
 	
 	$sql = 'SELECT';
-	$sql .= ' product.ref as productRef,';
-	$sql .= ' product.label as productLabel,';
+	$sql .= ' product.ref as Ref,';
+	$sql .= ' product.label as Label,';
 	// $sql .= ' commande.date_commande as orderDate,';
-	$sql .= " COUNT(commande.ref) as totalOrder,";
+	$sql .= " COUNT(commande.ref) as totalNumber,";
 	$sql .= " SUM(commandedet.qty) as totalQuantity,";
 	$sql .= " SUM(commandedet.total_ht) as totalAmount";
 	
@@ -71,7 +71,7 @@ function fetchProductsOrders($sortorder = '', $sortfield = '', $limit = 0, $offs
 		$sql .= ' AND ' . implode(' ' . $filtermode . ' ', $filter);
 	}
 	
-	$sql .= ' GROUP BY productRef,productLabel';
+	$sql .= ' GROUP BY Ref,Label';
 	
 	if (! empty($sortfield)) {
 		$sql .= $db->order($sortfield, $sortorder);
@@ -126,9 +126,9 @@ function fetchProductsShipments($sortorder = '', $sortfield = '', $limit = 0, $o
 	
 	$sql = 'SELECT';
 	
-	$sql .= ' product.ref as productRef,';
-	$sql .= ' product.label as productLabel,';
-	$sql .= " COUNT(shipmentdet.rowid) as totalShipments,";
+	$sql .= ' product.ref as Ref,';
+	$sql .= ' product.label as Label,';
+	$sql .= " COUNT(shipmentdet.rowid) as totalNumber,";
 	$sql .= " SUM(shipmentdet.qty) as totalQuantity,";
 	$sql .= " SUM(line.total_ht) as totalAmount";
 	
@@ -144,7 +144,7 @@ function fetchProductsShipments($sortorder = '', $sortfield = '', $limit = 0, $o
 		$sql .= ' AND ' . implode(' ' . $filtermode . ' ', $filter);
 	}
 	
-	$sql .= ' GROUP BY productRef,productLabel';
+	$sql .= ' GROUP BY Ref,Label';
 	
 	if (! empty($sortfield)) {
 		$sql .= $db->order($sortfield, $sortorder);

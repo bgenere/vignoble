@@ -37,14 +37,26 @@ $dateend = '2017-12-01';
 $productselected = array();
 
 $ordersfilter = array();
-if (!empty($datebegin)){$ordersfilter[]=" commande.date_commande >= '.$datebegin.' ";}
-if (!empty($dateend)){$ordersfilter[]=" commande.date_commande <= '.$dateend.' ";}
-	
-$orderlines = fetchProductsOrders('ASC','productRef','','',$ordersfilter,'AND');
+if (! empty($datebegin)) {
+	$ordersfilter[] = " commande.date_commande >= '" . $datebegin . "' ";
+}
+if (! empty($dateend)) {
+	$ordersfilter[] = " commande.date_commande <= '" . $dateend . "' ";
+}
 
-$shipmentlines = fetchProductsShipments();
+$orderlines = fetchProductsOrders('ASC', 'Ref', '', '', $ordersfilter, 'AND');
 
-displayView($orderlines);
+$shipmentsfilter = array();
+if (! empty($datebegin)) {
+	$shipmentsfilter[] = "((shipment.date_expedition IS NULL AND shipment.date_creation >= '" . $datebegin . "') OR (shipment.date_expedition >= '" . $datebegin . "'))";
+}
+if (! empty($dateend)) {
+	$shipmentsfilter[] = "((shipment.date_expedition IS NULL AND shipment.date_creation <= '" . $dateend . "') OR (shipment.date_expedition <= '" . $dateend . "'))";
+}
+
+$shipmentlines = fetchProductsShipments('ASC', 'Ref', '', '', $shipmentsfilter, 'AND');
+
+displayView($orderlines, $shipmentlines);
 
 /* close database */
 $db->close();
@@ -54,7 +66,7 @@ $db->close();
 /**
  * Displays the view
  */
-function displayView($lines)
+function displayView($orders, $shipments)
 {
 	global $db, $conf, $langs, $user;
 	
@@ -62,14 +74,67 @@ function displayView($lines)
 	print load_fiche_titre($langs->trans("ProductsOrdersandShipments"), '', 'object_vignoble@vignoble');
 	/**
 	 * - Display selection
-	 * 
 	 */
-	
-	
+	displaySearchForm();
 	/**
-	 * - Display table
+	 * - Display tables
 	 */
-	var_dump($lines);
+	print '<div class="fichecenter">'; // frame
+	print '<div class="fichethirdleft">'; // left column
+	
+	print '<div class="ficheaddleft">';
+	displayTable($orders);
+	print '</div>';
+	
+	print '</div>'; // left column end
+	
+	print '<div class="fichetwothirdright">'; // right column
+	
+	print '<div class="ficheaddleft">';
+	displayTable($shipments);
+	print '</div>';
+	
+	print '</div>'; // right column end
+	print '</div>'; // frame end
 	
 	llxFooter();
 }
+
+function displaySearchForm()
+{
+	global $db, $conf, $langs, $user;
+}
+
+function displayTable($table)
+{
+	global $db, $conf, $langs, $user;
+	
+	$fields = array(
+		'Ref',
+		'Label',
+		'totalNumber',
+		'totalQuantity',
+		'totalAmount'
+	);
+	
+	print '<table class="liste" >';
+	// Entête des champs
+	print '<tr>';
+	foreach ($fields as $field) {
+		print print_liste_field_titre($langs->trans($field), $_SERVER['PHP_SELF'],$field);
+	}
+	print '</tr>';
+	// liste des lignes
+	foreach ($table as $line) {
+		print '<tr>';
+		foreach ($fields as $field) {
+			print '<td>';
+			print $line->$field;
+			print '</td>';
+		}
+		print '</tr>';
+	}
+	print '</table>';
+}
+
+
