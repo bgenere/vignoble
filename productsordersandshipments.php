@@ -31,7 +31,11 @@ dol_include_once('/vignoble/lib/productsordersandshipments.lib.php');
 $langs->load("vignoble@vignoble");
 $langs->load("other");
 
-/* Filter variable */
+/* url variables */
+/* sort */
+$sort = getsort();
+
+/* Filter */
 $datebegin = '2016-01-01';
 $dateend = '2017-12-01';
 $productselected = array();
@@ -44,7 +48,7 @@ if (! empty($dateend)) {
 	$ordersfilter[] = " commande.date_commande <= '" . $dateend . "' ";
 }
 
-$orderlines = fetchProductsOrders('ASC', 'Ref', '', '', $ordersfilter, 'AND');
+$orderlines = fetchProductsOrders($sort["order"], $sort["field"], '', '', $ordersfilter, 'AND');
 
 $shipmentsfilter = array();
 if (! empty($datebegin)) {
@@ -54,9 +58,9 @@ if (! empty($dateend)) {
 	$shipmentsfilter[] = "((shipment.date_expedition IS NULL AND shipment.date_creation <= '" . $dateend . "') OR (shipment.date_expedition <= '" . $dateend . "'))";
 }
 
-$shipmentlines = fetchProductsShipments('ASC', 'Ref', '', '', $shipmentsfilter, 'AND');
+$shipmentlines = fetchProductsShipments($sort["order"], $sort["field"], '', '', $shipmentsfilter, 'AND');
 
-displayView($orderlines, $shipmentlines);
+displayView($orderlines, $shipmentlines, $sort);
 
 /* close database */
 $db->close();
@@ -66,7 +70,7 @@ $db->close();
 /**
  * Displays the view
  */
-function displayView($orders, $shipments)
+function displayView($orders, $shipments, $sort)
 {
 	global $db, $conf, $langs, $user;
 	
@@ -83,7 +87,7 @@ function displayView($orders, $shipments)
 	print '<div class="fichethirdleft">'; // left column
 	
 	print '<div class="ficheaddleft">';
-	displayTable($orders);
+	displayTable($orders, $sort);
 	print '</div>';
 	
 	print '</div>'; // left column end
@@ -91,7 +95,7 @@ function displayView($orders, $shipments)
 	print '<div class="fichetwothirdright">'; // right column
 	
 	print '<div class="ficheaddleft">';
-	displayTable($shipments);
+	displayTable($shipments, $sort);
 	print '</div>';
 	
 	print '</div>'; // right column end
@@ -105,7 +109,7 @@ function displaySearchForm()
 	global $db, $conf, $langs, $user;
 }
 
-function displayTable($table)
+function displayTable($table, $sort)
 {
 	global $db, $conf, $langs, $user;
 	
@@ -119,22 +123,56 @@ function displayTable($table)
 	
 	print '<table class="liste" >';
 	// Entête des champs
-	print '<tr>';
+	print '<tr class="liste_titre">';
 	foreach ($fields as $field) {
-		print print_liste_field_titre($langs->trans($field), $_SERVER['PHP_SELF'],$field);
+		print print_liste_field_titre($langs->trans($field), $_SERVER['PHP_SELF'], $field, '', '', 'align="center"', $sort["field"], $sort["order"]);
 	}
 	print '</tr>';
 	// liste des lignes
 	foreach ($table as $line) {
 		print '<tr>';
 		foreach ($fields as $field) {
-			print '<td>';
-			print $line->$field;
+			switch ($field) {
+				case 'totalNumber':
+					print '<td align="right">';
+					print $line->$field;
+					break;
+				case 'totalQuantity':
+					print '<td align="right">';
+					print $line->$field;
+					break;
+				case 'totalAmount':
+					print '<td align="right">';
+					print price($line->$field);
+					break;
+				default:
+					print '<td>';
+					print $line->$field;
+			}
 			print '</td>';
 		}
 		print '</tr>';
 	}
 	print '</table>';
 }
+
+/**
+ */
+function getsort()
+{
+	$sortfield = GETPOST(sortfield, 'alpha');
+	if (empty($sortfield)) {
+		$sortfield = 'Ref';
+	}
+	$sortorder = GETPOST(sortorder, 'alpha');
+	if (empty($sortorder)) {
+		$sortorder = 'ASC';
+	}
+	return $sort = array(
+		"field" => $sortfield,
+		"order" => $sortorder
+	);
+}
+
 
 
