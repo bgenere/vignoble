@@ -29,10 +29,8 @@
 /**
  * Returns a set of Products Orders in memory from the database
  *
- * @param string $sortorder
- *        	Sort Order
- * @param string $sortfield
- *        	Sort field
+ * @param array $sort
+ *        	Sort parameters : field and order 
  * @param int $limit
  *        	offset LimitIterator number of rows to send back
  * @param int $offset
@@ -44,7 +42,7 @@
  *        	
  * @return int <0 if KO, >0 if OK
  */
-function fetchProductsOrders($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
+function fetchProductsOrders($sort= '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
 {
 	global $db, $langs, $conf, $user;
 	dol_syslog(__METHOD__, LOG_DEBUG);
@@ -73,8 +71,8 @@ function fetchProductsOrders($sortorder = '', $sortfield = '', $limit = 0, $offs
 	
 	$sql .= ' GROUP BY Ref,Label';
 	
-	if (! empty($sortfield)) {
-		$sql .= $db->order($sortfield, $sortorder);
+	if (! empty($sort)) {
+		$sql .= $db->order($sort['field'], $sort['order']);
 	}
 	if (! empty($limit)) {
 		$sql .= ' ' . $db->plimit($limit, $offset);
@@ -100,7 +98,15 @@ function fetchProductsOrders($sortorder = '', $sortfield = '', $limit = 0, $offs
 	}
 }
 
-function fetchProductsShipments($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
+/**
+ * @param string $sort
+ * @param number $limit
+ * @param number $offset
+ * @param array $filter
+ * @param string $filtermode
+ * @return Object[]|number
+ */
+function fetchProductsShipments($sort = '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
 {
 	global $db, $langs, $conf, $user;
 	dol_syslog(__METHOD__, LOG_DEBUG);
@@ -146,8 +152,8 @@ function fetchProductsShipments($sortorder = '', $sortfield = '', $limit = 0, $o
 	
 	$sql .= ' GROUP BY Ref,Label';
 	
-	if (! empty($sortfield)) {
-		$sql .= $db->order($sortfield, $sortorder);
+	if (! empty($sort)) {
+		$sql .= $db->order($sort['field'], $sort['order']);
 	}
 	if (! empty($limit)) {
 		$sql .= ' ' . $db->plimit($limit, $offset);

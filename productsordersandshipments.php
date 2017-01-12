@@ -48,7 +48,7 @@ if (! empty($dateend)) {
 	$ordersfilter[] = " commande.date_commande <= '" . $dateend . "' ";
 }
 
-$orderlines = fetchProductsOrders($sort["order"], $sort["field"], '', '', $ordersfilter, 'AND');
+$orderlines = fetchProductsOrders($sort,'', '', $ordersfilter, 'AND');
 
 $shipmentsfilter = array();
 if (! empty($datebegin)) {
@@ -58,7 +58,7 @@ if (! empty($dateend)) {
 	$shipmentsfilter[] = "((shipment.date_expedition IS NULL AND shipment.date_creation <= '" . $dateend . "') OR (shipment.date_expedition <= '" . $dateend . "'))";
 }
 
-$shipmentlines = fetchProductsShipments($sort["order"], $sort["field"], '', '', $shipmentsfilter, 'AND');
+$shipmentlines = fetchProductsShipments($sort, '', '', $shipmentsfilter, 'AND');
 
 displayView($orderlines, $shipmentlines, $sort);
 
@@ -114,40 +114,29 @@ function displayTable($table, $sort)
 	global $db, $conf, $langs, $user;
 	
 	$fields = array(
-		'Ref',
-		'Label',
-		'totalNumber',
-		'totalQuantity',
-		'totalAmount'
+		'Ref'=> array('align'=> 'left'),
+		'Label'=> array('align'=> 'left'),
+		'totalNumber'=> array('align'=> 'right'),
+		'totalQuantity'=> array('align'=> 'right'),
+		'totalAmount'=> array('align'=> 'right','display'=> 'price')
 	);
 	
 	print '<table class="liste" >';
 	// Entête des champs
 	print '<tr class="liste_titre">';
-	foreach ($fields as $field) {
-		print print_liste_field_titre($langs->trans($field), $_SERVER['PHP_SELF'], $field, '', '', 'align="center"', $sort["field"], $sort["order"]);
+	foreach ($fields as $field => $fieldvalue) {
+		print print_liste_field_titre($langs->trans($field), $_SERVER['PHP_SELF'], $field, '', '', 'align="'.$fieldvalue['align'].'"', $sort["field"], $sort["order"]);
 	}
 	print '</tr>';
 	// liste des lignes
 	foreach ($table as $line) {
 		print '<tr>';
-		foreach ($fields as $field) {
-			switch ($field) {
-				case 'totalNumber':
-					print '<td align="right">';
-					print $line->$field;
-					break;
-				case 'totalQuantity':
-					print '<td align="right">';
-					print $line->$field;
-					break;
-				case 'totalAmount':
-					print '<td align="right">';
-					print price($line->$field);
-					break;
-				default:
-					print '<td>';
-					print $line->$field;
+		foreach ($fields as $field => $fieldvalue) {
+			print '<td align="'.$fieldvalue['align'].'">';
+			if (!empty($fieldvalue['display'])){
+				print $fieldvalue['display']($line->$field);
+			} else {
+				print $line->$field;
 			}
 			print '</td>';
 		}
