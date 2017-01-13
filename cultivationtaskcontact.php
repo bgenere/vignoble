@@ -163,6 +163,7 @@ if ($id > 0 || ! empty($ref)) {
 		/**
 		 * Display task summary card
 		 */
+		print '<div class="fiche">';
 		$head = task_prepare_head($object);
 		dol_fiche_head($head, 'cultivationtaskcontact', $langs->trans("Task"), 0, 'projecttask');
 		
@@ -370,7 +371,7 @@ if ($id > 0 || ! empty($ref)) {
 		print "ErrorRecordNotFound";
 	}
 }
-
+print '</div>';
 if (is_object($hookmanager)) {
 	$hookmanager->initHooks(array(
 		'contacttpl'

@@ -226,6 +226,7 @@ if (($id > 0 || ! empty($ref))) {
 	/**
 	 * - Display task summary card
 	 */
+	print '<div class="fiche">';
 	$head = task_prepare_head($object);
 	dol_fiche_head($head, 'cultivationtaskplot', $langs->trans("Plot"), 0, 'projecttask');
 	
@@ -472,6 +473,6 @@ if (($id > 0 || ! empty($ref))) {
 		print "</form>";
 	}
 }
-
+print '/<div>';
 llxFooter();
 $db->close();

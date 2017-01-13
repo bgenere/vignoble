@@ -285,6 +285,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		/**
 		 * Display task summary card
 		 */
+		print '<div class="fiche">';
 		$head = task_prepare_head($object);
 		dol_fiche_head($head, 'cultivationtasktime', $langs->trans("Task"), 0, 'projecttask');
 		
@@ -800,6 +801,6 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		print "</form>";
 	}
 }
-
+print '/<div>';
 llxFooter();
 $db->close();

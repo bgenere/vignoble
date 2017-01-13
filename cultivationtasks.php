@@ -200,7 +200,7 @@ if ($id > 0 || ! empty($ref)) {
 	$tab = GETPOST('tab') ? GETPOST('tab') : 'cultivationtasks';
 	displayProjectCard($id, $mode, $object, $form, $tab);
 }
-
+print '<div class="fiche">';
 if ($action == 'create' && $user->rights->projet->creer && (empty($object->thirdparty->id) || $userWrite > 0)) {
 	/**
 	 * Display empty Task card
@@ -322,6 +322,7 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 		// print '</div>';
 		
 		// Task list
+		
 		$title = $langs->trans("ListOfTasks");
 		// TODO change link when page ready
 		// $linktotasks = '<a href="' . DOL_URL_ROOT . '/projet/tasks/time.php?projectid=' . $object->id . '&withproject=1">' . $langs->trans("GoToListOfTimeConsumed") . '</a>';
@@ -392,7 +393,7 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 		// project not defined
 		print '<a href="' . DOL_URL_ROOT . '/custom/vignoble/admin/module_settings.php">' . $langs->trans("VignobleSetup") . '</a>';
 	}
-
+print '</div>';
 llxFooter();
 
 $db->close();

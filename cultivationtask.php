@@ -172,7 +172,7 @@ if ($id > 0 || ! empty($ref)) {
 		/**
 		 *  Display task card
 		 */
-		
+		print '<div class="fiche">';
 		$head = task_prepare_head($object);
 		//var_dump($head);
 		if ($action == 'edit' && $user->rights->projet->creer) {
@@ -374,6 +374,7 @@ if ($id > 0 || ! empty($ref)) {
 				print '</div>';
 			}
 		}
+		print '</div>';
 	}
 }
 
