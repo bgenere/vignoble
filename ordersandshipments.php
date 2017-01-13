@@ -61,7 +61,7 @@ function displayView($orders, $shipments, $sort, $filter)
 {
 	global $db, $conf, $langs, $user;
 	
-	$pagetitle = $langs->trans('Orders').' & '.$langs->trans('Shipments');
+	$pagetitle = $langs->trans('Orders') . ' & ' . $langs->trans('Shipments');
 	
 	llxHeader('', $pagetitle);
 	print load_fiche_titre($pagetitle, '', 'object_vignoble@vignoble');
@@ -93,7 +93,8 @@ function displayView($orders, $shipments, $sort, $filter)
 }
 
 /**
- * @param unknown $filter
+ *
+ * @param unknown $filter        	
  */
 function displaySearchForm($filter)
 {
@@ -108,19 +109,19 @@ function displaySearchForm($filter)
 	print '<tr class="liste_titre"><td colspan="3">' . $langs->trans("Search") . '</td></tr>';
 	// Date Begin and Button
 	print '<tr>';
-	print '<td class="nowrap"><label for="datebegin">' . $langs->trans("Begin") . '</label></td>';
+	print '<td class="nowrap"><label for="datebegin">' . $langs->trans("DateStart") . '</label></td>';
 	print '<td>' . $form->select_date($filter['datebegin'], 'datebegin', 0, 0, 0, "datebegin", 1, 1, 1) . '</td>';
 	print '<td rowspan="3"><input type="submit" value="' . $langs->trans("Search") . '" class="button"></td>';
 	print '</tr>';
 	// Date End
 	print '<tr>';
-	print '<td class="nowrap"><label for="dateend">' . $langs->trans("End") . '</label></td>';
+	print '<td class="nowrap"><label for="dateend">' . $langs->trans("DateEnd") . '</label></td>';
 	print '<td>' . $form->select_date($filter['dateend'], 'dateend', 0, 0, 0, "dateend", 1, 1, 1) . '</td>';
 	print '</tr>';
 	// Products
 	print '<tr>';
 	print '<td class="nowrap"><label for="products">' . $langs->trans("Products") . '</label></td>';
-	print '<td><input type="text" class="flat inputsearch" name="products" id="products" size="18"></td>';
+	print '<td>' . $form->multiselectarray('multiproducts', fetchProducts(), $filter['products'], 1, 0, '', 0, '90%') . '</td>';
 	print '</tr>';
 	print '</table>';
 	print '</form>';
@@ -130,9 +131,10 @@ function displaySearchForm($filter)
 }
 
 /**
- * @param unknown $tablename
- * @param unknown $table
- * @param unknown $sort
+ *
+ * @param unknown $tablename        	
+ * @param unknown $table        	
+ * @param unknown $sort        	
  */
 function displayTable($tablename, $table, $sort)
 {
@@ -188,8 +190,9 @@ function displayTable($tablename, $table, $sort)
 }
 
 /**
- * Get field and order used for the tables sort. 
+ * Get field and order used for the tables sort.
  * Use Ref Ascending by default.
+ * 
  * @return Array[] with keys : field, order.
  */
 function getsort()
@@ -210,26 +213,33 @@ function getsort()
 
 /**
  * Get all data needed to filter the SQL requests and produce the results
- * 
+ *
  * @return Array[] containing the following keys :
- * 	datebegin,
- * 	dateend,
- * 	products (array of selected products),
- * 	orders (array of sql filter conditions for orders),
- * 	shipments (array of sql filter conditions for shipments),
+ *         datebegin,
+ *         dateend,
+ *         products (array of selected products),
+ *         orders (array of sql filter conditions for orders),
+ *         shipments (array of sql filter conditions for shipments),
  */
 function getfilter()
 {
+	//@Todo filter not saved when using the sort on table.
 	$datebegin = GETPOST("datebeginyear") . '-' . GETPOST("datebeginmonth") . '-' . GETPOST("datebeginday");
 	;
 	if ($datebegin == '--') {
 		$datebegin = date("Y-m-d", strtotime("now - 1 month"));
 	}
+	
 	$dateend = GETPOST("dateendyear") . '-' . GETPOST("dateendmonth") . '-' . GETPOST("dateendday");
 	if ($dateend == '--') {
 		$dateend = date("Y-m-d");
 	}
-	$products = array();
+	
+	$products = GETPOST('multiproducts', 'array');
+	if (! empty($products)) {
+		$selectedproducts = " product.ref IN ('" . implode("','", $products) . "')";
+	} else
+		$selectedproducts = "product.ref IS NOT NULL";
 	
 	$filter = array(
 		"datebegin" => $datebegin,
@@ -237,14 +247,16 @@ function getfilter()
 		"products" => $products,
 		"orders" => array(
 			" commande.date_commande >= '" . $datebegin . "' ",
-			" commande.date_commande <= '" . $dateend . "' "
+			" commande.date_commande <= '" . $dateend . "' ",
+			$selectedproducts
 		),
 		"shipments" => array(
-			"((shipment.date_expedition IS NULL AND shipment.date_creation >= '". $datebegin."') OR (shipment.date_expedition >= '" . $datebegin. "'))",
-			"((shipment.date_expedition IS NULL AND shipment.date_creation <= '" . $dateend. "') OR (shipment.date_expedition <= '" . $dateend. "'))"
+			"((shipment.date_expedition IS NULL AND shipment.date_creation >= '" . $datebegin . "') OR (shipment.date_expedition >= '" . $datebegin . "'))",
+			"((shipment.date_expedition IS NULL AND shipment.date_creation <= '" . $dateend . "') OR (shipment.date_expedition <= '" . $dateend . "'))",
+			$selectedproducts
 		)
 	);
-
+	
 	return $filter;
 }
 

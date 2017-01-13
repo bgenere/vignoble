@@ -20,23 +20,24 @@
 
 /**
  * \file lib/productsordersandshipments.lib.php
- * \ingroup products
+ * \ingroup dashboard
  * \brief
  *
- * Contains Products orders and shipments SQL requests to get the data .
+ * Contains orders, shipments and products SQL requests to get the data 
+ * needed for the ordersandshipments page.
  */
 
 /**
- * Returns a set of Products Orders in memory from the database
- *
+ * Returns Orders count and total quantity and amount by products  
+ * 
  * @param array $sort
- *        	Sort parameters : field and order 
+ *        	Sort parameters : field and order. 
  * @param int $limit
- *        	offset LimitIterator number of rows to send back
+ *        	offset LimitIterator number of rows to send back.
  * @param int $offset
- *        	offset limit number of rows to start the query
+ *        	offset limit number of rows to start the query.
  * @param array $filter
- *        	filter array containing field name as key and condition as value.
+ *        	filter array containing conditions to use.
  * @param string $filtermode
  *        	filter mode (AND or OR)
  *        	
@@ -46,14 +47,10 @@ function fetchProductsOrders($sort= '', $limit = 0, $offset = 0, array $filter =
 {
 	global $db, $langs, $conf, $user;
 	dol_syslog(__METHOD__, LOG_DEBUG);
-	
-	// SQL to get the figures on orders
-	// WHERE commandedet.fk_product > 0 GROUP BY product.ref,product.label,commande.date_commande
-	
+		
 	$sql = 'SELECT';
 	$sql .= ' product.ref as Ref,';
 	$sql .= ' product.label as Label,';
-	// $sql .= ' commande.date_commande as orderDate,';
 	$sql .= " COUNT(commande.ref) as totalNumber,";
 	$sql .= " SUM(commandedet.qty) as totalQuantity,";
 	$sql .= " SUM(commandedet.total_ht) as totalAmount";
@@ -64,74 +61,60 @@ function fetchProductsOrders($sort= '', $limit = 0, $offset = 0, array $filter =
 	
 	$sql .= ' WHERE commandedet.fk_product > 0';
 	
-	// Manage filter
 	if (count($filter) > 0) {
+		// add clauses to WHERE
 		$sql .= ' AND ' . implode(' ' . $filtermode . ' ', $filter);
 	}
 	
 	$sql .= ' GROUP BY Ref,Label';
 	
 	if (! empty($sort)) {
+		// add ORDER BY
 		$sql .= $db->order($sort['field'], $sort['order']);
 	}
 	if (! empty($limit)) {
+		// add LIMIT
 		$sql .= ' ' . $db->plimit($limit, $offset);
 	}
-	$lines = array();
 	
 	$sqlresult = $db->query($sql);
 	
 	if ($sqlresult) {
-		$num = $db->num_rows($sqlresult);
 		$lines = Array();
 		while ($obj = $db->fetch_object($sqlresult)) {
 			$lines[] = $obj;
 		}
-		$db->free($sqlresult);
-		
+		$db->free($sqlresult);	
 		return $lines;
 	} else {
 		$errors[] = 'Error ' . $db->lasterror();
 		dol_syslog(__METHOD__ . ' ' . join(',', $errors), LOG_ERR);
-		
 		return - 1;
 	}
 }
 
 /**
- * @param string $sort
- * @param number $limit
- * @param number $offset
+ * Returns Shipments count and total quantity and amount by products  
+ *  
+ * @param array $sort
+ *        	Sort parameters : field and order. 
+ * @param int $limit
+ *        	offset LimitIterator number of rows to send back.
+ * @param int $offset
+ *        	offset limit number of rows to start the query.
  * @param array $filter
+ *        	filter array containing conditions to use.
  * @param string $filtermode
- * @return Object[]|number
+ *        	filter mode (AND or OR)
+ *        	
+ * @return int <0 if KO, >0 if OK
  */
 function fetchProductsShipments($sort = '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
 {
 	global $db, $langs, $conf, $user;
 	dol_syslog(__METHOD__, LOG_DEBUG);
 	
-	// SQL to get the figures on shipments
-	// SELECT
-	// CASE
-	// WHEN shipment.date_expedition IS NULL THEN DATE_FORMAT(shipment.date_creation,'%Y-%m')
-	// ELSE DATE_FORMAT(shipment.date_expedition,'%Y-%m')
-	// END as 'month',
-	// product.ref,
-	// SUM(shipmentdet.qty),
-	// SUM(line.total_ht),
-	// SUM(line.total_tva)
-	// FROM llx_expedition as shipment
-	// JOIN llx_expeditiondet as shipmentdet on shipmentdet.fk_expedition = shipment.rowid
-	// JOIN llx_commandedet as line on shipmentdet.fk_origin_line = line.rowid
-	// JOIN llx_product as product on line.fk_product = product.rowid
-	// WHERE line.fk_product > 0
-	// group by
-	// month,
-	// product.ref
-	
 	$sql = 'SELECT';
-	
 	$sql .= ' product.ref as Ref,';
 	$sql .= ' product.label as Label,';
 	$sql .= " COUNT(shipmentdet.rowid) as totalNumber,";
@@ -145,36 +128,70 @@ function fetchProductsShipments($sort = '', $limit = 0, $offset = 0, array $filt
 	
 	$sql .= ' WHERE line.fk_product > 0';
 	
-	// Manage filter
 	if (count($filter) > 0) {
+		// add clauses to WHERE
 		$sql .= ' AND ' . implode(' ' . $filtermode . ' ', $filter);
 	}
 	
 	$sql .= ' GROUP BY Ref,Label';
 	
 	if (! empty($sort)) {
+		// add ORDER BY
 		$sql .= $db->order($sort['field'], $sort['order']);
 	}
 	if (! empty($limit)) {
+		// add LIMIT
 		$sql .= ' ' . $db->plimit($limit, $offset);
 	}
-	$lines = array();
 	
 	$sqlresult = $db->query($sql);
 	
 	if ($sqlresult) {
-		$num = $db->num_rows($sqlresult);
+		// get result lines
 		$lines = Array();
 		while ($obj = $db->fetch_object($sqlresult)) {
 			$lines[] = $obj;
 		}
 		$db->free($sqlresult);
-		
 		return $lines;
 	} else {
 		$errors[] = 'Error ' . $db->lasterror();
 		dol_syslog(__METHOD__ . ' ' . join(',', $errors), LOG_ERR);
+		return - 1;
+	}
+}
+
+/**
+ * @return lines[]|number
+ */
+function fetchProducts()
+{
+	global $db, $langs, $conf, $user;
+	dol_syslog(__METHOD__, LOG_DEBUG);
 		
+	$sql = 'SELECT';
+	$sql .= ' product.ref as Ref,';
+	$sql .= ' product.label as Label';
+		
+	$sql .= ' FROM ' . MAIN_DB_PREFIX . 'product as product ';
+		
+	$sql .= ' WHERE 1';
+		
+	$sql .= ' ORDER BY Ref,Label';
+	
+	$sqlresult = $db->query($sql);
+	
+	if ($sqlresult) {
+		// get result lines
+		$lines = Array();
+		while ($obj = $db->fetch_object($sqlresult)) {
+			$lines[ $obj->Ref ]=  $obj->Label;
+		}
+		$db->free($sqlresult);
+		return $lines;
+	} else {
+		$errors[] = 'Error ' . $db->lasterror();
+		dol_syslog(__METHOD__ . ' ' . join(',', $errors), LOG_ERR);	
 		return - 1;
 	}
 }
