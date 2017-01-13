@@ -114,7 +114,7 @@ class modVignoble extends DolibarrModules
 		/**
 		 * version : module version as x.x.x
 		 */
-		$this->version = '0.2';
+		$this->version = '0.3';
 		/**
 		 * const_name : module constant to save module status enabled/disabled
 		 */
@@ -486,16 +486,16 @@ class modVignoble extends DolibarrModules
 		$this->menu[] = array(
 			'type' => 'left',
 			'mainmenu' => 'vignoble',
-			'leftmenu' => 'ProductsOrders&Shipments',
+			'leftmenu' => 'Orders&Shipments',
 			'fk_menu' => 'fk_mainmenu=vignoble',
-			'titre' => 'ProductsOrders&Shipments',
+			'titre' => 'Orders&Shipments',
 			'langs' => 'vignoble@vignoble',
-			'url' => '/vignoble/productsordersandshipments.php',
+			'url' => '/vignoble/ordersandshipments.php',
 			'target' => '',
 			'position' => 3,
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
-			'perms' => '$user->rights->vignoble->plot->read'
+			'perms' => '$user->rights->produit->lire'
 		);
 	}
 

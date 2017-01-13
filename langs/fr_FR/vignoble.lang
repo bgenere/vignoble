@@ -88,3 +88,8 @@ CultivationProjectNotDefined = Veuillez définir le projet de suivi des cultures
 Varietal = Cépages
 CultivationType = Assolements
 Rootstock = Portes greffe
+
+#
+# Menus entries
+#
+Orders&Shipments = Commandes & Expéditions

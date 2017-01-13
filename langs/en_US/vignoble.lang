@@ -89,5 +89,8 @@ Varietal = Varietal
 CultivationType = Cultivation Type
 Rootstock = Rootstock
 
-
+#
+# Menus entries
+#
+Orders&Shipments = Orders & Shipments
 
