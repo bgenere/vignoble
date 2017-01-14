@@ -17,8 +17,8 @@
  */
 
 /**
- * \file productsordersandshipments.php
- * \brief Main page - Displays products orders and shipments numbers between 2 dates
+ * \file ordersandshipments.php
+ * \brief Displays products orders and shipments numbers between 2 dates
  *
  * \ingroup dashboard
  */
@@ -55,7 +55,16 @@ $db->close();
 /* Function List */
 
 /**
- * Displays the view
+ * Displays the page view
+ * 
+ * A filter form to select date begin, date end, products.
+ * Then Orders and Shipment summary by products on 2 columns.
+ * 
+ * @param array[] $orders the orders summary result set
+ * @param array[] $shipments the shipments summary result set
+ * @param array[] $sort sort field and order 
+ * @param array[] $filter the filter parameters
+ * 
  */
 function displayView($orders, $shipments, $sort, $filter)
 {
@@ -65,25 +74,23 @@ function displayView($orders, $shipments, $sort, $filter)
 	
 	llxHeader('', $pagetitle);
 	print load_fiche_titre($pagetitle, '', 'object_vignoble@vignoble');
-	/**
-	 * - Display selection
-	 */
-	displaySearchForm($filter);
-	/**
-	 * - Display tables
-	 */
+	
+	displaySearchForm($filter, $sort);
+	
+	$urlparam = buildSearchParameters($filter);
+	
 	print '<div class="fichecenter">'; // frame
 	
 	print '<div class="fichehalfleft">'; // left column
 	
-	displayTable('Orders', $orders, $sort);
+	displayTable('Orders', $orders, $sort, $urlparam);
 	
 	print '</div>'; // left column end
 	
 	print '<div class="fichehalfright">'; // right column
 	
 	print '<div class="ficheaddleft">'; // add white space on left
-	displayTable('Shipments', $shipments, $sort);
+	displayTable('Shipments', $shipments, $sort, $urlparam);
 	print '</div>'; //
 	
 	print '</div>'; // right column end
@@ -93,17 +100,24 @@ function displayView($orders, $shipments, $sort, $filter)
 }
 
 /**
- *
- * @param unknown $filter        	
+ * Display the filter Form :
+ * 
+ *  Date begin, date end, products list.
+ *  
+ * @param array[] $filter the filter parameters
+ * @param array[] $sort sort field and order      	
  */
-function displaySearchForm($filter)
+function displaySearchForm($filter, $sort)
 {
 	global $db, $conf, $langs, $user;
+	
 	$form = new Form($db);
 	print '<div class="fichecenter">';
 	
 	print '<form method="post" action="' . DOL_URL_ROOT . '/custom/vignoble/ordersandshipments.php">';
 	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+	print '<input type="hidden" name="sortfield" value="' . $sort['field'] . '">';
+	print '<input type="hidden" name="sortorder" value="' . $sort['order'] . '">';
 	print '<table class="noborder nohover centpercent">';
 	// Form header
 	print '<tr class="liste_titre"><td colspan="3">' . $langs->trans("Search") . '</td></tr>';
@@ -131,12 +145,16 @@ function displaySearchForm($filter)
 }
 
 /**
- *
- * @param unknown $tablename        	
- * @param unknown $table        	
- * @param unknown $sort        	
+ * Display the result table :
+ * 
+ * Product ref, product label, object count, quantity, amount
+ * 
+ * @param string $tablename name of the object        	
+ * @param array[] $table    result set from SQL query    	
+ * @param array[] $sort     sort field and order
+ * @param string  $urlparam filter parameters as a URL part for field sort 	
  */
-function displayTable($tablename, $table, $sort)
+function displayTable($tablename, $table, $sort, $urlparam)
 {
 	global $db, $conf, $langs, $user;
 	
@@ -166,13 +184,13 @@ function displayTable($tablename, $table, $sort)
 	
 	print load_fiche_titre($langs->trans($tablename), '', '');
 	print '<table class="liste" >';
-	// Entête des champs
+	// Fields title
 	print '<tr class="liste_titre">';
 	foreach ($fields as $field => $fieldvalue) {
-		print print_liste_field_titre($langs->trans($fieldvalue['label']), $_SERVER['PHP_SELF'], $field, '', '', 'align="' . $fieldvalue['align'] . '"', $sort["field"], $sort["order"]);
+		print print_liste_field_titre($langs->trans($fieldvalue['label']), $_SERVER['PHP_SELF'], $field, '', $urlparam, 'align="' . $fieldvalue['align'] . '"', $sort["field"], $sort["order"]);
 	}
 	print '</tr>';
-	// liste des lignes
+	// Table lines
 	foreach ($table as $line) {
 		print '<tr>';
 		foreach ($fields as $field => $fieldvalue) {
@@ -191,8 +209,9 @@ function displayTable($tablename, $table, $sort)
 
 /**
  * Get field and order used for the tables sort.
- * Use Ref Ascending by default.
  * 
+ * Use Ref Ascending by default.
+ *
  * @return Array[] with keys : field, order.
  */
 function getsort()
@@ -223,23 +242,34 @@ function getsort()
  */
 function getfilter()
 {
-	//@Todo filter not saved when using the sort on table.
 	$datebegin = GETPOST("datebeginyear") . '-' . GETPOST("datebeginmonth") . '-' . GETPOST("datebeginday");
-	;
-	if ($datebegin == '--') {
+	if ($datebegin == '--') { // not in Form check URL
+		$datebegin = GETPOST("datebegin");
+	}
+	if (empty($datebegin)) {
 		$datebegin = date("Y-m-d", strtotime("now - 1 month"));
 	}
 	
 	$dateend = GETPOST("dateendyear") . '-' . GETPOST("dateendmonth") . '-' . GETPOST("dateendday");
-	if ($dateend == '--') {
+	if ($dateend == '--') { // not in Form check URL
+		$dateend = GETPOST("dateend");
+	}
+	if (empty($dateend)) {
 		$dateend = date("Y-m-d");
 	}
 	
 	$products = GETPOST('multiproducts', 'array');
-	if (! empty($products)) {
+	if (empty($products)) { // not in Form check URL
+		$products = GETPOST('products', 'alpha');
+		if (empty($products)) {
+			$selectedproducts = "product.ref IS NOT NULL";
+		} else {
+			$selectedproducts = " product.ref IN " . $products;
+			$products = explode("','", trim($products,"('')"));
+		}
+	} else {
 		$selectedproducts = " product.ref IN ('" . implode("','", $products) . "')";
-	} else
-		$selectedproducts = "product.ref IS NOT NULL";
+	}
 	
 	$filter = array(
 		"datebegin" => $datebegin,
@@ -258,6 +288,26 @@ function getfilter()
 	);
 	
 	return $filter;
+}
+
+/**
+ * Build the parameters string to be added to URL to keep the filter conditions.
+ * 
+ * (used for list sort)
+ *  
+ * @param Array $filter the filter conditions
+ * @return string to be added to URL
+ */
+function buildSearchParameters($filter)
+{
+	$param = "";
+	if (! empty($filter['datebegin']))
+		$param .= "&amp;datebegin=" . urlencode($filter['datebegin']);
+	if (! empty($filter['dateend']))
+		$param .= "&amp;dateend=" . urlencode($filter['dateend']);
+	if (! empty($filter['products']))
+		$param .= "&amp;products=" . urlencode("('" . implode("','", $filter['products']) . "')");
+	return $param;
 }
 
 

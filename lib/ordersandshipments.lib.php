@@ -19,7 +19,7 @@
  */
 
 /**
- * \file lib/productsordersandshipments.lib.php
+ * \file lib/ordersandshipments.lib.php
  * \ingroup dashboard
  * \brief
  *
@@ -41,7 +41,7 @@
  * @param string $filtermode
  *        	filter mode (AND or OR)
  *        	
- * @return int <0 if KO, >0 if OK
+ * @return -1 if KO, $lines[] if OK
  */
 function fetchProductsOrders($sort= '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
 {
@@ -107,7 +107,7 @@ function fetchProductsOrders($sort= '', $limit = 0, $offset = 0, array $filter =
  * @param string $filtermode
  *        	filter mode (AND or OR)
  *        	
- * @return int <0 if KO, >0 if OK
+ * @return -1 if KO, $lines[] if OK
  */
 function fetchProductsShipments($sort = '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
 {
@@ -162,7 +162,9 @@ function fetchProductsShipments($sort = '', $limit = 0, $offset = 0, array $filt
 }
 
 /**
- * @return lines[]|number
+ * Return list of product reference and labels for multi selection.
+ * 
+ * @return -1 if KO, $lines[] if OK 
  */
 function fetchProducts()
 {
