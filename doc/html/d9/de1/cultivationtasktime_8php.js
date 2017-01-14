@@ -31,5 +31,6 @@ var cultivationtasktime_8php =
     [ "$sortfield", "d9/de1/cultivationtasktime_8php.html#ad8a3bcfb2e745be70b1e7ebe97472ce6", null ],
     [ "$sortorder", "d9/de1/cultivationtasktime_8php.html#a11ec75e1068cd7566eaaf44082cdd029", null ],
     [ "$userstatic", "d9/de1/cultivationtasktime_8php.html#acfaf063deb6bcfaa3cb88c286899b5b5", null ],
-    [ "$withproject", "d9/de1/cultivationtasktime_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f", null ]
+    [ "$withproject", "d9/de1/cultivationtasktime_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f", null ],
+    [ "print", "d9/de1/cultivationtasktime_8php.html#a6ba352cf4971570ed8f5e8dc84b6a019", null ]
 ];

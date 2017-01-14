@@ -13,5 +13,6 @@ var cultivationtaskcontact_8php =
     [ "$ref", "d1/d9d/cultivationtaskcontact_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e", null ],
     [ "$socid", "d1/d9d/cultivationtaskcontact_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8", null ],
     [ "$userstatic", "d1/d9d/cultivationtaskcontact_8php.html#acfaf063deb6bcfaa3cb88c286899b5b5", null ],
-    [ "$withproject", "d1/d9d/cultivationtaskcontact_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f", null ]
+    [ "$withproject", "d1/d9d/cultivationtaskcontact_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f", null ],
+    [ "print", "d1/d9d/cultivationtaskcontact_8php.html#ac669a9fd8c4f2d3a027aef60f782bc1a", null ]
 ];

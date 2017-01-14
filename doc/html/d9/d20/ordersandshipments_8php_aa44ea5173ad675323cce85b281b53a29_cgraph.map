@@ -1,0 +1,6 @@
+<map id="displayView" name="displayView">
+<area shape="rect" id="node2" href="$d9/d20/ordersandshipments_8php.html#af5b29324aaeb2b32ebf46074f9b63545" title="Build the parameters string to be added to URL to keep the filter conditions. " alt="" coords="148,5,319,32"/>
+<area shape="rect" id="node3" href="$d9/d20/ordersandshipments_8php.html#add6c655db5ec358c410a5cce86b964ab" title="Display the filter Form : " alt="" coords="161,56,305,83"/>
+<area shape="rect" id="node5" href="$d9/d20/ordersandshipments_8php.html#a8b0af3d8d6cf07bc13e36e144a7c4eff" title="Display the result table : " alt="" coords="184,107,283,133"/>
+<area shape="rect" id="node4" href="$d6/df1/ordersandshipments_8lib_8php.html#aebcf6528d0db710b7f4f30cdd671e413" title="Return list of product reference and labels for multi selection. " alt="" coords="367,56,477,83"/>
+</map>

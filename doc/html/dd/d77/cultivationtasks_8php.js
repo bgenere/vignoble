@@ -22,6 +22,7 @@ var cultivationtasks_8php =
     [ "$taskref", "dd/d77/cultivationtasks_8php.html#afda31fb2de49de5fe410264a89b3c376", null ],
     [ "$taskstatic", "dd/d77/cultivationtasks_8php.html#a6df9fce623f9479d7cac43b490de4634", null ],
     [ "$title", "dd/d77/cultivationtasks_8php.html#ada57e7bb7c152edad18fe2f166188691", null ],
-    [ "else", "dd/d77/cultivationtasks_8php.html#af6deba71e98a7e725b45d046bed20483", null ],
-    [ "if", "dd/d77/cultivationtasks_8php.html#a2c60115720c993d1a047b6b1070a4a88", null ]
+    [ "else", "dd/d77/cultivationtasks_8php.html#a3e915c36d81d39c53e3c8dcd480c98fa", null ],
+    [ "if", "dd/d77/cultivationtasks_8php.html#a2c60115720c993d1a047b6b1070a4a88", null ],
+    [ "print", "dd/d77/cultivationtasks_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4", null ]
 ];
