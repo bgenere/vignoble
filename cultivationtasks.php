@@ -22,7 +22,7 @@
 /**
  * \file cultivationtasks.php
  * \ingroup cultivation
- * \brief List all tasks of the default cultivation project. 
+ * \brief List all tasks of the default cultivation project.
  * Called by the cultivation option in the module menu.
  * Also allow to create a new task using the menu link.
  */
@@ -32,7 +32,14 @@
 
 @include './tpl/cultivationtask.inc.php';
 
+// Get Cultivation project id
 $id = setIsCultivationProject();
+
+// Security check
+$socid = 0;
+if ($user->societe_id > 0)
+	$socid = $user->societe_id;
+$result = restrictedArea($user, 'projet', $id, 'projet&project');
 
 /**
  * Get page variables
@@ -43,40 +50,27 @@ $taskref = GETPOST('taskref', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 $cancel = GETPOST('cancel');
 $mode = GETPOST('mode', 'alpha');
-
 $mine = ($mode == 'mine' ? 1 : 0);
 
 /**
- * Instanciate
- * - object as project class
- * - taskstatic as task class
- *
- * add extrafields for both.
+ * Get current project
  */
 $object = new Project($db);
-$taskstatic = new Task($db);
-$extrafields_task = new ExtraFields($db);
-/**
- *  Fetch $object using $id or $ref
- *  $action should not be create or createtask
- *  $cancel should be empty
- */
-if ($cancel){ // reset to display if createtask canceled
+// $action should not be create or createtask
+// $cancel should be empty
+if ($cancel) { // createtask canceled reset to get project
 	$action = null;
 	$cancel = null;
 }
+// Fetch $object using $id or $ref
 include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once
-                                                                 
-/**
- * Get extrafields
- */
-$extralabels_task = $extrafields_task->fetch_name_optionals_label($taskstatic->table_element);
 
-// Security check
-$socid = 0;
-if ($user->societe_id > 0)
-	$socid = $user->societe_id;
-$result = restrictedArea($user, 'projet', $id, 'projet&project');
+/**
+ * Instanciate Task with extrafields
+ */
+$taskstatic = new Task($db);
+$extrafields_task = new ExtraFields($db);
+$extralabels_task = $extrafields_task->fetch_name_optionals_label($taskstatic->table_element);
 
 // Initialize technical object to manage hooks of thirdparties. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array(
@@ -84,26 +78,29 @@ $hookmanager->initHooks(array(
 	'globalcard'
 ));
 
-$progress = GETPOST('progress', 'int');
-$label = GETPOST('label', 'alpha');
-$description = GETPOST('description');
-$planned_workload = GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60;
-
 /**
  * Process actions : createtask
  * else do nothing
  */
 
 if ($action == 'createtask' && $user->rights->projet->creer) {
-	/**
-	 * - Create new task
-	 */
-	$error = 0;
-	
-	$date_start = dol_mktime($_POST['dateohour'], $_POST['dateomin'], 0, $_POST['dateomonth'], $_POST['dateoday'], $_POST['dateoyear'], 'user');
-	$date_end = dol_mktime($_POST['dateehour'], $_POST['dateemin'], 0, $_POST['dateemonth'], $_POST['dateeday'], $_POST['dateeyear'], 'user');
 	
 	if (! $cancel) {
+		/**
+		 * - Create new task
+		 */
+		$error = 0;
+		/**
+		 * Get task variables
+		 */
+		$progress = GETPOST('progress', 'int');
+		$label = GETPOST('label', 'alpha');
+		$description = GETPOST('description');
+		$planned_workload = GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60;
+		$date_start = dol_mktime(GETPOST('dateohour'), GETPOST('dateomin'), 0, GETPOST('dateomonth'), GETPOST('dateoday'), GETPOST('dateoyear'), 'user');
+		$date_end = dol_mktime(GETPOST('dateehour'), GETPOST('dateemin'), 0, GETPOST('dateemonth'), GETPOST('dateeday'), GETPOST('dateeyear'), 'user');
+		
+		//
 		if (empty($taskref)) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Ref")), null, 'errors');
 			$action = 'create';
@@ -113,19 +110,20 @@ if ($action == 'createtask' && $user->rights->projet->creer) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Label")), null, 'errors');
 			$action = 'create';
 			$error ++;
-		} else 
-			if (empty($_POST['task_parent'])) {
-				setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("ChildOfTask")), null, 'errors');
-				$action = 'create';
-				$error ++;
-			}
+		}
+		if (empty(GETPOST('task_parent'))) {
+			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("ChildOfTask")), null, 'errors');
+			$action = 'create';
+			$error ++;
+		}
 		
 		if (! $error) {
-			$tmparray = explode('_', $_POST['task_parent']);
-			$projectid = $tmparray[0];
+			
+			$parent = explode('_', GETPOST('task_parent'));
+			$projectid = $parent[0];
 			if (empty($projectid))
 				$projectid = $id; // If projectid is ''
-			$task_parent = $tmparray[1];
+			$task_parent = $parent[1];
 			if (empty($task_parent))
 				$task_parent = 0; // If task_parent is ''
 			
@@ -167,16 +165,11 @@ if ($action == 'createtask' && $user->rights->projet->creer) {
 				}
 			$id = $projectid;
 		}
-	} else {
+	} else { // create task cancelled
 		if (! empty($backtopage)) {
 			header("Location: " . $backtopage);
 			exit();
-		} else 
-			if (empty($id)) {
-				// We go back on task list
-				header("Location: " . DOL_URL_ROOT . '/projet/tasks/list.php' . (empty($mode) ? '' : '?mode=' . $mode));
-				exit();
-			}
+		} 
 	}
 }
 
@@ -198,7 +191,7 @@ if ($id > 0 || ! empty($ref)) {
 	 * Print Project Card
 	 */
 	$tab = GETPOST('tab') ? GETPOST('tab') : 'cultivationtasks';
-	displayProjectCard($id, $mode, $object, $form, $tab);
+	displayProjectCard($object, $form);
 }
 print '<div class="fiche">';
 if ($action == 'create' && $user->rights->projet->creer && (empty($object->thirdparty->id) || $userWrite > 0)) {
@@ -245,7 +238,8 @@ if ($action == 'create' && $user->rights->projet->creer && (empty($object->third
 	print '</td></tr>';
 	
 	// List of projects - not needed we are on the cultivation project
-	print '<tr style="display: none;"><td>' . $langs->trans("ChildOfTask") . '</td><td>';
+	// print '<tr style="display: none;"><td>' . $langs->trans("ChildOfTask") . '</td><td>';
+	print '<tr ><td>' . $langs->trans("ChildOfTask") . '</td><td>';
 	print $formother->selectProjectTasks(GETPOST('task_parent'), $projectid ? $projectid : $object->id, 'task_parent', 0, 0, 1, 1);
 	print '</td></tr>';
 	// User responsible by default the current user Id

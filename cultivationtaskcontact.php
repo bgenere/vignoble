@@ -157,7 +157,7 @@ if ($id > 0 || ! empty($ref)) {
 			 * Display project card
 			 */
 			$tab = 'cultivationtasks';
-			displayProjectCard($projectstatic->id, $mode, $projectstatic, $form, $tab);
+			displayProjectCard($projectstatic, $form);
 		}
 		
 		/**

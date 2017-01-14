@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Vignoble Module library
+ * Vignoble Module library for cultivation task management
  * Copyright (C) 2016 Bruno Généré <bgenere@webiseasy.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * \ingroup cultivation
  * \brief
  *
- * Contains common functions for cultivation pages.
+ * Contains common functions for cultivation task management.
  */
 
 /**
@@ -50,26 +50,23 @@ function setIsCultivationProject()
 }
 
 /**
- * Display the project card summary in display mode and without extrafields
+ * Display a project card summary.
  *
- * @param
- *        	id project id
- * @param
- *        	mode mine if current view is only mine
+ * Shows header (ref and title) with key fields :
+ * visibility, begin and end date, description, categories
+ *
  * @param
  *        	object the project to display
  * @param
  *        	form the form object
- * @param
- *        	tab the tab to display
  *        	
  */
-function displayProjectCard($id, $mode, $object, $form, $tab)
+function displayProjectCard($object, $form)
 {
 	Global $db, $conf, $user, $langs;
 	
 	// link to open full project
-	$linkback = '<a href="' . DOL_URL_ROOT . '/projet/card.php?mainmenu=project&id=' . $id . '">' . $langs->trans("OpenFullProject") . '</a>';
+	$linkback = '<a href="' . DOL_URL_ROOT . '/projet/card.php?mainmenu=project&id=' . $object->id . '">' . $langs->trans("OpenFullProject") . '</a>';
 	
 	// Project title
 	$projecttitle = '<div class="refidno">';
@@ -504,4 +501,15 @@ function getTaskUrl($task, $withpicto = 0, $option = '', $mode = 'cultivationtas
 	if ($withpicto != 2)
 		$result .= $linkstart . $task->ref . $linkend . (($addlabel && $task->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 	return $result;
+}
+
+/**
+ * Create a new task for the project in database
+ * Use the getpost variable from the new task form
+ */
+function createNewTask()
+{
+	global $db, $conf, $langs, $user;
+	
+	
 }

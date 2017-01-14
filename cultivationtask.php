@@ -164,8 +164,9 @@ if ($id > 0 || ! empty($ref)) {
 		
 		if (! empty($withproject)) {
 			// initialize tab to cultivationtasks
-			$tab = 'cultivationtasks';	
-			displayProjectCard($projectstatic->id, $mode, $projectstatic, $form, $tab);
+			$tab = 'cultivationtasks';
+			
+			displayProjectCard($projectstatic, $form);
 
 		}
 		
