@@ -28,14 +28,14 @@
 
 /**
  * Initialize project Id with default cultivation project
- * and setup boolean for tab management
- * 
+ *
+ * Also setup global key VIGNOBLE_ISCULTIVATIONPROJECT to true for tabs management
+ *
  * @return $id Default cultivation project id, 0 if not found
  */
-
 function setIsCultivationProject()
 {
-	Global $db,$conf,$user,$langs;
+	Global $db, $conf, $user, $langs;
 	
 	if (! empty($conf->global->VIGNOBLE_CULTIVATIONPROJECT)) {
 		$id = dolibarr_get_const($db, "VIGNOBLE_CULTIVATIONPROJECT", $conf->entity);
@@ -48,53 +48,51 @@ function setIsCultivationProject()
 	}
 	return $id;
 }
+
 /**
  * Display the project card summary in display mode and without extrafields
- * 
- * @param id project id	
- * @param mode  mine if current view is only mine
- * @param object the project to display
- * @param form the form object
- * @param tab the tab to display
  *
+ * @param
+ *        	id project id
+ * @param
+ *        	mode mine if current view is only mine
+ * @param
+ *        	object the project to display
+ * @param
+ *        	form the form object
+ * @param
+ *        	tab the tab to display
+ *        	
  */
-
 function displayProjectCard($id, $mode, $object, $form, $tab)
 {
-	Global $db,$conf,$user,$langs;
+	Global $db, $conf, $user, $langs;
 	
-	//$head = project_prepare_head($object);
-	// var_dump($head);
-	//dol_fiche_head($head, $tab, $langs->trans("Project"), 0, ($object->public ? 'projectpub' : 'project'));
-	
-	// display only my task ?? already defined
-	$param = ($mode == 'mine' ? '&mode=mine' : '');
-	
-	// prepare project card
-	//
+	// link to open full project
 	$linkback = '<a href="' . DOL_URL_ROOT . '/projet/card.php?mainmenu=project&id=' . $id . '">' . $langs->trans("OpenFullProject") . '</a>';
 	
-	$morehtmlref = '<div class="refidno">';
-	// Title
-	$morehtmlref .= $object->title;
-	// Thirdparty
+	// Project title
+	$projecttitle = '<div class="refidno">';
+	$projecttitle .= $object->title;
 	if ($object->thirdparty->id > 0) {
-		$morehtmlref .= '<br>' . $langs->trans('ThirdParty') . ' : ' . $object->thirdparty->getNomUrl(1, 'project');
+		$projecttitle .= '<br>' . $langs->trans('ThirdParty') . ' : ' . $object->thirdparty->getNomUrl(1, 'project');
 	}
-	$morehtmlref .= '</div>';
+	$projecttitle .= '</div>';
 	
-	// Define a complementary filter for search of next/prev ref.
-	if (! $user->rights->projet->all->lire) {
-		$objectsListId = $object->getProjectsAuthorizedForUser($user, 0, 0);
-		$object->next_prev_filter = " rowid in (" . (count($objectsListId) ? join(',', array_keys($objectsListId)) : '0') . ")";
+	// print Project without navigation on list
+	if ($conf->global->MAIN_VERSION_LAST_UPGRADE > "5") {
+		dol_banner_tab($object, 'ref', $linkback, 0, 'ref', 'ref', $projecttitle, 0, '', '', '', '', 0, '', '', 0);
+	} else {
+		print '<table class="border" width="100%"><tr><td>';
+		print $form->showrefnav($object, 'ref', $linkback, 0, 'ref', 'ref', $projecttitle, $param);
+		print '</td></tr></table>';
 	}
-	// banner without navigation on list
-	dol_banner_tab($object, 'ref', $linkback, 0, 'ref', 'ref', $morehtmlref);
-	
+	// Projects attributes
 	print '<div class="fichecenter">';
+	
+	// Left column
 	print '<div class="fichehalfleft">';
 	print '<div class="underbanner clearboth"></div>';
-	
 	print '<table class="border" width="100%">';
 	
 	// Visibility
@@ -112,24 +110,13 @@ function displayProjectCard($id, $mode, $object, $form, $tab)
 	if ($end)
 		print ' - ' . $end;
 	print '</td></tr>';
-	
-	// Budget
-	print '<tr><td>' . $langs->trans("Budget") . '</td><td>';
-	if (strcmp($object->budget_amount, ''))
-		print price($object->budget_amount, '', $langs, 1, 0, 0, $conf->currency);
-	print '</td></tr>';
-	
-	// Other attributes - extrafields removed from project.
-	$cols = 2;
-	//include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';
-	
 	print '</table>';
-	
 	print '</div>';
-	print '<div class="fichehalfright">';
-	print '<div class="ficheaddleft">';
-	print '<div class="underbanner clearboth"></div>';
 	
+	// Right column
+	print '<div class="fichehalfright">';
+	print '<div class="ficheaddleft">'; // add left space
+	print '<div class="underbanner clearboth"></div>';
 	print '<table class="border" width="100%">';
 	
 	// Description
@@ -138,32 +125,35 @@ function displayProjectCard($id, $mode, $object, $form, $tab)
 	print '</td></tr>';
 	
 	// Categories
-	if ($conf->categorie->enabled) {
+	if ($conf->categorie->enabled && $conf->global->MAIN_VERSION_LAST_UPGRADE > "5") {
 		print '<tr><td valign="middle">' . $langs->trans("Categories") . '</td><td>';
 		print $form->showCategories($object->id, 'project', 1);
 		print "</td></tr>";
 	}
-	
 	print '</table>';
+	print '</div>';
+	print '</div>';
 	
 	print '</div>';
-	print '</div>';
-	print '</div>';
-	
 	print '<div class="clearboth"></div>';
 	
 	dol_fiche_end();
 }
+
 /**
  * print the task card
- * 
- * @param	object the task to display
- * @param   projectstatic the project linked to the task	
- * @param   form the form object to display
- * @param	withproject true if project card already displayed
+ *
+ * @param
+ *        	object the task to display
+ * @param
+ *        	projectstatic the project linked to the task
+ * @param
+ *        	form the form object to display
+ * @param
+ *        	withproject true if project card already displayed
  *        	
  */
-function displayTaskCard($object,$projectstatic, $form, $withproject = true)
+function displayTaskCard($object, $projectstatic, $form, $withproject = true)
 {
 	global $db, $conf, $langs, $user;
 	
@@ -176,15 +166,13 @@ function displayTaskCard($object,$projectstatic, $form, $withproject = true)
 		$object->next_prev_filter = " fk_projet = " . $projectstatic->id;
 	
 	print '<table class="border" width="100%">';
-		
+	
 	// Ref
 	print '<tr><td>';
 	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', $object->label, $param);
-	print '</td></tr>';	
+	print '</td></tr>';
 	print "</table>";
 }
-
-
 
 /**
  * Show task lines with a particular parent
@@ -233,9 +221,9 @@ function showtasks(&$inc, $parent, &$lines, &$level, $var, $showproject, &$taskr
 	for ($i = 0; $i < $numlines; $i ++) {
 		if ($parent == 0 && $level >= 0)
 			$level = 0; // if $level = -1, we dont' use sublevel recursion, we show all lines
-				                                             
+				            
 		// Process line
-				                                             // print "i:".$i."-".$lines[$i]->fk_project.'<br>';
+				            // print "i:".$i."-".$lines[$i]->fk_project.'<br>';
 		
 		if ($lines[$i]->fk_parent == $parent || $level < 0) // if $level = -1, we dont' use sublevel recursion, we show all lines
 {
