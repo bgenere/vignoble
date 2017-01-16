@@ -23,13 +23,12 @@
  * \file cultivationtask.php
  * \ingroup cultivation
  * \brief Card page of a cultivation project task.
- * 
  */
 @include './tpl/maindolibarr.inc.php';
 
 @include './tpl/cultivationtask.inc.php';
 
-$cultivationprojectid=setIsCultivationProject();
+$cultivationprojectid = setIsCultivationProject();
 
 $id = GETPOST('id', 'int');
 $ref = GETPOST("ref", 'alpha', 1);
@@ -61,7 +60,7 @@ $projectstatic = new Project($db);
 $extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
 
 /**
- * Actions  on task : update , delete
+ * Actions on task : update , delete
  */
 if ($action == 'update' && ! $_POST["cancel"] && $user->rights->projet->creer) {
 	/**
@@ -166,16 +165,15 @@ if ($id > 0 || ! empty($ref)) {
 			// initialize tab to cultivationtasks
 			$tab = 'cultivationtasks';
 			
-			displayProjectCard($projectstatic, $form);
-
+			displayProjectHeaderCard($projectstatic, $form);
 		}
 		
 		/**
-		 *  Display task card
+		 * Display task card
 		 */
 		print '<div class="fiche">';
 		$head = task_prepare_head($object);
-		//var_dump($head);
+		// var_dump($head);
 		if ($action == 'edit' && $user->rights->projet->creer) {
 			/**
 			 * - edit card
@@ -262,118 +260,32 @@ if ($id > 0 || ! empty($ref)) {
 			
 			print '</form>';
 		} else {
-			/**
-			 * display task
-			 */
-			$param = ($withproject ? '&withproject=1' : '');
-			$linkback = $withproject ? '<a href="cultivationtasks.php?id=' . $projectstatic->id . '">' . $langs->trans("BackToList") . '</a>' : '';
 			
-			dol_fiche_head($head, 'cultivationtask', $langs->trans("Task"), 0, 'projecttask');
 			
-			if ($action == 'delete') {
-				print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $_GET["id"] . '&withproject=' . $withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
-			}
-			
-			print '<table class="border" width="100%">';
-			
-			// Ref
-			print '<tr><td class="titlefield">';
-			print $langs->trans("Ref");
-			print '</td><td colspan="3">';
-			if (! GETPOST('withproject') || empty($projectstatic->id)) {
-				$projectsListId = $projectstatic->getProjectsAuthorizedForUser($user, 0, 1);
-				$object->next_prev_filter = " fk_projet in (" . $projectsListId . ")";
-			} else
-				$object->next_prev_filter = " fk_projet = " . $projectstatic->id;
-			print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', '', $param);
-			print '</td>';
-			print '</tr>';
-			
-			// Label
-			print '<tr><td>' . $langs->trans("Label") . '</td><td colspan="3">' . $object->label . '</td></tr>';
-					
-			// Date start
-			print '<tr><td>' . $langs->trans("DateStart") . '</td><td colspan="3">';
-			print dol_print_date($object->date_start, 'dayhour');
-			print '</td></tr>';
-			
-			// Date end
-			print '<tr><td>' . $langs->trans("DateEnd") . '</td><td colspan="3">';
-			print dol_print_date($object->date_end, 'dayhour');
-			if ($object->hasDelay())
-				print img_warning("Late");
-			print '</td></tr>';
-			
-			// Planned workload
-			print '<tr><td>' . $langs->trans("PlannedWorkload") . '</td><td colspan="3">';
-			if ($object->planned_workload != '') {
-				print convertSecondToTime($object->planned_workload, 'allhourmin');
-			}
-			print '</td></tr>';
-			
-			// Progress declared
-			print '<tr><td>' . $langs->trans("ProgressDeclared") . '</td><td colspan="3">';
-			if ($object->progress != '') {
-				print $object->progress . ' %';
-			}
-			print '</td></tr>';
-			
-			// Progress calculated
-			print '<tr><td>' . $langs->trans("ProgressCalculated") . '</td><td colspan="3">';
-			if ($object->planned_workload != '') {
-				$tmparray = $object->getSummaryOfTimeSpent();
-				if ($tmparray['total_duration'] > 0 && ! empty($object->planned_workload))
-					print round($tmparray['total_duration'] / $object->planned_workload * 100, 2) . ' %';
-				else
-					print '0 %';
-			} else
-				print '';
-			print '</td></tr>';
-			
-			// Description
-			print '<td valign="top">' . $langs->trans("Description") . '</td><td colspan="3">';
-			print nl2br($object->description);
-			print '</td></tr>';
-			
-			// Other options
-			$parameters = array();
-			$reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-			if (empty($reshook) && ! empty($extrafields->attribute_label)) {
-				print $object->showOptionals($extrafields);
-			}
-			
-			print '</table>';
-			
-			dol_fiche_end();
+			displayTask($action, $withproject, $object, $projectstatic, $tmparray, $form, $head, $projectsListId);
 		}
 		
 		if ($action != 'edit') {
 			/**
 			 * - display Actions button Edit and Delete
-			 */
-			
+			 */		
 			print '<div class="tabsAction">';
 			
-			$parameters = array();
-			$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been
-			                                                                                               // modified by hook
-			if (empty($reshook)) {
-				// Modify
-				if ($user->rights->projet->creer) {
-					print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=edit&amp;withproject=' . $withproject . '">' . $langs->trans('Modify') . '</a>';
-				} else {
-					print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Modify') . '</a>';
-				}
-				
-				// Delete
-				if ($user->rights->projet->supprimer && ! $object->hasChildren()) {
-					print '<a class="butActionDelete" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=delete&amp;withproject=' . $withproject . '">' . $langs->trans('Delete') . '</a>';
-				} else {
-					print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Delete') . '</a>';
-				}
-				
-				print '</div>';
+			// Modify
+			if ($user->rights->projet->creer) {
+				print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=edit&amp;withproject=' . $withproject . '">' . $langs->trans('Modify') . '</a>';
+			} else {
+				print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Modify') . '</a>';
 			}
+			
+			// Delete
+			if ($user->rights->projet->supprimer && ! $object->hasChildren()) {
+				print '<a class="butActionDelete" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=delete&amp;withproject=' . $withproject . '">' . $langs->trans('Delete') . '</a>';
+			} else {
+				print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Delete') . '</a>';
+			}
+			
+			print '</div>';
 		}
 		print '</div>';
 	}
@@ -381,3 +293,84 @@ if ($id > 0 || ! empty($ref)) {
 
 llxFooter();
 $db->close();
+
+/**
+ * @param action
+ * @param withproject
+ * @param object
+ * @param projectstatic
+ * @param tmparray
+ * @param form
+ * @param head
+ * @param projectsListId
+ */
+
+function displayTask($action, $withproject, $object, $projectstatic, $tmparray, $form, $head, $projectsListId)
+{
+	Global $db, $conf, $user, $langs; 
+	
+	
+	
+	dol_fiche_head($head, 'cultivationtask', $langs->trans("Task"), 0, 'projecttask');
+	
+	if ($action == 'delete') {
+		print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $_GET["id"] . '&withproject=' . $withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
+	}
+		
+	displayTaskHeader($object, $projectstatic, $form);
+	
+	print '<div class="underbanner"></div>';
+	print '<table class="border" width="100%">';
+	// Date start
+	print '<tr><td>' . $langs->trans("DateStart") . '</td><td colspan="3">';
+	print dol_print_date($object->date_start, 'dayhour');
+	print '</td></tr>';
+	
+	// Date end
+	print '<tr><td>' . $langs->trans("DateEnd") . '</td><td colspan="3">';
+	print dol_print_date($object->date_end, 'dayhour');
+	if ($object->hasDelay())
+		print img_warning("Late");
+	print '</td></tr>';
+	
+	// Planned workload
+	print '<tr><td>' . $langs->trans("PlannedWorkload") . '</td><td colspan="3">';
+	if ($object->planned_workload != '') {
+		print convertSecondToTime($object->planned_workload, 'allhourmin');
+	}
+	print '</td></tr>';
+	
+	// Progress declared
+	print '<tr><td>' . $langs->trans("ProgressDeclared") . '</td><td colspan="3">';
+	if ($object->progress != '') {
+		print $object->progress . ' %';
+	}
+	print '</td></tr>';
+	
+	// Progress calculated
+	print '<tr><td>' . $langs->trans("ProgressCalculated") . '</td><td colspan="3">';
+	if ($object->planned_workload != '') {
+		$tmparray = $object->getSummaryOfTimeSpent();
+		if ($tmparray['total_duration'] > 0 && ! empty($object->planned_workload))
+			print round($tmparray['total_duration'] / $object->planned_workload * 100, 2) . ' %';
+		else
+			print '0 %';
+	} else
+		print '';
+	print '</td></tr>';
+	
+	// Description
+	print '<td valign="top">' . $langs->trans("Description") . '</td><td colspan="3">';
+	print nl2br($object->description);
+	print '</td></tr>';
+	
+	// Extra fields
+	if ( empty($extrafields->attribute_label)) {
+		print $object->showOptionals($extrafields);
+	}
+	
+	print '</table>';
+	
+	dol_fiche_end();
+}
+

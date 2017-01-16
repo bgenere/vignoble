@@ -277,7 +277,7 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 		if ($withproject) {
 			// initialize project tab to cultivationtasks
 			$tab = 'cultivationtasks';
-			displayProjectCard($projectstatic, $form);
+			displayProjectHeaderCard($projectstatic, $form);
 		}
 	}
 	
@@ -293,15 +293,13 @@ if (($id > 0 || ! empty($ref)) || $projectidforalltimes > 0) {
 			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $_GET["lineid"] . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_delete", '', '', 1);
 		}
 		
-		displayTaskCard($object, $projectstatic, $form);
+		displayTaskHeader($object, $projectstatic, $form);
 		
-		dol_fiche_end();
 		
 		/**
 		 * Display Form to add time spent
 		 */
 		if ($user->rights->projet->lire) {
-			print '<br>';
 			
 			print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';

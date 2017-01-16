@@ -61,7 +61,7 @@ function setIsCultivationProject()
  *        	form the form object
  *        	
  */
-function displayProjectCard($object, $form)
+function displayProjectHeaderCard($object, $form)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -138,37 +138,33 @@ function displayProjectCard($object, $form)
 }
 
 /**
- * print the task card
+ * print the task ref and label with navigation links in task list. 
  *
  * @param
  *        	object the task to display
  * @param
  *        	projectstatic the project linked to the task
  * @param
- *        	form the form object to display
- * @param
- *        	withproject true if project card already displayed
- *        	
+ *        	form the form object to display      	
  */
-function displayTaskCard($object, $projectstatic, $form, $withproject = true)
+function displayTaskHeader($object, $projectstatic, $form)
 {
 	global $db, $conf, $langs, $user;
 	
-	$param = ($withproject ? '&withproject=1' : '');
-	$linkback = $withproject ? '<a href="cultivationtasks.php?id=' . $projectstatic->id . '">' . $langs->trans("BackToList") . '</a>' : '';
-	if (! $withproject || empty($projectstatic->id)) {
-		$projectsListId = $projectstatic->getProjectsAuthorizedForUser($user, 0, 1);
-		$object->next_prev_filter = " fk_projet in (" . $projectsListId . ")";
-	} else
-		$object->next_prev_filter = " fk_projet = " . $projectstatic->id;
-	
-	print '<table class="border" width="100%">';
+	$linkback = '<a href="cultivationtasks.php?withproject=1">' . $langs->trans("BackToList") . '</a>' ;
+	// Task title
+	$tasktitle = '<div class="refidno">';
+	$tasktitle .= $object->label;
+	$tasktitle .= '</div>';
+		
+	print '<table width="100%">';
 	
 	// Ref
 	print '<tr><td>';
-	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', $object->label, $param);
+	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', $tasktitle, '&withproject=1');
 	print '</td></tr>';
-	print "</table>";
+	
+	print "</table>";	
 }
 
 /**

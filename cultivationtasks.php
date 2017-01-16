@@ -191,7 +191,7 @@ if ($id > 0 || ! empty($ref)) {
 	 * Print Project Card
 	 */
 	$tab = GETPOST('tab') ? GETPOST('tab') : 'cultivationtasks';
-	displayProjectCard($object, $form);
+	displayProjectHeaderCard($object, $form);
 }
 print '<div class="fiche">';
 if ($action == 'create' && $user->rights->projet->creer && (empty($object->thirdparty->id) || $userWrite > 0)) {

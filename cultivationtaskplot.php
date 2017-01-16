@@ -219,7 +219,7 @@ if (($id > 0 || ! empty($ref))) {
 		if ($withproject) {
 			// initialize project tab to cultivationtasks
 			$tab = 'cultivationtasks';
-			displayProjectCard($projectstatic, $form);
+			displayProjectHeaderCard($projectstatic, $form);
 		}
 	}
 	
@@ -230,7 +230,7 @@ if (($id > 0 || ! empty($ref))) {
 	$head = task_prepare_head($object);
 	dol_fiche_head($head, 'cultivationtaskplot', $langs->trans("Plot"), 0, 'projecttask');
 	
-	displayTaskCard($object, $projectstatic, $form);
+	displayTaskHeader($object, $projectstatic, $form);
 	
 	if ($action == 'deleteline') {
 		$lineid = GETPOST('lineid', 'int');
@@ -238,18 +238,15 @@ if (($id > 0 || ! empty($ref))) {
 		if ($currplot->fetch($lineid)) {
 			$plot = new plot($db);
 			$plot->fetch($currplot->fk_plot);
-			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteLinktoPlot"), $langs->trans("ConfirmDeleteLinktoPlot"). ' ' . $plot->ref, "confirm_delete", '', '', 1);
+			print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid . ($withproject ? '&withproject=1' : ''), $langs->trans("DeleteLinktoPlot"), $langs->trans("ConfirmDeleteLinktoPlot") . ' ' . $plot->ref, "confirm_delete", '', '', 1);
 		}
 	}
-	
-	dol_fiche_end();
 	
 	/**
 	 * Display Form to add a plot
 	 */
 	if ($user->rights->projet->lire) {
-		print '<br>';
-		
+				
 		print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
 		print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 		print '<input type="hidden" name="action" value="addplot">';
@@ -407,10 +404,12 @@ if (($id > 0 || ! empty($ref))) {
 		
 		$plotfilter = array();
 		$plotfilter[] = "t.fk_task = '" . $object->id . "'";
-		if (!empty($search_note)) $plotfilter[] = "t.note LIKE %" . $search_note . "%";
-		if (!empty($search_coverage)) $plotfilter[] = "t.coverage =" . $search_coverage ;
+		if (! empty($search_note))
+			$plotfilter[] = "t.note LIKE %" . $search_note . "%";
+		if (! empty($search_coverage))
+			$plotfilter[] = "t.coverage =" . $search_coverage;
 		
-		if ($plottask->fetchAll('', '', 0, 0, $plotfilter,'AND')) {
+		if ($plottask->fetchAll('', '', 0, 0, $plotfilter, 'AND')) {
 			foreach ($plottask->lines as $currplot) {
 				$var = ! $var;
 				print "<tr " . $bc[$var] . ">";
@@ -466,7 +465,7 @@ if (($id > 0 || ! empty($ref))) {
 					}
 				print '</td>';
 			}
-			print '</tr>';		
+			print '</tr>';
 			print "</table>";
 		}
 		print '</div>';
@@ -474,5 +473,6 @@ if (($id > 0 || ! empty($ref))) {
 	}
 }
 print '/<div>';
+
 llxFooter();
 $db->close();
