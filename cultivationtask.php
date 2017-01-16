@@ -161,114 +161,28 @@ if ($id > 0 || ! empty($ref)) {
 		
 		$userWrite = $projectstatic->restrictedProjectArea($user, 'write');
 		
-		if (! empty($withproject)) {
-			// initialize tab to cultivationtasks
-			$tab = 'cultivationtasks';
-			
-			displayProjectHeaderCard($projectstatic, $form);
-		}
+		displayProjectHeaderCard($projectstatic, $form);
 		
-		/**
-		 * Display task card
-		 */
-		print '<div class="fiche">';
+		print '<div class="fiche">'; // Begin Task part
+		
 		$head = task_prepare_head($object);
-		// var_dump($head);
-		if ($action == 'edit' && $user->rights->projet->creer) {
-			/**
-			 * - edit card
-			 */
-			print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
-			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
-			print '<input type="hidden" name="action" value="update">';
-			print '<input type="hidden" name="withproject" value="' . $withproject . '">';
-			print '<input type="hidden" name="id" value="' . $object->id . '">';
-			
-			dol_fiche_head($head, 'task_task', $langs->trans("Task"), 0, 'projecttask');
-			
-			print '<table class="border" width="100%">';
-			
-			// Ref
-			print '<tr><td class="titlefield fieldrequired">' . $langs->trans("Ref") . '</td>';
-			print '<td><input size="12" name="taskref" value="' . $object->ref . '"></td></tr>';
-			
-			// Label
-			print '<tr><td class="fieldrequired">' . $langs->trans("Label") . '</td>';
-			print '<td><input size="30" name="label" value="' . $object->label . '"></td></tr>';
-			
-			// Project and third party not displayed within project
-			if (empty($withproject)) {
-				print '<tr><td>' . $langs->trans("Project") . '</td><td colspan="3">';
-				print $projectstatic->getNomUrl(1);
-				print '</td></tr>';
-				
-				// Third party
-				print '<td>' . $langs->trans("ThirdParty") . '</td><td colspan="3">';
-				if ($projectstatic->societe->id)
-					print $projectstatic->societe->getNomUrl(1);
-				else
-					print '&nbsp;';
-				print '</td></tr>';
-			}
-			
-			// Task parent
-			print '<tr style="display :none;"><td>' . $langs->trans("ChildOfTask") . '</td><td>';
-			print $formother->selectProjectTasks($object->fk_task_parent, $projectstatic->id, 'task_parent', ($user->admin ? 0 : 1), 0, 0, 0, $object->id);
-			print '</td></tr>';
-			
-			// Date start
-			print '<tr><td>' . $langs->trans("DateStart") . '</td><td>';
-			print $form->select_date($object->date_start, 'dateo', 1, 1, 0, '', 1, 1, 1);
-			print '</td></tr>';
-			
-			// Date end
-			print '<tr><td>' . $langs->trans("DateEnd") . '</td><td>';
-			print $form->select_date($object->date_end ? $object->date_end : - 1, 'datee', 1, 1, 0, '', 1, 1, 1);
-			print '</td></tr>';
-			
-			// Planned workload
-			print '<tr><td>' . $langs->trans("PlannedWorkload") . '</td><td>';
-			print $form->select_duration('planned_workload', $object->planned_workload, 0, 'text');
-			print '</td></tr>';
-			
-			// Progress declared
-			print '<tr><td>' . $langs->trans("ProgressDeclared") . '</td><td colspan="3">';
-			print $formother->select_percent($object->progress, 'progress');
-			print '</td></tr>';
-			
-			// Description
-			print '<tr><td valign="top">' . $langs->trans("Description") . '</td>';
-			print '<td>';
-			print '<textarea name="description" wrap="soft" cols="80" rows="' . ROWS_3 . '">' . $object->description . '</textarea>';
-			print '</td></tr>';
-			
-			// Other options
-			$parameters = array();
-			$reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-			if (empty($reshook) && ! empty($extrafields->attribute_label)) {
-				print $object->showOptionals($extrafields, 'edit');
-			}
-			
-			print '</table>';
-			
-			dol_fiche_end();
-			
-			print '<div align="center">';
-			print '<input type="submit" class="button" name="update" value="' . $langs->trans("Modify") . '"> &nbsp; ';
-			print '<input type="submit" class="button" name="cancel" value="' . $langs->trans("Cancel") . '">';
-			print '</div>';
-			
-			print '</form>';
+		dol_fiche_head($head, 'cultivationtask', $langs->trans("Task"), 0, 'projecttask');
+		displayTaskHeader($object, $projectstatic, $form);
+		
+		if ($action == 'edit' && $user->rights->projet->creer) {	
+			displayTaskEditForm($withproject, $object, $projectstatic, $form, $formother, $extrafields);
 		} else {
+			displayTaskCard($object, $extrafields);
 			
-			
-			displayTask($action, $withproject, $object, $projectstatic, $tmparray, $form, $head, $projectsListId);
+			if ($action == 'delete') {
+				print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $_GET["id"] . '&withproject=' . $withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
+			}			
 		}
 		
 		if ($action != 'edit') {
 			/**
 			 * - display Actions button Edit and Delete
-			 */		
+			 */
 			print '<div class="tabsAction">';
 			
 			// Modify
@@ -287,7 +201,7 @@ if ($id > 0 || ! empty($ref)) {
 			
 			print '</div>';
 		}
-		print '</div>';
+		print '</div>'; // End Task part
 	}
 }
 
@@ -295,29 +209,15 @@ llxFooter();
 $db->close();
 
 /**
- * @param action
- * @param withproject
- * @param object
- * @param projectstatic
- * @param tmparray
- * @param form
- * @param head
- * @param projectsListId
+ * Display task fields & extrafields on one column
+ * 
+ * @param  object the task to display
+ * @param extrafields	the task extra fields
+ *
  */
-
-function displayTask($action, $withproject, $object, $projectstatic, $tmparray, $form, $head, $projectsListId)
+function displayTaskCard($object,$extrafields)
 {
-	Global $db, $conf, $user, $langs; 
-	
-	
-	
-	dol_fiche_head($head, 'cultivationtask', $langs->trans("Task"), 0, 'projecttask');
-	
-	if ($action == 'delete') {
-		print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $_GET["id"] . '&withproject=' . $withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
-	}
-		
-	displayTaskHeader($object, $projectstatic, $form);
+	Global $db, $conf, $user, $langs;
 	
 	print '<div class="underbanner"></div>';
 	print '<table class="border" width="100%">';
@@ -365,12 +265,106 @@ function displayTask($action, $withproject, $object, $projectstatic, $tmparray, 
 	print '</td></tr>';
 	
 	// Extra fields
-	if ( empty($extrafields->attribute_label)) {
+	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields);
+	}
+	
+	print '</table>';
+	dol_fiche_end();
+}
+
+/**
+ * @param withproject
+ * @param object
+ * @param projectstatic
+ * @param form
+ * @param formother
+ * @param head
+ */
+
+function displayTaskEditForm($withproject, $object, $projectstatic, $form, $formother,$extrafields)
+{
+	Global $db, $conf, $user, $langs;
+	
+	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
+	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+	print '<input type="hidden" name="action" value="update">';
+	print '<input type="hidden" name="withproject" value="' . $withproject . '">';
+	print '<input type="hidden" name="id" value="' . $object->id . '">';
+	
+	
+	
+	print '<table class="border" width="100%">';
+	
+	// Ref
+	print '<tr><td class="titlefield fieldrequired">' . $langs->trans("Ref") . '</td>';
+	print '<td><input size="12" name="taskref" value="' . $object->ref . '"></td></tr>';
+	
+	// Label
+	print '<tr><td class="fieldrequired">' . $langs->trans("Label") . '</td>';
+	print '<td><input size="30" name="label" value="' . $object->label . '"></td></tr>';
+	
+	// Project and third party not displayed within project
+	if (empty($withproject)) {
+		print '<tr><td>' . $langs->trans("Project") . '</td><td colspan="3">';
+		print $projectstatic->getNomUrl(1);
+		print '</td></tr>';
+		
+		// Third party
+		print '<td>' . $langs->trans("ThirdParty") . '</td><td colspan="3">';
+		if ($projectstatic->societe->id)
+			print $projectstatic->societe->getNomUrl(1);
+		else
+			print '&nbsp;';
+		print '</td></tr>';
+	}
+	
+	// Task parent
+	print '<tr style="display :none;"><td>' . $langs->trans("ChildOfTask") . '</td><td>';
+	print $formother->selectProjectTasks($object->fk_task_parent, $projectstatic->id, 'task_parent', ($user->admin ? 0 : 1), 0, 0, 0, $object->id);
+	print '</td></tr>';
+	
+	// Date start
+	print '<tr><td>' . $langs->trans("DateStart") . '</td><td>';
+	print $form->select_date($object->date_start, 'dateo', 1, 1, 0, '', 1, 1, 1);
+	print '</td></tr>';
+	
+	// Date end
+	print '<tr><td>' . $langs->trans("DateEnd") . '</td><td>';
+	print $form->select_date($object->date_end ? $object->date_end : - 1, 'datee', 1, 1, 0, '', 1, 1, 1);
+	print '</td></tr>';
+	
+	// Planned workload
+	print '<tr><td>' . $langs->trans("PlannedWorkload") . '</td><td>';
+	print $form->select_duration('planned_workload', $object->planned_workload, 0, 'text');
+	print '</td></tr>';
+	
+	// Progress declared
+	print '<tr><td>' . $langs->trans("ProgressDeclared") . '</td><td colspan="3">';
+	print $formother->select_percent($object->progress, 'progress');
+	print '</td></tr>';
+	
+	// Description
+	print '<tr><td valign="top">' . $langs->trans("Description") . '</td>';
+	print '<td>';
+	print '<textarea name="description" wrap="soft" cols="80" rows="' . ROWS_3 . '">' . $object->description . '</textarea>';
+	print '</td></tr>';
+	
+	// Extrafields
+	if (! empty($extrafields->attribute_label)) {
+		print $object->showOptionals($extrafields, 'edit');
 	}
 	
 	print '</table>';
 	
 	dol_fiche_end();
+	
+	print '<div align="center">';
+	print '<input type="submit" class="button" name="update" value="' . $langs->trans("Modify") . '"> &nbsp; ';
+	print '<input type="submit" class="button" name="cancel" value="' . $langs->trans("Cancel") . '">';
+	print '</div>';
+	
+	print '</form>';
 }
+
 
