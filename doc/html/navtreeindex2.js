@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"de/d1c/class_plotcultivationtask.html#ad75359ee1b2bafa614a16309bf8f8ae0":[5,0,13,1],
 "de/d1c/class_plotcultivationtask.html#ada56d84869d9b0c9045bb95fa47e3e08":[5,0,13,12],
 "de/d1c/class_plotcultivationtask.html#ade6ca8cfc04afb1ba991136dfb306da5":[5,0,13,8],
 "de/d1c/class_plotcultivationtask.html#af14f5a6554505d8f9613457e251d6952":[5,0,13,10],

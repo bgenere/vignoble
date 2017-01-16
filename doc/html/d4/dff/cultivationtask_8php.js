@@ -1,5 +1,7 @@
 var cultivationtask_8php =
 [
+    [ "displayTaskCard", "d4/dff/cultivationtask_8php.html#ae4f9034de92bf6be5b37a9566bb1bd2c", null ],
+    [ "displayTaskEditForm", "d4/dff/cultivationtask_8php.html#aec2041b0da597216aae45a54cf6d19fb", null ],
     [ "$action", "d4/dff/cultivationtask_8php.html#aa698a3e72116e8e778be0e95d908ee30", null ],
     [ "$confirm", "d4/dff/cultivationtask_8php.html#a4dcadbee89ed4c8ead497ce14b67dd23", null ],
     [ "$cultivationprojectid", "d4/dff/cultivationtask_8php.html#a664ec3a424731985f87036b60c0c79f9", null ],

@@ -82,6 +82,10 @@ $(document).ready(function(){initNavTree('dd/d77/cultivationtasks_8php.html','..
 Variables</h2></td></tr>
 <tr class="memitem:ae97941710d863131c700f069b109991e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#ae97941710d863131c700f069b109991e">$id</a> = <a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#a48138828a0c5e6a73edd3edc51eebf5a">setIsCultivationProject</a>()</td></tr>
 <tr class="separator:ae97941710d863131c700f069b109991e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ccabbd49ff70c13c94e688a08ecb9e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8">$socid</a> = 0</td></tr>
+<tr class="separator:a1ccabbd49ff70c13c94e688a08ecb9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a112ef069ddc0454086e3d1e6d8d55d07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a112ef069ddc0454086e3d1e6d8d55d07">$result</a> = restrictedArea($user, 'projet', $id, 'projet&amp;project')</td></tr>
+<tr class="separator:a112ef069ddc0454086e3d1e6d8d55d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa698a3e72116e8e778be0e95d908ee30"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#aa698a3e72116e8e778be0e95d908ee30">$action</a> = GETPOST('action', 'alpha')</td></tr>
 <tr class="memdesc:aa698a3e72116e8e778be0e95d908ee30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get page variables.  <a href="#aa698a3e72116e8e778be0e95d908ee30">More...</a><br /></td></tr>
 <tr class="separator:aa698a3e72116e8e778be0e95d908ee30"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -98,30 +102,17 @@ Variables</h2></td></tr>
 <tr class="memitem:a7f08163342a9a70a3f7db1d13e6ccc8d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a7f08163342a9a70a3f7db1d13e6ccc8d">$mine</a> = ($mode == 'mine' ? 1 : 0)</td></tr>
 <tr class="separator:a7f08163342a9a70a3f7db1d13e6ccc8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52123b83a1952a68c5513e47d59ec4a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a52123b83a1952a68c5513e47d59ec4a6">$object</a> = new Project($db)</td></tr>
-<tr class="memdesc:a52123b83a1952a68c5513e47d59ec4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciate.  <a href="#a52123b83a1952a68c5513e47d59ec4a6">More...</a><br /></td></tr>
+<tr class="memdesc:a52123b83a1952a68c5513e47d59ec4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current project.  <a href="#a52123b83a1952a68c5513e47d59ec4a6">More...</a><br /></td></tr>
 <tr class="separator:a52123b83a1952a68c5513e47d59ec4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c60115720c993d1a047b6b1070a4a88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a2c60115720c993d1a047b6b1070a4a88">if</a> ($cancel) = $db-&gt;plimit($conf-&gt;liste_limit + 1, $offset)</td></tr>
+<tr class="separator:a2c60115720c993d1a047b6b1070a4a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6df9fce623f9479d7cac43b490de4634"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a6df9fce623f9479d7cac43b490de4634">$taskstatic</a> = new Task($db)</td></tr>
+<tr class="memdesc:a6df9fce623f9479d7cac43b490de4634"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instanciate Task with extrafields.  <a href="#a6df9fce623f9479d7cac43b490de4634">More...</a><br /></td></tr>
 <tr class="separator:a6df9fce623f9479d7cac43b490de4634"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40a5d323c8521b06b086c3cd94a24feb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a40a5d323c8521b06b086c3cd94a24feb">$extrafields_task</a> = new ExtraFields($db)</td></tr>
 <tr class="separator:a40a5d323c8521b06b086c3cd94a24feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c60115720c993d1a047b6b1070a4a88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a2c60115720c993d1a047b6b1070a4a88">if</a> ($cancel) = $db-&gt;plimit($conf-&gt;liste_limit + 1, $offset)</td></tr>
-<tr class="memdesc:a2c60115720c993d1a047b6b1070a4a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetch $object using $id or $ref $action should not be create or createtask $cancel should be empty.  <a href="#a2c60115720c993d1a047b6b1070a4a88">More...</a><br /></td></tr>
-<tr class="separator:a2c60115720c993d1a047b6b1070a4a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0247f9588980b6a522c5a86304413264"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a0247f9588980b6a522c5a86304413264">$extralabels_task</a> = $extrafields_task-&gt;fetch_name_optionals_label($taskstatic-&gt;table_element)</td></tr>
-<tr class="memdesc:a0247f9588980b6a522c5a86304413264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get extrafields.  <a href="#a0247f9588980b6a522c5a86304413264">More...</a><br /></td></tr>
 <tr class="separator:a0247f9588980b6a522c5a86304413264"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ccabbd49ff70c13c94e688a08ecb9e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8">$socid</a> = 0</td></tr>
-<tr class="separator:a1ccabbd49ff70c13c94e688a08ecb9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112ef069ddc0454086e3d1e6d8d55d07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a112ef069ddc0454086e3d1e6d8d55d07">$result</a> = restrictedArea($user, 'projet', $id, 'projet&amp;project')</td></tr>
-<tr class="separator:a112ef069ddc0454086e3d1e6d8d55d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb602461442b2937c0d8fc11026a3dc6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#abb602461442b2937c0d8fc11026a3dc6">$progress</a> = GETPOST('progress', 'int')</td></tr>
-<tr class="separator:abb602461442b2937c0d8fc11026a3dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a177af2bf70bede02de3d05a425fb8e43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a177af2bf70bede02de3d05a425fb8e43">$label</a> = GETPOST('label', 'alpha')</td></tr>
-<tr class="separator:a177af2bf70bede02de3d05a425fb8e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87b032cba06009e3467abf1c8018d960"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a87b032cba06009e3467abf1c8018d960">$description</a> = GETPOST('description')</td></tr>
-<tr class="separator:a87b032cba06009e3467abf1c8018d960"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a719f836f1ef093d43ce168b3b04c0ea6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#a719f836f1ef093d43ce168b3b04c0ea6">$planned_workload</a> = GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60</td></tr>
-<tr class="separator:a719f836f1ef093d43ce168b3b04c0ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4b44efeaab3f63fee3fc2d284e6bc22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147">if</a>($action== 'createtask'&amp;&amp;$user-&gt;rights-&gt;projet-&gt;creer)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d77/cultivationtasks_8php.html#ad4b44efeaab3f63fee3fc2d284e6bc22">$form</a> = new Form($db)</td></tr>
 <tr class="memdesc:ad4b44efeaab3f63fee3fc2d284e6bc22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process actions : createtask else do nothing.  <a href="#ad4b44efeaab3f63fee3fc2d284e6bc22">More...</a><br /></td></tr>
 <tr class="separator:ad4b44efeaab3f63fee3fc2d284e6bc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,7 +145,7 @@ Variables</h2></td></tr>
 
 <p>Get page variables. </p>
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00040">40</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00047">47</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -168,7 +159,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00043">43</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00050">50</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -182,21 +173,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00044">44</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a87b032cba06009e3467abf1c8018d960"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$description = GETPOST('description')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00089">89</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00051">51</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -210,7 +187,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00058">58</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00072">72</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -223,8 +200,6 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Get extrafields. </p>
 
 <p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00073">73</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
@@ -243,7 +218,7 @@ Variables</h2></td></tr>
 <p>Process actions : createtask else do nothing. </p>
 <p>Display View </p>
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00186">186</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00179">179</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -257,7 +232,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00187">187</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00180">180</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -271,7 +246,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00193">193</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00186">186</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -285,23 +260,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00035">35</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a177af2bf70bede02de3d05a425fb8e43"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$label = GETPOST('label', 'alpha')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00088">88</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00477">getTaskUrl()</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00036">36</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -315,7 +274,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00047">47</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00053">53</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -329,9 +288,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00045">45</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00052">52</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00062">displayProjectCard()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00650">Plotcultivationtask\getLibStatut()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00706">plot\getLibStatut()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00477">getTaskUrl()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00664">Plotcultivationtask\LibStatut()</a>, and <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00720">plot\LibStatut()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00650">Plotcultivationtask\getLibStatut()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00706">plot\getLibStatut()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00458">getTaskUrl()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00664">Plotcultivationtask\LibStatut()</a>, and <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00720">plot\LibStatut()</a>.</p>
 
 </div>
 </div>
@@ -345,42 +304,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Instanciate. </p>
-<ul>
-<li>object as project class</li>
-<li>taskstatic as task class</li>
-</ul>
-<p>add extrafields for both. </p>
+<p>Get current project. </p>
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00056">56</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a719f836f1ef093d43ce168b3b04c0ea6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$planned_workload = GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00090">90</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abb602461442b2937c0d8fc11026a3dc6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$progress = GETPOST('progress', 'int')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00087">87</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00058">58</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -394,7 +320,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00041">41</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00048">48</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -408,9 +334,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00079">79</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00042">42</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00110">plot\create()</a>, <a class="el" href="../../d3/dd2/plot__extrafields_8php_source.html#l00156">createDefaultFields()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00561">Plotcultivationtask\createFromClone()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00617">plot\createFromClone()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00556">plot\delete()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00616">Plotcultivationtask\getNomUrl()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00672">plot\getNomUrl()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00477">getTaskUrl()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00714">Plotcultivationtask\info()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00770">plot\info()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00798">modVignoble\init()</a>, and <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00471">plot\update()</a>.</p>
+<p>Referenced by <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00110">plot\create()</a>, <a class="el" href="../../d3/dd2/plot__extrafields_8php_source.html#l00156">createDefaultFields()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00561">Plotcultivationtask\createFromClone()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00617">plot\createFromClone()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00556">plot\delete()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00616">Plotcultivationtask\getNomUrl()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00672">plot\getNomUrl()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00458">getTaskUrl()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00714">Plotcultivationtask\info()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00770">plot\info()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00798">modVignoble\init()</a>, and <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00471">plot\update()</a>.</p>
 
 </div>
 </div>
@@ -424,7 +350,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00076">76</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00039">39</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -438,7 +364,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00042">42</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00049">49</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -452,9 +378,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00057">57</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Instanciate Task with extrafields. </p>
 
-<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00214">showtasks()</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00071">71</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00195">showtasks()</a>.</p>
 
 </div>
 </div>
@@ -468,7 +396,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00190">190</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00183">183</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 <p>Referenced by <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l00948">pdf_plotabc\_pagehead()</a>.</p>
 
@@ -483,10 +411,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{</div><div class="line">        </div><div class="line">        <a class="code" href="../../dd/d77/cultivationtasks_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a> <span class="stringliteral">&#39;&lt;a href=&quot;&#39;</span> . DOL_URL_ROOT . <span class="stringliteral">&#39;/custom/vignoble/admin/module_settings.php&quot;&gt;&#39;</span> . <a class="code" href="../../d6/d14/maindolibarr_8inc_8php.html#a29be2d9bc87fa3c921824a078a22e09a">$langs</a>-&gt;trans(<span class="stringliteral">&quot;VignobleSetup&quot;</span>) . <span class="stringliteral">&#39;&lt;/a&gt;&#39;</span></div><div class="ttc" id="cultivationtasks_8php_html_a3ad3a4240c0f97c7e85aff5c52a454d4"><div class="ttname"><a href="../../dd/d77/cultivationtasks_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a></div><div class="ttdeci">if($id &gt; 0||!empty($ref)) print</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d77/cultivationtasks_8php_source.html#l00196">cultivationtasks.php:196</a></div></div>
+<b>Initial value:</b><div class="fragment"><div class="line">{</div><div class="line">        </div><div class="line">        <a class="code" href="../../dd/d77/cultivationtasks_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a> <span class="stringliteral">&#39;&lt;a href=&quot;&#39;</span> . DOL_URL_ROOT . <span class="stringliteral">&#39;/custom/vignoble/admin/module_settings.php&quot;&gt;&#39;</span> . <a class="code" href="../../d6/d14/maindolibarr_8inc_8php.html#a29be2d9bc87fa3c921824a078a22e09a">$langs</a>-&gt;trans(<span class="stringliteral">&quot;VignobleSetup&quot;</span>) . <span class="stringliteral">&#39;&lt;/a&gt;&#39;</span></div><div class="ttc" id="cultivationtasks_8php_html_a3ad3a4240c0f97c7e85aff5c52a454d4"><div class="ttname"><a href="../../dd/d77/cultivationtasks_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4">print</a></div><div class="ttdeci">if($id &gt; 0||!empty($ref)) print</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d77/cultivationtasks_8php_source.html#l00189">cultivationtasks.php:189</a></div></div>
 <div class="ttc" id="maindolibarr_8inc_8php_html_a29be2d9bc87fa3c921824a078a22e09a"><div class="ttname"><a href="../../d6/d14/maindolibarr_8inc_8php.html#a29be2d9bc87fa3c921824a078a22e09a">$langs</a></div><div class="ttdeci">global $langs</div><div class="ttdoc">Dolibarr languages table including user language. </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">maindolibarr.inc.php:48</a></div></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00392">392</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00386">386</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -500,11 +428,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Fetch $object using $id or $ref $action should not be create or createtask $cancel should be empty. </p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00061">61</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00064">64</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00214">showtasks()</a>.</p>
+<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00195">showtasks()</a>.</p>
 
 </div>
 </div>
@@ -518,7 +444,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00196">196</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00189">189</a> of file <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html">cultivationtasks.php</a>.</p>
 
 </div>
 </div>
@@ -528,7 +454,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dd/d77/cultivationtasks_8php.html">cultivationtasks.php</a></li>
-    <li class="footer">Generated on Sat Jan 14 2017 12:45:02 for Vignoble by
+    <li class="footer">Generated on Mon Jan 16 2017 14:25:11 for Vignoble by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

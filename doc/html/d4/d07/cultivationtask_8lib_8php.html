@@ -73,7 +73,7 @@ $(document).ready(function(){initNavTree('d4/d07/cultivationtask_8lib_8php.html'
 </div><!--header-->
 <div class="contents">
 
-<p>Contains common functions for cultivation pages.  
+<p>Contains common functions for cultivation task management.  
 <a href="#details">More...</a></p>
 
 <p><a href="../../d4/d07/cultivationtask_8lib_8php_source.html">Go to the source code of this file.</a></p>
@@ -81,45 +81,57 @@ $(document).ready(function(){initNavTree('d4/d07/cultivationtask_8lib_8php.html'
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a48138828a0c5e6a73edd3edc51eebf5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#a48138828a0c5e6a73edd3edc51eebf5a">setIsCultivationProject</a> ()</td></tr>
-<tr class="memdesc:a48138828a0c5e6a73edd3edc51eebf5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize project Id with default cultivation project and setup boolean for tab management.  <a href="#a48138828a0c5e6a73edd3edc51eebf5a">More...</a><br /></td></tr>
+<tr class="memdesc:a48138828a0c5e6a73edd3edc51eebf5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize project Id with default cultivation project.  <a href="#a48138828a0c5e6a73edd3edc51eebf5a">More...</a><br /></td></tr>
 <tr class="separator:a48138828a0c5e6a73edd3edc51eebf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bc70622f5ced04dd8e59e76d4994d70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#a2bc70622f5ced04dd8e59e76d4994d70">displayProjectCard</a> ($id, $mode, $object, $form, $tab)</td></tr>
-<tr class="memdesc:a2bc70622f5ced04dd8e59e76d4994d70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the project card summary in display mode and without extrafields.  <a href="#a2bc70622f5ced04dd8e59e76d4994d70">More...</a><br /></td></tr>
-<tr class="separator:a2bc70622f5ced04dd8e59e76d4994d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a493c40253168aee65fc2074c07ee6ec6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#a493c40253168aee65fc2074c07ee6ec6">displayTaskCard</a> ($object, $projectstatic, $form, $withproject=true)</td></tr>
-<tr class="memdesc:a493c40253168aee65fc2074c07ee6ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">print the task card  <a href="#a493c40253168aee65fc2074c07ee6ec6">More...</a><br /></td></tr>
-<tr class="separator:a493c40253168aee65fc2074c07ee6ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f94e0f370367ac7473271c13f7492c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#ac4f94e0f370367ac7473271c13f7492c">displayProjectHeaderCard</a> ($object, $form)</td></tr>
+<tr class="memdesc:ac4f94e0f370367ac7473271c13f7492c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display a project card summary.  <a href="#ac4f94e0f370367ac7473271c13f7492c">More...</a><br /></td></tr>
+<tr class="separator:ac4f94e0f370367ac7473271c13f7492c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2cbf1b4344dc1196722414982952640"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#ae2cbf1b4344dc1196722414982952640">displayTaskHeader</a> ($object, $projectstatic, $form)</td></tr>
+<tr class="memdesc:ae2cbf1b4344dc1196722414982952640"><td class="mdescLeft">&#160;</td><td class="mdescRight">print the task ref and label with navigation links in task list.  <a href="#ae2cbf1b4344dc1196722414982952640">More...</a><br /></td></tr>
+<tr class="separator:ae2cbf1b4344dc1196722414982952640"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac16a5f86909ed77d18b11955add4e03a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#ac16a5f86909ed77d18b11955add4e03a">showtasks</a> (&amp;$inc, $parent, &amp;$lines, &amp;$level, $var, $showproject, &amp;$taskrole, $projectsListId= '', $addordertick=0, $projectidfortotallink=0)</td></tr>
 <tr class="memdesc:ac16a5f86909ed77d18b11955add4e03a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show task lines with a particular parent.  <a href="#ac16a5f86909ed77d18b11955add4e03a">More...</a><br /></td></tr>
 <tr class="separator:ac16a5f86909ed77d18b11955add4e03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae148189d4eaaa4eb00b5a67c6922c705"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#ae148189d4eaaa4eb00b5a67c6922c705">getTaskUrl</a> ($task, $withpicto=0, $option= '', $mode= 'cultivationtask', $addlabel=0, $sep= '- ', $notooltip=0)</td></tr>
 <tr class="memdesc:ae148189d4eaaa4eb00b5a67c6922c705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return cultivation task clicable name (with picto eventually)  <a href="#ae148189d4eaaa4eb00b5a67c6922c705">More...</a><br /></td></tr>
 <tr class="separator:ae148189d4eaaa4eb00b5a67c6922c705"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa282368b36292a60ed0d843fd042ce5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html#aa282368b36292a60ed0d843fd042ce5e">createNewTask</a> ()</td></tr>
+<tr class="memdesc:aa282368b36292a60ed0d843fd042ce5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new task for the project in database Use the getpost variable from the new task form.  <a href="#aa282368b36292a60ed0d843fd042ce5e">More...</a><br /></td></tr>
+<tr class="separator:aa282368b36292a60ed0d843fd042ce5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Contains common functions for cultivation pages. </p>
+<div class="textblock"><p>Contains common functions for cultivation task management. </p>
 
 <p>Definition in file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a2bc70622f5ced04dd8e59e76d4994d70"></a>
+<a class="anchor" id="aa282368b36292a60ed0d843fd042ce5e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">displayProjectCard </td>
+          <td class="memname">createNewTask </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$mode</em>, </td>
         </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a new task for the project in database Use the getpost variable from the new task form. </p>
+
+<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00506">506</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
+
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, and <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac4f94e0f370367ac7473271c13f7492c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
-          <td></td>
+          <td class="memname">displayProjectHeaderCard </td>
+          <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>$object</em>, </td>
         </tr>
@@ -127,13 +139,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$form</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$tab</em>&#160;</td>
+          <td class="paramname"><em>$form</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -143,30 +149,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Display the project card summary in display mode and without extrafields. </p>
+<p>Display a project card summary. </p>
+<p>Shows header (ref and title) with key fields : visibility, begin and end date, description, categories</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>project id </td></tr>
-    <tr><td class="paramname">mode</td><td>mine if current view is only mine </td></tr>
     <tr><td class="paramname">object</td><td>the project to display </td></tr>
     <tr><td class="paramname">form</td><td>the form object </td></tr>
-    <tr><td class="paramname">tab</td><td>the tab to display </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00062">62</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00064">64</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00150">$form</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00034">$id</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00045">$mode</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00056">$object</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00149">$form</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00055">$object</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a493c40253168aee65fc2074c07ee6ec6"></a>
+<a class="anchor" id="ae2cbf1b4344dc1196722414982952640"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">displayTaskCard </td>
+          <td class="memname">displayTaskHeader </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>$object</em>, </td>
@@ -181,13 +185,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$form</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$withproject</em> = <code>true</code>&#160;</td>
+          <td class="paramname"><em>$form</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -197,20 +195,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>print the task card </p>
+<p>print the task ref and label with navigation links in task list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">object</td><td>the task to display </td></tr>
     <tr><td class="paramname">projectstatic</td><td>the project linked to the task </td></tr>
     <tr><td class="paramname">form</td><td>the form object to display </td></tr>
-    <tr><td class="paramname">withproject</td><td>true if project card already displayed </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00166">166</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00150">150</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00150">$form</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00056">$object</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00058">$projectstatic</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00039">$withproject</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00149">$form</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00055">$object</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
 
 </div>
 </div>
@@ -283,11 +280,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>string Chaine avec URL </dd></dl>
 
-<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00477">477</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00458">458</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00088">$label</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00045">$mode</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00079">$result</a>, and <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00049">$label</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00052">$mode</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00042">$result</a>, and <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00214">showtasks()</a>.</p>
+<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00195">showtasks()</a>.</p>
 
 </div>
 </div>
@@ -304,12 +301,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initialize project Id with default cultivation project and setup boolean for tab management. </p>
+<p>Initialize project Id with default cultivation project. </p>
+<p>Also setup global key VIGNOBLE_ISCULTIVATIONPROJECT to true for tabs management</p>
 <dl class="section return"><dt>Returns</dt><dd>$id Default cultivation project id, 0 if not found </dd></dl>
 
 <p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00036">36</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00034">$id</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, and <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00033">$id</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, and <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>.</p>
 
 </div>
 </div>
@@ -403,9 +401,9 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
-<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00214">214</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00195">195</a> of file <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html">cultivationtask.lib.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00058">$projectstatic</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00057">$taskstatic</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00477">getTaskUrl()</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00064">if</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00057">$projectstatic</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00071">$taskstatic</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00458">getTaskUrl()</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00061">if</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
 
 <p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="../../closed.png" alt="+"/> Here is the call graph for this function:</div>
@@ -427,7 +425,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="../../d4/d07/cultivationtask_8lib_8php.html">cultivationtask.lib.php</a></li>
-    <li class="footer">Generated on Sat Jan 14 2017 12:45:02 for Vignoble by
+    <li class="footer">Generated on Mon Jan 16 2017 14:25:11 for Vignoble by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
