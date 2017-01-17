@@ -161,7 +161,7 @@ function displayTaskHeader($object, $projectstatic, $form)
 	
 	// Ref
 	print '<tr><td>';
-	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', $tasktitle, '&withproject=1');
+	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', $tasktitle);
 	print '</td></tr>';
 	
 	print "</table>";	
