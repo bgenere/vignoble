@@ -182,7 +182,7 @@ class vignoblebox extends ModeleBoxes
 					'tr' => 'align="left"',
 					'td' => 'colspan=2',
 					'text' => $langs->trans('doxyDocumentation'),
-					'url' => DOL_URL_ROOT .'/custom/vignoble/doc/html/index.html',
+					'url' => DOL_URL_ROOT .'/custom/vignoble/docs/html/index.html',
 					'target' => 'new',
 					'asis' => true
 				)
