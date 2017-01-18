@@ -1,8 +1,5 @@
 <?php
 /*
- * Copyright (C) 2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2006-2015 Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2010-2012 Regis Houssin <regis.houssin@capnetworks.com>
  * Copyright (C) 2016 Bruno Généré <bgenere@webiseasy.org>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,7 +27,7 @@
 
 $cultivationprojectid = setIsCultivationProject();
 
-// Current Task id and/or Ref 
+// Current Task id and/or Ref
 $id = GETPOST('id', 'int');
 $ref = GETPOST("ref", 'alpha', 1);
 // Page parameters
@@ -42,19 +39,18 @@ $cancel = GETPOST('cancel', 'alpha');
 if (! $user->rights->projet->lire)
 	accessforbidden();
 
-$object = new Task($db);
-$extrafields = new ExtraFields($db);
-$extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
-
 /**
- * Actions on task : update , confirm_delete
+ * Actions on task : edit, update, delete , confirm_delete.
+ *
+ * Below are process required before display.
  */
 if ($action == 'update' && ! $cancel && $user->rights->projet->creer) {
 	$action = updateTask($id);
 }
 
 if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->supprimer) {
-	if ($object->fetch($id, $ref) >= 0) {
+	$object = new Task($db);
+	if ($object->fetch($id) >= 0) {
 		$action = deleteTask($object);
 	}
 }
@@ -62,11 +58,16 @@ if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->s
 /**
  * Display View
  */
-
 llxHeader('', $langs->trans("Task"));
 
 if ($id > 0 || ! empty($ref)) {
+	
+	$object = new Task($db);
+	
 	if ($object->fetch($id, $ref) > 0) {
+		
+		$extrafields = new ExtraFields($db);
+		$extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
 		$res = $object->fetch_optionals($object->id, $extralabels);
 		
 		$projectstatic = new Project($db);
@@ -75,8 +76,6 @@ if ($id > 0 || ! empty($ref)) {
 			$projectstatic->fetch_thirdparty();
 		
 		$object->project = clone $projectstatic;
-		
-		$userWrite = $projectstatic->restrictedProjectArea($user, 'write');
 		
 		displayProjectHeaderCard($projectstatic, $form);
 		
@@ -95,30 +94,9 @@ if ($id > 0 || ! empty($ref)) {
 			
 			if ($action == 'delete') {
 				print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $id, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
-			}
-		}
-		
-		if ($action != 'edit') {
-			/**
-			 * - display Actions button Edit and Delete
-			 */
-			print '<div class="tabsAction">';
-			
-			// Modify
-			if ($user->rights->projet->creer) {
-				print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=edit">' . $langs->trans('Modify') . '</a>';
 			} else {
-				print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Modify') . '</a>';
+				displayTaskButtons($object);
 			}
-			
-			// Delete
-			if ($user->rights->projet->supprimer && ! $object->hasChildren()) {
-				print '<a class="butActionDelete" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a>';
-			} else {
-				print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Delete') . '</a>';
-			}
-			
-			print '</div>';
 		}
 		print '</div>'; // End Task part
 	}
@@ -136,7 +114,7 @@ $db->close();
  *        	extrafields the task extra fields
  *        	
  */
-function displayTaskCard($object, $extrafields)
+function displayTaskCard($task, $extrafields)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -144,36 +122,36 @@ function displayTaskCard($object, $extrafields)
 	print '<table class="border" width="100%">';
 	// Date start
 	print '<tr><td width="25%">' . $langs->trans("DateStart") . '</td><td colspan="3">';
-	print dol_print_date($object->date_start, 'dayhour');
+	print dol_print_date($task->date_start, 'dayhour');
 	print '</td></tr>';
 	
 	// Date end
 	print '<tr><td>' . $langs->trans("DateEnd") . '</td><td colspan="3">';
-	print dol_print_date($object->date_end, 'dayhour');
-	if ($object->hasDelay())
+	print dol_print_date($task->date_end, 'dayhour');
+	if ($task->hasDelay())
 		print img_warning("Late");
 	print '</td></tr>';
 	
 	// Planned workload
 	print '<tr><td>' . $langs->trans("PlannedWorkload") . '</td><td colspan="3">';
-	if ($object->planned_workload != '') {
-		print convertSecondToTime($object->planned_workload, 'allhourmin');
+	if ($task->planned_workload != '') {
+		print convertSecondToTime($task->planned_workload, 'allhourmin');
 	}
 	print '</td></tr>';
 	
 	// Progress declared
 	print '<tr><td>' . $langs->trans("ProgressDeclared") . '</td><td colspan="3">';
-	if ($object->progress != '') {
-		print $object->progress . ' %';
+	if ($task->progress != '') {
+		print $task->progress . ' %';
 	}
 	print '</td></tr>';
 	
 	// Progress calculated
 	print '<tr><td>' . $langs->trans("ProgressCalculated") . '</td><td colspan="3">';
-	if ($object->planned_workload != '') {
-		$tmparray = $object->getSummaryOfTimeSpent();
-		if ($tmparray['total_duration'] > 0 && ! empty($object->planned_workload))
-			print round($tmparray['total_duration'] / $object->planned_workload * 100, 2) . ' %';
+	if ($task->planned_workload != '') {
+		$tmparray = $task->getSummaryOfTimeSpent();
+		if ($tmparray['total_duration'] > 0 && ! empty($task->planned_workload))
+			print round($tmparray['total_duration'] / $task->planned_workload * 100, 2) . ' %';
 		else
 			print '0 %';
 	} else
@@ -182,12 +160,12 @@ function displayTaskCard($object, $extrafields)
 	
 	// Description
 	print '<td valign="top">' . $langs->trans("Description") . '</td><td colspan="3">';
-	print nl2br($object->description);
+	print nl2br($task->description);
 	print '</td></tr>';
 	
 	// Extra fields
 	if (! empty($extrafields->attribute_label)) {
-		print $object->showOptionals($extrafields);
+		print $task->showOptionals($extrafields);
 	}
 	
 	print '</table>';
@@ -196,7 +174,7 @@ function displayTaskCard($object, $extrafields)
 
 /**
  * Display the task edit form
- * 
+ *
  * @param
  *        	task the task object to display in form
  * @param
@@ -228,7 +206,7 @@ function displayTaskEditForm($task, $projectstatic, $extrafields)
 	// Label
 	print '<tr><td class="fieldrequired">' . $langs->trans("Label") . '</td>';
 	print '<td><input size="30" name="label" value="' . $task->label . '"></td></tr>';
-		
+	
 	// Task parent
 	print '<tr style="display :none;"><td>' . $langs->trans("ChildOfTask") . '</td><td>';
 	print $formother->selectProjectTasks($task->fk_task_parent, $projectstatic->id, 'task_parent', ($user->admin ? 0 : 1), 0, 0, 0, $task->id);
@@ -303,8 +281,9 @@ function deleteTask($task)
 
 /**
  * Update Task using fields send by the task edit form.
- * 
- * @param int $id Task to update rowid 
+ *
+ * @param int $id
+ *        	Task to update rowid
  * @return string $action empty when done or stay in edit mode when error
  */
 function updateTask($id)
@@ -334,19 +313,19 @@ function updateTask($id)
 		$task->fetch($id);
 		$task->oldcopy = clone $task; // needed for update
 		
-		$tmparray = explode('_', GETPOST('task_parent','alpha'));
+		$tmparray = explode('_', GETPOST('task_parent', 'alpha'));
 		$task_parent = $tmparray[1];
 		if (empty($task_parent))
 			$task_parent = 0; // If task_parent is ''
 		
 		$task->ref = $taskref;
 		$task->label = $label;
-		$task->description = GETPOST('description','alpha');
+		$task->description = GETPOST('description', 'alpha');
 		$task->fk_task_parent = $task_parent;
 		$task->planned_workload = ((GETPOST('planned_workloadhour') != '' && GETPOST('planned_workloadmin') != '') ? GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60 : '');
 		$task->date_start = dol_mktime($_POST['dateohour'], $_POST['dateomin'], 0, $_POST['dateomonth'], $_POST['dateoday'], $_POST['dateoyear']);
 		$task->date_end = dol_mktime($_POST['dateehour'], $_POST['dateemin'], 0, $_POST['dateemonth'], $_POST['dateeday'], $_POST['dateeyear']);
-		$task->progress = GETPOST('progress','int');
+		$task->progress = GETPOST('progress', 'int');
 		
 		// Fill array 'array_options' with data from add form
 		$ret = $extrafields->setOptionalsFromPost($extralabels, $task);
@@ -364,6 +343,33 @@ function updateTask($id)
 		return $action = 'edit';
 	}
 }
+
+/**
+ * Display the modify and delete buttons
+ * 
+ * @param
+ *        	task the task object
+ */
+function displayTaskButtons($task)
+{
+	Global $db, $conf, $user, $langs;
+	
+	print '<div class="tabsAction">';
+	// Modify button
+	if ($user->rights->projet->creer) {
+		print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $task->id . '&amp;action=edit">' . $langs->trans('Modify') . '</a>';
+	} else {
+		print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Modify') . '</a>';
+	}
+	// Delete button
+	if ($user->rights->projet->supprimer && ! $task->hasChildren() && ! $task->hasTimeSpent()) {
+		print '<a class="butActionDelete" href="' . $_SERVER['PHP_SELF'] . '?id=' . $task->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a>';
+	} else {
+		print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Delete') . '</a>';
+	}
+	print '</div>';
+}
+
 
 
 
