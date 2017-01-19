@@ -35,31 +35,9 @@ $action = GETPOST('action', 'alpha');
 $confirm = GETPOST('confirm', 'alpha');
 $cancel = GETPOST('cancel', 'alpha');
 
-$search_note = GETPOST('search_note', 'alpha');
-$search_coverage = GETPOST('search_coverage', 'int');
-$search_value = GETPOST('search_value', 'int');
-
 // Security check
 if (! $user->rights->projet->lire)
 	accessforbidden();
-
-$limit = GETPOST("limit") ? GETPOST("limit", "int") : $conf->liste_limit;
-$sortfield = GETPOST("sortfield", 'alpha');
-$sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOST("page", 'int');
-if ($page == - 1) {
-	$page = 0;
-}
-$offset = $limit * $page;
-$pageprev = $page - 1;
-$pagenext = $page + 1;
-if (! $sortfield)
-	$sortfield = 't.fk_task,t.fk_plot,t.rowid';
-if (! $sortorder)
-	$sortorder = 'DESC';
-
-$object = new Task($db);
-$projectstatic = new Project($db);
 
 /**
  * Actions
@@ -70,18 +48,7 @@ $parameters = array(
 	'projectid' => $cultivationprojectid
 );
 
-include DOL_DOCUMENT_ROOT . '/core/actions_changeselectedfields.inc.php';
-
-// Purge search criteria
-if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter")) // All test are required to be compatible with all browsers
-{
-	$search_note = '';
-	$search_coverage = '';
-	$search_value = '';
-	$toselect = '';
-	$search_array_options = array();
-	$action = '';
-}
+// include DOL_DOCUMENT_ROOT . '/core/actions_changeselectedfields.inc.php';
 
 if ($action == 'addplot' && $user->rights->projet->lire) {
 	$action = addPlotTask($id);
@@ -101,21 +68,22 @@ if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->c
 
 llxHeader("", $langs->trans("Task"));
 
-$form = new Form($db);
-$formother = new FormOther($db);
-
 if (($id > 0 || ! empty($ref))) {
+	$object = new Task($db);
 	if ($object->fetch($id, $ref) >= 0) {
 		
+		$projectstatic = new Project($db);
 		$result = $projectstatic->fetch($object->fk_project);
 		$object->project = clone $projectstatic;
 		if ($projectstatic->id == $cultivationprojectid) {
-			
 			displayProjectHeaderCard($projectstatic, $form);
 			
-			print '<div class="fiche">';
+			print '<div class="fiche">'; // Task & Plots part
 			$head = task_prepare_head($object);
 			dol_fiche_head($head, 'cultivationtaskplot', $langs->trans("Plot"), 0, 'projecttask');
+			
+			$form = new Form($db);
+			$formother = new FormOther($db);
 			
 			displayTaskHeader($object, $projectstatic, $form);
 			
@@ -134,121 +102,60 @@ if (($id > 0 || ! empty($ref))) {
 				displayAddPlotForm($id);
 			}
 			
-			// Definition of fields for Plot list
-			$arrayfields = array();
-			$arrayfields['t.plot'] = array(
-				'label' => $langs->trans("Plot"),
-				'checked' => 1
-			);
-			$arrayfields['t.note'] = array(
-				'label' => $langs->trans("Note"),
-				'checked' => 1
-			);
-			$arrayfields['t.coverage'] = array(
-				'label' => $langs->trans("ProgressDeclared"),
-				'checked' => 1
-			);
-			
 			/*
 			 * List of plots and coverage
 			 */
+			$sort = getsort();
+			var_dump($object->id);
+			$filter = getfilter($object->id);
 			
-			$arrayofselected = is_array($toselect) ? $toselect : array();
-			
-			$params = '';
-			if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"])
-				$param .= '&contextpage=' . $contextpage;
-			if ($limit > 0 && $limit != $conf->liste_limit)
-				$param .= '&limit=' . $limit;
-			if ($search_plot != '')
-				$params .= '&amp;search_plot=' . urlencode($search_plot);
-			if ($search_note != '')
-				$params .= '&amp;search_note=' . urlencode($search_note);
-			if ($search_coverage != '')
-				$params .= '&amp;search_coverage=' . urlencode($search_coverage);
-			if ($optioncss != '')
-				$param .= '&optioncss=' . $optioncss;			
-			if ($id)
-				$params .= '&amp;id=' . $id;
+			$params = buildSearchParameters($filter);
 			
 			print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $id . '">';
-			
-			if ($optioncss != '')
-				print '<input type="hidden" name="optioncss" value="' . $optioncss . '">';
 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
-			print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
+			print '<input type="hidden" name="id" value="' . $object->id . '">';
+			print '<input type="hidden" name="sortfield" value="' . $sort["field"] . '">';
+			print '<input type="hidden" name="sortorder" value="' . $sort["order"] . '">';
 			if ($action == 'editline')
 				print '<input type="hidden" name="action" value="updateline">';
 			else
 				print '<input type="hidden" name="action" value="' . $action . '">';
-			print '<input type="hidden" name="sortfield" value="' . $sortfield . '">';
-			print '<input type="hidden" name="sortorder" value="' . $sortorder . '">';
-			print '<input type="hidden" name="id" value="' . $id . '">';
-			
-			$moreforfilter = '';
-			
-			if (! empty($moreforfilter)) {
-				print '<div class="liste_titre liste_titre_bydiv centpercent">';
-				print $moreforfilter;
-				print '</div>';
-			}
-			
-			$varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
-			$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 			
 			print '<div class="div-table-responsive">';
 			
-			print '<table class="tagtable liste' . ($moreforfilter ? " listwithfilterbefore" : "") . '">' . "\n";
+			print '<table class="liste" style="border-bottom-style: none;">';
 			
+			// Fields header
 			print '<tr class="liste_titre">';
-			if (! empty($arrayfields['t.plot']['checked']))
-				print_liste_field_titre($arrayfields['t.plot']['label'], $_SERVER['PHP_SELF'], '', '', $params, 'style="width:40%;"', $sortfield, $sortorder);
-			if (! empty($arrayfields['t.note']['checked']))
-				print_liste_field_titre($arrayfields['t.note']['label'], $_SERVER['PHP_SELF'], 't.note', '', $params, 'style="width:40%;"', $sortfield, $sortorder);
-			if (! empty($arrayfields['t.coverage']['checked']))
-				print_liste_field_titre($arrayfields['t.coverage']['label'], $_SERVER['PHP_SELF'], 't.coverage','', $params, 'style="width:10%;"', $sortfield, $sortorder);
-			
-			print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', 'style="width:10%;text-align:right;"', $sortfield, $sortorder, 'maxwidthsearch ');
-			print "</tr>\n";
-			
-			// Fields title search
+			print_liste_field_titre($langs->trans("Plot"), $_SERVER['PHP_SELF'], 'reference', '', $params, 'style="width:40%;"', $sort["field"], $sort["order"]);
+			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 'note', '', $params, 'style="width:40%;"', $sort["field"], $sort["order"]);
+			print_liste_field_titre($langs->trans("ProgressDeclared"), $_SERVER['PHP_SELF'], 'coverage', '', $params, 'style="width:10%;"', $sort["field"], $sort["order"]);
+			print '<td style="width:10%;">&nbsp</td>';
+			print "</tr>";		
+			// Search Header
 			print '<tr class="liste_titre">';
-			// LIST_OF_TD_TITLE_SEARCH
-			print '<td class="liste_titre"> </td>';
-			if (! empty($arrayfields['t.note']['checked']))
-				print '<td class="liste_titre"><input type="text" class="flat" name="search_note" value="' . $search_note . '"></td>';
-			if (! empty($arrayfields['t.coverage']['checked']))
-				print '<td class="liste_titre"><input type="text" class="flat" name="search_coverage" value="' . $search_coverage . '"></td>';
-				
-				// Action column
-			print '<td class="liste_titre" align="right">';
-			$searchpicto = $form->showFilterAndCheckAddButtons($massactionbutton ? 1 : 0, 'checkforselect', 1);
-			print $searchpicto;
+			print '<td ><input type="text" class="flat" name="search_reference" value="' . $filter["reference"] . '"> </td>';
+			print '<td ><input type="text" class="flat" name="search_note" value="' . $filter["note"] . '"></td>';
+			//print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage',$filter["coverage"]).'</td>';
+			print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage').'</td>';
+			// Action column
+			print '<td class=" right">';
+			print $form->showFilterAndCheckAddButtons(0, 'checkforselect', 0);
 			print '</td>';
-			print '</tr>' . "\n";
+			print '</tr>';
 			
 			$plottask = new Plotcultivationtask($db);
-			
-			$plotfilter = array();
-			$plotfilter[] = "t.fk_task = '" . $object->id . "'";
-			if (! empty($search_note))
-				$plotfilter[] = "t.note LIKE %" . $search_note . "%";
-			if (! empty($search_coverage))
-				$plotfilter[] = "t.coverage =" . $search_coverage;
-			
-			if ($plottask->fetchAll($sortorder, $sortfield, 0, 0, $plotfilter, 'AND')) {
-				foreach ($plottask->lines as $currplot) {
-					displayPlotTaskLine($action, $formother, $currplot, $arrayfields);
-				}
-				print '</tr>';
-				print '</table>';
+			if ($plottask->fetchAll($sort["order"], $sort["field"], 0, 0, $filter["plot"], 'AND')) {
+				displayPlotTaskLines($action, $formother, $plottask);
 			}
+			print '</table>';
 			print '</div>';
 			print '</form>';
+			print '<div>'; // end Task & Plots part
 		}
-		print '<div>';
 	}
 }
+;
 
 llxFooter();
 $db->close();
@@ -428,44 +335,41 @@ function displayAddPlotForm($id)
 }
 
 /**
+ * Display the plot task lines
  *
  * @param
  *        	action
  * @param
- *        	withproject
- * @param
  *        	formother
  * @param
- *        	plot
+ *        	line
  * @param
  *        	arrayfields
  */
-function displayPlotTaskLine($action, $formother, $line, $arrayfields)
+function displayPlotTaskLines($action, $formother, $plottask)
 {
 	Global $db, $conf, $user, $langs;
 	
-	$var = ! $var;
-	print "<tr " . $bc[$var] . ">";
-	// Plot url
-	if (! empty($arrayfields['t.plot']['checked'])) {
+	foreach ($plottask->lines as $line) {
+		
+		$var = ! $var;
+		print "<tr " . $bc[$var] . ">";
+		
+		// Plot url
 		$plot = new plot($db);
 		$plot->fetch($line->fk_plot);
-		print '<td class="nowrap">';
+		print '<td >';
 		print $plot->getNomUrl(1, 'plot');
 		print '</td>';
-	}
-	// Note
-	if (! empty($arrayfields['t.note']['checked'])) {
-		print '<td align="left">';
+		// Note
+		print '<td >';
 		if (GETPOST('action') == 'editline' && GETPOST('lineid') == $line->id) {
 			print '<textarea name="linenote" style="width:90%;" rows="' . ROWS_1 . '">' . $line->note . '</textarea>';
 		} else {
 			print dol_nl2br($line->note);
 		}
 		print '</td>';
-	}
-	// Coverage
-	if (! empty($arrayfields['t.coverage']['checked'])) {
+		// Coverage
 		print '<td>';
 		if (GETPOST('action') == 'editline' && GETPOST('lineid') == $line->id) {
 			print '<input type="hidden" name="old_coverage" value="' . $line->coverage . '">';
@@ -474,28 +378,126 @@ function displayPlotTaskLine($action, $formother, $line, $arrayfields)
 			print $line->coverage . '%';
 		}
 		print '</td>';
+		
+		// Action column
+		print '<td class="right" valign="middle" >';
+		if ($action == 'editline' && GETPOST('lineid') == $line->id) {
+			print '<input type="hidden" name="lineid" value="' . GETPOST('lineid') . '">';
+			print '<input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
+			print '<input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '">';
+		} else 
+			if ($user->rights->projet->creer) {
+				print '&nbsp;';
+				print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $line->fk_task . '&amp;action=editline&amp;lineid=' . $line->id . '">';
+				print img_edit();
+				print '</a>';
+				
+				print '&nbsp;';
+				print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $line->fk_task . '&amp;action=deleteline&amp;lineid=' . $line->id . '">';
+				print img_delete();
+				print '</a>';
+			}
+		print '</td>';
+		
+		print '</tr>';
 	}
-	// Action column
-	print '<td class="right" valign="middle" >';
-	if ($action == 'editline' && GETPOST('lineid') == $line->id) {
-		print '<input type="hidden" name="lineid" value="' . GETPOST('lineid') . '">';
-		print '<input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
-		print '<input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '">';
-	} else 
-		if ($user->rights->projet->creer) {
-			print '&nbsp;';
-			print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $line->fk_task . '&amp;action=editline&amp;lineid=' . $line->id . '">';
-			print img_edit();
-			print '</a>';
-			
-			print '&nbsp;';
-			print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $line->fk_task . '&amp;action=deleteline&amp;lineid=' . $line->id . '">';
-			print img_delete();
-			print '</a>';
-		}
-	print '</td>';
 }
 
+/**
+ * Get field and order used for the tables sort.
+ *
+ * Use Ref Ascending by default.
+ *
+ * @return Array[] with keys : field, order.
+ */
+function getsort()
+{
+	$sortfield = GETPOST(sortfield, 'alpha');
+	if (empty($sortfield)) {
+		$sortfield = 'reference';
+	}
+	$sortorder = GETPOST(sortorder, 'alpha');
+	if (empty($sortorder)) {
+		$sortorder = 'ASC';
+	}
+	return $sort = array(
+		"field" => $sortfield,
+		"order" => $sortorder
+	);
+}
+
+/**
+ * Get all data needed to filter the SQL requests and produce the results
+ *
+ * @return Array[] containing the following keys :
+ *         datebegin,
+ *         dateend,
+ *         products (array of selected products),
+ *         orders (array of sql filter conditions for orders),
+ *         shipments (array of sql filter conditions for shipments),
+ */
+function getfilter($id)
+{
+	$plotfilter = array();
+	if (! empty($id))
+		$plotfilter[] = "t.fk_task = " . $id;
+		
+		// Purge search criteria
+	if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter")) { // All test are required to be compatible with all browsers
+		$search_note = '';
+		$search_coverage = -1;
+		$search_reference = '';
+	} else {
+		$search_reference = GETPOST('search_reference', 'alpha');
+		if (! empty($search_reference))
+			$plotfilter[] = "plot.ref LIKE '%" . $search_reference . "%'";
+		
+		$search_note = GETPOST('search_note', 'alpha');
+		if (! empty($search_note))
+			$plotfilter[] = "t.note LIKE '%" . $search_note . "%'";
+		
+		$search_coverage = GETPOST('search_coverage', 'int');
+		var_dump($search_coverage);
+		if (! empty($search_coverage))
+			$plotfilter[] = "t.coverage = " . $search_coverage;
+		elseif ($search_coverage === 0) $plotfilter[] = "t.coverage = " . $search_coverage;
+		else $search_coverage = -1;
+		
+	}
+	$filter = array(
+		"id" => $id,
+		"reference" => $search_reference,
+		"note" => $search_note,
+		"coverage" => $search_coverage,
+		"plot" => $plotfilter
+	);
+	var_dump($filter);
+	return $filter;
+}
+
+/**
+ * Build the parameters string to be added to URL to keep the filter conditions.
+ *
+ * (used for list sort)
+ *
+ * @param Array $filter
+ *        	the filter conditions
+ * @return string to be added to URL
+ */
+function buildSearchParameters($filter)
+{
+	$params = "";
+	if (! empty($filter["id"]))
+		$params .= '&amp;id=' . $filter["id"];
+	if (! empty($filter["reference"]))
+		$params .= '&amp;search_reference=' . urlencode($filter["reference"]);
+	if (! empty($filter["note"]))
+		$params .= '&amp;search_note=' . urlencode($filter["note"]);
+	if (! empty($filter["coverage"]))
+		$params .= '&amp;search_coverage=' . urlencode($filter["coverage"]);
+	
+	return $params;
+}
 
 
 
