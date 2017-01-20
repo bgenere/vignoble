@@ -43,13 +43,6 @@ if (! $user->rights->projet->lire)
  * Actions
  */
 
-$parameters = array(
-	'socid' => $socid,
-	'projectid' => $cultivationprojectid
-);
-
-// include DOL_DOCUMENT_ROOT . '/core/actions_changeselectedfields.inc.php';
-
 if ($action == 'addplot' && $user->rights->projet->lire) {
 	$action = addPlotTask($id);
 }
@@ -75,16 +68,17 @@ if (($id > 0 || ! empty($ref))) {
 		$result = $projectstatic->fetch($object->fk_project);
 		$object->project = clone $projectstatic;
 		if ($projectstatic->id == $cultivationprojectid) {
+			
+			$form = new Form($db);
+			$formother = new FormOther($db);
+			
 			displayProjectHeaderCard($projectstatic, $form);
 			
 			print '<div class="fiche">'; // Task & Plots Tab
 			
 			$head = task_prepare_head($object);
 			dol_fiche_head($head, 'cultivationtaskplot', $langs->trans("Plot"), 0, 'projecttask');
-			
-			$form = new Form($db);
-			$formother = new FormOther($db);
-			
+					
 			displayTaskHeader($object, $projectstatic, $form);
 			
 			if ($action == 'deleteline') {
@@ -100,7 +94,7 @@ if (($id > 0 || ! empty($ref))) {
 			if ($user->rights->projet->creer) {
 				displayAddPlotForm($object->id);
 			}
-			// List of plots associated to tasks
+			// List of plots associated to task
 			$sort = getsort();
 			$filter = getfilter($object->id);
 			$params = buildSearchParameters($filter);
@@ -131,8 +125,6 @@ if (($id > 0 || ! empty($ref))) {
 			print '<td ><input type="text" class="flat" name="search_reference" value="' . $filter["reference"] . '"> </td>';
 			print '<td ><input type="text" class="flat" name="search_note" value="' . $filter["note"] . '"></td>';
 			print '<td ><input type="text" class="flat" name="search_coverage" value="' . $filter["coverage"] . '"></td>';
-			//print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage',!$filter["coverage"]).'</td>';
-			//print '<td >' . $formother->select_percent($filter["coverage"], 'search_coverage') . '</td>';
 			// Action column
 			print '<td class=" right">';
 			print $form->showFilterAndCheckAddButtons(0, 'checkforselect', 1);
@@ -275,6 +267,7 @@ function deletePlotTask()
  *        	the current task id
  *        	
  */
+
 function displayAddPlotForm($id)
 {
 	Global $db, $conf, $user, $langs;
@@ -294,9 +287,9 @@ function displayAddPlotForm($id)
 	print '<td style="width:40%;">' . $langs->trans("Note") . '</td>';
 	print '<td style="width:10%;">' . $langs->trans("ProgressDeclared") . '</td>';
 	print '<td style="width:10%;">' . " &nbsp " . '</td>';
-	print "</tr>\n";
+	print "</tr>";
 	
-	print '<tr">';
+	print '<tr>';
 	// Plot selection
 	print '<td>';
 	$plot = new plot($db);
