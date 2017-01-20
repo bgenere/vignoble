@@ -65,7 +65,6 @@ if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->c
 /**
  * Display View
  */
-
 llxHeader("", $langs->trans("Task"));
 
 if (($id > 0 || ! empty($ref))) {
@@ -78,7 +77,8 @@ if (($id > 0 || ! empty($ref))) {
 		if ($projectstatic->id == $cultivationprojectid) {
 			displayProjectHeaderCard($projectstatic, $form);
 			
-			print '<div class="fiche">'; // Task & Plots part
+			print '<div class="fiche">'; // Task & Plots Tab
+			
 			$head = task_prepare_head($object);
 			dol_fiche_head($head, 'cultivationtaskplot', $langs->trans("Plot"), 0, 'projecttask');
 			
@@ -101,17 +101,13 @@ if (($id > 0 || ! empty($ref))) {
 			if ($user->rights->projet->creer) {
 				displayAddPlotForm($id);
 			}
-			
-			/*
-			 * List of plots and coverage
-			 */
+			// List of plots associated to tasks
 			$sort = getsort();
 			var_dump($object->id);
 			$filter = getfilter($object->id);
-			
 			$params = buildSearchParameters($filter);
 			
-			print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $id . '">';
+			print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 			print '<input type="hidden" name="id" value="' . $object->id . '">';
 			print '<input type="hidden" name="sortfield" value="' . $sort["field"] . '">';
@@ -131,16 +127,16 @@ if (($id > 0 || ! empty($ref))) {
 			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 'note', '', $params, 'style="width:40%;"', $sort["field"], $sort["order"]);
 			print_liste_field_titre($langs->trans("ProgressDeclared"), $_SERVER['PHP_SELF'], 'coverage', '', $params, 'style="width:10%;"', $sort["field"], $sort["order"]);
 			print '<td style="width:10%;">&nbsp</td>';
-			print "</tr>";		
+			print "</tr>";
 			// Search Header
 			print '<tr class="liste_titre">';
 			print '<td ><input type="text" class="flat" name="search_reference" value="' . $filter["reference"] . '"> </td>';
 			print '<td ><input type="text" class="flat" name="search_note" value="' . $filter["note"] . '"></td>';
-			//print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage',$filter["coverage"]).'</td>';
-			print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage').'</td>';
+			print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage',!$filter["coverage"]).'</td>';
+			//print '<td >' . $formother->select_percent($filter["coverage"], 'search_coverage') . '</td>';
 			// Action column
 			print '<td class=" right">';
-			print $form->showFilterAndCheckAddButtons(0, 'checkforselect', 0);
+			print $form->showFilterAndCheckAddButtons(0, 'checkforselect', 1);
 			print '</td>';
 			print '</tr>';
 			
@@ -155,13 +151,13 @@ if (($id > 0 || ! empty($ref))) {
 		}
 	}
 }
-;
 
 llxFooter();
-$db->close();
+$db->close(); 
+// End
 
 /**
- * Add plot(s) to the task using the add plots form
+ * Add plot(s) to the task using the add plots form data
  *
  * @param int $id
  *        	the Id of the current task.
@@ -335,16 +331,14 @@ function displayAddPlotForm($id)
 }
 
 /**
- * Display the plot task lines
+ * Display the plot task lines in a table with
  *
  * @param
  *        	action
  * @param
  *        	formother
  * @param
- *        	line
- * @param
- *        	arrayfields
+ *        	$plottask the result of the SQL query
  */
 function displayPlotTaskLines($action, $formother, $plottask)
 {
@@ -445,7 +439,7 @@ function getfilter($id)
 		// Purge search criteria
 	if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter")) { // All test are required to be compatible with all browsers
 		$search_note = '';
-		$search_coverage = -1;
+		$search_coverage = - 1;
 		$search_reference = '';
 	} else {
 		$search_reference = GETPOST('search_reference', 'alpha');
@@ -458,11 +452,10 @@ function getfilter($id)
 		
 		$search_coverage = GETPOST('search_coverage', 'int');
 		var_dump($search_coverage);
-		if (! empty($search_coverage))
+		if (!($search_coverage === "") || ($search_coverage > 0))
 			$plotfilter[] = "t.coverage = " . $search_coverage;
-		elseif ($search_coverage === 0) $plotfilter[] = "t.coverage = " . $search_coverage;
-		else $search_coverage = -1;
-		
+		else
+			$search_coverage = - 1;
 	}
 	$filter = array(
 		"id" => $id,
