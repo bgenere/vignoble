@@ -54,7 +54,7 @@ if ($action == 'addplot' && $user->rights->projet->lire) {
 	$action = addPlotTask($id);
 }
 
-if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
+if ($action == 'updateline' && ! $cancel && $user->rights->projet->creer) {
 	$action = updatePlotTask();
 }
 
@@ -96,14 +96,12 @@ if (($id > 0 || ! empty($ref))) {
 					$plot->fetch($currplot->fk_plot);
 					print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid, $langs->trans("DeleteLinktoPlot"), $langs->trans("ConfirmDeleteLinktoPlot") . ' ' . $plot->ref, "confirm_delete", '', '', 1);
 				}
-			}
-			
+			}		
 			if ($user->rights->projet->creer) {
-				displayAddPlotForm($id);
+				displayAddPlotForm($object->id);
 			}
 			// List of plots associated to tasks
 			$sort = getsort();
-			var_dump($object->id);
 			$filter = getfilter($object->id);
 			$params = buildSearchParameters($filter);
 			
@@ -132,7 +130,8 @@ if (($id > 0 || ! empty($ref))) {
 			print '<tr class="liste_titre">';
 			print '<td ><input type="text" class="flat" name="search_reference" value="' . $filter["reference"] . '"> </td>';
 			print '<td ><input type="text" class="flat" name="search_note" value="' . $filter["note"] . '"></td>';
-			print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage',!$filter["coverage"]).'</td>';
+			print '<td ><input type="text" class="flat" name="search_coverage" value="' . $filter["coverage"] . '"></td>';
+			//print '<td >'.$formother->select_percent($filter["coverage"], 'search_coverage',!$filter["coverage"]).'</td>';
 			//print '<td >' . $formother->select_percent($filter["coverage"], 'search_coverage') . '</td>';
 			// Action column
 			print '<td class=" right">';
@@ -287,7 +286,7 @@ function displayAddPlotForm($id)
 	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 	print '<input type="hidden" name="action" value="addplot">';
 	print '<input type="hidden" name="id" value="' . $id . '">';
-	
+		
 	print '<table class="noborder" width="100%">';
 	
 	print '<tr class="liste_titre">';
@@ -331,14 +330,16 @@ function displayAddPlotForm($id)
 }
 
 /**
- * Display the plot task lines in a table with
+ * Display the plot task lines in a table with the capability to edit or delete a line.
+ * 
+ * Each line display plot ref and label, note and coverage.
  *
  * @param
- *        	action
+ *        	action when value is 'editline' the correspopndig line is in edit mode
  * @param
- *        	formother
+ *        	formother needed to use the select a percentage control
  * @param
- *        	$plottask the result of the SQL query
+ *        	$plottask the result of the SQL query on plot task
  */
 function displayPlotTaskLines($action, $formother, $plottask)
 {
@@ -353,7 +354,7 @@ function displayPlotTaskLines($action, $formother, $plottask)
 		$plot = new plot($db);
 		$plot->fetch($line->fk_plot);
 		print '<td >';
-		print $plot->getNomUrl(1, 'plot');
+		print $plot->getNomUrl(1, 'plot')." - ".$plot->label;
 		print '</td>';
 		// Note
 		print '<td >';
@@ -371,8 +372,7 @@ function displayPlotTaskLines($action, $formother, $plottask)
 		} else {
 			print $line->coverage . '%';
 		}
-		print '</td>';
-		
+		print '</td>';	
 		// Action column
 		print '<td class="right" valign="middle" >';
 		if ($action == 'editline' && GETPOST('lineid') == $line->id) {
@@ -398,7 +398,7 @@ function displayPlotTaskLines($action, $formother, $plottask)
 }
 
 /**
- * Get field and order used for the tables sort.
+ * Get fields and order used for the plot task table sort.
  *
  * Use Ref Ascending by default.
  *
@@ -421,14 +421,16 @@ function getsort()
 }
 
 /**
- * Get all data needed to filter the SQL requests and produce the results
+ * Get all data needed to filter the SQL requests on plot task and produce the results
  *
+ *@param int $id the current task id
  * @return Array[] containing the following keys :
- *         datebegin,
- *         dateend,
- *         products (array of selected products),
- *         orders (array of sql filter conditions for orders),
- *         shipments (array of sql filter conditions for shipments),
+ *         id (of the task),
+ *         reference (of the plot),
+ *         note,
+ *         coverage,
+ *         plot (array of sql filter conditions for plot task),
+ * 
  */
 function getfilter($id)
 {
@@ -451,11 +453,9 @@ function getfilter($id)
 			$plotfilter[] = "t.note LIKE '%" . $search_note . "%'";
 		
 		$search_coverage = GETPOST('search_coverage', 'int');
-		var_dump($search_coverage);
 		if (!($search_coverage === "") || ($search_coverage > 0))
 			$plotfilter[] = "t.coverage = " . $search_coverage;
-		else
-			$search_coverage = - 1;
+		
 	}
 	$filter = array(
 		"id" => $id,
@@ -464,7 +464,6 @@ function getfilter($id)
 		"coverage" => $search_coverage,
 		"plot" => $plotfilter
 	);
-	var_dump($filter);
 	return $filter;
 }
 
@@ -474,7 +473,7 @@ function getfilter($id)
  * (used for list sort)
  *
  * @param Array $filter
- *        	the filter conditions
+ *        	the filter conditions including $id
  * @return string to be added to URL
  */
 function buildSearchParameters($filter)

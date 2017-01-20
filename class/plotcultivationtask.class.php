@@ -359,7 +359,6 @@ class Plotcultivationtask extends CommonObject
 		$sql .= " t.entity,";
 		$sql .= " t.fk_plot,";
 		$sql .= " plot.ref as reference,";
-		$sql .= " plot.label as label,";
 		$sql .= " t.fk_task,";
 		$sql .= " t.coverage as coverage,";
 		$sql .= " t.note as note,";
