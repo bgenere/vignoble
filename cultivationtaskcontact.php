@@ -63,7 +63,7 @@ if ($id > 0 || ! empty($ref)) {
 				swapTaskUserStatus($object);
 			}
 			
-			if ($action == 'deleteline' && $user->rights->projet->creer) {
+			if ($action == 'confirm_delete' && $confirm == 'yes' && $user->rights->projet->creer) {
 				$action = deleteTaskUser($object);
 			}
 			
@@ -71,7 +71,6 @@ if ($id > 0 || ! empty($ref)) {
 			 * Display View
 			 */
 			llxHeader('', $langs->trans("Task"));
-			
 			
 			$form = new Form($db);
 			$formcompany = new FormCompany($db);
@@ -85,10 +84,11 @@ if ($id > 0 || ! empty($ref)) {
 			
 			displayTaskHeader($object, $projectstatic, $form);
 			
-			/**
-			 *
-			 * @todo add delete line confirmation dialog
-			 */
+			if ($action == 'deleteline') {
+				// display confirmation dialog
+				$lineid = GETPOST('lineid', 'int');
+				print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid, $langs->trans("DeleteLinktoContact"), $langs->trans("ConfirmDeleteLinktoContact") . ' ' . GETPOST('label','alpha'), "confirm_delete", '', '', 1);
+			}
 			
 			if ($user->rights->projet->creer) {
 				displayAddUserForm($object, $projectstatic);
@@ -125,8 +125,9 @@ $db->close();
 
 /**
  * Add a user links to the task based on users selected in the add user form
+ *
  * @param
- *        	object the task 
+ *        	object the task
  * @param
  *        	projectstatic The cultivation project
  */
@@ -153,7 +154,10 @@ function addTaskUser($object, $projectstatic)
 				}
 			}
 		} else { // all contributors selected
-			$contributorsofproject = $projectstatic->Liste_Contact(- 1, 'internal', 0); // Only users of project. // selection of users
+			if ($object->project->public)
+				$contributorsofproject = get_dolusers(); // get all users
+			else
+				$contributorsofproject = $projectstatic->Liste_Contact(- 1, 'internal'); // Only users		
 			foreach ($contributorsofproject as $contributor) {
 				$result = $object->add_contact($contributor["id"], GETPOST("type"), GETPOST("source"));
 				if ($result >= 0) {
@@ -175,9 +179,9 @@ function addTaskUser($object, $projectstatic)
 function swapTaskUserStatus($task)
 {
 	Global $db, $conf, $user, $langs;
-
+	
 	$result = $task->swapContactStatus(GETPOST('ligne'));
-
+	
 	if ($result < 0) {
 		$langs->load("errors");
 		setEventMessages(null, $langs->trans($task->errors), 'errors');
@@ -196,10 +200,7 @@ function deleteTaskUser($task)
 {
 	Global $db, $conf, $user, $langs;
 	
-	//if ($task->fetch($id, $ref)) {
-		$result = $task->delete_contact(GETPOST('lineid', int));
-// 	} else
-// 		$result = - 1;
+	$result = $task->delete_contact(GETPOST('lineid', int));
 	
 	if ($result < 0) {
 		$langs->load("errors");
@@ -242,7 +243,7 @@ function displayAddUserForm($task, $projectstatic)
 	print "<tr>";
 	// Contributor selection
 	print '<td>';
-	$contributors = getProjectContributors($task,$projectstatic);
+	$contributors = getProjectContributors($task, $projectstatic);
 	print $form->multiselectarray('multicontributors', $contributors, '', 1, 0, '', 0, '90%');
 	print '</td>';
 	// User role selection
@@ -258,17 +259,16 @@ function displayAddUserForm($task, $projectstatic)
 	print '</table></form>';
 }
 
-
-
-
 /**
  * Get list of users who could be allocated to project task
- * 
- * @param Task $task the current task
- * @param Project $projectstatic the cultivation project
+ *
+ * @param Task $task
+ *        	the current task
+ * @param Project $projectstatic
+ *        	the cultivation project
  * @return array[] list of contributors for project
  */
-function getProjectContributors($task,$projectstatic)
+function getProjectContributors($task, $projectstatic)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -287,12 +287,13 @@ function getProjectContributors($task,$projectstatic)
 	return $contributors;
 }
 
-
 /**
  * Display the task user table with role and status
- * 
- * @param array $taskusers contains the list of users
- * @param Task $task the current task
+ *
+ * @param array $taskusers
+ *        	contains the list of users
+ * @param Task $task
+ *        	the current task
  */
 function displayTaskUsers($taskusers, $task)
 {
@@ -328,13 +329,13 @@ function displayTaskUsers($taskusers, $task)
 		print '<td align="center" class="nowrap">';
 		if ($user->rights->projet->creer) {
 			print '&nbsp;';
-			print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $task->id . '&action=deleteline&lineid=' . $taskuser['rowid'] . '">';
+			print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $task->id . '&action=deleteline&lineid=' . $taskuser['rowid'] . '&label='.urlencode($taskuser['firstname'].' '.$taskuser['lastname']).'">';
 			print img_delete();
 			print '</a>';
 		}
 		print '</td>';
 		
-		print "</tr>";
+		print '</tr>';
 	}
 }
 
