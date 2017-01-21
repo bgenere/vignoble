@@ -42,27 +42,6 @@ if (! $user->rights->projet->lire)
 $object = new Task($db);
 $projectstatic = new Project($db);
 
-/**
- * Actions on task : add contact, swap contact status
- */
-
-if ($action == 'addcontact' && $user->rights->projet->creer) {
-	addTaskUser($id, $object, $projectstatic);
-}
-
-if ($action == 'swapstatut' && $user->rights->projet->creer) {
-	swapTaskUserStatus($object);
-}
-
-if ($action == 'deleteline' && $user->rights->projet->creer) {
-	$action = deleteTaskUser($object);
-}
-
-/**
- * Display View
- */
-llxHeader('', $langs->trans("Task"));
-
 if ($id > 0 || ! empty($ref)) {
 	if ($object->fetch($id, $ref) > 0) {
 		
@@ -71,6 +50,28 @@ if ($id > 0 || ! empty($ref)) {
 		$result = $projectstatic->fetch($object->fk_project);
 		$object->project = clone $projectstatic;
 		if ($projectstatic->id == $cultivationprojectid) {
+			
+			/**
+			 * Actions on task : add contact, swap contact status
+			 */
+			
+			if ($action == 'addcontact' && $user->rights->projet->creer) {
+				addTaskUser($object, $projectstatic);
+			}
+			
+			if ($action == 'swapstatut' && $user->rights->projet->creer) {
+				swapTaskUserStatus($object);
+			}
+			
+			if ($action == 'deleteline' && $user->rights->projet->creer) {
+				$action = deleteTaskUser($object);
+			}
+			
+			/**
+			 * Display View
+			 */
+			llxHeader('', $langs->trans("Task"));
+			
 			
 			$form = new Form($db);
 			$formcompany = new FormCompany($db);
@@ -108,7 +109,7 @@ if ($id > 0 || ! empty($ref)) {
 			print "</tr>\n";
 			
 			$taskusers = $object->liste_contact(- 1, 'internal');
-			//TO DO check if sort could be done
+			// TO DO check if sort could be done
 			array_multisort($taskusers);
 			if (! empty($taskusers))
 				displayTaskUsers($taskusers, $object);
@@ -123,58 +124,44 @@ llxFooter();
 $db->close();
 
 /**
- *
+ * Add a user links to the task based on users selected in the add user form
  * @param
- *        	id
+ *        	object the task 
  * @param
- *        	object
- * @param
- *        	projectstatic
- * @param
- *        	idfortaskuser
- * @param
- *        	contactsofproject
- * @param
- *        	contactsofproject
- * @param
- *        	contactsofproject
- * @param
- *        	selectedCompany
+ *        	projectstatic The cultivation project
  */
-function addTaskUser($id, $object, $projectstatic)
+function addTaskUser($object, $projectstatic)
 {
 	Global $db, $conf, $user, $langs;
-	// TODO optimize and add multiselect
-	$result = $object->fetch($id, $ref);
 	
-	if ($result > 0 && $id > 0) {
-		$idfortaskuser = (GETPOST("contactid") != 0) ? GETPOST("contactid") : GETPOST("userid"); // GETPOST('contactid') may val -1 to mean empty or -2 to means "everybody"
-		if ($idfortaskuser == - 2) { // everybody selected
-			$result = $projectstatic->fetch($object->fk_project);
-			if ($result <= 0) {
-				dol_print_error($db, $projectstatic->error, $projectstatic->errors);
-			} else {
-				$contactsofproject = $projectstatic->getListContactId('internal');
-				$contactsofproject = array_merge($contactsofproject, $projectstatic->getListContactId('external'));
-				foreach ($contactsofproject as $key => $val) {
-					$result = $object->add_contact($val, GETPOST("type"), GETPOST("source"));
+	$error = 0;
+	
+	$multicontributors = GETPOST('multicontributors', 'array');
+	if (empty($multicontributors)) {
+		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv("Contributor")), null, 'errors');
+		$error ++;
+	}
+	if (! $error) {
+		$all = array_search(0, $multicontributors);
+		if ($all === false) { // list of contributors in array
+			foreach ($multicontributors as $contributorid) {
+				$result = $object->add_contact($contributorid, GETPOST("type"), GETPOST("source"));
+				if ($result >= 0) {
+					setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+				} else {
+					setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
 				}
 			}
-		} elseif ($idfortaskuser !== - 1) { // not empty
-			$result = $object->add_contact($idfortaskuser, GETPOST("type"), GETPOST("source"));
-		}
-	}
-	
-	if ($result >= 0) {
-		$selectedCompany = GETPOST("newcompany") ? GETPOST("newcompany") : $projectstatic->societe->id;
-		header("Location: " . $_SERVER["PHP_SELF"] . "?id=" . $object->id . ($selectedCompany ? '&newcompany=' . $selectedCompany : ''));
-		exit();
-	} else {
-		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
-			$langs->load("errors");
-			setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
-		} else {
-			setEventMessages($object->error, $object->errors, 'errors');
+		} else { // all contributors selected
+			$contributorsofproject = $projectstatic->Liste_Contact(- 1, 'internal', 0); // Only users of project. // selection of users
+			foreach ($contributorsofproject as $contributor) {
+				$result = $object->add_contact($contributor["id"], GETPOST("type"), GETPOST("source"));
+				if ($result >= 0) {
+					setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+				} else {
+					setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
+				}
+			}
 		}
 	}
 }
@@ -188,12 +175,9 @@ function addTaskUser($id, $object, $projectstatic)
 function swapTaskUserStatus($task)
 {
 	Global $db, $conf, $user, $langs;
-	
-	if ($task->fetch($id, $ref)) {
-		$result = $task->swapContactStatus(GETPOST('ligne'));
-	} else {
-		$result = - 1;
-	}
+
+	$result = $task->swapContactStatus(GETPOST('ligne'));
+
 	if ($result < 0) {
 		$langs->load("errors");
 		setEventMessages(null, $langs->trans($task->errors), 'errors');
@@ -212,10 +196,10 @@ function deleteTaskUser($task)
 {
 	Global $db, $conf, $user, $langs;
 	
-	if ($task->fetch($id, $ref)) {
+	//if ($task->fetch($id, $ref)) {
 		$result = $task->delete_contact(GETPOST('lineid', int));
-	} else
-		$result = - 1;
+// 	} else
+// 		$result = - 1;
 	
 	if ($result < 0) {
 		$langs->load("errors");
@@ -256,13 +240,10 @@ function displayAddUserForm($task, $projectstatic)
 	print "</tr>";
 	
 	print "<tr>";
-	// User selection
-	print '<td class="nowrap">';
-	if ($task->project->public)
-		$contactsofproject = ''; // No project contact filter
-	else
-		$contactsofproject = $projectstatic->getListContactId('internal'); // Only users of project. // selection of users
-	print $form->select_dolusers((GETPOST('contactid') ? GETPOST('contactid') : $user->id), 'contactid', 0, '', 0, '', $contactsofproject, 0, 0, 0, '', 1, $langs->trans("ResourceNotAssignedToProject"));
+	// Contributor selection
+	print '<td>';
+	$contributors = getProjectContributors($task,$projectstatic);
+	print $form->multiselectarray('multicontributors', $contributors, '', 1, 0, '', 0, '90%');
 	print '</td>';
 	// User role selection
 	print '<td>';
@@ -277,6 +258,42 @@ function displayAddUserForm($task, $projectstatic)
 	print '</table></form>';
 }
 
+
+
+
+/**
+ * Get list of users who could be allocated to project task
+ * 
+ * @param Task $task the current task
+ * @param Project $projectstatic the cultivation project
+ * @return array[] list of contributors for project
+ */
+function getProjectContributors($task,$projectstatic)
+{
+	Global $db, $conf, $user, $langs;
+	
+	if ($task->project->public)
+		$contributorsofproject = get_dolusers(); // get all users
+	else
+		$contributorsofproject = $projectstatic->Liste_Contact(- 1, 'internal'); // Only users of project. // selection of users
+	$contributors = array(
+		'0' => $langs->trans("All")
+	);
+	foreach ($contributorsofproject as $contributor) {
+		$key = $contributor["id"];
+		$value = $contributor["nom"];
+		$contributors[$key] = $value;
+	}
+	return $contributors;
+}
+
+
+/**
+ * Display the task user table with role and status
+ * 
+ * @param array $taskusers contains the list of users
+ * @param Task $task the current task
+ */
 function displayTaskUsers($taskusers, $task)
 {
 	Global $db, $conf, $user, $langs;
@@ -289,7 +306,7 @@ function displayTaskUsers($taskusers, $task)
 		
 		print '<tr ' . $bc[$var] . ' valign="top">';
 		
-		// User  url and full name
+		// User url and full name
 		print '<td>';
 		$userstatic->id = $taskuser['id'];
 		$userstatic->lastname = $taskuser['lastname'];
