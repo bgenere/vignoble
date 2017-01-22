@@ -39,27 +39,6 @@ $cancel = GETPOST('cancel', 'alpha');
 if (! $user->rights->projet->lire)
 	accessforbidden();
 
-/**
- * Actions
- */
-
-if ($action == 'addplot' && $user->rights->projet->lire) {
-	$action = addPlotTask($id);
-}
-
-if ($action == 'updateline' && ! $cancel && $user->rights->projet->creer) {
-	$action = updatePlotTask();
-}
-
-if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->creer) {
-	$action = deletePlotTask();
-}
-
-/**
- * Display View
- */
-llxHeader("", $langs->trans("Task"));
-
 if (($id > 0 || ! empty($ref))) {
 	$object = new Task($db);
 	if ($object->fetch($id, $ref) >= 0) {
@@ -68,6 +47,26 @@ if (($id > 0 || ! empty($ref))) {
 		$result = $projectstatic->fetch($object->fk_project);
 		$object->project = clone $projectstatic;
 		if ($projectstatic->id == $cultivationprojectid) {
+			/**
+			 * Actions
+			 */
+			
+			if ($action == 'addplot' && $user->rights->projet->lire) {
+				$action = addPlotTask($object->id);
+			}
+			
+			if ($action == 'updateline' && ! $cancel && $user->rights->projet->creer) {
+				$action = updatePlotTask();
+			}
+			
+			if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->creer) {
+				$action = deletePlotTask();
+			}
+			
+			/**
+			 * Display View
+			 */
+			llxHeader("", $langs->trans("Task"));
 			
 			$form = new Form($db);
 			$formother = new FormOther($db);
@@ -78,7 +77,7 @@ if (($id > 0 || ! empty($ref))) {
 			
 			$head = task_prepare_head($object);
 			dol_fiche_head($head, 'cultivationtaskplot', $langs->trans("Plot"), 0, 'projecttask');
-					
+			
 			displayTaskHeader($object, $projectstatic, $form);
 			
 			if ($action == 'deleteline') {
@@ -90,7 +89,7 @@ if (($id > 0 || ! empty($ref))) {
 					$plot->fetch($currplot->fk_plot);
 					print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid, $langs->trans("DeleteLinktoPlot"), $langs->trans("ConfirmDeleteLinktoPlot") . ' ' . $plot->ref, "confirm_delete", '', '', 1);
 				}
-			}		
+			}
 			if ($user->rights->projet->creer) {
 				displayAddPlotForm($object->id);
 			}
@@ -144,7 +143,7 @@ if (($id > 0 || ! empty($ref))) {
 }
 
 llxFooter();
-$db->close(); 
+$db->close();
 // End
 
 /**
@@ -267,7 +266,6 @@ function deletePlotTask()
  *        	the current task id
  *        	
  */
-
 function displayAddPlotForm($id)
 {
 	Global $db, $conf, $user, $langs;
@@ -279,7 +277,7 @@ function displayAddPlotForm($id)
 	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 	print '<input type="hidden" name="action" value="addplot">';
 	print '<input type="hidden" name="id" value="' . $id . '">';
-		
+	
 	print '<table class="noborder" width="100%">';
 	
 	print '<tr class="liste_titre">';
@@ -324,15 +322,15 @@ function displayAddPlotForm($id)
 
 /**
  * Display the plot task lines in a table with the capability to edit or delete a line.
- * 
+ *
  * Each line display plot ref and label, note and coverage.
  *
  * @param
  *        	action when value is 'editline' the correspopndig line is in edit mode
  * @param
  *        	formother needed to use the select a percentage control
- * @param
- *        	$plottask the result of the SQL query on plot task
+ * @param $plottask the
+ *        	result of the SQL query on plot task
  */
 function displayPlotTaskLines($action, $formother, $plottask)
 {
@@ -347,7 +345,7 @@ function displayPlotTaskLines($action, $formother, $plottask)
 		$plot = new plot($db);
 		$plot->fetch($line->fk_plot);
 		print '<td >';
-		print $plot->getNomUrl(1, 'plot')." - ".$plot->label;
+		print $plot->getNomUrl(1, 'plot') . " - " . $plot->label;
 		print '</td>';
 		// Note
 		print '<td >';
@@ -365,7 +363,7 @@ function displayPlotTaskLines($action, $formother, $plottask)
 		} else {
 			print $line->coverage . '%';
 		}
-		print '</td>';	
+		print '</td>';
 		// Action column
 		print '<td class="right" valign="middle" >';
 		if ($action == 'editline' && GETPOST('lineid') == $line->id) {
@@ -416,14 +414,15 @@ function getsort()
 /**
  * Get all data needed to filter the SQL requests on plot task and produce the results
  *
- *@param int $id the current task id
+ * @param int $id
+ *        	the current task id
  * @return Array[] containing the following keys :
  *         id (of the task),
  *         reference (of the plot),
  *         note,
  *         coverage,
  *         plot (array of sql filter conditions for plot task),
- * 
+ *        
  */
 function getfilter($id)
 {
@@ -446,9 +445,8 @@ function getfilter($id)
 			$plotfilter[] = "t.note LIKE '%" . $search_note . "%'";
 		
 		$search_coverage = GETPOST('search_coverage', 'int');
-		if (!($search_coverage === "") || ($search_coverage > 0))
+		if (! ($search_coverage === "") || ($search_coverage > 0))
 			$plotfilter[] = "t.coverage = " . $search_coverage;
-		
 	}
 	$filter = array(
 		"id" => $id,
