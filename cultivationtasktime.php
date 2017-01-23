@@ -53,19 +53,19 @@ if (($id > 0 || ! empty($ref))) {
 			 */
 			
 			if ($action == 'addtimespent' && $user->rights->projet->lire) {
-				$error = addTimeSpent($object);
+				$action = addTimeSpent($object);
 			}
 			
 			if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
-				$error = updateTimeSpent($object);
+				$action = updateTimeSpent($object);
 			}
 			
 			if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->creer) {
-				deleteTimeSpent($object);
+				$action = deleteTimeSpent($object);
 			}
 			
-			/**displayTaskTimeSpentLine
-			 * Display View
+			/**
+			 * View
 			 */
 			llxHeader("", $langs->trans("Task"));
 			
@@ -94,8 +94,8 @@ if (($id > 0 || ! empty($ref))) {
 			
 			// List of time spent associated to task
 			$sort = getsort();
-			$filter = getfilter($object->id);
-			$params = buildSearchParameters($filter);
+			$filter = getTimeSpentfilter($object->id);
+			$params = buildTimeSpentSearchParameters($filter);
 			
 			print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $id . '">';
 			print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
@@ -113,17 +113,17 @@ if (($id > 0 || ! empty($ref))) {
 			
 			// Fields header
 			print '<tr class="liste_titre">';
-			print_liste_field_titre($langs->trans("Date"), $_SERVER['PHP_SELF'], 't.task_date,t.task_datehour,t.rowid', 'style="width:20%;"', $params, '', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("Contributor"), $_SERVER['PHP_SELF'], '', '', $params, 'style="width:25%;"', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 't.note', '', $params, 'style="width:25%;"', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("Time"), $_SERVER['PHP_SELF'], 't.task_duration', 'style="width:20%;"', $params, 'align="right"', $sort['field'], $sort['order']);
-			print '<td style="width:10%;" colspan="2">&nbsp</td>';
+			print_liste_field_titre($langs->trans("Date"), $_SERVER['PHP_SELF'], 't.task_date,u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Contributor"), $_SERVER['PHP_SELF'], 'u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 't.note', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Time"), $_SERVER['PHP_SELF'], 't.task_duration', '', $params, 'align="right"', $sort['field'], $sort['order']);
+			print '<td style="width:15%;" colspan="2">&nbsp</td>';
 			print "</tr>";
-			// Search Header
+			// Search fields header
 			print '<tr class="liste_titre">';
-			print '<td></td>';
-			print '<td></td>';
-			print '<td><input type="text" class="flat" name="search_note" value="' . $search_note . '"></td>';
+			print '<td>' . $form->select_date((empty($filter['date']) ? - 1 : $filter['date']), 'search_date', 0, 0, 2, "search_date", 1, 0, 1) . '</td>';
+			print '<td><input type="text" class="flat" name="search_user" value="' . $filter['user'] . '"></td>';
+			print '<td><input type="text" class="flat" name="search_note" value="' . $filter['note'] . '"></td>';
 			print '<td class=" right"></td>';
 			print '<td ></td>';
 			print '<td class=" right">';
@@ -132,16 +132,13 @@ if (($id > 0 || ! empty($ref))) {
 			print '</td>';
 			print '</tr>' . "\n";
 			
-			
-			
 			$totalarray = array();
-			$tasks = getTaskTimeSpent($object);
+			$tasks = getTaskTimeSpent($object, $sort, $filter["timespent"]);
 			foreach ($tasks as $task_time) {
-				$totalarray = displayTaskTimeSpentLine($task_time, $action, $object, $form, $userstatic, $totalarray, $contactsoftask, $value);
+				$totalarray = displayTaskTimeSpentLine($task_time, $action, $object, $form, $userstatic, $totalarray);
 			}
-			
 			// Show total line
-			if (isset($totalarray['totaldurationfield']) ) {
+			if (isset($totalarray['totaldurationfield'])) {
 				displayTaskTimeSpentTotal($totalarray);
 			}
 			
@@ -151,26 +148,18 @@ if (($id > 0 || ! empty($ref))) {
 			print '</div>';
 			print "</form>";
 		}
-		print '</div>';
+		print '</div>'; // end Task and Time Spent Tab
 	}
 }
 llxFooter();
 $db->close();
 
 /**
+ * Add a time spent record for a task
  *
- * @param
- *        	result
- * @param
- *        	object
- * @param
- *        	idfortaskuser
- * @param
- *        	contactsoftask
- * @param
- *        	contactsoftask
- * @param
- *        	result
+ * @param Task $object
+ *        	the current task
+ * @return string $action empty
  */
 function addTimeSpent($object)
 {
@@ -199,9 +188,8 @@ function addTimeSpent($object)
 		
 		if (empty($object->projet->statut)) {
 			setEventMessages($langs->trans("ProjectMustBeValidatedFirst"), null, 'errors');
-			$error ++;
 		} else {
-			$object->timespent_note = GETPOST("timespent_note",'alpha');
+			$object->timespent_note = GETPOST("timespent_note", 'alpha');
 			$object->progress = GETPOST('progress', 'int');
 			$object->timespent_duration = GETPOST("timespent_durationhour") * 60 * 60; // We store duration in seconds
 			$object->timespent_duration += GETPOST("timespent_durationmin") * 60; // We store duration in seconds
@@ -211,7 +199,7 @@ function addTimeSpent($object)
 			} else {
 				$object->timespent_date = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
 			}
-			// TO DO chech if working and replace 
+			// TO DO chech if working and replace
 			if ($idfortaskuser == - 2) { // everybody selected
 				$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
 				foreach ($contactsoftask as $userid) {
@@ -222,27 +210,21 @@ function addTimeSpent($object)
 				$object->timespent_fk_user = $idfortaskuser;
 				$result = $object->addTimeSpent($user);
 			}
-			if ($result >= 0) {
-				setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
-			} else {
-				setEventMessages($langs->trans($object->error), null, 'errors');
-				$error ++;
-			}
 		}
-	} else {
-		$action = '';
+		if ($result >= 0) {
+			setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+		} else {
+			setEventMessages($langs->trans($object->error), null, 'errors');
+		}
 	}
-	return $error;
+	return $action = '';
 }
 
 /**
- *
- * @param
- *        	object
- * @param
- *        	result
- * @param
- *        	result
+ * update time spent of task using time spent form data
+ * @param Task $object
+ *        	the current task
+ * @return string $action empty
  */
 function updateTimeSpent($object)
 {
@@ -263,8 +245,7 @@ function updateTimeSpent($object)
 		$object->timespent_old_duration = GETPOST("old_duration");
 		$object->timespent_duration = GETPOST("new_durationhour") * 60 * 60; // We store duration in seconds
 		$object->timespent_duration += GETPOST("new_durationmin") * 60; // We store duration in seconds
-		if (GETPOST("timelinehour") != '' && GETPOST("timelinehour") >= 0) // If hour was entered
-{
+		if (GETPOST("timelinehour") != '' && GETPOST("timelinehour") >= 0) { // If hour was entered	
 			$object->timespent_date = dol_mktime(GETPOST("timelinehour"), GETPOST("timelinemin"), 0, GETPOST("timelinemonth"), GETPOST("timelineday"), GETPOST("timelineyear"));
 			$object->timespent_withhour = 1;
 		} else {
@@ -279,44 +260,40 @@ function updateTimeSpent($object)
 			setEventMessages($langs->trans($object->error), null, 'errors');
 			$error ++;
 		}
-	} else {
-		$action = '';
 	}
-	return $error;
+	return $action = '';
 }
 
 /**
- *
- * @param
- *        	result
- * @param
- *        	object
- * @param
- *        	error
+ * Delete the time spent line selected
+ * @param Task $object
+ *        	the current task
+ * @return string $action empty
  */
 function deleteTimeSpent($object)
 {
 	Global $db, $conf, $user, $langs;
 	
-	$object->fetchTimeSpent($_GET['lineid']);
+	$object->fetchTimeSpent(GETPOST("lineid"));
 	$result = $object->delTimeSpent($user);
 	
 	if ($result < 0) {
 		$langs->load("errors");
 		setEventMessages($langs->trans($object->error), null, 'errors');
-		$error ++;
-		$action = '';
 	}
+	return $action = '';
 }
 
 /**
- *
- * @param
- *        	object
- * @param
- *        	form
- * @param
- *        	formother
+ * Display the add time spent form to add one or more line of time spent.
+ * 
+ * One line is created by contributor.
+ * 
+ * @param Task $object the current task
+ *        	
+ * @param Form $form
+ *        	
+ * @param FormOther $formother
  */
 function displayAddTimeSpentForm($object, Form $form, $formother)
 {
@@ -330,64 +307,60 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 	print '<table class="noborder nohover" width="100%">';
 	
 	print '<tr class="liste_titre">';
-	print '<td>' . $langs->trans("Date") .' ('. $langs->trans("Add") .')</td>';
+	print '<td>' . $langs->trans("Date") . ' (' . $langs->trans("Add") . ')</td>';
 	print '<td>' . $langs->trans("By") . '</td>';
 	print '<td>' . $langs->trans("Note") . '</td>';
 	print '<td>' . $langs->trans("ProgressDeclared") . '</td>';
 	print '<td  colspan="2">' . $langs->trans("NewTimeSpent") . '</td>';
-	print "</tr>\n";
+	print "</tr>";
 	
 	print '<tr>';
-	
 	// Date when time was spent
-	print '<td class="maxwidthonsmartphone">';
+	print '<td>';
 	print $form->select_date('', 'time', 0, 0, 2, "timespent_date", 1, 0, 1);
 	print '</td>';
-	
 	// Contributor
-	print '<td class="maxwidthonsmartphone">';
-	print img_object('', 'user', 'class="hideonsmartphone"');
-	
+	print '<td>';
 	$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
-	
 	if (count($contactsoftask) > 0) {
-		
 		print $form->select_dolusers((GETPOST('userid') ? GETPOST('userid') : $userid), 'userid', 0, '', 0, '', $contactsoftask, 0, 0, 0, '', 1, $langs->trans("ResourceNotAssignedToTheTask"), 'maxwidth200');
 	} else {
 		print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
 	}
 	print '</td>';
-	
 	// Note
 	print '<td>';
 	print '<textarea name="timespent_note" class="maxwidth100onsmartphone" rows="' . ROWS_1 . '">' . ($_POST['timespent_note'] ? $_POST['timespent_note'] : '') . '</textarea>';
 	print '</td>';
-	
 	// Progress declared
 	print '<td class="nowrap">';
 	print $formother->select_percent(GETPOST('progress') ? GETPOST('progress') : $object->progress, 'progress');
 	print '</td>';
-	
 	// Duration - Time spent
 	print '<td class="nowrap" align="right">';
 	print $form->select_duration('timespent_duration', ($_POST['timespent_duration'] ? $_POST['timespent_duration'] : ''), 0, 'text');
 	print '</td>';
-	
+	// Add button
 	print '<td align="center">';
 	print '<input type="submit" class="button" value="' . $langs->trans("Add") . '">';
-	print '</td></tr>';
+	print '</td>';
+		
+	print '</tr>';
 	
-	print '</table></form>';
+	print '</table>';
+	print'</form>';
 	
-	print '<br>';
 }
 
+
 /**
- *
- * @param unknown $object        	
- * @return Object[]|NULL
+ * get the Task time spent lines making the proper SQL request.
+ * @param Task $object the current task
+ * @param array $sort the sort fields and order
+ * @param array $filter the conditions to apply to get the lines
+ * @return Object[] the time spent lines |NULL if empty
  */
-function getTaskTimeSpent($object)
+function getTaskTimeSpent($object, $sort, $filter)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -407,13 +380,16 @@ function getTaskTimeSpent($object)
 	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t, " . MAIN_DB_PREFIX . "projet_task as pt, " . MAIN_DB_PREFIX . "user as u";
 	$sql .= " WHERE t.fk_user = u.rowid AND t.fk_task = pt.rowid";
 	$sql .= " AND t.fk_task =" . $object->id;
-	// TODO implement search
 	
-	if ($search_note)
-		$sql .= natural_search('t.note', $search_note);
-	$sql .= $db->order($sort['field'], $sort['order']);
+	if (count($filter) > 0) {
+		// add clauses to WHERE
+		$sql .= ' AND ' . implode(' AND ', $filter);
+	}
 	
-	$var = true;
+	if (! empty($sort)) {
+		// add ORDER BY
+		$sql .= $db->order($sort['field'], $sort['order']);
+	}
 	$resql = $db->query($sql);
 	if ($resql) {
 		$num = $db->num_rows($resql);
@@ -434,27 +410,20 @@ function getTaskTimeSpent($object)
 }
 
 /**
+ * Display a task time spent line.
  *
- * @param
- *        	action
- * @param
- *        	object
- * @param
- *        	form
- * @param
- *        	userstatic
- * @param
- *        	arrayfields
- * @param
- *        	i
- * @param
- *        	totalarray
- * @param
- *        	contactsoftask
- * @param
- *        	value
+ * @param object $task_time
+ *        	the line to print
+ * @param string $action
+ *        	when value is 'editline' the corresponding line is in edit mode
+ * @param Task $object
+ *        	the current task
+ * @param Form $form        	
+ * @param User $userstatic        	
+ * @param array $totalarray        	
+ * @return array $totalarray the total fields and value
  */
-function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, $userstatic, $totalarray, $contactsoftask, $value)
+function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User $userstatic, $totalarray)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -466,26 +435,23 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, $use
 	// Date
 	print '<td class="nowrap">';
 	$date1 = $db->jdate($task_time->task_date);
-	$date2 = $db->jdate($task_time->task_datehour);	
-	if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-		print $form->select_date(($date2 ? $date2 : $date1), 'timeline', 1, 1, 2, "timespent_date", 1, 0, 1);
+	$date2 = $db->jdate($task_time->task_datehour);
+	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+		print $form->select_date(($task_time->task_date_withhour ? $date2 : $date1), 'timeline', $task_time->task_date_withhour, $task_time->task_date_withhour, 2, "timespent_date", 1, 0, 1);
 	} else {
 		print dol_print_date(($date2 ? $date2 : $date1), ($task_time->task_date_withhour ? 'dayhour' : 'day'));
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
-		
+	
 	// User
 	print '<td>';
-	if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-		if (empty($object->id))
-			$object->fetch($id);
+	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
 		$contactsoftask = $object->getListContactId('internal');
 		if (! in_array($task_time->fk_user, $contactsoftask)) {
 			$contactsoftask[] = $task_time->fk_user;
 		}
 		if (count($contactsoftask) > 0) {
-			print img_object('', 'user', 'class="hideonsmartphone"');
 			print $form->select_dolusers($task_time->fk_user, 'userid_line', 0, '', 0, '', $contactsoftask);
 		} else {
 			print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
@@ -498,20 +464,20 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, $use
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
-		
+	
 	// Note
 	print '<td align="left">';
-	if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
+	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
 		print '<textarea name="timespent_note_line" width="95%" rows="' . ROWS_2 . '">' . $task_time->note . '</textarea>';
 	} else {
 		print dol_nl2br($task_time->note);
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
-		
+	
 	// Time spent
 	print '<td align="right">';
-	if ($_GET['action'] == 'editline' && $_GET['lineid'] == $task_time->rowid) {
+	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
 		print '<input type="hidden" name="old_duration" value="' . $task_time->task_duration . '">';
 		print $form->select_duration('new_duration', $task_time->task_duration, 0, 'text');
 	} else {
@@ -524,8 +490,8 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, $use
 	
 	// Action column
 	print '<td class="right" colspan = "2">';
-	if ($action == 'editline' && $_GET['lineid'] == $task_time->rowid) {
-		print '<input type="hidden" name="lineid" value="' . $_GET['lineid'] . '">';
+	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+		print '<input type="hidden" name="lineid" value="' . GETPOST('lineid') . '">';
 		print '<input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
 		print '<br>';
 		print '<input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '">';
@@ -551,11 +517,10 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, $use
 }
 
 /**
+ * Display the time spent total line
  *
- * @param
- *        	limit
- * @param
- *        	totalarray
+ * @param array $totalarray
+ *        	containing the fields with total
  */
 function displayTaskTimeSpentTotal($totalarray)
 {
@@ -578,7 +543,7 @@ function displayTaskTimeSpentTotal($totalarray)
 }
 
 /**
- * Get fields and order used for the plot task table sort.
+ * Get fields and order used for table sort.
  *
  * Use Ref Ascending by default.
  *
@@ -588,11 +553,11 @@ function getsort()
 {
 	$sortfield = GETPOST(sortfield, 'alpha');
 	if (empty($sortfield)) {
-		$sortfield = 't.task_date,t.task_datehour,t.rowid';
+		$sortfield = 't.task_date,u.firstname,u.lastname';
 	}
 	$sortorder = GETPOST(sortorder, 'alpha');
 	if (empty($sortorder)) {
-		$sortorder = 'DESC';
+		$sortorder = 'ASC';
 	}
 	return $sort = array(
 		"field" => $sortfield,
@@ -601,52 +566,55 @@ function getsort()
 }
 
 /**
- * Get all data needed to filter the SQL requests on plot task and produce the results
+ * Get all data needed to filter the SQL requests on time spent task and produce the results
  *
  * @param int $id
  *        	the current task id
  * @return Array[] containing the following keys :
  *         id (of the task),
- *         reference (of the plot),
+ *         date of the time spent,
+ *         user i.e. the contributor,
  *         note,
- *         coverage,
- *         plot (array of sql filter conditions for plot task),
+ *         timespent (array of sql filter conditions for time spent on task),
  *        
  */
-function getfilter($id)
+function getTimeSpentfilter($id)
 {
-	$TimeSpentfilter = array();
+	$timespentfilter = array();
 	if (! empty($id))
-		$TimeSpentfilter[] = "t.fk_task = " . $id;
+		$timespentfilter[] = "t.fk_task = " . $id;
 		
 		// Purge search criteria
 	if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter")) { // All test are required to be compatible with all browsers
+		$search_date = '';
 		$search_dateday = '';
 		$search_datemonth = '';
 		$search_dateyear = '';
+		$search_user = '';
 		$search_note = '';
-		$search_duration = '';
 	} else {
-		$search_reference = GETPOST('search_reference', 'alpha');
-		if (! empty($search_reference))
-			$plotfilter[] = "plot.ref LIKE '%" . $search_reference . "%'";
+		
+		$search_date = GETPOST("search_dateyear") . '-' . GETPOST("search_datemonth") . '-' . GETPOST("search_dateday");
+		if ($search_date == '--') { // not in Form check URL
+			$search_date = GETPOST("search_date");
+		}
+		if (! empty($search_date))
+			$timespentfilter[] = "t.task_date =  '" . $search_date . "'";
+		
+		$search_user = GETPOST('search_user', 'alpha');
+		if (! empty($search_user))
+			$timespentfilter[] = " ( u.firstname LIKE '%" . $search_user . "%' OR u.lastname LIKE '%" . $search_user . "%')";
 		
 		$search_note = GETPOST('search_note', 'alpha');
 		if (! empty($search_note))
-			$plotfilter[] = "t.note LIKE '%" . $search_note . "%'";
-		
-		$search_coverage = GETPOST('search_coverage', 'int');
-		if (! ($search_coverage === "") || ($search_coverage > 0))
-			$plotfilter[] = "t.coverage = " . $search_coverage;
+			$timespentfilter[] = "t.note LIKE '%" . $search_note . "%'";
 	}
 	$filter = array(
 		"id" => $id,
-		"dateday" => $search_dateday,
-		"datemonth" => $search_datemonth,
-		"dateyear" => $search_dateyear,
+		"date" => $search_date,
+		"user" => $search_user,
 		"note" => $search_note,
-		"duration" => $search_duration,
-		"timespent" => $TimeSpentfilter
+		"timespent" => $timespentfilter
 	);
 	return $filter;
 }
@@ -660,16 +628,18 @@ function getfilter($id)
  *        	the filter conditions including $id
  * @return string to be added to URL
  */
-function buildSearchParameters($filter)
+function buildTimeSpentSearchParameters($filter)
 {
 	$params = "";
+	
 	if (! empty($filter["id"]))
 		$params .= '&amp;id=' . $filter["id"];
-	
+	if (! empty($filter["date"]))
+		$params .= '&amp;search_date=' . urlencode($filter["date"]);
+	if (! empty($filter["user"]))
+		$params .= '&amp;search_user=' . urlencode($filter["user"]);
 	if (! empty($filter["note"]))
 		$params .= '&amp;search_note=' . urlencode($filter["note"]);
-	if (! empty($filter["duration"]))
-		$params .= '&amp;search_duration=' . urlencode($filter["duration"]);
 	
 	return $params;
 }

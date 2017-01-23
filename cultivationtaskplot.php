@@ -202,7 +202,7 @@ function addPlotTask($id)
 	} else {
 		setEventMessages(null, $langs->trans($plotcultivation->errors), 'errors');
 	}
-	$action = '';
+	return $action = '';
 }
 
 /**
@@ -229,7 +229,7 @@ function updatePlotTask()
 	} else {
 		setEventMessages(null, $langs->trans($plotcultivation->errors), 'errors');
 	}
-	$action = '';
+	return $action = '';
 }
 
 /**
@@ -253,8 +253,7 @@ function deletePlotTask()
 		setEventMessages(null, $langs->trans($plotcultivation->errors), 'errors');
 		$error ++;
 	}
-	$action = '';
-	return $action;
+	return $action = '';
 }
 
 /**
@@ -326,7 +325,7 @@ function displayAddPlotForm($id)
  * Each line display plot ref and label, note and coverage.
  *
  * @param
- *        	action when value is 'editline' the correspopndig line is in edit mode
+ *        	action when value is 'editline' the corresponding line is in edit mode
  * @param
  *        	formother needed to use the select a percentage control
  * @param $plottask the
@@ -349,7 +348,7 @@ function displayPlotTaskLines($action, $formother, $plottask)
 		print '</td>';
 		// Note
 		print '<td >';
-		if (GETPOST('action') == 'editline' && GETPOST('lineid') == $line->id) {
+		if ($action == 'editline' && GETPOST('lineid') == $line->id) {
 			print '<textarea name="linenote" style="width:90%;" rows="' . ROWS_1 . '">' . $line->note . '</textarea>';
 		} else {
 			print dol_nl2br($line->note);
@@ -357,7 +356,7 @@ function displayPlotTaskLines($action, $formother, $plottask)
 		print '</td>';
 		// Coverage
 		print '<td>';
-		if (GETPOST('action') == 'editline' && GETPOST('lineid') == $line->id) {
+		if ($action == 'editline' && GETPOST('lineid') == $line->id) {
 			print '<input type="hidden" name="old_coverage" value="' . $line->coverage . '">';
 			print $formother->select_percent(GETPOST('linecoverage', 'int') ? GETPOST('linecoverage') : $line->coverage, 'linecoverage');
 		} else {
