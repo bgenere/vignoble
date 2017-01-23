@@ -138,25 +138,25 @@ function displayProjectHeaderCard($object, $form)
 }
 
 /**
- * print the task ref and label with navigation links in task list. 
+ * print the task ref and label with navigation links in task list.
  *
  * @param
  *        	object the task to display
  * @param
  *        	projectstatic the project linked to the task
  * @param
- *        	form the form object to display      	
+ *        	form the form object to display
  */
 function displayTaskHeader($object, $projectstatic, $form)
 {
 	global $db, $conf, $langs, $user;
 	
-	$linkback = '<a href="cultivationtasks.php?withproject=1">' . $langs->trans("BackToList") . '</a>' ;
+	$linkback = '<a href="cultivationtasks.php?withproject=1">' . $langs->trans("BackToList") . '</a>';
 	// Task title
 	$tasktitle = '<div class="refidno">';
 	$tasktitle .= $object->label;
 	$tasktitle .= '</div>';
-		
+	
 	print '<table width="100%">';
 	
 	// Ref
@@ -164,7 +164,7 @@ function displayTaskHeader($object, $projectstatic, $form)
 	print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref', $tasktitle);
 	print '</td></tr>';
 	
-	print "</table>";	
+	print "</table>";
 }
 
 /**
@@ -506,72 +506,94 @@ function getTaskUrl($task, $withpicto = 0, $option = '', $mode = 'cultivationtas
 function createNewTask()
 {
 	global $db, $conf, $langs, $user;
-	
-	
 }
 
-    /**
-     *	Return array list of users
-     *
-     *  @param	int		$force_entity	0 or Id of environment to force
-     *  @param	string	$morefilter		Add more filters into sql request
-     *  @param  int     $noactive       Show only active users (this will also happened whatever is this option if USER_HIDE_INACTIVE_IN_COMBOBOX is on).
-     * 	@return	array list of users
-     *  
-     */
-    function get_dolusers( $force_entity=0, $morefilter='', $noactive=0)
-    {
-        global $db,$conf,$user,$langs;
+/**
+ * Return array list of users
+ *
+ * @param int $force_entity
+ *        	0 or Id of environment to force
+ * @param string $morefilter
+ *        	Add more filters into sql request
+ * @param int $noactive
+ *        	Show only active users (this will also happened whatever is this option if USER_HIDE_INACTIVE_IN_COMBOBOX is on).
+ * @return array list of users
+ *        
+ */
+function get_dolusers($force_entity = 0, $morefilter = '', $noactive = 0)
+{
+	global $db, $conf, $user, $langs;
+	
+	// Build SQL request
+	$sql = "SELECT DISTINCT u.rowid as id, u.lastname as nom, u.firstname, u.statut, u.login, u.admin, u.entity";
+	if (! empty($conf->multicompany->enabled) && $conf->entity == 1 && $user->admin && ! $user->entity) {
+		$sql .= ", e.label";
+	}
+	$sql .= " FROM " . MAIN_DB_PREFIX . "user as u";
+	if (! empty($conf->multicompany->enabled) && $conf->entity == 1 && $user->admin && ! $user->entity) {
+		$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "entity as e ON e.rowid=u.entity";
+		if ($force_entity)
+			$sql .= " WHERE u.entity IN (0," . $force_entity . ")";
+		else
+			$sql .= " WHERE u.entity IS NOT NULL";
+	} else {
+		if (! empty($conf->multicompany->transverse_mode)) {
+			$sql .= ", " . MAIN_DB_PREFIX . "usergroup_user as ug";
+			$sql .= " WHERE ug.fk_user = u.rowid";
+			$sql .= " AND ug.entity = " . $conf->entity;
+		} else {
+			$sql .= " WHERE u.entity IN (0," . $conf->entity . ")";
+		}
+	}
+	if (! empty($user->societe_id))
+		$sql .= " AND u.fk_soc = " . $user->societe_id;
+	if (! empty($conf->global->USER_HIDE_INACTIVE_IN_COMBOBOX) || $noactive)
+		$sql .= " AND u.statut <> 0";
+	if (! empty($morefilter))
+		$sql .= " " . $morefilter;
+	$sql .= " ORDER BY u.lastname ASC";
+	
+	dol_syslog(__METHOD__, LOG_DEBUG);
+	$resql = $db->query($sql);
+	if ($resql) {
+		$num = $db->num_rows($resql);
+		if ($num) {
+			$userlist = $resql;
+		} else {
+			$userlist = "none";
+		}
+	} else {
+		dol_print_error($this->db);
+		$userlist = null;
+	}
+	return $userlist;
+}
 
-        // Build SQL request
-        $sql = "SELECT DISTINCT u.rowid as id, u.lastname as nom, u.firstname, u.statut, u.login, u.admin, u.entity";
-        if (! empty($conf->multicompany->enabled) && $conf->entity == 1 && $user->admin && ! $user->entity)
-        {
-            $sql.= ", e.label";
-        }
-        $sql.= " FROM ".MAIN_DB_PREFIX ."user as u";
-        if (! empty($conf->multicompany->enabled) && $conf->entity == 1 && $user->admin && ! $user->entity)
-        {
-            $sql.= " LEFT JOIN ".MAIN_DB_PREFIX ."entity as e ON e.rowid=u.entity";
-            if ($force_entity) $sql.= " WHERE u.entity IN (0,".$force_entity.")";
-            else $sql.= " WHERE u.entity IS NOT NULL";
-        }
-        else
-       {
-        	if (! empty($conf->multicompany->transverse_mode))
-        	{
-        		$sql.= ", ".MAIN_DB_PREFIX."usergroup_user as ug";
-        		$sql.= " WHERE ug.fk_user = u.rowid";
-        		$sql.= " AND ug.entity = ".$conf->entity;
-        	}
-        	else
-        	{
-        		$sql.= " WHERE u.entity IN (0,".$conf->entity.")";
-        	}
-        }
-        if (! empty($user->societe_id)) $sql.= " AND u.fk_soc = ".$user->societe_id;
-        if (! empty($conf->global->USER_HIDE_INACTIVE_IN_COMBOBOX) || $noactive) $sql.= " AND u.statut <> 0";
-        if (! empty($morefilter)) $sql.=" ".$morefilter;
-        $sql.= " ORDER BY u.lastname ASC";
-
-        dol_syslog(__METHOD__, LOG_DEBUG);
-        $resql=$db->query($sql);
-        if ($resql)
-        {
-            $num = $db->num_rows($resql);
-            if ($num)
-            { $userlist = $resql;
-            }
-            else
-            {
-               $userlist = "none"; 
-            }
-            
-        }
-        else
-        {
-            dol_print_error($this->db);
-            $userlist = null;
-        }
-        return $userlist;
-    }
+/**
+ * Get list of users who could be allocated to project task
+ *
+ * @param Task $task
+ *        	the current task
+ * @param Project $projectstatic
+ *        	the cultivation project
+ * @return array[] list of contributors for project
+ */
+function getProjectContributors($task, $projectstatic)
+{
+	Global $db, $conf, $user, $langs;
+	
+	if ($task->project->public)
+		$contributorsofproject = get_dolusers(); // get all users
+	else
+		$contributorsofproject = $projectstatic->Liste_Contact(- 1, 'internal'); // Only users of project. // selection of users
+	$contributors = array(
+		'0' => $langs->trans("All")
+	);
+	foreach ($contributorsofproject as $contributor) {
+		$key = $contributor["id"];
+		$value = $contributor["nom"];
+		$contributors[$key] = $value;
+	}
+	return $contributors;
+}
+    

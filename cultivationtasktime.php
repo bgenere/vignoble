@@ -166,13 +166,14 @@ function addTimeSpent($object)
 	Global $db, $conf, $user, $langs;
 	
 	$error = 0;
-	
-	if (empty(GETPOST("userid"))) {
-		$langs->load("errors");
-		setEventMessages($langs->trans('ErrorUserNotAssignedToTask'), null, 'errors');
+	if (empty($object->project->statut)) {
+		setEventMessages($langs->trans("ProjectMustBeValidatedFirst"), null, 'errors');
 		$error ++;
-	} else {
-		$idfortaskuser = GETPOST("userid"); // val -2 means "everybody"
+	}
+	$multicontributors = GETPOST('multicontributors', 'array');
+	if (empty($multicontributors)) {
+		setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv("Contributor")), null, 'errors');
+		$error ++;
 	}
 	// Check time spent is provided
 	$timespent_durationhour = GETPOST('timespent_durationhour', 'int');
@@ -183,45 +184,72 @@ function addTimeSpent($object)
 	}
 	
 	if (! $error) {
-		$object->fetch($id, $ref);
-		$object->fetch_projet();
-		
-		if (empty($object->projet->statut)) {
-			setEventMessages($langs->trans("ProjectMustBeValidatedFirst"), null, 'errors');
+		// get optional values
+		$object->timespent_note = GETPOST("timespent_note", 'alpha');
+		$object->progress = GETPOST('progress', 'int');
+		$object->timespent_duration = GETPOST("timespent_durationhour") * 60 * 60; // We store duration in seconds
+		$object->timespent_duration += GETPOST("timespent_durationmin") * 60; // We store duration in seconds
+		if (GETPOST("timehour") != '' && GETPOST("timehour") >= 0) { // If hour was entered
+			$object->timespent_date = dol_mktime(GETPOST("timehour"), GETPOST("timemin"), 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
+			$object->timespent_withhour = 1;
 		} else {
-			$object->timespent_note = GETPOST("timespent_note", 'alpha');
-			$object->progress = GETPOST('progress', 'int');
-			$object->timespent_duration = GETPOST("timespent_durationhour") * 60 * 60; // We store duration in seconds
-			$object->timespent_duration += GETPOST("timespent_durationmin") * 60; // We store duration in seconds
-			if (GETPOST("timehour") != '' && GETPOST("timehour") >= 0) { // If hour was entered
-				$object->timespent_date = dol_mktime(GETPOST("timehour"), GETPOST("timemin"), 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
-				$object->timespent_withhour = 1;
-			} else {
-				$object->timespent_date = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
-			}
-			// TO DO chech if working and replace
-			if ($idfortaskuser == - 2) { // everybody selected
-				$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
-				foreach ($contactsoftask as $userid) {
-					$object->timespent_fk_user = $userid;
-					$result = $object->addTimeSpent($user);
-				}
-			} elseif ($idfortaskuser !== - 1) { // not empty
-				$object->timespent_fk_user = $idfortaskuser;
-				$result = $object->addTimeSpent($user);
-			}
+			$object->timespent_date = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
 		}
-		if ($result >= 0) {
-			setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
-		} else {
-			setEventMessages($langs->trans($object->error), null, 'errors');
+		// process contributors
+		$currentcontributors =  array_merge($object->getIdContact('internal', 'TASKCONTRIBUTOR'),$object->getIdContact('internal', 'TASKEXECUTIVE'));
+		$all = array_search(0, $multicontributors);
+		if ($all === false) { // list of contributors in array
+			foreach ($multicontributors as $contributorid) {
+				// add contributor to contact if not already in
+				if (array_search($contributorid, $currentcontributors) === false) {
+					$result = $object->add_contact($contributorid, 'TASKCONTRIBUTOR', 'internal');
+					if ($result >= 0) {
+						setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+					} else {
+						setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
+					}
+				}
+				// add time spent
+				$object->timespent_fk_user = $contributorid;
+				$result = $object->addTimeSpent($user);
+				if ($result >= 0) {
+					setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+				} else {
+					setEventMessages($langs->trans("ErrorSavingTimeSpent"), null, 'errors');
+				}
+			}
+		} else { // all contributors selected
+			if ($object->project->public)
+				$contributorsofproject = get_dolusers(); // get all users
+			else
+				$contributorsofproject = $object->project->Liste_Contact(- 1, 'internal'); // Only users
+			foreach ($contributorsofproject as $contributor) {
+				if (array_search($contributor['id'], $currentcontributors) === false) {
+					$result = $object->add_contact($contributor["id"], 'TASKCONTRIBUTOR', 'internal');
+					if ($result >= 0) {
+						setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+					} else {
+						setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
+					}
+				}
+				// add time spent
+				$object->timespent_fk_user = $contributor["id"];
+				$result = $object->addTimeSpent($user);
+				if ($result >= 0) {
+					setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+				} else {
+					setEventMessages($langs->trans("ErrorSavingTimeSpent"), null, 'errors');
+				}
+			}
 		}
 	}
+	
 	return $action = '';
 }
 
 /**
  * update time spent of task using time spent form data
+ *
  * @param Task $object
  *        	the current task
  * @return string $action empty
@@ -245,7 +273,7 @@ function updateTimeSpent($object)
 		$object->timespent_old_duration = GETPOST("old_duration");
 		$object->timespent_duration = GETPOST("new_durationhour") * 60 * 60; // We store duration in seconds
 		$object->timespent_duration += GETPOST("new_durationmin") * 60; // We store duration in seconds
-		if (GETPOST("timelinehour") != '' && GETPOST("timelinehour") >= 0) { // If hour was entered	
+		if (GETPOST("timelinehour") != '' && GETPOST("timelinehour") >= 0) { // If hour was entered
 			$object->timespent_date = dol_mktime(GETPOST("timelinehour"), GETPOST("timelinemin"), 0, GETPOST("timelinemonth"), GETPOST("timelineday"), GETPOST("timelineyear"));
 			$object->timespent_withhour = 1;
 		} else {
@@ -266,6 +294,7 @@ function updateTimeSpent($object)
 
 /**
  * Delete the time spent line selected
+ *
  * @param Task $object
  *        	the current task
  * @return string $action empty
@@ -286,21 +315,22 @@ function deleteTimeSpent($object)
 
 /**
  * Display the add time spent form to add one or more line of time spent.
- * 
+ *
  * One line is created by contributor.
- * 
- * @param Task $object the current task
+ *
+ * @param Task $object
+ *        	the current task
  *        	
- * @param Form $form
- *        	
- * @param FormOther $formother
+ * @param Form $form        	
+ *
+ * @param FormOther $formother        	
  */
 function displayAddTimeSpentForm($object, Form $form, $formother)
 {
 	Global $db, $conf, $user, $langs;
 	
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
-	print '<input type="hidden" name="token" value="' . $_SESdisplayTaskTimeSpentLineSION['newtoken'] . '">';
+	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
 	print '<input type="hidden" name="action" value="addtimespent">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
 	
@@ -308,29 +338,25 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 	
 	print '<tr class="liste_titre">';
 	print '<td>' . $langs->trans("Date") . ' (' . $langs->trans("Add") . ')</td>';
-	print '<td>' . $langs->trans("By") . '</td>';
-	print '<td>' . $langs->trans("Note") . '</td>';
+	print '<td style="min-width:20%">' . $langs->trans("By") . '</td>';
+	print '<td style="min-width:20%">' . $langs->trans("Note") . '</td>';
 	print '<td>' . $langs->trans("ProgressDeclared") . '</td>';
 	print '<td  colspan="2">' . $langs->trans("NewTimeSpent") . '</td>';
 	print "</tr>";
 	
 	print '<tr>';
 	// Date when time was spent
-	print '<td>';
+	print '<td class="nowrap">';
 	print $form->select_date('', 'time', 0, 0, 2, "timespent_date", 1, 0, 1);
 	print '</td>';
-	// Contributor
+	// Contributor selection
 	print '<td>';
-	$contactsoftask = $object->liste_contact(- 1, 'internal', 1);
-	if (count($contactsoftask) > 0) {
-		print $form->select_dolusers((GETPOST('userid') ? GETPOST('userid') : $userid), 'userid', 0, '', 0, '', $contactsoftask, 0, 0, 0, '', 1, $langs->trans("ResourceNotAssignedToTheTask"), 'maxwidth200');
-	} else {
-		print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
-	}
+	$contributors = getProjectContributors($object, $object->project);
+	print $form->multiselectarray('multicontributors', $contributors, GETPOST('multicontributors'), 0, 0, '', 0, '90%');
 	print '</td>';
 	// Note
 	print '<td>';
-	print '<textarea name="timespent_note" class="maxwidth100onsmartphone" rows="' . ROWS_1 . '">' . ($_POST['timespent_note'] ? $_POST['timespent_note'] : '') . '</textarea>';
+	print '<textarea name="timespent_note" class="maxwidth100onsmartphone" rows="' . ROWS_1 . '">' . (GETPOST('timespent_note') ? GETPOST('timespent_note') : '') . '</textarea>';
 	print '</td>';
 	// Progress declared
 	print '<td class="nowrap">';
@@ -338,26 +364,28 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 	print '</td>';
 	// Duration - Time spent
 	print '<td class="nowrap" align="right">';
-	print $form->select_duration('timespent_duration', ($_POST['timespent_duration'] ? $_POST['timespent_duration'] : ''), 0, 'text');
+	print $form->select_duration('timespent_duration', (GETPOST('timespent_duration') ? GETPOST('timespent_duration') : ''), 0, 'text');
 	print '</td>';
 	// Add button
 	print '<td align="center">';
 	print '<input type="submit" class="button" value="' . $langs->trans("Add") . '">';
 	print '</td>';
-		
+	
 	print '</tr>';
 	
 	print '</table>';
-	print'</form>';
-	
+	print '</form>';
 }
-
 
 /**
  * get the Task time spent lines making the proper SQL request.
- * @param Task $object the current task
- * @param array $sort the sort fields and order
- * @param array $filter the conditions to apply to get the lines
+ *
+ * @param Task $object
+ *        	the current task
+ * @param array $sort
+ *        	the sort fields and order
+ * @param array $filter
+ *        	the conditions to apply to get the lines
  * @return Object[] the time spent lines |NULL if empty
  */
 function getTaskTimeSpent($object, $sort, $filter)

@@ -244,7 +244,7 @@ function displayAddUserForm($task, $projectstatic)
 	// Contributor selection
 	print '<td>';
 	$contributors = getProjectContributors($task, $projectstatic);
-	print $form->multiselectarray('multicontributors', $contributors, '', 1, 0, '', 0, '90%');
+	print $form->multiselectarray('multicontributors', $contributors, '', 0, 0, '', 0, '90%');
 	print '</td>';
 	// User role selection
 	print '<td>';
@@ -257,34 +257,6 @@ function displayAddUserForm($task, $projectstatic)
 	
 	print '</tr>';
 	print '</table></form>';
-}
-
-/**
- * Get list of users who could be allocated to project task
- *
- * @param Task $task
- *        	the current task
- * @param Project $projectstatic
- *        	the cultivation project
- * @return array[] list of contributors for project
- */
-function getProjectContributors($task, $projectstatic)
-{
-	Global $db, $conf, $user, $langs;
-	
-	if ($task->project->public)
-		$contributorsofproject = get_dolusers(); // get all users
-	else
-		$contributorsofproject = $projectstatic->Liste_Contact(- 1, 'internal'); // Only users of project. // selection of users
-	$contributors = array(
-		'0' => $langs->trans("All")
-	);
-	foreach ($contributorsofproject as $contributor) {
-		$key = $contributor["id"];
-		$value = $contributor["nom"];
-		$contributors[$key] = $value;
-	}
-	return $contributors;
 }
 
 /**
