@@ -330,59 +330,74 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 {
 	Global $db, $conf, $user, $langs;
 	
-	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
-	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
-	print '<input type="hidden" name="action" value="addtimespent">';
-	print '<input type="hidden" name="id" value="' . $object->id . '">';
-	
-	print '<table class="noborder nohover" width="100%">';
-	
-	print '<tr class="liste_titre">';
-	print '<td style="width:15%;">' . $langs->trans("Date") . ' (' . $langs->trans("Add") . ')</td>';
-	print '<td style="width:25%;">' . $langs->trans("By") . '</td>';
-	print '<td style="width:25%;">' . $langs->trans("Note") . '</td>';
-	print '<td style="width:20%;"class = "center">' . $langs->trans("Time") . '</td>';
-	print '<td style="width:15%;"> &nbsp; </td>';
-	print "</tr>";
-	
-	print '<tr>';
-	// Date when time was spent
-	print '<td class="nowrap">';
-	print $form->select_date('', 'time', 0, 0, 2, "timespent_date", 1, 0, 1);
-	print '</td>';
-	// Contributor selection
-	print '<td>';
-	$contributors = getProjectContributors($object, $object->project);
-	print $form->multiselectarray('multicontributors', $contributors, GETPOST('multicontributors'), 0, 0, '', 0, '90%');
-	print '</td>';
-	// Note
-	print '<td>';
-	print '<textarea name="timespent_note" style="width:90%;" rows="' . ROWS_1 . '">' . (GETPOST('timespent_note') ? GETPOST('timespent_note') : '') . '</textarea>';
-	print '</td>';
-	// Duration - Time spent
-	print '<td class="right nowrap">';
-	print $form->select_duration('timespent_duration', (GETPOST('timespent_duration') ? GETPOST('timespent_duration') : ''), 0, 'text');
-	print '</td>';
-	// Add button
-	print '<td align="center" rowspan="2">';
-	print '<input type="submit" class="button" value="' . $langs->trans("Add") . '">';
-	print '</td>';
-	
-	print '</tr>';
-	
-	print '<tr align="center">';
-	// Plot table with statustable
-	print '<td class="center nowrap" colspan = "3">';
-	displayPlotTaskLinesForm($formother, $object);
-	print '</td>';
-	// Progress declared
-	print '<td class="right">';
-	print '<b>' . $langs->trans("Task") . "</b> " . $langs->trans("ProgressDeclared") . " : ";
-	print $formother->select_percent(GETPOST('progress') ? GETPOST('progress') : $object->progress, 'progress');
-	print '</td>';
-	
-	print '</tr>';
-	
+	// display/hide link
+	if (GETPOST('addtime') == 'display') {
+		$display = true;
+	} else {
+		$display = false;
+	}
+	print '<div class="right">';
+	print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;addtime=' . ($display ? 'hide' : 'display') . $params . '">';
+	print '<b>' . $langs->trans(($display ? 'Hide' : 'AddLine')) . '</b>';
+	print '</a>';
+	print '</div>';
+	if ($display) {
+		print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
+		print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+		print '<input type="hidden" name="action" value="addtimespent">';
+		print '<input type="hidden" name="addtime" value="display">';
+		print '<input type="hidden" name="id" value="' . $object->id . '">';
+		
+		print '<table class="noborder nohover" width="100%">';
+		
+		print '<tr class="liste_titre">';
+		print '<td style="width:15%;">' . $langs->trans("Date") . ' (' . $langs->trans("Add") . ')</td>';
+		print '<td style="width:25%;">' . $langs->trans("By") . '</td>';
+		print '<td style="width:25%;">' . $langs->trans("Note") . '</td>';
+		print '<td style="width:20%;" class = "center">' . $langs->trans("Time") . '</td>';
+		
+		print '<td style="width:15%;" class="right"> ';
+		print '</td>';
+		print "</tr>";
+		
+		print '<tr>';
+		// Date when time was spent
+		print '<td class="nowrap">';
+		print $form->select_date('', 'time', 0, 0, 2, "timespent_date", 1, 0, 1);
+		print '</td>';
+		// Contributor selection
+		print '<td>';
+		$contributors = getProjectContributors($object, $object->project);
+		print $form->multiselectarray('multicontributors', $contributors, GETPOST('multicontributors'), 0, 0, '', 0, '90%');
+		print '</td>';
+		// Note
+		print '<td>';
+		print '<textarea name="timespent_note" style="width:90%;" rows="' . ROWS_1 . '">' . (GETPOST('timespent_note') ? GETPOST('timespent_note') : '') . '</textarea>';
+		print '</td>';
+		// Duration - Time spent
+		print '<td class="right nowrap">';
+		print $form->select_duration('timespent_duration', (GETPOST('timespent_duration') ? GETPOST('timespent_duration') : ''), 0, 'text');
+		print '</td>';
+		// Add button
+		print '<td align="center" rowspan="2">';
+		print '<input type="submit" class="button" value="' . $langs->trans("Add") . '">';
+		print '</td>';
+		
+		print '</tr>';
+		
+		print '<tr align="center">';
+		// Plot table with statustable
+		print '<td class="center nowrap" colspan = "3">';
+		displayPlotTaskLinesForm($formother, $object);
+		print '</td>';
+		// Progress declared
+		print '<td class="right">';
+		print '<b>' . $langs->trans("Task") . "</b> " . $langs->trans("ProgressDeclared") . " : ";
+		print $formother->select_percent(GETPOST('progress') ? GETPOST('progress') : $object->progress, 'progress');
+		print '</td>';
+		
+		print '</tr>';
+	}
 	print '</table>';
 	print '</form>';
 }
@@ -738,6 +753,13 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
 	print '</div>';
 }
 
+/**
+ * Update all plot status and note for the task using the add time form sub part regardint the plots.
+ *
+ * @param Task $object
+ *        	the current task
+ * @return string
+ */
 function updatePlotTaskStatus($object)
 {
 	Global $db, $conf, $user, $langs;
@@ -749,7 +771,6 @@ function updatePlotTaskStatus($object)
 	if ($plottask->fetchAll('ASC', 'reference', 0, 0, $taskfilter, 'AND')) {
 		foreach ($plottask->lines as $line) {
 			if ($plottask->fetch($line->id)) {
-				var_dump($line->id);
 				$plottask->note = GETPOST('plotlinenote' . $line->id, 'alpha');
 				$plottask->coverage = GETPOST('plotlinecoverage' . $line->id, 'int');
 				$result = $plottask->update($user);
@@ -761,8 +782,7 @@ function updatePlotTaskStatus($object)
 			} else {
 				setEventMessages(null, $langs->trans($plottask->errors), 'errors');
 			}
-			
 		}
-	return $action = '';
+		return $action = '';
 	}
 }
