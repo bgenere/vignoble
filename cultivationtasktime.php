@@ -54,6 +54,7 @@ if (($id > 0 || ! empty($ref))) {
 			
 			if ($action == 'addtimespent' && $user->rights->projet->lire) {
 				$action = addTimeSpent($object);
+				$action = updatePlotTaskStatus($object);
 			}
 			
 			if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
@@ -114,7 +115,7 @@ if (($id > 0 || ! empty($ref))) {
 			// Fields header
 			print '<tr class="liste_titre">';
 			print_liste_field_titre($langs->trans("Date"), $_SERVER['PHP_SELF'], 't.task_date,u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("Contributor"), $_SERVER['PHP_SELF'], 'u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("By"), $_SERVER['PHP_SELF'], 'u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
 			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 't.note', '', $params, '', $sort['field'], $sort['order']);
 			print_liste_field_titre($langs->trans("Time"), $_SERVER['PHP_SELF'], 't.task_duration', '', $params, 'align="right"', $sort['field'], $sort['order']);
 			print '<td style="width:15%;" colspan="2">&nbsp</td>';
@@ -196,7 +197,7 @@ function addTimeSpent($object)
 			$object->timespent_date = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
 		}
 		// process contributors
-		$currentcontributors =  array_merge($object->getIdContact('internal', 'TASKCONTRIBUTOR'),$object->getIdContact('internal', 'TASKEXECUTIVE'));
+		$currentcontributors = array_merge($object->getIdContact('internal', 'TASKCONTRIBUTOR'), $object->getIdContact('internal', 'TASKEXECUTIVE'));
 		$all = array_search(0, $multicontributors);
 		if ($all === false) { // list of contributors in array
 			foreach ($multicontributors as $contributorid) {
@@ -337,11 +338,11 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 	print '<table class="noborder nohover" width="100%">';
 	
 	print '<tr class="liste_titre">';
-	print '<td>' . $langs->trans("Date") . ' (' . $langs->trans("Add") . ')</td>';
-	print '<td style="min-width:20%">' . $langs->trans("By") . '</td>';
-	print '<td style="min-width:20%">' . $langs->trans("Note") . '</td>';
-	print '<td>' . $langs->trans("ProgressDeclared") . '</td>';
-	print '<td  colspan="2">' . $langs->trans("NewTimeSpent") . '</td>';
+	print '<td style="width:15%;">' . $langs->trans("Date") . ' (' . $langs->trans("Add") . ')</td>';
+	print '<td style="width:25%;">' . $langs->trans("By") . '</td>';
+	print '<td style="width:25%;">' . $langs->trans("Note") . '</td>';
+	print '<td style="width:20%;"class = "center">' . $langs->trans("Time") . '</td>';
+	print '<td style="width:15%;"> &nbsp; </td>';
 	print "</tr>";
 	
 	print '<tr>';
@@ -356,19 +357,28 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 	print '</td>';
 	// Note
 	print '<td>';
-	print '<textarea name="timespent_note" class="maxwidth100onsmartphone" rows="' . ROWS_1 . '">' . (GETPOST('timespent_note') ? GETPOST('timespent_note') : '') . '</textarea>';
-	print '</td>';
-	// Progress declared
-	print '<td class="nowrap">';
-	print $formother->select_percent(GETPOST('progress') ? GETPOST('progress') : $object->progress, 'progress');
+	print '<textarea name="timespent_note" style="width:90%;" rows="' . ROWS_1 . '">' . (GETPOST('timespent_note') ? GETPOST('timespent_note') : '') . '</textarea>';
 	print '</td>';
 	// Duration - Time spent
-	print '<td class="nowrap" align="right">';
+	print '<td class="right nowrap">';
 	print $form->select_duration('timespent_duration', (GETPOST('timespent_duration') ? GETPOST('timespent_duration') : ''), 0, 'text');
 	print '</td>';
 	// Add button
-	print '<td align="center">';
+	print '<td align="center" rowspan="2">';
 	print '<input type="submit" class="button" value="' . $langs->trans("Add") . '">';
+	print '</td>';
+	
+	print '</tr>';
+	
+	print '<tr align="center">';
+	// Plot table with statustable
+	print '<td class="center nowrap" colspan = "3">';
+	displayPlotTaskLinesForm($formother, $object);
+	print '</td>';
+	// Progress declared
+	print '<td class="right">';
+	print '<b>' . $langs->trans("Task") . "</b> " . $langs->trans("ProgressDeclared") . " : ";
+	print $formother->select_percent(GETPOST('progress') ? GETPOST('progress') : $object->progress, 'progress');
 	print '</td>';
 	
 	print '</tr>';
@@ -470,8 +480,8 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User
 		print dol_print_date(($date2 ? $date2 : $date1), ($task_time->task_date_withhour ? 'dayhour' : 'day'));
 	}
 	print '</td>';
-	$totalarray['nbfield'] ++;
-	
+	$totalarray['nbfield'] ++; // table
+	                           
 	// User
 	print '<td>';
 	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
@@ -672,3 +682,87 @@ function buildTimeSpentSearchParameters($filter)
 	return $params;
 }
 
+/**
+ * Display the plot task lines in a form with the capability to edit all lines.
+ *
+ * Each line display plot ref and label, note and coverage.
+ *
+ * @param
+ *        	formother needed to use the select a percentage control
+ * @param Task $object
+ *        	the current task
+ *        	result of the SQL query on plot task
+ */
+function displayPlotTaskLinesForm(FormOther $formother, Task $object)
+{
+	Global $db, $conf, $user, $langs;
+	
+	print '<div class="div-table-responsive">';
+	
+	print '<table class="liste" style="border-bottom-style: none;border-top-style: none;">';
+	// Fields header
+	print '<tr class="liste_titre">';
+	print '<td>' . $langs->trans("Plot") . '</td>';
+	print '<td style="width:25%;">' . $langs->trans("Note") . '</td>';
+	print '<td class="right nowrap">' . $langs->trans("ProgressDeclared") . '</td>';
+	print "</tr>";
+	
+	$plottask = new Plotcultivationtask($db);
+	$taskfilter = array(
+		"t.fk_task = " . $object->id
+	);
+	if ($plottask->fetchAll('ASC', 'reference', 0, 0, $taskfilter, 'AND')) {
+		foreach ($plottask->lines as $line) {
+			
+			print "<tr " . $bc[$var] . ">";
+			
+			// Plot url
+			$plot = new plot($db);
+			$plot->fetch($line->fk_plot);
+			print '<td class="left" >';
+			print $plot->getNomUrl(1, 'plot') . " - " . $plot->label;
+			print '</td>';
+			// Note
+			print '<td >';
+			print '<textarea name="plotlinenote' . $line->id . '" style="width:90%;" rows="' . ROWS_1 . '">' . $line->note . '</textarea>';
+			print '</td>';
+			// Coverage
+			print '<td class=right>';
+			print $formother->select_percent($line->coverage, 'plotlinecoverage' . $line->id);
+			print '</td>';
+			
+			print '</tr>';
+		}
+	}
+	print '</table>';
+	print '</div>';
+}
+
+function updatePlotTaskStatus($object)
+{
+	Global $db, $conf, $user, $langs;
+	
+	$plottask = new Plotcultivationtask($db);
+	$taskfilter = array(
+		"t.fk_task = " . $object->id
+	);
+	if ($plottask->fetchAll('ASC', 'reference', 0, 0, $taskfilter, 'AND')) {
+		foreach ($plottask->lines as $line) {
+			if ($plottask->fetch($line->id)) {
+				var_dump($line->id);
+				$plottask->note = GETPOST('plotlinenote' . $line->id, 'alpha');
+				$plottask->coverage = GETPOST('plotlinecoverage' . $line->id, 'int');
+				$result = $plottask->update($user);
+			} else
+				$result = - 1;
+			
+			if ($result >= 0) {
+				// setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+			} else {
+				setEventMessages(null, $langs->trans($plottask->errors), 'errors');
+			}
+			
+		}
+	return $action = '';
+	}
+}
