@@ -323,7 +323,7 @@ class plot extends CommonObject
 		$sql .= " t.fk_user_modif";
 		
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
-		if (null !== $ref) {
+		if (!empty($ref)) {
 			$sql .= ' WHERE t.ref = ' . '\'' . $ref . '\'';
 		} else {
 			$sql .= ' WHERE t.rowid = ' . $id;
