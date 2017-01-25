@@ -19,7 +19,8 @@
 /**
  * \file cultivationtasktime.php
  * \ingroup cultivation
- * \brief time spend by contacts for a cultivation project task
+ * \brief time spend by users for a cultivation project task
+ * allows to capture also plot status for the task
  */
 @include './tpl/maindolibarr.inc.php';
 
@@ -46,12 +47,10 @@ if (($id > 0 || ! empty($ref))) {
 		$projectstatic = new Project($db);
 		$result = $projectstatic->fetch($object->fk_project);
 		$object->project = clone $projectstatic;
-		if ($projectstatic->id == $cultivationprojectid) {
-			
+		if ($projectstatic->id == $cultivationprojectid) {		
 			/**
-			 * Actions
-			 */
-			
+			 * Actions 
+			 */		
 			if ($action == 'addtimespent' && $user->rights->projet->lire) {
 				$action = addTimeSpent($object);
 				$action = updatePlotTaskStatus($object);
@@ -64,7 +63,6 @@ if (($id > 0 || ! empty($ref))) {
 			if ($action == 'confirm_delete' && $confirm == "yes" && $user->rights->projet->creer) {
 				$action = deleteTimeSpent($object);
 			}
-			
 			/**
 			 * View
 			 */
@@ -338,7 +336,7 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 	}
 	print '<div class="right">';
 	print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;addtime=' . ($display ? 'hide' : 'display') . $params . '">';
-	print '<b>' . $langs->trans(($display ? 'Hide' : 'AddLine')) . '</b>';
+	print '<b>' . $langs->trans(($display ? 'Hide' : 'Show')).' '.$langs->trans('addTimeSpentForm'). '</b>';
 	print '</a>';
 	print '</div>';
 	if ($display) {

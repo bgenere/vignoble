@@ -81,7 +81,7 @@ Cultivation = Culture
 NewTask = Nouvelle tâche
 CultivationProject = Projet de suivi des cultures
 CultivationProjectNotDefined = Veuillez définir le projet de suivi des cultures dans la configuration du module.
-
+addTimeSpentForm = le formulaire pour ajouter du temps
 #
 # Dictionnaires
 #

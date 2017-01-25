@@ -81,7 +81,7 @@ Cultivation = Cultivation
 NewTask = New task
 CultivationProject = Current cultivation project
 CultivationProjectNotDefined = Please define the current cultivation project in the module configuration.
-
+addTimeSpentForm = the form to add time spent
 #
 # Dictionnaires
 #
