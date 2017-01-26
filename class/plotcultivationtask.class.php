@@ -360,6 +360,10 @@ class Plotcultivationtask extends CommonObject
 		$sql .= " t.fk_plot,";
 		$sql .= " plot.ref as reference,";
 		$sql .= " t.fk_task,";
+		$sql .= " task.ref as taskref,";
+		$sql .= " task.label as tasklabel,";
+		$sql .= " task.dateo as taskopen,";
+		$sql .= " task.datee as taskend,";
 		$sql .= " t.coverage as coverage,";
 		$sql .= " t.note as note,";
 		$sql .= " t.tms,";
@@ -369,6 +373,7 @@ class Plotcultivationtask extends CommonObject
 		
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
 		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'plot as plot ON t.fk_plot = plot.rowid';
+		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'projet_task as task ON t.fk_task = task.rowid';
 		
 		// Manage filter
 		$sqlwhere = array();

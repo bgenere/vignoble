@@ -133,25 +133,4 @@ class FormVignoble
 		print "</table>";
 	}
 
-	/**
-	 * Set up 3 Tabs : Card, Notes, Info
-	 */
-	function getTabsHeader($langs, $object)
-	{
-		// print load_fiche_titre($langs->trans("plot"));
-		$head = array();
-		$h = 0;
-		$head[$h][0] = 'plot_card.php?tab=card&id=' . $object->id;
-		$head[$h][1] = $langs->trans("Card");
-		$head[$h][2] = 'card';
-		$h = 1;
-		$head[$h][0] = 'plot_card.php?tab=notes&id=' . $object->id;
-		$head[$h][1] = $langs->trans("Notes");
-		$head[$h][2] = 'notes';
-		$h = 2;
-		$head[$h][0] = 'plot_card.php?tab=info&id=' . $object->id;
-		$head[$h][1] = $langs->trans("Info");
-		$head[$h][2] = 'info';
-		return $head;
-	}
 }

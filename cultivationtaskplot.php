@@ -432,7 +432,7 @@ function getfilter($id)
 		// Purge search criteria
 	if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter")) { // All test are required to be compatible with all browsers
 		$search_note = '';
-		$search_coverage = - 1;
+		$search_coverage = '';
 		$search_reference = '';
 	} else {
 		$search_reference = GETPOST('search_reference', 'alpha');

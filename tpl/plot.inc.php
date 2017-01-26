@@ -28,6 +28,8 @@ require_once './class/plot.class.php';
 require_once './class/plotcultivationtask.class.php';
 require_once './class/html.form.vignoble.class.php';
 
+dol_include_once('/projet/class/task.class.php');
+
 // Include extrafields class
 dol_include_once('/core/class/extrafields.class.php');
 
@@ -42,7 +44,7 @@ dol_include_once('/core/class/html.formactions.class.php');
 // Include admin library
 dol_include_once('/core/lib/admin.lib.php');
 
-// Include info library
+// Include functions library
 dol_include_once('/core/lib/functions2.lib.php');
 // Include project library
 dol_include_once('/core/lib/project.lib.php');
