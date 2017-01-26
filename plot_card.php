@@ -35,7 +35,7 @@ $ref = GETPOST('ref', 'alpha');
 $action = GETPOST('action', 'alpha');
 $confirm = GETPOST('confirm', 'alpha');
 $cancel = GETPOST('cancel', 'alpha');
-$backtopage = GETPOST('backtopage');
+$tab = GETPOST('tab', 'alpha');
 
 // Security check
 if (! $user->rights->vignoble->plot->read)
@@ -49,30 +49,37 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 
 if (($id > 0 || ! empty($ref))) { // R U D operation
 	if ($object->fetch($id, $ref) >= 0) {
-		// actions
-		if ($action == 'update' && ! $cancel) {
-			$action = updatePlot($object, $extrafields );
-		} elseif ($cancel)
-			$action = 'view';
-		
-		if ($action == 'confirm_delete') {
-			deletePlot($object);
+		// card actions
+		if ($tab == 'card') {
+			if ($action == 'update' && ! $cancel) {
+				$action = updatePlot($object, $extrafields);
+			} elseif ($cancel)
+				$action = 'view';
+			
+			if ($action == 'confirm_delete') {
+				deletePlot($object);
+			}
+			
+			if ($action == 'builddoc') {
+				buildPlotDocument($object);
+			}
+			
+			if ($action == 'remove_file') {
+				removePlotFile($object);
+			}
 		}
-		
-		if ($action == 'builddoc') {
-			buildPlotDocument($object);
-		}
-		
-		if ($action == 'remove_file') {
-			removePlotFile($object);
+		// notes actions
+		if ($tab == 'notes') {
+			$permissionnote = $user->rights->vignoble->plot->create;
+			include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php';
 		}
 		// View
 		llxHeader('', $langs->trans('PlotCardTitle'), '');
 		
 		if ($action == 'edit') {
-			displayPlotEditForm($object,$extrafields);
-		} elseif (empty($action) || $action == 'view' || $action == 'delete') {
-			displayPlotCard($action, $object,$extrafields);
+			displayPlotEditForm($object, $extrafields);
+		} else {
+			displayPlotTab($action, $object, $extrafields);
 		}
 		llxFooter();
 	}
@@ -99,12 +106,11 @@ if (($id > 0 || ! empty($ref))) { // R U D operation
 }
 $db->close();
 
-
 /**
  * Add plot entered in Add Plot Form to the database
- * 
- * @param plot $object
- * @param ExtraFields $extrafields
+ *
+ * @param plot $object        	
+ * @param ExtraFields $extrafields        	
  * @return string
  */
 function addPlot(plot $object, ExtraFields $extrafields)
@@ -132,8 +138,7 @@ function addPlot(plot $object, ExtraFields $extrafields)
 	if (! $error) {
 		$id = $object->create($user);
 		if ($id > 0) {
-			$urltogo = dol_buildpath('/vignoble/plot_card.php?id=' . $id, 1);
-			header("Location: " . $urltogo);
+			header("Location: " . dol_buildpath('/vignoble/plot_card.php?tab=card&id=' . $id, 1));
 			exit();
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -152,7 +157,7 @@ function displayAddPlotForm(plot $object, ExtraFields $extrafields)
 {
 	Global $db, $conf, $user, $langs;
 	
-	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
+	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?tab=card">';
 	print '<input type="hidden" name="action" value="add">';
 	
 	dol_fiche_head();
@@ -189,12 +194,11 @@ function displayAddPlotForm(plot $object, ExtraFields $extrafields)
 	print '</form>';
 }
 
-
 /**
  * Update Plot information in database using the Plot Edit Form data
- * 
- * @param plot $object
- * @param ExtraFields $extrafields
+ *
+ * @param plot $object        	
+ * @param ExtraFields $extrafields        	
  * @return string $action 'view' when update is done | 'edit' if fields are not properly entered
  */
 function updatePlot(plot $object, ExtraFields $extrafields)
@@ -233,13 +237,12 @@ function updatePlot(plot $object, ExtraFields $extrafields)
 	}
 }
 
-
 /**
  * Delete selected plot from database
- * 
+ *
  * ! No control is made on plot use !
- *   
- * @param plot $object
+ *
+ * @param plot $object        	
  */
 function deletePlot(plot $object)
 {
@@ -287,15 +290,14 @@ function buildPlotDocument(plot $object)
 	$action = '';
 }
 
-
 /**
  * Remove file associated to current object
- * 
+ *
  * File id is provided in Get Post
- * 
- * @param plot $object
+ *
+ * @param plot $object        	
  */
-function removePlotFile( plot $object)
+function removePlotFile(plot $object)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -313,12 +315,11 @@ function removePlotFile( plot $object)
 	}
 }
 
-
 /**
  * display the Plot Edit Form
- * 
- * @param plot $object
- * @param ExtraFields $extrafields
+ *
+ * @param plot $object        	
+ * @param ExtraFields $extrafields        	
  */
 function displayPlotEditForm(plot $object, ExtraFields $extrafields)
 {
@@ -326,7 +327,7 @@ function displayPlotEditForm(plot $object, ExtraFields $extrafields)
 	
 	print load_fiche_titre($langs->trans("EditPlot"), $object->label, 'object_plot@vignoble');
 	
-	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '">';
+	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '?tab=card&id=' . $object->id . '">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
 	
@@ -350,7 +351,7 @@ function displayPlotEditForm(plot $object, ExtraFields $extrafields)
 		print $object->showOptionals($extrafields, 'edit');
 	}
 	
-	print '</table>';	
+	print '</table>';
 	dol_fiche_end();
 	
 	print '<div class="center"><input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
@@ -358,7 +359,6 @@ function displayPlotEditForm(plot $object, ExtraFields $extrafields)
 	print '</div>';
 	
 	print '</form>';
-	
 }
 
 /**
@@ -374,24 +374,56 @@ function displayPlotEditForm(plot $object, ExtraFields $extrafields)
  * @param
  *        	formconfirm
  */
-function displayPlotCard($action, plot $object,ExtraFields $extrafields)
+function displayPlotTab($action, plot $object, ExtraFields $extrafields)
 {
-	Global $db, $conf, $user, $langs;		
+	Global $db, $conf, $user, $langs;
+	
+	$tab = GETPOST('tab', 'alpha');
 	
 	$form = new Form($db);
 	$formvignoble = new FormVignoble($db);
 	
 	$head = $formvignoble->getTabsHeader($langs, $object);
-	dol_fiche_head($head, 'card', $langs->trans("Plot"), 0, 'plot@vignoble');
-	
-	if ($action == 'delete') {
-		print $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('DeletePlot'), $langs->trans('ConfirmDeletePlot').' '.$object->ref, 'confirm_delete', '', 0, 1);
-	}
+	dol_fiche_head($head, $tab, $langs->trans("Plot"), 0, 'plot@vignoble');
 	// object header
 	$formvignoble->printObjectRef($form, $langs, $object);
 	
-	print '<table class="border centpercent">';
+	switch ($tab) {
+		case 'notes':
+			$permission = $user->rights->vignoble->plot->create;
+			$permissionnote = $user->rights->vignoble->plot->create;
+			$cssclass = "titlefield";
+			$moreparam = "&tab=notes";
+			include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+			break;
+		case 'info':
+			$object->info($object->id);
+			dol_print_object_info($object, 1);
+			break;
+		default:
+			displayPlotCard($action, $object,$extrafields, $form);		
+			break;
+	}
+	dol_fiche_end();
+}
+
+
+
+/**
+ * @param unknown $action
+ * @param plot $object
+ * @param ExtraFields $extrafields
+ * @param Form $form
+ */
+function displayPlotCard($action,plot $object, ExtraFields $extrafields, Form $form)
+{
+	Global $db, $conf, $user, $langs;
 	
+	print '<table class="border centpercent">';
+	if ($action == 'delete') {
+		print $form->formconfirm($_SERVER["PHP_SELF"] . '?tab=card&id=' . $object->id, $langs->trans('DeletePlot'), $langs->trans('ConfirmDeletePlot') . ' ' . $object->ref, 'confirm_delete', '', 0, 1);
+	}
+	// description
 	print '<tr>';
 	print '<td class="tdtop" width="25%">' . $langs->trans("Fielddescription") . '</td>';
 	print '<td>' . (dol_textishtml($object->description) ? $object->description : dol_nl2br($object->description, 1, true)) . '</td>';
@@ -400,75 +432,66 @@ function displayPlotCard($action, plot $object,ExtraFields $extrafields)
 	if (! empty($extrafields->attribute_label)) {
 		print $object->showOptionals($extrafields, 'view');
 	}
-	
 	print '</table>';
-	
-	dol_fiche_end();
-	
-	/**
-	 * - Displays edit and delete buttons below the card
-	 */
+	// edit and delete buttons below the card
 	print '<div class="tabsAction">';
 	$parameters = array();
-
-		if ($user->rights->vignoble->plot->create) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=edit">' . $langs->trans("Modify") . '</a></div>' . "\n";
-		} else {
-			print '<div class="inline-block divButAction"><a class="butActionRefused" href="#">' . $langs->trans('Modify') . '</a></div>' . "\n";
-		}
-		
-		if ($user->rights->vignoble->plot->delete) {
-			print '<div class="inline-block divButAction"><a class="butActionDelete" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a></div>' . "\n";
-		} else {
-			print '<div class="inline-block divButAction"><a class="butActionRefused" href="#">' . $langs->trans('Delete') . '</a></div>' . "\n";
-		}
-
-	print '</div>' ;
 	
-	$formfile = new FormFile($db);
-		$formactions = new FormActions($db);
-	/**
-	 * - Display generic features
-	 */
-	print '<div class="fichecenter">'; // global frame
-	print '<div class="fichehalfleft">'; // left column
-	/**
-	 * - Display generated documents
-	 */
-	// print 'Generated Documentss<br/>';
-	// $ref = dol_sanitizeFileName($object->ref);
-	// $file = $conf->vignoble->dir_output . '/' . $ref . '/' . $ref . '.pdf';
-	// $relativepath = $ref . '/' . $ref . '.pdf';
-	// $filedir = $conf->vignoble->dir_output . '/' . $ref;
-	// $urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
-	// $genallowed = $user->rights->vignoble->plot->create;
-	// $delallowed = $user->rights->vignoble->plot->delete;
-	// $somethingshown = $formfile->show_documents('vignoble', $ref, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);
-	
-	print '</div>'; // left column end
-	print '<div class="fichehalfright">'; // right column
-	/**
-	 * - Display links to other objects (order or invoice)
-	 */
-	// print '<div class="ficheaddleft">';
-	// print 'Linked Orders/Invoice<br/>';
-	// $linktoelem = $form->showLinkToObjectBlock($object,array());
-	// $somethingshown=$form->showLinkedObjectBlock($object,$linktoelem);
-	// print '</div>';
-	/**
-	 * - Display links to events
-	 */
-	// print '<div class="ficheaddleft">';
-	// print 'Linked Events<br/>';
-	// include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
-	// $formactions = new FormActions($db);
-	// $somethingshown = $formactions->showactions($object, 'plot', $user->socid,1);
-	// print '</div>';
-	print '</div>'; // right column end
-	print '</div>'; // fichecenter
+	if ($user->rights->vignoble->plot->create) {
+		print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?tab=card&id=' . $object->id . '&amp;action=edit">' . $langs->trans("Modify") . '</a></div>' . "\n";
+	} else {
+		print '<div class="inline-block divButAction"><a class="butActionRefused" href="#">' . $langs->trans('Modify') . '</a></div>' . "\n";
+	}
+	if ($user->rights->vignoble->plot->delete) {
+		print '<div class="inline-block divButAction"><a class="butActionDelete" href="' . $_SERVER["PHP_SELF"] . '?tab=card&id=' . $object->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a></div>' . "\n";
+	} else {
+		print '<div class="inline-block divButAction"><a class="butActionRefused" href="#">' . $langs->trans('Delete') . '</a></div>' . "\n";
+	}
+	print '</div>';
 }
 
 
+// $formfile = new FormFile($db);
+	// $formactions = new FormActions($db);
+	// /**
+	// * - Display generic features
+	// */
+	// print '<div class="fichecenter">'; // global frame
+	// print '<div class="fichehalfleft">'; // left column
+	// /**
+	// * - Display generated documents
+	// */
+	// // print 'Generated Documentss<br/>';
+	// // $ref = dol_sanitizeFileName($object->ref);
+	// // $file = $conf->vignoble->dir_output . '/' . $ref . '/' . $ref . '.pdf';
+	// // $relativepath = $ref . '/' . $ref . '.pdf';
+	// // $filedir = $conf->vignoble->dir_output . '/' . $ref;
+	// // $urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
+	// // $genallowed = $user->rights->vignoble->plot->create;
+	// // $delallowed = $user->rights->vignoble->plot->delete;
+	// // $somethingshown = $formfile->show_documents('vignoble', $ref, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);
+	
+	// print '</div>'; // left column end
+	// print '<div class="fichehalfright">'; // right column
+	// /**
+	// * - Display links to other objects (order or invoice)
+	// */
+	// // print '<div class="ficheaddleft">';
+	// // print 'Linked Orders/Invoice<br/>';
+	// // $linktoelem = $form->showLinkToObjectBlock($object,array());
+	// // $somethingshown=$form->showLinkedObjectBlock($object,$linktoelem);
+	// // print '</div>';
+	// /**
+	// * - Display links to events
+	// */
+	// // print '<div class="ficheaddleft">';
+	// // print 'Linked Events<br/>';
+	// // include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
+	// // $formactions = new FormActions($db);
+	// // $somethingshown = $formactions->showactions($object, 'plot', $user->socid,1);
+	// // print '</div>';
+	// print '</div>'; // right column end
+	// print '</div>'; // fichecenter
 
 
 

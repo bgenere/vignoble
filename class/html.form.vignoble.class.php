@@ -126,7 +126,7 @@ class FormVignoble
 		print '<table class="noborder" width="100%">';
 		print '<tr>';
 		print '<td>';
-		print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref');
+		print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref','','&tab='.GETPOST('tab','alpha'));
 		print $object->label ;
 		print '</td>';
 		print '</tr>';
@@ -145,11 +145,11 @@ class FormVignoble
 		$head[$h][1] = $langs->trans("Card");
 		$head[$h][2] = 'card';
 		$h = 1;
-		$head[$h][0] = 'plot_notes.php?tab=notes&id=' . $object->id;
+		$head[$h][0] = 'plot_card.php?tab=notes&id=' . $object->id;
 		$head[$h][1] = $langs->trans("Notes");
 		$head[$h][2] = 'notes';
 		$h = 2;
-		$head[$h][0] = 'plot_info.php?tab=info&id=' . $object->id;
+		$head[$h][0] = 'plot_card.php?tab=info&id=' . $object->id;
 		$head[$h][1] = $langs->trans("Info");
 		$head[$h][2] = 'info';
 		return $head;

@@ -42,6 +42,8 @@ dol_include_once('/core/class/html.formactions.class.php');
 // Include admin library
 dol_include_once('/core/lib/admin.lib.php');
 
+// Include info library
+dol_include_once('/core/lib/functions2.lib.php');
 // Include project library
 dol_include_once('/core/lib/project.lib.php');
 
