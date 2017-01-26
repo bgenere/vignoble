@@ -119,14 +119,17 @@ class FormVignoble
 	 * @param
 	 *        	$object
 	 */
-	function printObjectRef($form, $langs, $object)
+	function printObjectRef(Form $form, $langs, $object)
 	{
 		$linkback = '<a href="' . dol_buildpath('/vignoble/plot_list.php', 1) . '">' . $langs->trans("BackToList") . '</a>';
 		
-		print '<table class="border" width="100%">';
-		print '<tr><td width="25%">' . $langs->trans("Ref") . '</td><td colspan="3">';
+		print '<table class="noborder" width="100%">';
+		print '<tr>';
+		print '<td>';
 		print $form->showrefnav($object, 'ref', $linkback, 1, 'ref', 'ref');
-		print "</td></tr>";
+		print $object->label ;
+		print '</td>';
+		print '</tr>';
 		print "</table>";
 	}
 
@@ -138,15 +141,15 @@ class FormVignoble
 		// print load_fiche_titre($langs->trans("plot"));
 		$head = array();
 		$h = 0;
-		$head[$h][0] = 'plot_card.php?id=' . $object->id;
+		$head[$h][0] = 'plot_card.php?tab=card&id=' . $object->id;
 		$head[$h][1] = $langs->trans("Card");
 		$head[$h][2] = 'card';
 		$h = 1;
-		$head[$h][0] = 'plot_notes.php?id=' . $object->id;
+		$head[$h][0] = 'plot_notes.php?tab=notes&id=' . $object->id;
 		$head[$h][1] = $langs->trans("Notes");
 		$head[$h][2] = 'notes';
 		$h = 2;
-		$head[$h][0] = 'plot_info.php?id=' . $object->id;
+		$head[$h][0] = 'plot_info.php?tab=info&id=' . $object->id;
 		$head[$h][1] = $langs->trans("Info");
 		$head[$h][2] = 'info';
 		return $head;
