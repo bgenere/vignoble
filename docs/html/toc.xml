@@ -6,9 +6,7 @@
   <topic label="Modules" href="modules.html">
     <topic label="Plot management" href="db/dfe/group__plot.html">
       <topic label="plot_card.php" href="df/d3c/plot__card_8php.html"/>
-      <topic label="plot_info.php" href="dd/d24/plot__info_8php.html"/>
       <topic label="plot_list.php" href="da/d01/plot__list_8php.html"/>
-      <topic label="plot_notes.php" href="d3/d16/plot__notes_8php.html"/>
       <topic label="plot.class.php" href="dc/d60/plot_8class_8php.html"/>
       <topic label="plotcultivationtask.class.php" href="d9/df1/plotcultivationtask_8class_8php.html"/>
     </topic>
@@ -34,6 +32,7 @@
       <topic label="vignoblebox.php" href="d4/d30/vignoblebox_8php.html"/>
       <topic label="cultivationtask.inc.php" href="de/d93/cultivationtask_8inc_8php.html"/>
       <topic label="maindolibarr.inc.php" href="d6/d14/maindolibarr_8inc_8php.html"/>
+      <topic label="plot.inc.php" href="d3/d99/plot_8inc_8php.html"/>
     </topic>
   </topic>
   <topic label="Classes" href="annotated.html">
@@ -52,8 +51,7 @@
       <topic label="FormVignoble" href="d5/dbd/class_form_vignoble.html">
         <topic label="__construct" href="d5/dbd/class_form_vignoble.html#aeb002b917856bcc7e99d49726de2cee3"/>
         <topic label="displayDicCombo" href="d5/dbd/class_form_vignoble.html#a5fbc835e5a94e5b0c7db3949404fdf4c"/>
-        <topic label="getTabsHeader" href="d5/dbd/class_form_vignoble.html#a34f3f31211e17651edd762fb59d6b312"/>
-        <topic label="printObjectRef" href="d5/dbd/class_form_vignoble.html#a839e9e92e9a172fb55841daf0a4a7132"/>
+        <topic label="printObjectRef" href="d5/dbd/class_form_vignoble.html#a6b4fd759eb44c795a2865ef48bfc06d9"/>
         <topic label="$db" href="d5/dbd/class_form_vignoble.html#a6a70fe4d556e428976ec3edb391d8e7b"/>
         <topic label="$error" href="d5/dbd/class_form_vignoble.html#ab88822a2b9e654685ba5be7240f86375"/>
       </topic>
@@ -323,8 +321,7 @@
           <topic label="FormVignoble" href="d5/dbd/class_form_vignoble.html">
             <topic label="__construct" href="d5/dbd/class_form_vignoble.html#aeb002b917856bcc7e99d49726de2cee3"/>
             <topic label="displayDicCombo" href="d5/dbd/class_form_vignoble.html#a5fbc835e5a94e5b0c7db3949404fdf4c"/>
-            <topic label="getTabsHeader" href="d5/dbd/class_form_vignoble.html#a34f3f31211e17651edd762fb59d6b312"/>
-            <topic label="printObjectRef" href="d5/dbd/class_form_vignoble.html#a839e9e92e9a172fb55841daf0a4a7132"/>
+            <topic label="printObjectRef" href="d5/dbd/class_form_vignoble.html#a6b4fd759eb44c795a2865ef48bfc06d9"/>
             <topic label="$db" href="d5/dbd/class_form_vignoble.html#a6a70fe4d556e428976ec3edb391d8e7b"/>
             <topic label="$error" href="d5/dbd/class_form_vignoble.html#ab88822a2b9e654685ba5be7240f86375"/>
           </topic>
@@ -557,6 +554,8 @@
           <topic label="createNewTask" href="d4/d07/cultivationtask_8lib_8php.html#aa282368b36292a60ed0d843fd042ce5e"/>
           <topic label="displayProjectHeaderCard" href="d4/d07/cultivationtask_8lib_8php.html#ac4f94e0f370367ac7473271c13f7492c"/>
           <topic label="displayTaskHeader" href="d4/d07/cultivationtask_8lib_8php.html#ae2cbf1b4344dc1196722414982952640"/>
+          <topic label="get_dolusers" href="d4/d07/cultivationtask_8lib_8php.html#aaf8e02f90ace98b79af176589282760b"/>
+          <topic label="getProjectContributors" href="d4/d07/cultivationtask_8lib_8php.html#a89f68887b99be07d867c5d1a8d1628b1"/>
           <topic label="getTaskUrl" href="d4/d07/cultivationtask_8lib_8php.html#ae148189d4eaaa4eb00b5a67c6922c705"/>
           <topic label="setIsCultivationProject" href="d4/d07/cultivationtask_8lib_8php.html#a48138828a0c5e6a73edd3edc51eebf5a"/>
           <topic label="showtasks" href="d4/d07/cultivationtask_8lib_8php.html#ac16a5f86909ed77d18b11955add4e03a"/>
@@ -608,71 +607,51 @@
           <topic label="$user" href="d6/d14/maindolibarr_8inc_8php.html#a00365e6c5f70c43fb2ed86c9bc5626e0"/>
         </topic>
         <topic label="mytemplate.tpl.php" href="d7/d99/mytemplate_8tpl_8php.html"/>
+        <topic label="plot.inc.php" href="d3/d99/plot_8inc_8php.html"/>
       </topic>
       <topic label="cultivationtask.php" href="d4/dff/cultivationtask_8php.html">
-        <topic label="displayTaskCard" href="d4/dff/cultivationtask_8php.html#ae4f9034de92bf6be5b37a9566bb1bd2c"/>
-        <topic label="displayTaskEditForm" href="d4/dff/cultivationtask_8php.html#aec2041b0da597216aae45a54cf6d19fb"/>
+        <topic label="deleteTask" href="d4/dff/cultivationtask_8php.html#a390995d30121df5013805f35c49432f4"/>
+        <topic label="displayTaskButtons" href="d4/dff/cultivationtask_8php.html#a4e56f524dc3a2a293de9d94a09cba57d"/>
+        <topic label="displayTaskCard" href="d4/dff/cultivationtask_8php.html#a32dbc1cfd60de08b07b75e609c3fa0db"/>
+        <topic label="displayTaskEditForm" href="d4/dff/cultivationtask_8php.html#abae617c0a7a9f199730c5c3fe8569c1e"/>
+        <topic label="updateTask" href="d4/dff/cultivationtask_8php.html#af7eb5ceb62bb1569393aa5bb799e66b0"/>
         <topic label="$action" href="d4/dff/cultivationtask_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+        <topic label="$cancel" href="d4/dff/cultivationtask_8php.html#af57e1ef52c7331ce2627601c2985260c"/>
         <topic label="$confirm" href="d4/dff/cultivationtask_8php.html#a4dcadbee89ed4c8ead497ce14b67dd23"/>
         <topic label="$cultivationprojectid" href="d4/dff/cultivationtask_8php.html#a664ec3a424731985f87036b60c0c79f9"/>
-        <topic label="$extrafields" href="d4/dff/cultivationtask_8php.html#aa659316307a821cdcd60350fd0290d6e"/>
-        <topic label="$extralabels" href="d4/dff/cultivationtask_8php.html#ae4fd271007f71c2c9e8c619029d1158b"/>
-        <topic label="$form" href="d4/dff/cultivationtask_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
-        <topic label="$formother" href="d4/dff/cultivationtask_8php.html#a6c8ef81fcadfd4219f6f34c5d6ae55ae"/>
         <topic label="$id" href="d4/dff/cultivationtask_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$object" href="d4/dff/cultivationtask_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
-        <topic label="$planned_workload" href="d4/dff/cultivationtask_8php.html#a719f836f1ef093d43ce168b3b04c0ea6"/>
-        <topic label="$project_ref" href="d4/dff/cultivationtask_8php.html#af2d4cc66efe162feae24518e6c4b126a"/>
-        <topic label="$projectstatic" href="d4/dff/cultivationtask_8php.html#a45b72a687750121e7e34e6a3009df246"/>
         <topic label="$ref" href="d4/dff/cultivationtask_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
-        <topic label="$socid" href="d4/dff/cultivationtask_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8"/>
-        <topic label="$taskref" href="d4/dff/cultivationtask_8php.html#afda31fb2de49de5fe410264a89b3c376"/>
-        <topic label="$withproject" href="d4/dff/cultivationtask_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f"/>
       </topic>
       <topic label="cultivationtaskcontact.php" href="d1/d9d/cultivationtaskcontact_8php.html">
+        <topic label="addTaskUser" href="d1/d9d/cultivationtaskcontact_8php.html#aca7af72730b991678b5a1164f4a8bc12"/>
+        <topic label="deleteTaskUser" href="d1/d9d/cultivationtaskcontact_8php.html#ad0319a7b348fc662b765832922875d9e"/>
+        <topic label="displayAddUserForm" href="d1/d9d/cultivationtaskcontact_8php.html#a889baf5f30cea9d0555c119be93fced0"/>
+        <topic label="displayTaskUsers" href="d1/d9d/cultivationtaskcontact_8php.html#a17740956174b8050f4e1fc37de5e59ee"/>
+        <topic label="swapTaskUserStatus" href="d1/d9d/cultivationtaskcontact_8php.html#a3d1b15b9f2bca7e79400356ccfec66eb"/>
         <topic label="$action" href="d1/d9d/cultivationtaskcontact_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+        <topic label="$cancel" href="d1/d9d/cultivationtaskcontact_8php.html#af57e1ef52c7331ce2627601c2985260c"/>
         <topic label="$confirm" href="d1/d9d/cultivationtaskcontact_8php.html#a4dcadbee89ed4c8ead497ce14b67dd23"/>
-        <topic label="$contactstatic" href="d1/d9d/cultivationtaskcontact_8php.html#aed6d39208d2714c3cb16d41373c9cefb"/>
         <topic label="$cultivationprojectid" href="d1/d9d/cultivationtaskcontact_8php.html#a664ec3a424731985f87036b60c0c79f9"/>
-        <topic label="$form" href="d1/d9d/cultivationtaskcontact_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
-        <topic label="$formcompany" href="d1/d9d/cultivationtaskcontact_8php.html#a82731d245549bc3a57ceb01309d8972d"/>
         <topic label="$id" href="d1/d9d/cultivationtaskcontact_8php.html#ae97941710d863131c700f069b109991e"/>
         <topic label="$object" href="d1/d9d/cultivationtaskcontact_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
-        <topic label="$project_ref" href="d1/d9d/cultivationtaskcontact_8php.html#af2d4cc66efe162feae24518e6c4b126a"/>
         <topic label="$projectstatic" href="d1/d9d/cultivationtaskcontact_8php.html#a45b72a687750121e7e34e6a3009df246"/>
         <topic label="$ref" href="d1/d9d/cultivationtaskcontact_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
-        <topic label="$socid" href="d1/d9d/cultivationtaskcontact_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8"/>
-        <topic label="$userstatic" href="d1/d9d/cultivationtaskcontact_8php.html#acfaf063deb6bcfaa3cb88c286899b5b5"/>
-        <topic label="$withproject" href="d1/d9d/cultivationtaskcontact_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f"/>
-        <topic label="print" href="d1/d9d/cultivationtaskcontact_8php.html#ac669a9fd8c4f2d3a027aef60f782bc1a"/>
       </topic>
       <topic label="cultivationtaskplot.php" href="d6/d96/cultivationtaskplot_8php.html">
+        <topic label="addPlotTask" href="d6/d96/cultivationtaskplot_8php.html#a4b1b0e3189158f6ef3bd435645415030"/>
+        <topic label="buildSearchParameters" href="d6/d96/cultivationtaskplot_8php.html#af5b29324aaeb2b32ebf46074f9b63545"/>
+        <topic label="deletePlotTask" href="d6/d96/cultivationtaskplot_8php.html#aa266ca6216df51b5eae87200baedbcc7"/>
+        <topic label="displayAddPlotForm" href="d6/d96/cultivationtaskplot_8php.html#a235ce82aa818d90bf201a704cb953444"/>
+        <topic label="displayPlotTaskLines" href="d6/d96/cultivationtaskplot_8php.html#a961254f87daed5dd2cae7a9aedaa6a4c"/>
+        <topic label="getfilter" href="d6/d96/cultivationtaskplot_8php.html#a7b5269187415448f08ce572aa3810ec7"/>
+        <topic label="getsort" href="d6/d96/cultivationtaskplot_8php.html#a460501cca85bac13c5351dfdb2c35400"/>
+        <topic label="updatePlotTask" href="d6/d96/cultivationtaskplot_8php.html#adaa9fcb1089f01aa0c1654408c26d09b"/>
         <topic label="$action" href="d6/d96/cultivationtaskplot_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+        <topic label="$cancel" href="d6/d96/cultivationtaskplot_8php.html#af57e1ef52c7331ce2627601c2985260c"/>
         <topic label="$confirm" href="d6/d96/cultivationtaskplot_8php.html#a4dcadbee89ed4c8ead497ce14b67dd23"/>
         <topic label="$cultivationprojectid" href="d6/d96/cultivationtaskplot_8php.html#a664ec3a424731985f87036b60c0c79f9"/>
-        <topic label="$form" href="d6/d96/cultivationtaskplot_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
-        <topic label="$formother" href="d6/d96/cultivationtaskplot_8php.html#a6c8ef81fcadfd4219f6f34c5d6ae55ae"/>
         <topic label="$id" href="d6/d96/cultivationtaskplot_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$limit" href="d6/d96/cultivationtaskplot_8php.html#ae05862a0294251c88629b141b5ce329a"/>
-        <topic label="$object" href="d6/d96/cultivationtaskplot_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
-        <topic label="$offset" href="d6/d96/cultivationtaskplot_8php.html#a5acd28f2cd2759f30e461ad65c2ff2eb"/>
-        <topic label="$page" href="d6/d96/cultivationtaskplot_8php.html#a0a44e6760141442bb439b1ab1395d8ff"/>
-        <topic label="$pagenext" href="d6/d96/cultivationtaskplot_8php.html#a858f41315ebc780cc51614bcf2558f6c"/>
-        <topic label="$pageprev" href="d6/d96/cultivationtaskplot_8php.html#a2aed2a7a0f1235d3a53b08dea07bd5c7"/>
-        <topic label="$parameters" href="d6/d96/cultivationtaskplot_8php.html#ab79d246480c4ac3a0db6bbceca92ad32"/>
-        <topic label="$project_ref" href="d6/d96/cultivationtaskplot_8php.html#af2d4cc66efe162feae24518e6c4b126a"/>
-        <topic label="$projectid" href="d6/d96/cultivationtaskplot_8php.html#a2f28e5fb44fe0a6fe4073aa0245c9c8e"/>
-        <topic label="$projectstatic" href="d6/d96/cultivationtaskplot_8php.html#a45b72a687750121e7e34e6a3009df246"/>
         <topic label="$ref" href="d6/d96/cultivationtaskplot_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
-        <topic label="$search_coverage" href="d6/d96/cultivationtaskplot_8php.html#a71e974fd6ab9078eed5697ce4bcf9b6a"/>
-        <topic label="$search_note" href="d6/d96/cultivationtaskplot_8php.html#a7e57dfae9c9e5686eaf81d67732167aa"/>
-        <topic label="$search_value" href="d6/d96/cultivationtaskplot_8php.html#a32db4f6226c6aa2655760de191a996d4"/>
-        <topic label="$socid" href="d6/d96/cultivationtaskplot_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8"/>
-        <topic label="$sortfield" href="d6/d96/cultivationtaskplot_8php.html#ad8a3bcfb2e745be70b1e7ebe97472ce6"/>
-        <topic label="$sortorder" href="d6/d96/cultivationtaskplot_8php.html#a11ec75e1068cd7566eaaf44082cdd029"/>
-        <topic label="$userstatic" href="d6/d96/cultivationtaskplot_8php.html#acfaf063deb6bcfaa3cb88c286899b5b5"/>
-        <topic label="$withproject" href="d6/d96/cultivationtaskplot_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f"/>
-        <topic label="print" href="d6/d96/cultivationtaskplot_8php.html#a503497dfcff745d22dbb89235aba2542"/>
       </topic>
       <topic label="cultivationtasks.php" href="dd/d77/cultivationtasks_8php.html">
         <topic label="$action" href="dd/d77/cultivationtasks_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
@@ -698,39 +677,24 @@
         <topic label="print" href="dd/d77/cultivationtasks_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4"/>
       </topic>
       <topic label="cultivationtasktime.php" href="d9/de1/cultivationtasktime_8php.html">
+        <topic label="addTimeSpent" href="d9/de1/cultivationtasktime_8php.html#a23cebdc46d7344407f6c6e5647a88129"/>
+        <topic label="buildTimeSpentSearchParameters" href="d9/de1/cultivationtasktime_8php.html#a23ca55ad287418cadd60b2cd82cd327c"/>
+        <topic label="deleteTimeSpent" href="d9/de1/cultivationtasktime_8php.html#ada0664197b5b3642add5edc1c282e86a"/>
+        <topic label="displayAddTimeSpentForm" href="d9/de1/cultivationtasktime_8php.html#a6d6800e162b50a30514a1adca438b532"/>
+        <topic label="displayPlotTaskLinesForm" href="d9/de1/cultivationtasktime_8php.html#abd19fde9bb085b25265074b9a0b1e791"/>
+        <topic label="displayTaskTimeSpentLine" href="d9/de1/cultivationtasktime_8php.html#a6160160c5647475b213f993c1072c97d"/>
+        <topic label="displayTaskTimeSpentTotal" href="d9/de1/cultivationtasktime_8php.html#a2968db8b16210612b4a96f8864886dfd"/>
+        <topic label="getsort" href="d9/de1/cultivationtasktime_8php.html#a460501cca85bac13c5351dfdb2c35400"/>
+        <topic label="getTaskTimeSpent" href="d9/de1/cultivationtasktime_8php.html#a494c877ce5917d2628e4f582d3695d03"/>
+        <topic label="getTimeSpentfilter" href="d9/de1/cultivationtasktime_8php.html#a4af5174a74fb9fd5332cf26f7e27725a"/>
+        <topic label="updatePlotTaskStatus" href="d9/de1/cultivationtasktime_8php.html#af8da45568bd8573c229836fcb2a6ba16"/>
+        <topic label="updateTimeSpent" href="d9/de1/cultivationtasktime_8php.html#a8195e446e989124709eaab965b5eb7a5"/>
         <topic label="$action" href="d9/de1/cultivationtasktime_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
+        <topic label="$cancel" href="d9/de1/cultivationtasktime_8php.html#af57e1ef52c7331ce2627601c2985260c"/>
         <topic label="$confirm" href="d9/de1/cultivationtasktime_8php.html#a4dcadbee89ed4c8ead497ce14b67dd23"/>
         <topic label="$cultivationprojectid" href="d9/de1/cultivationtasktime_8php.html#a664ec3a424731985f87036b60c0c79f9"/>
-        <topic label="$form" href="d9/de1/cultivationtasktime_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
-        <topic label="$formother" href="d9/de1/cultivationtasktime_8php.html#a6c8ef81fcadfd4219f6f34c5d6ae55ae"/>
         <topic label="$id" href="d9/de1/cultivationtasktime_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$limit" href="d9/de1/cultivationtasktime_8php.html#ae05862a0294251c88629b141b5ce329a"/>
-        <topic label="$object" href="d9/de1/cultivationtasktime_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
-        <topic label="$offset" href="d9/de1/cultivationtasktime_8php.html#a5acd28f2cd2759f30e461ad65c2ff2eb"/>
-        <topic label="$page" href="d9/de1/cultivationtasktime_8php.html#a0a44e6760141442bb439b1ab1395d8ff"/>
-        <topic label="$pagenext" href="d9/de1/cultivationtasktime_8php.html#a858f41315ebc780cc51614bcf2558f6c"/>
-        <topic label="$pageprev" href="d9/de1/cultivationtasktime_8php.html#a2aed2a7a0f1235d3a53b08dea07bd5c7"/>
-        <topic label="$parameters" href="d9/de1/cultivationtasktime_8php.html#ab79d246480c4ac3a0db6bbceca92ad32"/>
-        <topic label="$project_ref" href="d9/de1/cultivationtasktime_8php.html#af2d4cc66efe162feae24518e6c4b126a"/>
-        <topic label="$projectid" href="d9/de1/cultivationtasktime_8php.html#a2f28e5fb44fe0a6fe4073aa0245c9c8e"/>
-        <topic label="$projectidforalltimes" href="d9/de1/cultivationtasktime_8php.html#af12f5df820abd84c8ce1b968e82af6b4"/>
-        <topic label="$projectstatic" href="d9/de1/cultivationtasktime_8php.html#a45b72a687750121e7e34e6a3009df246"/>
         <topic label="$ref" href="d9/de1/cultivationtasktime_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
-        <topic label="$reshook" href="d9/de1/cultivationtasktime_8php.html#a9f714fd8cba1988231c5a555da5f4ea8"/>
-        <topic label="$search_dateday" href="d9/de1/cultivationtasktime_8php.html#a8a3bee6f9f0d4979f57217c4851f0ee5"/>
-        <topic label="$search_datehour" href="d9/de1/cultivationtasktime_8php.html#af75432d736a48aa542fe7acc295fabe3"/>
-        <topic label="$search_datemonth" href="d9/de1/cultivationtasktime_8php.html#a30f1f01e521b24726afa9d957414381e"/>
-        <topic label="$search_datewithhour" href="d9/de1/cultivationtasktime_8php.html#a2bc5a70fd9567f0a03a96d20ce40f7c9"/>
-        <topic label="$search_dateyear" href="d9/de1/cultivationtasktime_8php.html#aee35a29efa94b68e1ac6ae87bc876497"/>
-        <topic label="$search_duration" href="d9/de1/cultivationtasktime_8php.html#ab7e5625fb0a3da7b7c6d38b428fd9949"/>
-        <topic label="$search_note" href="d9/de1/cultivationtasktime_8php.html#a7e57dfae9c9e5686eaf81d67732167aa"/>
-        <topic label="$search_value" href="d9/de1/cultivationtasktime_8php.html#a32db4f6226c6aa2655760de191a996d4"/>
-        <topic label="$socid" href="d9/de1/cultivationtasktime_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8"/>
-        <topic label="$sortfield" href="d9/de1/cultivationtasktime_8php.html#ad8a3bcfb2e745be70b1e7ebe97472ce6"/>
-        <topic label="$sortorder" href="d9/de1/cultivationtasktime_8php.html#a11ec75e1068cd7566eaaf44082cdd029"/>
-        <topic label="$userstatic" href="d9/de1/cultivationtasktime_8php.html#acfaf063deb6bcfaa3cb88c286899b5b5"/>
-        <topic label="$withproject" href="d9/de1/cultivationtasktime_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f"/>
-        <topic label="print" href="d9/de1/cultivationtasktime_8php.html#a6ba352cf4971570ed8f5e8dc84b6a019"/>
       </topic>
       <topic label="index.php" href="de/d20/index_8php.html">
         <topic label="displayView" href="de/d20/index_8php.html#aca04b3e313abfb913efaacdfb7d5d3d7"/>
@@ -748,29 +712,30 @@
         <topic label="$sort" href="d9/d20/ordersandshipments_8php.html#ae3469c227c7390cbf29f9b05f508e4c4"/>
       </topic>
       <topic label="plot_card.php" href="df/d3c/plot__card_8php.html">
+        <topic label="addPlot" href="df/d3c/plot__card_8php.html#a10b33555b4967c95e328df9db4638c2c"/>
+        <topic label="buildPlotDocument" href="df/d3c/plot__card_8php.html#a47dd592626185d021c9d88807c636934"/>
+        <topic label="buildTaskSearchParameters" href="df/d3c/plot__card_8php.html#aeb388be0a17fb57ccfd285cf398b6d9d"/>
+        <topic label="deletePlot" href="df/d3c/plot__card_8php.html#ae48e2c0ed740e108e36f3e769c79085c"/>
+        <topic label="displayAddPlotForm" href="df/d3c/plot__card_8php.html#a5de34095ca0469fb22b9a0e2447ed345"/>
+        <topic label="displayPlotCard" href="df/d3c/plot__card_8php.html#aed0a4eb8ff405ac3ef4cce2b497b5b4b"/>
+        <topic label="displayPlotEditForm" href="df/d3c/plot__card_8php.html#a886e5d410f0ae980c64fad6a0e4e316d"/>
+        <topic label="displayPlotTab" href="df/d3c/plot__card_8php.html#af5c87f383d6a6c65ea5325a0dc4ab753"/>
+        <topic label="displayPlotTaskLines" href="df/d3c/plot__card_8php.html#a189f5cc66aa637ec97c9a47d6bb0e589"/>
+        <topic label="displayPlotTasks" href="df/d3c/plot__card_8php.html#a679f1c3573a085892f7d6cbb4d532e9d"/>
+        <topic label="getTabsHeader" href="df/d3c/plot__card_8php.html#aa761ea46b367e47aa2de78ea7d70f656"/>
+        <topic label="getTaskfilter" href="df/d3c/plot__card_8php.html#a098f38abdf138f567d3fc5b73b6ee0bd"/>
+        <topic label="getTasksort" href="df/d3c/plot__card_8php.html#a388cfa7ccf37d7afb4d7db6ef64b6849"/>
+        <topic label="removePlotFile" href="df/d3c/plot__card_8php.html#a6d38d26211a11fb988bae5c505b8be71"/>
+        <topic label="updatePlot" href="df/d3c/plot__card_8php.html#a32b68b4bc487e378d93e20fdd8e0de8b"/>
         <topic label="$action" href="df/d3c/plot__card_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
-        <topic label="$backtopage" href="df/d3c/plot__card_8php.html#aced350fa7c04e841b49bea7b099f625e"/>
+        <topic label="$cancel" href="df/d3c/plot__card_8php.html#af57e1ef52c7331ce2627601c2985260c"/>
+        <topic label="$confirm" href="df/d3c/plot__card_8php.html#a4dcadbee89ed4c8ead497ce14b67dd23"/>
         <topic label="$extrafields" href="df/d3c/plot__card_8php.html#aa659316307a821cdcd60350fd0290d6e"/>
-        <topic label="$extrafieldslabels" href="df/d3c/plot__card_8php.html#ae96e6dfc92fc5390a16e5bb5b4e1b2be"/>
-        <topic label="$form" href="df/d3c/plot__card_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
-        <topic label="$formactions" href="df/d3c/plot__card_8php.html#aa57dd115f90fa6e4102bb2c4174d430d"/>
-        <topic label="$formfile" href="df/d3c/plot__card_8php.html#a2452015d72b8956547b810d5c34b7095"/>
-        <topic label="$formvignoble" href="df/d3c/plot__card_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
         <topic label="$id" href="df/d3c/plot__card_8php.html#ae97941710d863131c700f069b109991e"/>
         <topic label="$object" href="df/d3c/plot__card_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
-        <topic label="$parameters" href="df/d3c/plot__card_8php.html#ab79d246480c4ac3a0db6bbceca92ad32"/>
         <topic label="$ref" href="df/d3c/plot__card_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
-        <topic label="$reshook" href="df/d3c/plot__card_8php.html#a9f714fd8cba1988231c5a555da5f4ea8"/>
-      </topic>
-      <topic label="plot_info.php" href="dd/d24/plot__info_8php.html">
-        <topic label="$currentPlot" href="dd/d24/plot__info_8php.html#ab774d953b394afc1b40bbc49ede6c313"/>
-        <topic label="$form" href="dd/d24/plot__info_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
-        <topic label="$formvignoble" href="dd/d24/plot__info_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
-        <topic label="$head" href="dd/d24/plot__info_8php.html#a687ea7fcd78263867b5bd34ed56b6379"/>
-        <topic label="$id" href="dd/d24/plot__info_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$ref" href="dd/d24/plot__info_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
-        <topic label="if" href="dd/d24/plot__info_8php.html#aa7abc470b75e901569a9c76d1a2dd147"/>
-        <topic label="print" href="dd/d24/plot__info_8php.html#a3ad3a4240c0f97c7e85aff5c52a454d4"/>
+        <topic label="$tab" href="df/d3c/plot__card_8php.html#aab50d97eed7abd779caf1f2de48c1c5f"/>
+        <topic label="else" href="df/d3c/plot__card_8php.html#a5fdf9c87a2897ebece91bc9721a85e2c"/>
       </topic>
       <topic label="plot_list.php" href="da/d01/plot__list_8php.html">
         <topic label="addJQuery" href="da/d01/plot__list_8php.html#a8e81b4e4ac9404bc1b3030ae9369b0be"/>
@@ -808,17 +773,6 @@
         <topic label="$title" href="da/d01/plot__list_8php.html#ada57e7bb7c152edad18fe2f166188691"/>
         <topic label="else" href="da/d01/plot__list_8php.html#a9fa70a3e78555272800c62afa60fd20c"/>
       </topic>
-      <topic label="plot_notes.php" href="d3/d16/plot__notes_8php.html">
-        <topic label="$action" href="d3/d16/plot__notes_8php.html#aa698a3e72116e8e778be0e95d908ee30"/>
-        <topic label="$form" href="d3/d16/plot__notes_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4"/>
-        <topic label="$formvignoble" href="d3/d16/plot__notes_8php.html#a86ee81b2fdcaaf9e4cb06c7ee7b4759b"/>
-        <topic label="$id" href="d3/d16/plot__notes_8php.html#ae97941710d863131c700f069b109991e"/>
-        <topic label="$object" href="d3/d16/plot__notes_8php.html#a52123b83a1952a68c5513e47d59ec4a6"/>
-        <topic label="$permission" href="d3/d16/plot__notes_8php.html#aad04b6f3304fe6a13d5be37f7cd28938"/>
-        <topic label="$permissionnote" href="d3/d16/plot__notes_8php.html#a4f72bb2f0b3c02e7a9d3adbf96feae3e"/>
-        <topic label="$ref" href="d3/d16/plot__notes_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e"/>
-        <topic label="$result" href="d3/d16/plot__notes_8php.html#a112ef069ddc0454086e3d1e6d8d55d07"/>
-      </topic>
     </topic>
     <topic label="File Members" href="globals.html">
       <topic label="All" href="globals.html">
@@ -833,18 +787,13 @@
         <topic label="i" href="globals_i.html"/>
         <topic label="n" href="globals_n.html"/>
         <topic label="p" href="globals_p.html"/>
+        <topic label="r" href="globals_r.html"/>
         <topic label="s" href="globals_s.html"/>
+        <topic label="u" href="globals_u.html"/>
         <topic label="v" href="globals_v.html"/>
       </topic>
       <topic label="Functions" href="globals_func.html"/>
-      <topic label="Variables" href="globals_vars.html">
-        <topic label="$" href="globals_vars.html"/>
-        <topic label="e" href="globals_vars_e.html"/>
-        <topic label="f" href="globals_vars_f.html"/>
-        <topic label="i" href="globals_vars_i.html"/>
-        <topic label="n" href="globals_vars_n.html"/>
-        <topic label="p" href="globals_vars_p.html"/>
-      </topic>
+      <topic label="Variables" href="globals_vars.html"/>
     </topic>
   </topic>
 </toc>

@@ -21,7 +21,7 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", "globals_vars" ]
+        [ "Variables", "globals_vars.html", null ]
       ] ]
     ] ]
   ] ]
@@ -30,8 +30,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d7/d8d/classplotslastchanged.html#a9cf51f0cf19745c22598f25b0c613065",
-"de/d1c/class_plotcultivationtask.html#ada56d84869d9b0c9045bb95fa47e3e08"
+"d8/d91/classpdf__plotabc.html#a596393403ca63c2bc3ae5b0c8fa86b61",
+"dir_a92b4f1014d7c42de412a9ce4651719e.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

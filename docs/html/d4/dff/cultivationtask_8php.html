@@ -81,11 +81,21 @@ $(document).ready(function(){initNavTree('d4/dff/cultivationtask_8php.html','../
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae4f9034de92bf6be5b37a9566bb1bd2c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#ae4f9034de92bf6be5b37a9566bb1bd2c">displayTaskCard</a> ($object, $extrafields)</td></tr>
-<tr class="memdesc:ae4f9034de92bf6be5b37a9566bb1bd2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display task fields &amp; extrafields on one column.  <a href="#ae4f9034de92bf6be5b37a9566bb1bd2c">More...</a><br /></td></tr>
-<tr class="separator:ae4f9034de92bf6be5b37a9566bb1bd2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec2041b0da597216aae45a54cf6d19fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#aec2041b0da597216aae45a54cf6d19fb">displayTaskEditForm</a> ($withproject, $object, $projectstatic, $form, $formother, $extrafields)</td></tr>
-<tr class="separator:aec2041b0da597216aae45a54cf6d19fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32dbc1cfd60de08b07b75e609c3fa0db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a32dbc1cfd60de08b07b75e609c3fa0db">displayTaskCard</a> ($task, $extrafields)</td></tr>
+<tr class="memdesc:a32dbc1cfd60de08b07b75e609c3fa0db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display task fields &amp; extrafields on one column.  <a href="#a32dbc1cfd60de08b07b75e609c3fa0db">More...</a><br /></td></tr>
+<tr class="separator:a32dbc1cfd60de08b07b75e609c3fa0db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abae617c0a7a9f199730c5c3fe8569c1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#abae617c0a7a9f199730c5c3fe8569c1e">displayTaskEditForm</a> ($task, $projectstatic, $extrafields)</td></tr>
+<tr class="memdesc:abae617c0a7a9f199730c5c3fe8569c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the task edit form.  <a href="#abae617c0a7a9f199730c5c3fe8569c1e">More...</a><br /></td></tr>
+<tr class="separator:abae617c0a7a9f199730c5c3fe8569c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a390995d30121df5013805f35c49432f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a390995d30121df5013805f35c49432f4">deleteTask</a> ($task)</td></tr>
+<tr class="memdesc:a390995d30121df5013805f35c49432f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete task and go back to cultivation project page.  <a href="#a390995d30121df5013805f35c49432f4">More...</a><br /></td></tr>
+<tr class="separator:a390995d30121df5013805f35c49432f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7eb5ceb62bb1569393aa5bb799e66b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#af7eb5ceb62bb1569393aa5bb799e66b0">updateTask</a> ($id)</td></tr>
+<tr class="memdesc:af7eb5ceb62bb1569393aa5bb799e66b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update Task using fields send by the task edit form.  <a href="#af7eb5ceb62bb1569393aa5bb799e66b0">More...</a><br /></td></tr>
+<tr class="separator:af7eb5ceb62bb1569393aa5bb799e66b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e56f524dc3a2a293de9d94a09cba57d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a4e56f524dc3a2a293de9d94a09cba57d">displayTaskButtons</a> ($task)</td></tr>
+<tr class="memdesc:a4e56f524dc3a2a293de9d94a09cba57d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the modify and delete buttons.  <a href="#a4e56f524dc3a2a293de9d94a09cba57d">More...</a><br /></td></tr>
+<tr class="separator:a4e56f524dc3a2a293de9d94a09cba57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -95,39 +105,77 @@ Variables</h2></td></tr>
 <tr class="separator:ae97941710d863131c700f069b109991e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af63b439d0c69c1a6e9c2d1b9a4f4af9e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#af63b439d0c69c1a6e9c2d1b9a4f4af9e">$ref</a> = GETPOST(&quot;ref&quot;, 'alpha', 1)</td></tr>
 <tr class="separator:af63b439d0c69c1a6e9c2d1b9a4f4af9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afda31fb2de49de5fe410264a89b3c376"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#afda31fb2de49de5fe410264a89b3c376">$taskref</a> = GETPOST(&quot;taskref&quot;, 'alpha')</td></tr>
-<tr class="separator:afda31fb2de49de5fe410264a89b3c376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa698a3e72116e8e778be0e95d908ee30"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#aa698a3e72116e8e778be0e95d908ee30">$action</a> = GETPOST('action', 'alpha')</td></tr>
 <tr class="separator:aa698a3e72116e8e778be0e95d908ee30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dcadbee89ed4c8ead497ce14b67dd23"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a4dcadbee89ed4c8ead497ce14b67dd23">$confirm</a> = GETPOST('confirm', 'alpha')</td></tr>
 <tr class="separator:a4dcadbee89ed4c8ead497ce14b67dd23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a03d1bbe88289daa6fd32ffcc9f5b0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a8a03d1bbe88289daa6fd32ffcc9f5b0f">$withproject</a> = GETPOST('withproject', 'int')</td></tr>
-<tr class="separator:a8a03d1bbe88289daa6fd32ffcc9f5b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2d4cc66efe162feae24518e6c4b126a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#af2d4cc66efe162feae24518e6c4b126a">$project_ref</a> = GETPOST('project_ref', 'alpha')</td></tr>
-<tr class="separator:af2d4cc66efe162feae24518e6c4b126a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a719f836f1ef093d43ce168b3b04c0ea6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a719f836f1ef093d43ce168b3b04c0ea6">$planned_workload</a> = ((GETPOST('planned_workloadhour') != '' &amp;&amp; GETPOST('planned_workloadmin') != '') ? GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60 : '')</td></tr>
-<tr class="separator:a719f836f1ef093d43ce168b3b04c0ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ccabbd49ff70c13c94e688a08ecb9e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a1ccabbd49ff70c13c94e688a08ecb9e8">$socid</a> = 0</td></tr>
-<tr class="separator:a1ccabbd49ff70c13c94e688a08ecb9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52123b83a1952a68c5513e47d59ec4a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a52123b83a1952a68c5513e47d59ec4a6">$object</a> = new Task($db)</td></tr>
-<tr class="separator:a52123b83a1952a68c5513e47d59ec4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa659316307a821cdcd60350fd0290d6e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#aa659316307a821cdcd60350fd0290d6e">$extrafields</a> = new ExtraFields($db)</td></tr>
-<tr class="separator:aa659316307a821cdcd60350fd0290d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45b72a687750121e7e34e6a3009df246"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a45b72a687750121e7e34e6a3009df246">$projectstatic</a> = new Project($db)</td></tr>
-<tr class="separator:a45b72a687750121e7e34e6a3009df246"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4fd271007f71c2c9e8c619029d1158b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#ae4fd271007f71c2c9e8c619029d1158b">$extralabels</a> = $extrafields-&gt;fetch_name_optionals_label($object-&gt;table_element)</td></tr>
-<tr class="separator:ae4fd271007f71c2c9e8c619029d1158b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a4fda4c28a9ee5f91102c023b9501f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a1a4fda4c28a9ee5f91102c023b9501f4">$form</a> = new Form($db)</td></tr>
-<tr class="separator:a1a4fda4c28a9ee5f91102c023b9501f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c8ef81fcadfd4219f6f34c5d6ae55ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#a6c8ef81fcadfd4219f6f34c5d6ae55ae">$formother</a> = new FormOther($db)</td></tr>
-<tr class="separator:a6c8ef81fcadfd4219f6f34c5d6ae55ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af57e1ef52c7331ce2627601c2985260c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dff/cultivationtask_8php.html#af57e1ef52c7331ce2627601c2985260c">$cancel</a> = GETPOST('cancel', 'alpha')</td></tr>
+<tr class="separator:af57e1ef52c7331ce2627601c2985260c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Card page of a cultivation project task. </p>
 
 <p>Definition in file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ae4f9034de92bf6be5b37a9566bb1bd2c"></a>
+<a class="anchor" id="a390995d30121df5013805f35c49432f4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">deleteTask </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Delete task and go back to cultivation project page. </p>
+<p>If a delete error happens, clear $action.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>the task object ot delete</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>empty action </dd></dl>
+
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00269">269</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+
+<p>References <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00034">$action</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00042">$object</a>, and <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4e56f524dc3a2a293de9d94a09cba57d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">displayTaskButtons </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Display the modify and delete buttons. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>the task object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00353">353</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+
+<p>References <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00091">$_SERVER</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00189">print</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a32dbc1cfd60de08b07b75e609c3fa0db"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -135,7 +183,7 @@ Variables</h2></td></tr>
           <td class="memname">displayTaskCard </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$object</em>, </td>
+          <td class="paramname"><em>$task</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -160,13 +208,13 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00218">218</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00117">117</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
-<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00056">$extrafields</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00055">$object</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
+<p>References <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00046">$extrafields</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00189">print</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aec2041b0da597216aae45a54cf6d19fb"></a>
+<a class="anchor" id="abae617c0a7a9f199730c5c3fe8569c1e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -174,31 +222,13 @@ Variables</h2></td></tr>
           <td class="memname">displayTaskEditForm </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$withproject</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$object</em>, </td>
+          <td class="paramname"><em>$task</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>$projectstatic</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$form</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$formother</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -213,21 +243,50 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Display the task edit form. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">withproject</td><td></td></tr>
-    <tr><td class="paramname">object</td><td></td></tr>
-    <tr><td class="paramname">projectstatic</td><td></td></tr>
+    <tr><td class="paramname">task</td><td>the task object to display in form </td></tr>
+    <tr><td class="paramname">project</td><td>projectstatic </td></tr>
     <tr><td class="paramname">form</td><td></td></tr>
     <tr><td class="paramname">formother</td><td></td></tr>
-    <tr><td class="paramname">head</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00285">285</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00187">187</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
-<p>References <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00091">$_SERVER</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00092">$_SESSION</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00056">$extrafields</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00149">$form</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00150">$formother</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00055">$object</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00038">$withproject</a>, and <a class="el" href="../../d1/d9d/cultivationtaskcontact_8php_source.html#l00143">print</a>.</p>
+<p>References <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00091">$_SERVER</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00092">$_SESSION</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00046">$extrafields</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00180">$formother</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>, and <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00189">print</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af7eb5ceb62bb1569393aa5bb799e66b0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">updateTask </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update Task using fields send by the task edit form. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">int</td><td class="paramname">$id</td><td>Task to update rowid </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>string $action empty when done or stay in edit mode when error </dd></dl>
+
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00289">289</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+
+<p>References <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00034">$action</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$conf</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$db</a>, <a class="el" href="../../d8/d47/parcelle__script_8php_source.html#l00039">$error</a>, <a class="el" href="../../df/d3c/plot__card_8php_source.html#l00046">$extrafields</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00031">$id</a>, <a class="el" href="../../db/ddc/module__settings_8php_source.html#l00049">$label</a>, <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$langs</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00042">$result</a>, <a class="el" href="../../dd/d77/cultivationtasks_8php_source.html#l00049">$taskref</a>, and <a class="el" href="../../d6/d14/maindolibarr_8inc_8php_source.html#l00048">$user</a>.</p>
 
 </div>
 </div>
@@ -242,9 +301,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00036">36</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00034">34</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d0f/actions__vignoble_8class_8php_source.html#l00082">ActionsVignoble\doActions()</a>, and <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l00154">pdf_plotabc\write_file()</a>.</p>
+<p>Referenced by <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00269">deleteTask()</a>, <a class="el" href="../../da/d0f/actions__vignoble_8class_8php_source.html#l00082">ActionsVignoble\doActions()</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00289">updateTask()</a>, and <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l00154">pdf_plotabc\write_file()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af57e1ef52c7331ce2627601c2985260c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$cancel = GETPOST('cancel', 'alpha')</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00036">36</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
 </div>
 </div>
@@ -258,7 +331,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00037">37</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00035">35</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
 </div>
 </div>
@@ -272,71 +345,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00031">31</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa659316307a821cdcd60350fd0290d6e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$extrafields = new ExtraFields($db)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00056">56</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00218">displayTaskCard()</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00285">displayTaskEditForm()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00307">plot\fetch()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00509">modVignoble\getExports()</a>, <a class="el" href="../../d9/d66/mod_vignoble_8class_8php_source.html#l00845">modVignoble\getImports()</a>, and <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00231">plot\loadObject()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae4fd271007f71c2c9e8c619029d1158b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$extralabels = $extrafields-&gt;fetch_name_optionals_label($object-&gt;table_element)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00060">60</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00307">plot\fetch()</a>, and <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00231">plot\loadObject()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1a4fda4c28a9ee5f91102c023b9501f4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$form = new Form($db)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00149">149</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00064">displayProjectHeaderCard()</a>, <a class="el" href="../../d9/d20/ordersandshipments_8php_source.html#l00110">displaySearchForm()</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00285">displayTaskEditForm()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00150">displayTaskHeader()</a>, and <a class="el" href="../../df/d4a/html_8form_8vignoble_8class_8php_source.html#l00122">FormVignoble\printObjectRef()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6c8ef81fcadfd4219f6f34c5d6ae55ae"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$formother = new FormOther($db)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00150">150</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00285">displayTaskEditForm()</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00028">28</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
 </div>
 </div>
@@ -350,69 +359,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00033">33</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00031">31</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00108">Plotcultivationtask\create()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00110">plot\create()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00509">Plotcultivationtask\delete()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00556">plot\delete()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00283">Plotcultivationtask\fetch()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00307">plot\fetch()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00714">Plotcultivationtask\info()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00770">plot\info()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00219">Plotcultivationtask\loadObject()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00231">plot\loadObject()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00036">setIsCultivationProject()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00428">Plotcultivationtask\update()</a>, and <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00471">plot\update()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a52123b83a1952a68c5513e47d59ec4a6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$object = new Task($db)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00055">55</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l01139">pdf_plotabc\_pagefoot()</a>, <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l00948">pdf_plotabc\_pagehead()</a>, <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l00389">pdf_plotabc\_tableau_info()</a>, <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l00576">pdf_plotabc\_tableau_tot()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00561">Plotcultivationtask\createFromClone()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00617">plot\createFromClone()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00064">displayProjectHeaderCard()</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00218">displayTaskCard()</a>, <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00285">displayTaskEditForm()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00150">displayTaskHeader()</a>, <a class="el" href="../../da/d0f/actions__vignoble_8class_8php_source.html#l00082">ActionsVignoble\doActions()</a>, <a class="el" href="../../df/d4a/html_8form_8vignoble_8class_8php_source.html#l00136">FormVignoble\getTabsHeader()</a>, <a class="el" href="../../df/d4a/html_8form_8vignoble_8class_8php_source.html#l00122">FormVignoble\printObjectRef()</a>, and <a class="el" href="../../d0/d92/pdf__plotabc_8modules_8php_source.html#l00154">pdf_plotabc\write_file()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a719f836f1ef093d43ce168b3b04c0ea6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$planned_workload = ((GETPOST('planned_workloadhour') != '' &amp;&amp; GETPOST('planned_workloadmin') != '') ? GETPOST('planned_workloadhour') * 3600 + GETPOST('planned_workloadmin') * 60 : '')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00040">40</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af2d4cc66efe162feae24518e6c4b126a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$project_ref = GETPOST('project_ref', 'alpha')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00039">39</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a45b72a687750121e7e34e6a3009df246"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$projectstatic = new Project($db)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00057">57</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00195">showtasks()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00108">Plotcultivationtask\create()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00110">plot\create()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00515">Plotcultivationtask\delete()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00556">plot\delete()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00283">Plotcultivationtask\fetch()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00307">plot\fetch()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00720">Plotcultivationtask\info()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00770">plot\info()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00219">Plotcultivationtask\loadObject()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00231">plot\loadObject()</a>, <a class="el" href="../../d4/d07/cultivationtask_8lib_8php_source.html#l00036">setIsCultivationProject()</a>, <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00434">Plotcultivationtask\update()</a>, <a class="el" href="../../dc/d60/plot_8class_8php_source.html#l00471">plot\update()</a>, and <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00289">updateTask()</a>.</p>
 
 </div>
 </div>
@@ -426,53 +375,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00034">34</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00032">32</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00616">Plotcultivationtask\getNomUrl()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1ccabbd49ff70c13c94e688a08ecb9e8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$socid = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00043">43</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="afda31fb2de49de5fe410264a89b3c376"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$taskref = GETPOST(&quot;taskref&quot;, 'alpha')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00035">35</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a8a03d1bbe88289daa6fd32ffcc9f5b0f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$withproject = GETPOST('withproject', 'int')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00038">38</a> of file <a class="el" href="../../d4/dff/cultivationtask_8php_source.html">cultivationtask.php</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d4/dff/cultivationtask_8php_source.html#l00285">displayTaskEditForm()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/df1/plotcultivationtask_8class_8php_source.html#l00622">Plotcultivationtask\getNomUrl()</a>.</p>
 
 </div>
 </div>
@@ -482,7 +387,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d4/dff/cultivationtask_8php.html">cultivationtask.php</a></li>
-    <li class="footer">Generated on Tue Jan 17 2017 13:45:47 for Vignoble by
+    <li class="footer">Generated on Fri Jan 27 2017 11:59:30 for Vignoble by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

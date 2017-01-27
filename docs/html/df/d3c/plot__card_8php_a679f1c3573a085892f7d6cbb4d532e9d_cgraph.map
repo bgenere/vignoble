@@ -1,0 +1,6 @@
+<map id="displayPlotTasks" name="displayPlotTasks">
+<area shape="rect" id="node2" href="$df/d3c/plot__card_8php.html#aeb388be0a17fb57ccfd285cf398b6d9d" title="Build the parameters string to be added to URL to keep the filter conditions. " alt="" coords="177,5,376,32"/>
+<area shape="rect" id="node3" href="$df/d3c/plot__card_8php.html#a189f5cc66aa637ec97c9a47d6bb0e589" title="Display the plot task lines in a table in read only mode. " alt="" coords="201,56,352,83"/>
+<area shape="rect" id="node4" href="$df/d3c/plot__card_8php.html#a098f38abdf138f567d3fc5b73b6ee0bd" title="Get all data needed to filter the SQL requests on plot task and produce the results. " alt="" coords="227,107,326,133"/>
+<area shape="rect" id="node5" href="$df/d3c/plot__card_8php.html#a388cfa7ccf37d7afb4d7db6ef64b6849" title="Get fields and order used for the plot task table sort. " alt="" coords="229,157,324,184"/>
+</map>

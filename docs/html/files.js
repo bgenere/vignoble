@@ -16,7 +16,5 @@ var files =
     [ "index.php", "de/d20/index_8php.html", "de/d20/index_8php" ],
     [ "ordersandshipments.php", "d9/d20/ordersandshipments_8php.html", "d9/d20/ordersandshipments_8php" ],
     [ "plot_card.php", "df/d3c/plot__card_8php.html", "df/d3c/plot__card_8php" ],
-    [ "plot_info.php", "dd/d24/plot__info_8php.html", "dd/d24/plot__info_8php" ],
-    [ "plot_list.php", "da/d01/plot__list_8php.html", "da/d01/plot__list_8php" ],
-    [ "plot_notes.php", "d3/d16/plot__notes_8php.html", "d3/d16/plot__notes_8php" ]
+    [ "plot_list.php", "da/d01/plot__list_8php.html", "da/d01/plot__list_8php" ]
 ];
