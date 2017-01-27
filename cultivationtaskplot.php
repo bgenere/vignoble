@@ -296,10 +296,10 @@ function displayAddPlotForm($id)
 		);
 		foreach ($plot->lines as $plotLine) {
 			$key = $plotLine->id;
-			$value = $plotLine->ref;
+			$value = $plotLine->ref.' - '.$plotLine->label;
 			$plots[$key] = $value;
 		}
-		print $form->multiselectarray('multiplots', $plots, '', 1, 0, '', 0, '90%');
+		print $form->multiselectarray('multiplots', $plots, '', 0, 0, '', 0, '90%');
 	}
 	print '</td>';
 	// Note

@@ -591,7 +591,7 @@ function getProjectContributors($task, $projectstatic)
 	);
 	foreach ($contributorsofproject as $contributor) {
 		$key = $contributor["id"];
-		$value = $contributor["nom"];
+		$value = $contributor["firstname"].' '.$contributor["lastname"];
 		$contributors[$key] = $value;
 	}
 	return $contributors;
