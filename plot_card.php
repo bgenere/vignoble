@@ -261,10 +261,13 @@ function deletePlot(plot $object)
 	}
 }
 
+
 /**
- *
- * @param
- *        	object
+ * Build plot document
+ * 
+ * Not in use yet - see comments end of page.
+ * 
+ * @param plot $object
  */
 function buildPlotDocument(plot $object)
 {
@@ -316,7 +319,7 @@ function removePlotFile(plot $object)
 }
 
 /**
- * display the Plot Edit Form
+ * Display the Plot Edit Form
  *
  * @param plot $object        	
  * @param ExtraFields $extrafields        	
@@ -361,18 +364,15 @@ function displayPlotEditForm(plot $object, ExtraFields $extrafields)
 	print '</form>';
 }
 
+
 /**
- *
- * @param
- *        	action
- * @param
- *        	object
- * @param
- *        	form
- * @param
- *        	formvignoble
- * @param
- *        	formconfirm
+ * Display the proper Plot Tab based on the tab parameter usin GETPOST.
+ * 
+ * Support tabs : tasks, notes, info and card as default.
+ * 
+ * @param string $action
+ * @param plot $object
+ * @param ExtraFields $extrafields
  */
 function displayPlotTab($action, plot $object, ExtraFields $extrafields)
 {
@@ -411,8 +411,11 @@ function displayPlotTab($action, plot $object, ExtraFields $extrafields)
 }
 
 /**
- *
- * @param unknown $action        	
+ * Display the plot card in read mode
+ * 
+ * When $action = delete a confirmation popup
+ * 
+ * @param string $action        	
  * @param plot $object        	
  * @param ExtraFields $extrafields        	
  * @param Form $form        	
@@ -452,6 +455,15 @@ function displayPlotCard($action, plot $object, ExtraFields $extrafields, Form $
 	print '</div>';
 }
 
+/**
+ * Display the tasks table for the plot.
+ * 
+ * The table could be sorted and searched on all fields
+ * Search on date define an interval between start and end
+ * 
+ * @param plot $plot
+ * @param Form $form
+ */
 function displayPlotTasks(plot $plot, Form $form)
 {
 	Global $db, $conf, $user, $langs;
@@ -473,8 +485,8 @@ function displayPlotTasks(plot $plot, Form $form)
 	// Fields header
 	print '<tr class="liste_titre">';
 	print_liste_field_titre($langs->trans("Task"), $_SERVER['PHP_SELF'], 'taskref', '', $params, '', $sort["field"], $sort["order"]);
-	print_liste_field_titre($langs->trans("Start"), $_SERVER['PHP_SELF'], 'taskopen', '', $params, '', $sort["field"], $sort["order"]);
-	print_liste_field_titre($langs->trans("End"), $_SERVER['PHP_SELF'], 'taskend', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("DateStart"), $_SERVER['PHP_SELF'], 'taskopen', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("DateEnd"), $_SERVER['PHP_SELF'], 'taskend', '', $params, '', $sort["field"], $sort["order"]);
 	print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 'note', '', $params, 'style="width:20%;"', $sort["field"], $sort["order"]);
 	print_liste_field_titre($langs->trans("ProgressDeclared"), $_SERVER['PHP_SELF'], 'coverage', '', $params, '', $sort["field"], $sort["order"]);
 	print '<td class=" right"> ';
@@ -507,7 +519,7 @@ function displayPlotTasks(plot $plot, Form $form)
 /**
  * Get fields and order used for the plot task table sort.
  *
- * Use Ref Ascending by default.
+ * Use TaskRef Ascending by default.
  *
  * @return Array[] with keys : field, order.
  */
@@ -642,7 +654,10 @@ function displayPlotTaskLines($plottask)
 		$task = new Task($db);
 		$task->fetch($line->fk_task);
 		print '<td >';
-		print $task->getNomUrl(1, 'projet_task', 'task', 1, ' - ');
+		//print $task->getNomUrl(1, 'projet_task', 'task', 1, ' - ');
+		$url = dol_buildpath('/vignoble/cultivationtaskplot.php?id='.$task->id, 1);
+		print '<a href="'.$url.'">';
+		print $task->ref.'</a>'.' - '.$task->label;
 		print '</td>';
 		// Start date
 		print '<td >';
@@ -666,7 +681,10 @@ function displayPlotTaskLines($plottask)
 }
 
 /**
- * Set up 3 Tabs : Card, Notes, Info
+ * Set up the 4 Tabs : Card, Tasks, Notes, Info
+ * 
+ * @param plot $object
+ * 
  */
 function getTabsHeader($langs, $object)
 {
@@ -689,6 +707,8 @@ function getTabsHeader($langs, $object)
 	$head[$h][2] = 'info';
 	return $head;
 }
+
+// END following lines kept for future use
 // $formfile = new FormFile($db);
 	// $formactions = new FormActions($db);
 	// /**
