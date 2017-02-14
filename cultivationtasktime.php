@@ -47,13 +47,14 @@ if (($id > 0 || ! empty($ref))) {
 		$projectstatic = new Project($db);
 		$result = $projectstatic->fetch($object->fk_project);
 		$object->project = clone $projectstatic;
-		if ($projectstatic->id == $cultivationprojectid) {		
+		if ($projectstatic->id == $cultivationprojectid) {
 			/**
-			 * Actions 
-			 */		
+			 * Actions
+			 */
 			if ($action == 'addtimespent' && $user->rights->projet->lire) {
 				$action = addTimeSpent($object);
-				$action = updatePlotTaskStatus($object);
+				if ($action == 'updateplot')
+					$action = updatePlotTaskStatus($object);
 			}
 			
 			if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
@@ -241,9 +242,10 @@ function addTimeSpent($object)
 				}
 			}
 		}
+		return $action = 'updateplot';
+	} else {		
+		return $action = '';
 	}
-	
-	return $action = '';
 }
 
 /**
@@ -336,7 +338,7 @@ function displayAddTimeSpentForm($object, Form $form, $formother)
 	}
 	print '<div class="right">';
 	print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;addtime=' . ($display ? 'hide' : 'display') . $params . '">';
-	print '<b>' . $langs->trans(($display ? 'Hide' : 'Show')).' '.$langs->trans('addTimeSpentForm'). '</b>';
+	print '<b>' . $langs->trans(($display ? 'Hide' : 'Show')) . ' ' . $langs->trans('addTimeSpentForm') . '</b>';
 	print '</a>';
 	print '</div>';
 	if ($display) {
@@ -718,11 +720,13 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
 	print '<td>' . $langs->trans("Plot") . '</td>';
 	print '<td style="width:25%;">' . $langs->trans("Note") . '</td>';
 	print '<td class="right nowrap">' . $langs->trans("ProgressDeclared") . '</td>';
+	print '<td class="right nowrap">' . $langs->trans("New") . '</td>';
 	print "</tr>";
 	
 	$plottask = new Plotcultivationtask($db);
 	$taskfilter = array(
-		"t.fk_task = " . $object->id
+		"t.fk_task = " . $object->id,
+		"coverage < 100"
 	);
 	if ($plottask->fetchAll('ASC', 'reference', 0, 0, $taskfilter, 'AND')) {
 		foreach ($plottask->lines as $line) {
@@ -741,6 +745,10 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
 			print '</td>';
 			// Coverage
 			print '<td class=right>';
+			print $formother->select_percent($line->coverage, 'plotoldcoverage' . $line->id, 1);
+			print '</td>';
+			// Coverage
+			print '<td class=right>';
 			print $formother->select_percent($line->coverage, 'plotlinecoverage' . $line->id);
 			print '</td>';
 			
@@ -752,7 +760,7 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
 }
 
 /**
- * Update all plot status and note for the task using the add time form sub part regardint the plots.
+ * Update all plot status and note for the task using the add time form sub part regarding the plots.
  *
  * @param Task $object
  *        	the current task
@@ -764,14 +772,21 @@ function updatePlotTaskStatus($object)
 	
 	$plottask = new Plotcultivationtask($db);
 	$taskfilter = array(
-		"t.fk_task = " . $object->id
+		"t.fk_task = " . $object->id,
+		"coverage < 100"
 	);
 	if ($plottask->fetchAll('ASC', 'reference', 0, 0, $taskfilter, 'AND')) {
 		foreach ($plottask->lines as $line) {
 			if ($plottask->fetch($line->id)) {
-				$plottask->note = GETPOST('plotlinenote' . $line->id, 'alpha');
-				$plottask->coverage = GETPOST('plotlinecoverage' . $line->id, 'int');
-				$result = $plottask->update($user);
+				if ($plottask->coverage <= GETPOST('plotlinecoverage' . $line->id, 'int')) {
+					// update plot task
+					$plottask->note = GETPOST('plotlinenote' . $line->id, 'alpha');
+					$plottask->coverage = GETPOST('plotlinecoverage' . $line->id, 'int');
+					$result = $plottask->update($user);
+					// update plot task progress
+				} else {
+					setEventMessages(null, $langs->trans("CurrentProgressShouldBeGreaterOrEqualPreviousProgress"), 'errors');
+				}
 			} else
 				$result = - 1;
 			
