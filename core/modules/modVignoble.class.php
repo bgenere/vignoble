@@ -481,6 +481,23 @@ class modVignoble extends DolibarrModules
 			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
+		 *  - Define cultivation left menu entry cultivation progress
+		 */
+		$this->menu[] = array(
+			'type' => 'left',
+			'mainmenu' => 'vignoble',
+			'leftmenu' => 'cultivation_progress',
+			'fk_menu' => 'fk_mainmenu=vignoble,fk_leftmenu=cultivation',
+			'titre' => 'Progress',
+			'langs' => 'vignoble@vignoble',
+			'position' => 10,
+			'url' => '/vignoble/cultivationprogress.php',
+			'target' => '',
+			'user' => 2,
+			'enabled' => '$conf->vignoble->enabled',
+			'perms' => '$user->rights->vignoble->plot->read'
+		);
+		/**
 		 *  - Define plot left menu entry Orders and Shipment
 		 */
 		$this->menu[] = array(
