@@ -24,7 +24,6 @@ CREATE TABLE llx_plot_taskprogress(
  	dateprogress datetime,
  	progress INTEGER,
  	duration double,
- 	contributorscount INTEGER,
 	-- record date time & user
 	tms	timestamp,
   	datec	datetime,                   -- creation date

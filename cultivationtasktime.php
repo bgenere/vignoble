@@ -243,7 +243,7 @@ function addTimeSpent($object)
 			}
 		}
 		return $action = 'updateplot';
-	} else {		
+	} else {
 		return $action = '';
 	}
 }
@@ -781,9 +781,21 @@ function updatePlotTaskStatus($object)
 				if ($plottask->coverage <= GETPOST('plotlinecoverage' . $line->id, 'int')) {
 					// update plot task
 					$plottask->note = GETPOST('plotlinenote' . $line->id, 'alpha');
+					$progress = GETPOST('plotlinecoverage' . $line->id, 'int') - $plottask->coverage;
 					$plottask->coverage = GETPOST('plotlinecoverage' . $line->id, 'int');
 					$result = $plottask->update($user);
-					// update plot task progress
+					if ($progress > 0) {
+						// record plot task progress line
+						$plottaskprogress = new PlotTaskProgress($db);
+						$plottaskprogress->entity = $plottask->entity;
+						$plottaskprogress->fk_task = $plottask->fk_task;
+						$plottaskprogress->fk_plot = $plottask->fk_plot;
+						$plottaskprogress->dateprogress = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
+						$plottaskprogress->progress = $progress;
+						$plottaskprogress->duration = GETPOST("timespent_durationhour") * 60 * 60; // We store duration in seconds
+						$plottaskprogress->duration += GETPOST("timespent_durationmin") * 60;
+						$result = $plottaskprogress->create($user);
+					}
 				} else {
 					setEventMessages(null, $langs->trans("CurrentProgressShouldBeGreaterOrEqualPreviousProgress"), 'errors');
 				}

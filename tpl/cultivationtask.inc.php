@@ -31,6 +31,7 @@ dol_include_once('/contact/class/contact.class.php');
 //Include vignoble class
 require_once './class/plot.class.php';
 require_once './class/plotcultivationtask.class.php';
+require_once './class/plottaskprogress.class.php';
 
 // Include extrafields class
 dol_include_once('/core/class/extrafields.class.php');
