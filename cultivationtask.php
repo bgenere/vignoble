@@ -362,7 +362,7 @@ function displayTaskButtons($task)
 		print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Modify') . '</a>';
 	}
 	// Delete button
-	if ($user->rights->projet->supprimer && ! $task->hasChildren() && ! $task->hasTimeSpent()) {
+	if ($user->rights->projet->supprimer && ! $task->hasChildren() && ( ! $task->hasTimeSpent() || $conf->global->MAIN_VERSION_LAST_UPGRADE < "5")) {
 		print '<a class="butActionDelete" href="' . $_SERVER['PHP_SELF'] . '?id=' . $task->id . '&amp;action=delete">' . $langs->trans('Delete') . '</a>';
 	} else {
 		print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans('Delete') . '</a>';
