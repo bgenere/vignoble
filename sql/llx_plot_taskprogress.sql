@@ -21,7 +21,7 @@ CREATE TABLE llx_plot_taskprogress(
 	-- link attributes
  	fk_plot INTEGER NOT NULL,
  	fk_task	INTEGER NOT NULL,
- 	dateprogress datetime,
+ 	dateprogress DATE,
  	progress INTEGER,
  	duration double,
 	-- record date time & user

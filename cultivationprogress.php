@@ -37,7 +37,7 @@ $langs->load("other");
 if (! $user->rights->projet->lire)
 	accessforbidden();
 	
-// load cultivation project
+	// load cultivation project
 $cultivationprojectid = setIsCultivationProject();
 $cultivationproject = new Project($db);
 $cultivationproject->fetch($cultivationprojectid);
@@ -47,11 +47,11 @@ $sort = getsort();
 
 $filter = getfilter();
 
-//$orderlines = fetchProductsOrders($sort, '', '', $filter["orders"], 'AND');
+$timespent = getTaskTimeSpent($cultivationproject, $sort, $filter["timespent"]);
 
-//$shipmentlines = fetchProductsShipments($sort, '', '', $filter["shipments"], 'AND');
+$plotprogress = getPlotProgress($cultivationproject, $sort, $filter["plotprogress"]);
 
-displayView($cultivationproject,$orderlines, $shipmentlines, $sort, $filter);
+displayView($cultivationproject, $timespent, $plotprogress, $sort, $filter);
 
 /* close database */
 $db->close();
@@ -74,17 +74,16 @@ $db->close();
  *        	the filter parameters
  *        	
  */
-function displayView(Project $cultivationproject,$orders, $shipments, $sort, $filter)
+function displayView(Project $cultivationproject, $timespent, $plotprogress, $sort, $filter)
 {
 	global $db, $conf, $langs, $user;
-	
 	
 	$pagetitle = $langs->trans('Progress') . ' - ' . $cultivationproject->title;
 	
 	llxHeader('', $pagetitle);
 	print load_fiche_titre($pagetitle, '', 'object_vignoble@vignoble');
 	
-	displaySearchForm($cultivationproject,$filter, $sort);
+	displaySearchForm($cultivationproject, $filter, $sort);
 	
 	$urlparam = buildSearchParameters($filter);
 	
@@ -92,14 +91,14 @@ function displayView(Project $cultivationproject,$orders, $shipments, $sort, $fi
 	
 	print '<div class="fichehalfleft">'; // left column
 	
-	displayTable('TimeSpent', $orders, $sort, $urlparam);
+	displayTable('TimeSpent', $timespent, $sort, $urlparam);
 	
 	print '</div>'; // left column end
 	
 	print '<div class="fichehalfright">'; // right column
 	
 	print '<div class="ficheaddleft">'; // add white space on left
-	displayTable('PlotProgress', $shipments, $sort, $urlparam);
+	displayTable('Plots', $plotprogress, $sort, $urlparam);
 	print '</div>'; //
 	
 	print '</div>'; // right column end
@@ -145,8 +144,8 @@ function displaySearchForm(Project $cultivationproject, $filter, $sort)
 	print '</tr>';
 	// Tasks
 	$tasks = Array();
-	foreach ($cultivationproject->lines as $task){
-		$tasks[$task->ref]=$task->label;
+	foreach ($cultivationproject->lines as $task) {
+		$tasks[$task->ref] = $task->label;
 		array_multisort($tasks);
 	}
 	print '<tr>';
@@ -160,10 +159,12 @@ function displaySearchForm(Project $cultivationproject, $filter, $sort)
 	print '</div>'; // fiche
 }
 
+
+
 /**
- * Display the result table :
+ * Display the resut table :
  *
- * Product ref, product label, object count, quantity, amount
+ * Based on $fields populated
  *
  * @param string $tablename
  *        	name of the object
@@ -179,35 +180,68 @@ function displayTable($tablename, $table, $sort, $urlparam)
 	global $db, $conf, $langs, $user;
 	
 	$fields = array(
-		'Ref' => array(
+		'date' => array(
 			'align' => 'left',
-			'label' => 'Reference'
+			'label' => 'Date',
+			'sort' => 'date,task'
 		),
-		'Label' => array(
+		'task' => array(
 			'align' => 'left',
-			'label' => 'Label'
-		),
-		'totalNumber' => array(
-			'align' => 'right',
-			'label' => $tablename
-		),
-		'totalQuantity' => array(
-			'align' => 'right',
-			'label' => 'Quantity'
-		),
-		'totalAmount' => array(
-			'align' => 'right',
-			'display' => 'price',
-			'label' => 'Amount'
+			'label' => 'Task',
+			'sort' => 'task,date'
 		)
 	);
+	switch ($tablename) {
+		case 'TimeSpent':
+			$extrafields = array(
+				'contributor' => array(
+					'align' => 'left',
+					'label' => 'Contributor'
+				),
+				'note' => array(
+					'align' => 'left',
+					'label' => 'Note'
+				),
+				'timespent' => array(
+					'align' => 'right',
+					'display' => 'convertSecondToTime',
+					'label' => 'TimeSpent',
+					'total' => 0
+				)
+			);
+			break;
+		case 'Plots':
+			$extrafields = array(
+				'plot' => array(
+					'align' => 'left',
+					'label' => 'Plot'
+				),
+				'progress' => array(
+					'align' => 'right',
+					'label' => 'Progress',
+					'total' => 0
+				),
+				'duration' => array(
+					'align' => 'right',
+					'display' => 'convertSecondToTime',
+					'label' => 'Duration',
+					'total' => 0
+				)
+			);
+			break;
+	}
+	
+	$fields = array_merge($fields, $extrafields);
 	
 	print load_fiche_titre($langs->trans($tablename), '', '');
 	print '<table class="liste" >';
 	// Fields title
 	print '<tr class="liste_titre">';
 	foreach ($fields as $field => $fieldvalue) {
-		print print_liste_field_titre($langs->trans($fieldvalue['label']), $_SERVER['PHP_SELF'], $field, '', $urlparam, 'align="' . $fieldvalue['align'] . '"', $sort["field"], $sort["order"]);
+		if ($fieldvalue['sort'] !== null) {
+			print print_liste_field_titre($langs->trans($fieldvalue['label']), $_SERVER['PHP_SELF'], $fieldvalue['sort'], '', $urlparam, 'align="' . $fieldvalue['align'] . '"', $sort["field"], $sort["order"]);
+		} else
+			print print_liste_field_titre($langs->trans($fieldvalue['label']), '', '', '', '', 'align="' . $fieldvalue['align'] . '"');
 	}
 	print '</tr>';
 	// Table lines
@@ -221,9 +255,27 @@ function displayTable($tablename, $table, $sort, $urlparam)
 				print $line->$field;
 			}
 			print '</td>';
+			if ($fieldvalue['total'] !== null) {
+				$fields[$field]['total'] += ($line->$field);
+			}
 		}
 		print '</tr>';
 	}
+	// Total
+	print '<tr>';
+	foreach ($fields as $field => $fieldvalue) {
+		print '<td align="' . $fieldvalue['align'] . '">';
+		if (! empty($fieldvalue['total'])) {
+			if (! empty($fieldvalue['display'])) {
+				print $fieldvalue['display']($fieldvalue['total']);
+			} else
+				print $fieldvalue['total'];
+		} else {
+			print '--';
+		}
+		print '</td>';
+	}
+	print '</tr>';
 	print '</table>';
 }
 
@@ -238,7 +290,7 @@ function getsort()
 {
 	$sortfield = GETPOST(sortfield, 'alpha');
 	if (empty($sortfield)) {
-		$sortfield = 'Ref';
+		$sortfield = 'date,task';
 	}
 	$sortorder = GETPOST(sortorder, 'alpha');
 	if (empty($sortorder)) {
@@ -277,19 +329,19 @@ function getfilter()
 	if (empty($dateend)) {
 		$dateend = date("Y-m-d");
 	}
-	// TODO review conditions
+	
 	$tasks = GETPOST('multitasks', 'array');
-	//var_dump($tasks);
+	
 	if (empty($tasks)) { // not in Form check URL
 		$tasks = GETPOST('tasks', 'alpha');
 		if (empty($tasks)) {
-			$selectedtasks = "task.ref IS NOT NULL";
+			$selectedtasks = "pt.ref IS NOT NULL";
 		} else {
-			$selectedtasks = " task.ref IN " . $tasks;
+			$selectedtasks = " pt.ref IN " . $tasks;
 			$tasks = explode("','", trim($tasks, "('')"));
 		}
 	} else {
-		$selectedtasks = " task.ref IN ('" . implode("','", tasks) . "')";
+		$selectedtasks = " pt.ref IN ('" . implode("','", $tasks) . "')";
 	}
 	
 	$filter = array(
@@ -297,13 +349,13 @@ function getfilter()
 		"dateend" => $dateend,
 		"tasks" => $tasks,
 		"timespent" => array(
-			" commande.date_commande >= '" . $datebegin . "' ",
-			" commande.date_commande <= '" . $dateend . "' ",
+			" t.task_date >= '" . $datebegin . "' ",
+			" t.task_date <= '" . $dateend . "' ",
 			$selectedtasks
 		),
 		"plotprogress" => array(
-			"((shipment.date_expedition IS NULL AND shipment.date_creation >= '" . $datebegin . "') OR (shipment.date_expedition >= '" . $datebegin . "'))",
-			"((shipment.date_expedition IS NULL AND shipment.date_creation <= '" . $dateend . "') OR (shipment.date_expedition <= '" . $dateend . "'))",
+			" t.dateprogress >= '" . $datebegin . "' ",
+			" t.dateprogress <= '" . $dateend . "' ",
 			$selectedtasks
 		)
 	);
@@ -332,4 +384,123 @@ function buildSearchParameters($filter)
 	return $param;
 }
 
+/**
+ * get the Task time spent lines making the proper SQL request.
+ *
+ * @param Project $project
+ *        	the current project
+ * @param array $sort
+ *        	the sort fields and order
+ * @param array $filter
+ *        	the conditions to apply to get the lines
+ * @return Object[] the time spent lines |NULL if empty
+ */
+function getTaskTimeSpent(Project $project, $sort, $filter)
+{
+	Global $db, $conf, $user, $langs;
+	
+	$tasks = array();
+	
+	$sql = "SELECT";
+	$sql .= " t.rowid,";
+	$sql .= " t.fk_task,";
+	$sql .= " t.task_date as date,";
+	$sql .= " t.task_datehour,";
+	$sql .= " t.task_date_withhour,";
+	$sql .= " t.task_duration as timespent,";
+	$sql .= " t.fk_user,";
+	$sql .= " t.note as note,";
+	$sql .= " pt.ref, pt.label as task,";
+	$sql .= " trim(concat(u.firstname,' ',u.lastname)) as contributor";
+	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t, " . MAIN_DB_PREFIX . "projet_task as pt, " . MAIN_DB_PREFIX . "user as u";
+	$sql .= " WHERE t.fk_user = u.rowid AND t.fk_task = pt.rowid";
+	$sql .= " AND pt.fk_projet =" . $project->id;
+	
+	if (count($filter) > 0) {
+		// add clauses to WHERE
+		$sql .= ' AND ' . implode(' AND ', $filter);
+	}
+	
+	if (! empty($sort)) {
+		// add ORDER BY
+		$sql .= $db->order($sort['field'], $sort['order']);
+	}
+	
+	$resql = $db->query($sql);
+	if ($resql) {
+		$num = $db->num_rows($resql);
+		$totalnboflines = $num;
+		
+		$i = 0;
+		while ($i < $num) {
+			$row = $db->fetch_object($resql);
+			$tasks[$i] = $row;
+			$i ++;
+		}
+		$db->free($resql);
+		return $tasks;
+	} else {
+		dol_print_error($db);
+		return null;
+	}
+}
+
+/**
+ * get the plot progress lines making the proper SQL request.
+ *
+ * @param Project $project
+ *        	the current project
+ * @param array $sort
+ *        	the sort fields and order
+ * @param array $filter
+ *        	the conditions to apply to get the lines
+ * @return Object[] the plot progress lines |NULL if empty
+ */
+function getPlotProgress(Project $project, $sort, $filter)
+{
+	Global $db, $conf, $user, $langs;
+	
+	$tasks = array();
+	
+	$sql = "SELECT";
+	$sql .= " t.rowid,";
+	$sql .= " t.fk_task,";
+	$sql .= " t.dateprogress as date,";
+	$sql .= " t.progress as progress,";
+	$sql .= " t.duration as duration,";
+	$sql .= " t.fk_plot,";
+	$sql .= " pt.ref, pt.label as task,";
+	$sql .= " pl.label as plot";
+	$sql .= " FROM " . MAIN_DB_PREFIX . "plot_taskprogress as t, " . MAIN_DB_PREFIX . "projet_task as pt, " . MAIN_DB_PREFIX . "plot as pl";
+	$sql .= " WHERE t.fk_plot = pl.rowid AND t.fk_task = pt.rowid";
+	$sql .= " AND pt.fk_projet =" . $project->id;
+	
+	if (count($filter) > 0) {
+		// add clauses to WHERE
+		$sql .= ' AND ' . implode(' AND ', $filter);
+	}
+	
+	if (! empty($sort)) {
+		// add ORDER BY
+		$sql .= $db->order($sort['field'], $sort['order']);
+	}
+	
+	$resql = $db->query($sql);
+	if ($resql) {
+		$num = $db->num_rows($resql);
+		$totalnboflines = $num;
+		
+		$i = 0;
+		while ($i < $num) {
+			$row = $db->fetch_object($resql);
+			$tasks[$i] = $row;
+			$i ++;
+		}
+		$db->free($resql);
+		return $tasks;
+	} else {
+		dol_print_error($db);
+		return null;
+	}
+}
 
