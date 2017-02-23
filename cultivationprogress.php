@@ -41,7 +41,7 @@ if (! $user->rights->projet->lire)
 $cultivationprojectid = setIsCultivationProject();
 $cultivationproject = new Project($db);
 $cultivationproject->fetch($cultivationprojectid);
-$cultivationproject->getLinesArray($user);
+//$cultivationproject->getLinesArray($user);
 
 $sort = getsort();
 
@@ -143,8 +143,9 @@ function displaySearchForm(Project $cultivationproject, $filter, $sort)
 	print '<td>' . $form->select_date($filter['dateend'], 'dateend', 0, 0, 0, "dateend", 1, 1, 1) . '</td>';
 	print '</tr>';
 	// Tasks
-	$tasks = Array();
-	foreach ($cultivationproject->lines as $task) {
+	$tasks = array();
+	$lines = getProjectTasks($cultivationproject);
+	foreach ($lines as $task) {
 		$tasks[$task->ref] = $task->label;
 		array_multisort($tasks);
 	}
@@ -484,6 +485,38 @@ function getPlotProgress(Project $project, $sort, $filter)
 		// add ORDER BY
 		$sql .= $db->order($sort['field'], $sort['order']);
 	}
+	
+	$resql = $db->query($sql);
+	if ($resql) {
+		$num = $db->num_rows($resql);
+		$totalnboflines = $num;
+		
+		$i = 0;
+		while ($i < $num) {
+			$row = $db->fetch_object($resql);
+			$tasks[$i] = $row;
+			$i ++;
+		}
+		$db->free($resql);
+		return $tasks;
+	} else {
+		dol_print_error($db);
+		return null;
+	}
+}
+
+function getProjectTasks(Project $project)
+{
+	Global $db, $conf, $user, $langs;
+	
+	$tasks = array();
+	
+	$sql = "SELECT";
+	$sql .= " pt.ref as ref,";
+	$sql .= " pt.label as label";
+	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task as pt ";
+	$sql .= " WHERE ";
+	$sql .= " pt.fk_projet =" . $project->id;
 	
 	$resql = $db->query($sql);
 	if ($resql) {
