@@ -20,10 +20,8 @@ CREATE TABLE llx_plot_taskprogress(
 	entity INTEGER DEFAULT 1 NOT NULL, -- multi company id
 	-- link attributes
  	fk_plot INTEGER NOT NULL,
- 	fk_task	INTEGER NOT NULL,
- 	dateprogress DATE,
+ 	fk_tasktime	INTEGER NOT NULL,
  	progress INTEGER,
- 	duration double,
 	-- record date time & user
 	tms	timestamp,
   	datec	datetime,                   -- creation date

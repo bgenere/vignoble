@@ -15,10 +15,9 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -- unique index on link fields
-ALTER TABLE llx_plot_taskprogress ADD UNIQUE INDEX uk_plot_taskprogress_plot (fk_plot, fk_task, dateprogress);
--- index for date and task search
-ALTER TABLE llx_plot_taskprogress ADD INDEX uk_plot_taskprogress_task (fk_task);
-ALTER TABLE llx_plot_taskprogress ADD INDEX idx_plot_taskprogress_dateprogress (dateprogress);
+ALTER TABLE llx_plot_taskprogress ADD UNIQUE INDEX uk_plot_taskprogress_plot (fk_plot, fk_tasktime);
+-- index for task search
+ALTER TABLE llx_plot_taskprogress ADD INDEX uk_plot_taskprogress_tasktime (fk_tasktime);
 -- index on user
 ALTER TABLE llx_plot_taskprogress ADD INDEX idx_plot_taskprogress_fk_user_author (fk_user_author);
 ALTER TABLE llx_plot_taskprogress ADD INDEX idx_plot_taskprogress_fk_user_modif (fk_user_modif);
