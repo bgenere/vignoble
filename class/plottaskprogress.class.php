@@ -62,11 +62,7 @@ class PlotTaskProgress extends CommonObject
 
 	public $fk_plot;
 
-	public $fk_task;
-
-	public $dateprogress;
-
-	public $progress;
+	public $fk_tasktime;
 
 	public $duration;
 
@@ -114,19 +110,13 @@ class PlotTaskProgress extends CommonObject
 		if (isset($this->fk_plot)) {
 			$this->fk_plot = trim($this->fk_plot);
 		}
-		if (isset($this->fk_task)) {
-			$this->fk_task = trim($this->fk_task);
-		}
-		if (isset($this->dateprogress)) {
-			$this->dateprogress = trim($this->dateprogress);
+		if (isset($this->fk_tasktime)) {
+			$this->fk_tasktime = trim($this->fk_tasktime);
 		}
 		if (isset($this->progress)) {
 			$this->progress = trim($this->progress);
 		}
-		if (isset($this->duration)) {
-			$this->duration = trim($this->duration);
-		}
-		
+
 		// Check parameters
 		// Put here code to add control on parameters values
 		
@@ -135,10 +125,8 @@ class PlotTaskProgress extends CommonObject
 		
 		$sql .= 'entity,';
 		$sql .= 'fk_plot,';
-		$sql .= 'fk_task,';
-		$sql .= 'dateprogress,';
+		$sql .= 'fk_tasktime,';
 		$sql .= 'progress,';
-		$sql .= 'duration,';
 		$sql .= 'datec,';
 		$sql .= 'fk_user_author,';
 		$sql .= 'fk_user_modif';
@@ -147,10 +135,8 @@ class PlotTaskProgress extends CommonObject
 		
 		$sql .= ' ' . ((! isset($this->entity) || empty($this->entity)) ? '1' : $this->entity) . ',';
 		$sql .= ' ' . (! isset($this->fk_plot) ? 'NULL' : "'" . $this->db->escape($this->fk_plot) . "'") . ',';
-		$sql .= ' ' . (! isset($this->fk_task) ? 'NULL' : "'" . $this->db->escape($this->fk_task) . "'") . ',';
-		$sql .= ' ' . "'" . $this->db->idate($this->dateprogress) . "'" . ',';
+		$sql .= ' ' . (! isset($this->fk_tasktime) ? 'NULL' : "'" . $this->db->escape($this->fk_tasktime) . "'") . ',';
 		$sql .= ' ' . (! isset($this->progress) ? 'NULL' : "'" . $this->db->escape($this->progress) . "'") . ',';
-		$sql .= ' ' . (! isset($this->duration) ? 'NULL' : "'" . $this->db->escape($this->duration) . "'") . ',';
 		$sql .= ' ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
 		$sql .= ' ' . $user->id . ',';
 		$sql .= ' ' . $user->id;
@@ -215,10 +201,8 @@ class PlotTaskProgress extends CommonObject
 			$sql .= ' t.rowid,';
 			$sql .= " t.entity,";
 			$sql .= " t.fk_plot,";
-			$sql .= " t.fk_task,";
-			$sql .= " t.dateprogress,";
+			$sql .= " t.fk_tasktime,";
 			$sql .= " t.progress,";
-			$sql .= " t.duration,";
 			$sql .= " t.tms,";
 			$sql .= " t.datec,";
 			$sql .= " t.fk_user_author,";
@@ -236,10 +220,8 @@ class PlotTaskProgress extends CommonObject
 					$this->id = $obj->rowid;
 					$this->entity = $obj->entity;
 					$this->fk_plot = $obj->fk_plot;
-					$this->fk_task = $obj->fk_task;
-					$this->dateprogress = $obj->dateprogress;
+					$this->fk_tasktime = $obj->fk_tasktime;
 					$this->progress = $obj->progress;
-					$this->duration = $obj->duration;
 					$this->tms = $this->db->jdate($obj->tms);
 					$this->datec = $this->db->jdate($obj->datec);
 					$this->fk_user_author = $obj->fk_user_author;
@@ -280,10 +262,8 @@ class PlotTaskProgress extends CommonObject
 		
 		$sql .= " t.entity,";
 		$sql .= " t.fk_plot,";
-		$sql .= " t.fk_task,";
-		$sql .= " t.dateprogress,";
+		$sql .= " t.fk_tasktime,";
 		$sql .= " t.progress,";
-		$sql .= " t.duration,";
 		$sql .= " t.tms,";
 		$sql .= " t.datec,";
 		$sql .= " t.fk_user_author,";
@@ -301,10 +281,8 @@ class PlotTaskProgress extends CommonObject
 				$this->id = $obj->rowid;
 				$this->entity = $obj->entity;
 				$this->fk_plot = $obj->fk_plot;
-				$this->fk_task = $obj->fk_task;
-				$this->dateprogress = $obj->dateprogress;
+				$this->fk_tasktime = $obj->fk_tasktime;
 				$this->progress = $obj->progress;
-				$this->duration = $obj->duration;
 				$this->tms = $this->db->jdate($obj->tms);
 				$this->datec = $this->db->jdate($obj->datec);
 				$this->fk_user_author = $obj->fk_user_author;
@@ -352,14 +330,15 @@ class PlotTaskProgress extends CommonObject
 		$sql .= " t.entity,";
 		$sql .= " t.fk_plot,";
 		$sql .= " plot.ref as reference,";
-		$sql .= " t.fk_task,";
+		$sql .= " t.fk_tasktime,";
 		$sql .= " task.ref as taskref,";
 		$sql .= " task.label as tasklabel,";
 		$sql .= " task.dateo as taskopen,";
 		$sql .= " task.datee as taskend,";
-		$sql .= " t.dateprogress as dateprogress,";
+		$sql .= " tasktime.task_date as dateprogress,";
 		$sql .= " t.progress as progress,";
-		$sql .= " t.duration as duration,";
+		$sql .= " tasktime.task_duration as duration,";
+		//TODO add user from tasktime
 		$sql .= " t.tms,";
 		$sql .= " t.datec,";
 		$sql .= " t.fk_user_author,";
@@ -367,7 +346,8 @@ class PlotTaskProgress extends CommonObject
 		
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
 		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'plot as plot ON t.fk_plot = plot.rowid';
-		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'projet_task as task ON t.fk_task = task.rowid';
+		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'projet_task_time as tasktime ON t.fk_tasktime = tasktime.rowid';
+		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'projet_task as task ON tasktime.fk_task = task.rowid';
 		
 		// Manage filter
 		$sqlwhere = array();
@@ -394,7 +374,7 @@ class PlotTaskProgress extends CommonObject
 				
 				$line->entity = $obj->entity;
 				$line->fk_plot = $obj->fk_plot;
-				$line->fk_task = $obj->fk_task;
+				$line->fk_tasktime = $obj->fk_tasktime;
 				$line->dateprogress = $obj->dateprogress;
 				$line->progress = $obj->progress;
 				$line->duration = $obj->duration;
@@ -440,19 +420,12 @@ class PlotTaskProgress extends CommonObject
 		if (isset($this->fk_plot)) {
 			$this->fk_plot = trim($this->fk_plot);
 		}
-		if (isset($this->fk_task)) {
-			$this->fk_task = trim($this->fk_task);
-		}
-		if (isset($this->dateprogress)) {
-			$this->dateprogress = trim($this->dateprogress);
+		if (isset($this->fk_tasktime)) {
+			$this->fk_tasktime = trim($this->fk_tasktime);
 		}
 		if (isset($this->progress)) {
 			$this->progress = trim($this->progress);
 		}
-		if (isset($this->duration)) {
-			$this->duration = trim($this->duration);
-		}
-
 		
 		// Check parameters
 		// Put here code to add a control on parameters values
@@ -461,10 +434,8 @@ class PlotTaskProgress extends CommonObject
 		$sql = 'UPDATE ' . MAIN_DB_PREFIX . $this->table_element . ' SET';
 		
 		$sql .= ' fk_plot = ' . (isset($this->fk_plot) ? "'" . $this->db->escape($this->fk_plot) . "'" : "null") . ',';
-		$sql .= ' fk_task = ' . (isset($this->fk_task) ? "'" . $this->db->escape($this->fk_task) . "'" : "null") . ',';
-		$sql .= ' dateprogress = ' ."'". $this->db->idate($this->dateprogress)."'".',';
+		$sql .= ' fk_task = ' . (isset($this->fk_tasktime) ? "'" . $this->db->escape($this->fk_tasktime) . "'" : "null") . ',';
 		$sql .= ' progress = ' . (isset($this->progress) ? "'" . $this->db->escape($this->progress) . "'" : "null") . ',';
-		$sql .= ' duration = ' . (isset($this->duration) ? "'" . $this->db->escape($this->duration) . "'" : "null") . ',';
 		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
 		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id);
 		
@@ -627,17 +598,17 @@ class PlotTaskProgress extends CommonObject
 		$result = '';
 		$companylink = '';
 		
-		$fk_task = '<u>' . $langs->trans("Plot") . '</u>';
-		$fk_task .= '<div width="100%">';
-		$fk_task .= '<b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
+		$fk_tasktime = '<u>' . $langs->trans("Plot") . '</u>';
+		$fk_tasktime .= '<div width="100%">';
+		$fk_tasktime .= '<b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
 		
 		$link = '<a href="' . dol_buildpath('/vignoble/plot_card.php', 1) . '?id=' . $this->id . '"';
-		$link .= ($notooltip ? '' : ' title="' . dol_escape_htmltag($fk_task, 1) . '" class="classfortooltip' . ($morecss ? ' ' . $morecss : '') . '"');
+		$link .= ($notooltip ? '' : ' title="' . dol_escape_htmltag($fk_tasktime, 1) . '" class="classfortooltip' . ($morecss ? ' ' . $morecss : '') . '"');
 		$link .= '>';
 		$linkend = '</a>';
 		
 		if ($withpicto) {
-			$result .= ($link . img_object(($notooltip ? '' : $fk_task), 'fk_task', ($notooltip ? '' : 'class="classfortooltip"')) . $linkend);
+			$result .= ($link . img_object(($notooltip ? '' : $fk_tasktime), 'fk_task', ($notooltip ? '' : 'class="classfortooltip"')) . $linkend);
 			if ($withpicto != 2)
 				$result .= ' ';
 		}
@@ -798,10 +769,8 @@ class PlotTaskProgress extends CommonObject
 		$this->specimen = 1;
 		$this->entity = '1';
 		$this->fk_plot = '1';
-		$this->fk_task = '1';
-		$this->dateprogress = $this->db->idate(dol_now());
+		$this->fk_tasktime = '1';
 		$this->progress = '5';
-		$this->duration = 3600;
 		$this->tms = '';
 		$this->datec = '';
 		$this->fk_user_author = '';
@@ -821,12 +790,8 @@ class plottaskprogressLine
 
 	public $fk_plot;
 
-	public $fk_task;
+	public $fk_tasktime;
 	
-	public $dateprogress;
-
-	public $duration;
-
 	public $progress;
 
 	public $tms = '';
