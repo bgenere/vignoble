@@ -114,9 +114,12 @@ if (($id > 0 || ! empty($ref))) {
 			// Fields header
 			print '<tr class="liste_titre">';
 			print_liste_field_titre($langs->trans("Date"), $_SERVER['PHP_SELF'], 't.task_date,u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("By"), $_SERVER['PHP_SELF'], 'u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("By"), $_SERVER['PHP_SELF'], 'u.firstname,u.lastname,t.task_date', '', $params, '', $sort['field'], $sort['order']);
 			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 't.note', '', $params, '', $sort['field'], $sort['order']);
 			print_liste_field_titre($langs->trans("Time"), $_SERVER['PHP_SELF'], 't.task_duration', '', $params, 'align="right"', $sort['field'], $sort['order']);
+			print '<td style="width:5%;">&nbsp</td>';
+			print_liste_field_titre($langs->trans("Plot"), $_SERVER['PHP_SELF'], 'pl.ref,pl.label,t.task_date', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Progress"), $_SERVER['PHP_SELF'], 'pp.progress,t.task_date', '', $params, 'align="right"', $sort['field'], $sort['order']);
 			print '<td style="width:15%;" colspan="2">&nbsp</td>';
 			print "</tr>";
 			// Search fields header
@@ -124,18 +127,28 @@ if (($id > 0 || ! empty($ref))) {
 			print '<td>' . $form->select_date((empty($filter['date']) ? - 1 : $filter['date']), 'search_date', 0, 0, 2, "search_date", 1, 0, 1) . '</td>';
 			print '<td><input type="text" class="flat" name="search_user" value="' . $filter['user'] . '"></td>';
 			print '<td><input type="text" class="flat" name="search_note" value="' . $filter['note'] . '"></td>';
-			print '<td class=" right"></td>';
-			print '<td ></td>';
+			print '<td class="right"> </td>';
+			print '<td style="width:5%;">&nbsp</td>';
+			print '<td><input type="text" class="flat" name="search_plot" value="' . $filter['plot'] . '"></td>';
+			print '<td class="right"><input type="text" class="flat" name="search_progress" value="' . $filter['progress'] . '"></td>';
+			print '<td > </td>';
 			print '<td class=" right">';
 			$searchpitco = $form->showFilterAndCheckAddButtons(0, 'checkforselect', 1);
 			print $searchpitco;
 			print '</td>';
+			
 			print '</tr>' . "\n";
 			
 			$totalarray = array();
 			$tasks = getTaskTimeSpent($object, $sort, $filter["timespent"]);
+			$prevlineid = 0;
 			foreach ($tasks as $task_time) {
-				$totalarray = displayTaskTimeSpentLine($task_time, $action, $object, $form, $userstatic, $totalarray);
+				if ($prevlineid == $task_time->rowid)
+					$newline = false;
+				else
+					$newline = true;
+				$totalarray = displayTaskTimeSpentLine($task_time, $action, $object, $form, $userstatic, $totalarray, $newline);
+				$prevlineid = $task_time->rowid;
 			}
 			// Show total line
 			if (isset($totalarray['totaldurationfield'])) {
@@ -432,11 +445,16 @@ function getTaskTimeSpent($object, $sort, $filter)
 	$sql .= " t.task_duration,";
 	$sql .= " t.fk_user,";
 	$sql .= " t.note,";
+	$sql .= " pl.rowid as plotid, pl.ref as plotref, pl.label as plotlabel,";
+	$sql .= " pp.progress as plotprogress,";
 	$sql .= " pt.ref, pt.label,";
 	$sql .= " u.lastname, u.firstname";
-	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t, " . MAIN_DB_PREFIX . "projet_task as pt, " . MAIN_DB_PREFIX . "user as u";
-	$sql .= " WHERE t.fk_user = u.rowid AND t.fk_task = pt.rowid";
-	$sql .= " AND t.fk_task =" . $object->id;
+	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t";
+	$sql .= " LEFT OUTER JOIN " . MAIN_DB_PREFIX . "plot_taskprogress as pp ON t.rowid = pp.fk_tasktime ";
+	$sql .= " LEFT OUTER JOIN " . MAIN_DB_PREFIX . "plot as pl ON pp.fk_plot = pl.rowid ";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "projet_task as pt ON t.fk_task = pt.rowid ";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "user as u ON t.fk_user = u.rowid ";
+	$sql .= " WHERE t.fk_task =" . $object->id;
 	
 	if (count($filter) > 0) {
 		// add clauses to WHERE
@@ -480,7 +498,7 @@ function getTaskTimeSpent($object, $sort, $filter)
  * @param array $totalarray        	
  * @return array $totalarray the total fields and value
  */
-function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User $userstatic, $totalarray)
+function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User $userstatic, $totalarray, bool $newline = true)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -493,60 +511,92 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User
 	print '<td class="nowrap">';
 	$date1 = $db->jdate($task_time->task_date);
 	$date2 = $db->jdate($task_time->task_datehour);
-	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
-		print $form->select_date(($task_time->task_date_withhour ? $date2 : $date1), 'timeline', $task_time->task_date_withhour, $task_time->task_date_withhour, 2, "timespent_date", 1, 0, 1);
-	} else {
-		print dol_print_date(($date2 ? $date2 : $date1), ($task_time->task_date_withhour ? 'dayhour' : 'day'));
+	if ($newline) {
+		if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+			print $form->select_date(($task_time->task_date_withhour ? $date2 : $date1), 'timeline', $task_time->task_date_withhour, $task_time->task_date_withhour, 2, "timespent_date", 1, 0, 1);
+		} else {
+			print dol_print_date(($date2 ? $date2 : $date1), ($task_time->task_date_withhour ? 'dayhour' : 'day'));
+		}
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++; // table
 	                           
 	// User
 	print '<td>';
-	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
-		$contactsoftask = $object->getListContactId('internal');
-		if (! in_array($task_time->fk_user, $contactsoftask)) {
-			$contactsoftask[] = $task_time->fk_user;
-		}
-		if (count($contactsoftask) > 0) {
-			print $form->select_dolusers($task_time->fk_user, 'userid_line', 0, '', 0, '', $contactsoftask);
+	if ($newline) {
+		if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+			$contactsoftask = $object->getListContactId('internal');
+			if (! in_array($task_time->fk_user, $contactsoftask)) {
+				$contactsoftask[] = $task_time->fk_user;
+			}
+			if (count($contactsoftask) > 0) {
+				print $form->select_dolusers($task_time->fk_user, 'userid_line', 0, '', 0, '', $contactsoftask);
+			} else {
+				print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
+			}
 		} else {
-			print img_error($langs->trans('FirstAddRessourceToAllocateTime')) . $langs->trans('FirstAddRessourceToAllocateTime');
+			$userstatic->id = $task_time->fk_user;
+			$userstatic->lastname = $task_time->lastname;
+			$userstatic->firstname = $task_time->firstname;
+			print $userstatic->getNomUrl(1);
 		}
-	} else {
-		$userstatic->id = $task_time->fk_user;
-		$userstatic->lastname = $task_time->lastname;
-		$userstatic->firstname = $task_time->firstname;
-		print $userstatic->getNomUrl(1);
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
 	
 	// Note
 	print '<td align="left">';
-	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
-		print '<textarea name="timespent_note_line" width="95%" rows="' . ROWS_2 . '">' . $task_time->note . '</textarea>';
-	} else {
-		print dol_nl2br($task_time->note);
+	if ($newline) {
+		if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+			print '<textarea name="timespent_note_line" width="95%" rows="' . ROWS_2 . '">' . $task_time->note . '</textarea>';
+		} else {
+			print dol_nl2br($task_time->note);
+		}
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
 	
 	// Time spent
 	print '<td align="right">';
+	if ($newline) {
 	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
 		print '<input type="hidden" name="old_duration" value="' . $task_time->task_duration . '">';
 		print $form->select_duration('new_duration', $task_time->task_duration, 0, 'text');
 	} else {
 		print convertSecondToTime($task_time->task_duration, 'allhourmin');
 	}
+	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
+	if ($newline) {
 	$totalarray['totaldurationfield'] = $totalarray['nbfield'];
 	$totalarray['totalduration'] += $task_time->task_duration;
+	}
+	// separator
+	print '<td style="width:5%;">';
+	if ($newline)
+		print ".";
+	print '&nbsp</td>';
+	//
+	
+	// Plot
+	print '<td>';
+	$plotstatic = new plot($db);
+	$plotstatic->id = $task_time->plotid;
+	$plotstatic->ref = $task_time->plotref;
+	$plotstatic->label = $task_time->plotlabel;
+	print $plotstatic->getNomUrl(1);
+	print '</td>';
+	$totalarray['nbfield'] ++;
+	// Plot progress
+	print '<td align="right">';
+	print $task_time->plotprogress . " %";
+	print '</td>';
+	$totalarray['nbfield'] ++;
 	
 	// Action column
 	print '<td class="right" colspan = "2">';
+	if ($newline) {
 	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
 		print '<input type="hidden" name="lineid" value="' . GETPOST('lineid') . '">';
 		print '<input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
@@ -564,6 +614,7 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User
 			print img_delete();
 			print '</a>';
 		}
+	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
 	$totalarray['nbfield'] ++;
@@ -773,7 +824,7 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
 function updatePlotTaskStatus(Task $object, $contributorsTime = array())
 {
 	Global $db, $conf, $user, $langs;
-
+	
 	$plottask = new Plotcultivationtask($db);
 	$taskfilter = array(
 		"t.fk_task = " . $object->id,
@@ -792,7 +843,7 @@ function updatePlotTaskStatus(Task $object, $contributorsTime = array())
 						$contributorsCount = count($contributorsTime);
 						$i = 0;
 						$total = 0;
-						foreach ($contributorsTime as $key => $value) {							
+						foreach ($contributorsTime as $key => $value) {
 							// record plot task progress line for each contributor
 							$i ++;
 							$plottaskprogress = new PlotTaskProgress($db);
