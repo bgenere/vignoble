@@ -53,8 +53,8 @@ if (($id > 0 || ! empty($ref))) {
 			 */
 			if ($action == 'addtimespent' && $user->rights->projet->lire) {
 				$action = addTimeSpent($object);
-				if ($action == 'updateplot')
-					$action = updatePlotTaskStatus($object);
+				// if ($action == 'updateplot')
+				// $action = updatePlotTaskStatus($object);
 			}
 			
 			if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
@@ -155,13 +155,13 @@ llxFooter();
 $db->close();
 
 /**
- * Add a time spent record for a task
+ * Add a time spent record for a task then add plot progress
  *
  * @param Task $object
  *        	the current task
  * @return string $action empty
  */
-function addTimeSpent($object)
+function addTimeSpent(Task $object)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -196,6 +196,7 @@ function addTimeSpent($object)
 			$object->timespent_date = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
 		}
 		// process contributors
+		$contributorsTime = array();
 		$currentcontributors = array_merge($object->getIdContact('internal', 'TASKCONTRIBUTOR'), $object->getIdContact('internal', 'TASKEXECUTIVE'));
 		$all = array_search(0, $multicontributors);
 		if ($all === false) { // list of contributors in array
@@ -214,6 +215,7 @@ function addTimeSpent($object)
 				$result = $object->addTimeSpent($user);
 				if ($result >= 0) {
 					setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+					$contributorsTime[$contributorid] = $result;
 				} else {
 					setEventMessages($langs->trans("ErrorSavingTimeSpent"), null, 'errors');
 				}
@@ -237,12 +239,14 @@ function addTimeSpent($object)
 				$result = $object->addTimeSpent($user);
 				if ($result >= 0) {
 					setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
+					$contributorsTime[$contributor["id"]] = $result;
 				} else {
 					setEventMessages($langs->trans("ErrorSavingTimeSpent"), null, 'errors');
 				}
 			}
 		}
-		return $action = 'updateplot';
+		updatePlotTaskStatus($object, $contributorsTime);
+		return $action = '';
 	} else {
 		return $action = '';
 	}
@@ -766,10 +770,10 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
  *        	the current task
  * @return string
  */
-function updatePlotTaskStatus($object)
+function updatePlotTaskStatus(Task $object, $contributorsTime = array())
 {
 	Global $db, $conf, $user, $langs;
-	
+
 	$plottask = new Plotcultivationtask($db);
 	$taskfilter = array(
 		"t.fk_task = " . $object->id,
@@ -785,16 +789,28 @@ function updatePlotTaskStatus($object)
 					$plottask->coverage = GETPOST('plotlinecoverage' . $line->id, 'int');
 					$result = $plottask->update($user);
 					if ($progress > 0) {
-						// record plot task progress line
-						$plottaskprogress = new PlotTaskProgress($db);
-						$plottaskprogress->entity = $plottask->entity;
-						$plottaskprogress->fk_task = $plottask->fk_task;
-						$plottaskprogress->fk_plot = $plottask->fk_plot;
-						$plottaskprogress->dateprogress = dol_mktime(12, 0, 0, GETPOST("timemonth"), GETPOST("timeday"), GETPOST("timeyear"));
-						$plottaskprogress->progress = $progress;
-						$plottaskprogress->duration = GETPOST("timespent_durationhour") * 60 * 60; // We store duration in seconds
-						$plottaskprogress->duration += GETPOST("timespent_durationmin") * 60;
-						$result = $plottaskprogress->create($user);
+						$contributorsCount = count($contributorsTime);
+						$i = 0;
+						$total = 0;
+						foreach ($contributorsTime as $key => $value) {							
+							// record plot task progress line for each contributor
+							$i ++;
+							$plottaskprogress = new PlotTaskProgress($db);
+							$plottaskprogress->entity = $plottask->entity;
+							$plottaskprogress->fk_plot = $plottask->fk_plot;
+							$plottaskprogress->fk_tasktime = $value;
+							// calculate individual contribution
+							$contribution = floor($progress / $contributorsCount);
+							
+							if ($i == $contributorsCount) {
+								$plottaskprogress->progress = $progress - $total;
+							} else {
+								$plottaskprogress->progress = $contribution;
+								$total += $contribution;
+							}
+							
+							$result = $plottaskprogress->create($user);
+						}
 					}
 				} else {
 					setEventMessages(null, $langs->trans("CurrentProgressShouldBeGreaterOrEqualPreviousProgress"), 'errors');
