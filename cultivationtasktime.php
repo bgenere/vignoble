@@ -85,7 +85,7 @@ if (($id > 0 || ! empty($ref))) {
 			if ($action == 'deleteline') {
 				// display confirmation dialog
 				$lineid = GETPOST('lineid', 'int');
-				print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid, $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_delete", '', '', 1);
+				print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . '&lineid=' . $lineid, $langs->trans("DeleteATimeSpent"), (GETPOST("message", "alpha") . "<br>" . $langs->trans("ConfirmDeleteATimeSpent")), "confirm_delete", '', '', 1);
 			}
 			
 			if ($user->rights->projet->lire) {
@@ -113,13 +113,13 @@ if (($id > 0 || ! empty($ref))) {
 			
 			// Fields header
 			print '<tr class="liste_titre">';
-			print_liste_field_titre($langs->trans("Date"), $_SERVER['PHP_SELF'], 't.task_date,u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("By"), $_SERVER['PHP_SELF'], 'u.firstname,u.lastname,t.task_date', '', $params, '', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 't.note', '', $params, '', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("Time"), $_SERVER['PHP_SELF'], 't.task_duration', '', $params, 'align="right"', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Date"), $_SERVER['PHP_SELF'], 't.task_date,u.firstname,u.lastname,pl.ref', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("By"), $_SERVER['PHP_SELF'], 'u.firstname,u.lastname,t.task_date,pl.ref', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 't.note,t.task_date,u.firstname,u.lastname,pl.ref', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Time"), $_SERVER['PHP_SELF'], 't.task_duration,t.task_date,u.firstname,u.lastname,pl.ref', '', $params, 'align="right"', $sort['field'], $sort['order']);
 			print '<td style="width:5%;">&nbsp</td>';
-			print_liste_field_titre($langs->trans("Plot"), $_SERVER['PHP_SELF'], 'pl.ref,pl.label,t.task_date', '', $params, '', $sort['field'], $sort['order']);
-			print_liste_field_titre($langs->trans("Progress"), $_SERVER['PHP_SELF'], 'pp.progress,t.task_date', '', $params, 'align="right"', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Plot"), $_SERVER['PHP_SELF'], 'pl.ref,t.task_date,u.firstname,u.lastname', '', $params, '', $sort['field'], $sort['order']);
+			print_liste_field_titre($langs->trans("Progress"), $_SERVER['PHP_SELF'], 'pp.progress,t.task_date,u.firstname,u.lastname,pl.ref', '', $params, 'align="right"', $sort['field'], $sort['order']);
 			print '<td style="width:15%;" colspan="2">&nbsp</td>';
 			print "</tr>";
 			// Search fields header
@@ -130,7 +130,7 @@ if (($id > 0 || ! empty($ref))) {
 			print '<td class="right"> </td>';
 			print '<td style="width:5%;">&nbsp</td>';
 			print '<td><input type="text" class="flat" name="search_plot" value="' . $filter['plot'] . '"></td>';
-			print '<td class="right"><input type="text" class="flat" name="search_progress" value="' . $filter['progress'] . '"></td>';
+			print '<td class="right"></td>';
 			print '<td > </td>';
 			print '<td class=" right">';
 			$searchpitco = $form->showFilterAndCheckAddButtons(0, 'checkforselect', 1);
@@ -321,8 +321,14 @@ function deleteTimeSpent($object)
 {
 	Global $db, $conf, $user, $langs;
 	
-	$object->fetchTimeSpent(GETPOST("lineid"));
-	$result = $object->delTimeSpent($user);
+	$timespentid = GETPOST("lineid", "int");
+	
+	$result = deletePlotProgress($timespentid);
+	
+	if ($result > 0) {
+		$object->fetchTimeSpent($timespentid);
+		$result = $object->delTimeSpent($user);
+	}
 	
 	if ($result < 0) {
 		$langs->load("errors");
@@ -559,18 +565,18 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User
 	// Time spent
 	print '<td align="right">';
 	if ($newline) {
-	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
-		print '<input type="hidden" name="old_duration" value="' . $task_time->task_duration . '">';
-		print $form->select_duration('new_duration', $task_time->task_duration, 0, 'text');
-	} else {
-		print convertSecondToTime($task_time->task_duration, 'allhourmin');
-	}
+		if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+			print '<input type="hidden" name="old_duration" value="' . $task_time->task_duration . '">';
+			print $form->select_duration('new_duration', $task_time->task_duration, 0, 'text');
+		} else {
+			print convertSecondToTime($task_time->task_duration, 'allhourmin');
+		}
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
 	if ($newline) {
-	$totalarray['totaldurationfield'] = $totalarray['nbfield'];
-	$totalarray['totalduration'] += $task_time->task_duration;
+		$totalarray['totaldurationfield'] = $totalarray['nbfield'];
+		$totalarray['totalduration'] += $task_time->task_duration;
 	}
 	// separator
 	print '<td style="width:5%;">';
@@ -597,23 +603,24 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User
 	// Action column
 	print '<td class="right" colspan = "2">';
 	if ($newline) {
-	if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
-		print '<input type="hidden" name="lineid" value="' . GETPOST('lineid') . '">';
-		print '<input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
-		print '<br>';
-		print '<input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '">';
-	} else 
-		if ($user->rights->projet->creer) {
-			print '&nbsp;';
-			print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $task_time->fk_task . '&amp;action=editline&amp;lineid=' . $task_time->rowid . '">';
-			print img_edit();
-			print '</a>';
-			
-			print '&nbsp;';
-			print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $task_time->fk_task . '&amp;action=deleteline&amp;lineid=' . $task_time->rowid . '">';
-			print img_delete();
-			print '</a>';
-		}
+		if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+			print '<input type="hidden" name="lineid" value="' . GETPOST('lineid') . '">';
+			print '<input type="submit" class="button" name="save" value="' . $langs->trans("Save") . '">';
+			print '<br>';
+			print '<input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '">';
+		} else 
+			if ($user->rights->projet->creer) {
+				print '&nbsp;';
+				print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $task_time->fk_task . '&amp;action=editline&amp;lineid=' . $task_time->rowid . '">';
+				print img_edit();
+				print '</a>';
+				
+				print '&nbsp;';
+				$message = $langs->trans("Date") . " : " . dol_print_date(($date2 ? $date2 : $date1), ($task_time->task_date_withhour ? 'dayhour' : 'day')) . " " . $langs->trans("By") . " : " . $task_time->firstname . " " . $task_time->lastname;
+				print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $task_time->fk_task . '&amp;action=deleteline&amp;lineid=' . $task_time->rowid . '&amp;message=' . $message . '">';
+				print img_delete();
+				print '</a>';
+			}
 	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
@@ -661,7 +668,7 @@ function getsort()
 {
 	$sortfield = GETPOST(sortfield, 'alpha');
 	if (empty($sortfield)) {
-		$sortfield = 't.task_date,u.firstname,u.lastname';
+		$sortfield = 't.task_date,u.firstname,u.lastname,pl.ref';
 	}
 	$sortorder = GETPOST(sortorder, 'alpha');
 	if (empty($sortorder)) {
@@ -716,12 +723,17 @@ function getTimeSpentfilter($id)
 		$search_note = GETPOST('search_note', 'alpha');
 		if (! empty($search_note))
 			$timespentfilter[] = "t.note LIKE '%" . $search_note . "%'";
+		
+		$search_plot = GETPOST('search_plot', 'alpha');
+		if (! empty($search_plot))
+			$timespentfilter[] = "pl.ref LIKE '%" . $search_plot . "%'";
 	}
 	$filter = array(
 		"id" => $id,
 		"date" => $search_date,
 		"user" => $search_user,
 		"note" => $search_note,
+		"plot" => $search_plot,
 		"timespent" => $timespentfilter
 	);
 	return $filter;
@@ -798,7 +810,7 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
 			print '<td >';
 			print '<textarea name="plotlinenote' . $line->id . '" style="width:90%;" rows="' . ROWS_1 . '">' . $line->note . '</textarea>';
 			print '</td>';
-			// Coverage
+			// Current Coverage
 			print '<td class=right>';
 			print $formother->select_percent($line->coverage, 'plotoldcoverage' . $line->id, 1);
 			print '</td>';
@@ -876,5 +888,69 @@ function updatePlotTaskStatus(Task $object, $contributorsTime = array())
 			}
 		}
 		return $action = '';
+	}
+}
+
+function deletePlotProgress($timespentid)
+{
+	Global $db, $conf, $user, $langs;
+	
+	dol_syslog(__METHOD__, LOG_DEBUG);
+	
+	$error = 0;
+	
+	$db->begin();
+	// get records with plots
+	$plotsprogress = array();
+	$sql = 'SELECT';
+	$sql .= ' t.rowid,';
+	$sql .= " t.fk_plot,";
+	$sql .= " t.fk_tasktime,";
+	$sql .= " t.progress";
+	$sql .= ' FROM ' . MAIN_DB_PREFIX . 'plot_taskprogress as t';
+	$sql .= ' WHERE t.fk_tasktime = ' . $timespentid;
+	
+	$resql = $db->query($sql);
+	if ($resql) {
+		$num = $db->num_rows($resql);
+		$totalnboflines = $num;	
+		$i = 0;
+		while ($i < $num) {
+			$row = $db->fetch_object($resql);
+			$plotsprogress[$i] = $row;
+			$i ++;
+		}
+		$db->free($resql);
+	} else {
+		$error ++;
+		$errormsg = 'Error ' . $this->db->lasterror();
+		dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
+	}
+	// update plot progress (remove spend time)
+	var_dump($plotsprogress);
+	return -1; // TODO change for update plot progress
+	
+	// delete records
+	if (! $error) {
+		$sql = 'DELETE FROM ' . MAIN_DB_PREFIX . $this->table_element;
+		$sql .= ' WHERE fk_tasktime=' . $timespentid;
+		
+		$resql = $this->db->query($sql);
+		if (! $resql) {
+			$error ++;
+			$errormsg = 'Error ' . $this->db->lasterror();
+			dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
+		}
+	}
+	
+	// Commit or rollback
+	if ($error) {
+		$this->db->rollback();
+		
+		return - 1 * $error;
+	} else {
+		$this->db->commit();
+		
+		return 1;
 	}
 }
