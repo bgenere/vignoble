@@ -53,8 +53,6 @@ if (($id > 0 || ! empty($ref))) {
 			 */
 			if ($action == 'addtimespent' && $user->rights->projet->lire) {
 				$action = addTimeSpent($object);
-				// if ($action == 'updateplot')
-				// $action = updatePlotTaskStatus($object);
 			}
 			
 			if ($action == 'updateline' && ! $_POST["cancel"] && $user->rights->projet->creer) {
@@ -272,7 +270,7 @@ function addTimeSpent(Task $object)
  *        	the current task
  * @return string $action empty
  */
-function updateTimeSpent($object)
+function updateTimeSpent(Task $object)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -300,6 +298,9 @@ function updateTimeSpent($object)
 		$object->timespent_fk_user = GETPOST("userid_line");
 		
 		$result = $object->updateTimeSpent($user);
+		if ($result) {
+			$result = updatePlotProgress($object->timespent_id, $object);
+		}
 		if ($result >= 0) {
 			setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
 		} else {
@@ -317,13 +318,13 @@ function updateTimeSpent($object)
  *        	the current task
  * @return string $action empty
  */
-function deleteTimeSpent($object)
+function deleteTimeSpent(Task $object)
 {
 	Global $db, $conf, $user, $langs;
 	
 	$timespentid = GETPOST("lineid", "int");
 	
-	$result = deletePlotProgress($timespentid);
+	$result = deletePlotProgress($timespentid, $object);
 	
 	if ($result > 0) {
 		$object->fetchTimeSpent($timespentid);
@@ -453,12 +454,14 @@ function getTaskTimeSpent($object, $sort, $filter)
 	$sql .= " t.note,";
 	$sql .= " pl.rowid as plotid, pl.ref as plotref, pl.label as plotlabel,";
 	$sql .= " pp.progress as plotprogress,";
+	$sql .= " pct.coverage as plotcoverage,";
 	$sql .= " pt.ref, pt.label,";
 	$sql .= " u.lastname, u.firstname";
 	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t";
 	$sql .= " LEFT OUTER JOIN " . MAIN_DB_PREFIX . "plot_taskprogress as pp ON t.rowid = pp.fk_tasktime ";
 	$sql .= " LEFT OUTER JOIN " . MAIN_DB_PREFIX . "plot as pl ON pp.fk_plot = pl.rowid ";
 	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "projet_task as pt ON t.fk_task = pt.rowid ";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "plot_cultivationtask as pct ON pct.fk_task = pt.rowid AND pct.fk_plot = pl.rowid ";
 	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "user as u ON t.fk_user = u.rowid ";
 	$sql .= " WHERE t.fk_task =" . $object->id;
 	
@@ -587,16 +590,26 @@ function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User
 	
 	// Plot
 	print '<td>';
-	$plotstatic = new plot($db);
-	$plotstatic->id = $task_time->plotid;
-	$plotstatic->ref = $task_time->plotref;
-	$plotstatic->label = $task_time->plotlabel;
-	print $plotstatic->getNomUrl(1);
+	if ($task_time->plotid) {
+		$plotstatic = new plot($db);
+		$plotstatic->id = $task_time->plotid;
+		$plotstatic->ref = $task_time->plotref;
+		$plotstatic->label = $task_time->plotlabel;
+		print $plotstatic->getNomUrl(1);
+	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
 	// Plot progress
 	print '<td align="right">';
-	print $task_time->plotprogress . " %";
+	if ($task_time->plotid) {
+		if ($action == 'editline' && GETPOST('lineid') == $task_time->rowid) {
+			print '<input type="hidden" name="old_progress' . $plotstatic->id . '" value="' . $task_time->plotprogress . '">';
+			$maxvalue = 100 - $task_time->plotcoverage + $task_time->plotprogress;
+			print '<input type="number" min=0 max=' . $maxvalue . ' maxlength="3" name="progress' . $plotstatic->id . '" value="' . $task_time->plotprogress . '">%';
+		} else {
+			print $task_time->plotprogress . " %";
+		}
+	}
 	print '</td>';
 	$totalarray['nbfield'] ++;
 	
@@ -891,7 +904,7 @@ function updatePlotTaskStatus(Task $object, $contributorsTime = array())
 	}
 }
 
-function deletePlotProgress($timespentid)
+function deletePlotProgress($timespentid, Task $object)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -903,17 +916,17 @@ function deletePlotProgress($timespentid)
 	// get records with plots
 	$plotsprogress = array();
 	$sql = 'SELECT';
-	$sql .= ' t.rowid,';
-	$sql .= " t.fk_plot,";
-	$sql .= " t.fk_tasktime,";
-	$sql .= " t.progress";
+	$sql .= " t.progress,";
+	$sql .= " pct.rowid as cultivationtaskid,";
+	$sql .= " pct.coverage";
 	$sql .= ' FROM ' . MAIN_DB_PREFIX . 'plot_taskprogress as t';
+	$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'plot_cultivationtask as pct ON pct.fk_plot = t.fk_plot AND pct.fk_task = ' . $object->id;
 	$sql .= ' WHERE t.fk_tasktime = ' . $timespentid;
 	
 	$resql = $db->query($sql);
 	if ($resql) {
 		$num = $db->num_rows($resql);
-		$totalnboflines = $num;	
+		$totalnboflines = $num;
 		$i = 0;
 		while ($i < $num) {
 			$row = $db->fetch_object($resql);
@@ -923,33 +936,129 @@ function deletePlotProgress($timespentid)
 		$db->free($resql);
 	} else {
 		$error ++;
-		$errormsg = 'Error ' . $this->db->lasterror();
+		$errormsg = 'Error ' . $db->lasterror();
 		dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
 	}
 	// update plot progress (remove spend time)
-	var_dump($plotsprogress);
-	return -1; // TODO change for update plot progress
-	
+	foreach ($plotsprogress as $plotprogress) {
+		$currplottask = new Plotcultivationtask($db);
+		$currplottaskid = $plotprogress->cultivationtaskid;
+		$result = $currplottask->fetch($currplottaskid);
+		if ($result) {
+			$currplottask->coverage = $currplottask->coverage - $plotprogress->progress;
+			$currplottask->update($user);
+		} else {
+			$error ++;
+			$errormsg = 'Error ' . $db->lasterror();
+			dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
+		}
+	}
 	// delete records
 	if (! $error) {
-		$sql = 'DELETE FROM ' . MAIN_DB_PREFIX . $this->table_element;
+		$sql = 'DELETE FROM ' . MAIN_DB_PREFIX . 'plot_taskprogress';
 		$sql .= ' WHERE fk_tasktime=' . $timespentid;
 		
-		$resql = $this->db->query($sql);
+		$resql = $db->query($sql);
 		if (! $resql) {
 			$error ++;
-			$errormsg = 'Error ' . $this->db->lasterror();
+			$errormsg = 'Error ' . $db->lasterror();
 			dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
+		}
+	}
+	// Commit or rollback
+	if ($error) {
+		$db->rollback();
+		
+		return - 1 * $error;
+	} else {
+		$db->commit();
+		
+		return 1;
+	}
+}
+
+function updatePlotProgress($timespentid, Task $object)
+{
+	Global $db, $conf, $user, $langs;
+	
+	dol_syslog(__METHOD__, LOG_DEBUG);
+	
+	$error = 0;
+	
+	$db->begin();
+	// get records with plots
+	$plotsprogress = array();
+	$sql = 'SELECT';
+	$sql .= " t.rowid as progressid,";
+	$sql .= " t.progress,";
+	$sql .= " t.fk_plot,";
+	$sql .= " pct.rowid as cultivationtaskid,";
+	$sql .= " pct.coverage";
+	$sql .= ' FROM ' . MAIN_DB_PREFIX . 'plot_taskprogress as t';
+	$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'plot_cultivationtask as pct ON pct.fk_plot = t.fk_plot AND pct.fk_task = ' . $object->id;
+	$sql .= ' WHERE t.fk_tasktime = ' . $timespentid;
+	
+	$resql = $db->query($sql);
+	if ($resql) {
+		$num = $db->num_rows($resql);
+		$totalnboflines = $num;
+		$i = 0;
+		while ($i < $num) {
+			$row = $db->fetch_object($resql);
+			$plotsprogress[$i] = $row;
+			$i ++;
+		}
+		$db->free($resql);
+	} else {
+		$error ++;
+		$errormsg = 'Error ' . $db->lasterror();
+		dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
+	}
+	// update plot progress (remove old spend time and add new value)
+	foreach ($plotsprogress as $plotprogress) {
+		$newprogress = GETPOST("progress" . $plotprogress->fk_plot);
+		$oldprogress = GETPOST("old_progress" . $plotprogress->fk_plot);
+		//var_dump($newprogress, $oldprogress);
+		if ($newprogress != $oldprogress) {
+			// update or delete existing plot progress record
+			$currplotprogress = new PlotTaskProgress($db);
+			$result = $currplotprogress->fetch($plotprogress->progressid);
+			if ($result) {
+				//var_dump($currplotprogress);
+				if ($newprogress == 0) {
+					$result = $currplotprogress->delete($user);
+				} else {
+					$currplotprogress->progress = $newprogress;
+					$result = $currplotprogress->update($user);
+				}
+			}
+			if (! $result) {
+				$error ++;
+				$errormsg = 'Error ' . $db->lasterror();
+				dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
+			}
+			// update plot cultivation task record
+			$currplottask = new Plotcultivationtask($db);
+			$currplottaskid = $plotprogress->cultivationtaskid;
+			$result = $currplottask->fetch($currplottaskid);
+			if ($result) {
+				$currplottask->coverage = $currplottask->coverage - $oldprogress + $newprogress;
+				$currplottask->update($user);
+			} else {
+				$error ++;
+				$errormsg = 'Error ' . $db->lasterror();
+				dol_syslog(__METHOD__ . ' ' . join(',', $errormsg), LOG_ERR);
+			}
 		}
 	}
 	
 	// Commit or rollback
 	if ($error) {
-		$this->db->rollback();
+		$db->rollback();
 		
 		return - 1 * $error;
 	} else {
-		$this->db->commit();
+		$db->commit();
 		
 		return 1;
 	}

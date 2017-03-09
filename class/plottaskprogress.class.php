@@ -64,7 +64,7 @@ class PlotTaskProgress extends CommonObject
 
 	public $fk_tasktime;
 
-	public $duration;
+	public $progress;
 
 	public $tms = '';
 
@@ -259,7 +259,6 @@ class PlotTaskProgress extends CommonObject
 		
 		$sql = 'SELECT';
 		$sql .= ' t.rowid,';
-		
 		$sql .= " t.entity,";
 		$sql .= " t.fk_plot,";
 		$sql .= " t.fk_tasktime,";
@@ -434,7 +433,7 @@ class PlotTaskProgress extends CommonObject
 		$sql = 'UPDATE ' . MAIN_DB_PREFIX . $this->table_element . ' SET';
 		
 		$sql .= ' fk_plot = ' . (isset($this->fk_plot) ? "'" . $this->db->escape($this->fk_plot) . "'" : "null") . ',';
-		$sql .= ' fk_task = ' . (isset($this->fk_tasktime) ? "'" . $this->db->escape($this->fk_tasktime) . "'" : "null") . ',';
+		$sql .= ' fk_tasktime = ' . (isset($this->fk_tasktime) ? "'" . $this->db->escape($this->fk_tasktime) . "'" : "null") . ',';
 		$sql .= ' progress = ' . (isset($this->progress) ? "'" . $this->db->escape($this->progress) . "'" : "null") . ',';
 		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
 		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id);
