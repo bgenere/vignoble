@@ -27,7 +27,6 @@
 @include './tpl/cultivationtask.inc.php';
 
 /* get library */
-dol_include_once('/vignoble/lib/ordersandshipments.lib.php'); // delete
 
 /* get language files */
 
@@ -41,7 +40,6 @@ if (! $user->rights->projet->lire)
 $cultivationprojectid = setIsCultivationProject();
 $cultivationproject = new Project($db);
 $cultivationproject->fetch($cultivationprojectid);
-//$cultivationproject->getLinesArray($user);
 
 $sort = getsort();
 
@@ -49,9 +47,9 @@ $filter = getfilter();
 
 $timespent = getTaskTimeSpent($cultivationproject, $sort, $filter["timespent"]);
 
-$plotprogress = getPlotProgress($cultivationproject, $sort, $filter["plotprogress"]);
+// $plotprogress = getPlotProgress($cultivationproject, $sort, $filter["plotprogress"]);
 
-displayView($cultivationproject, $timespent, $plotprogress, $sort, $filter);
+displayView($cultivationproject, $timespent, $sort, $filter);
 
 /* close database */
 $db->close();
@@ -89,19 +87,8 @@ function displayView(Project $cultivationproject, $timespent, $plotprogress, $so
 	
 	print '<div class="fichecenter">'; // frame
 	
-	print '<div class="fichehalfleft">'; // left column
-	
 	displayTable('TimeSpent', $timespent, $sort, $urlparam);
 	
-	print '</div>'; // left column end
-	
-	print '<div class="fichehalfright">'; // right column
-	
-	print '<div class="ficheaddleft">'; // add white space on left
-	displayTable('Plots', $plotprogress, $sort, $urlparam);
-	print '</div>'; //
-	
-	print '</div>'; // right column end
 	print '</div>'; // frame end
 	
 	llxFooter();
@@ -160,8 +147,6 @@ function displaySearchForm(Project $cultivationproject, $filter, $sort)
 	print '</div>'; // fiche
 }
 
-
-
 /**
  * Display the resut table :
  *
@@ -184,80 +169,86 @@ function displayTable($tablename, $table, $sort, $urlparam)
 		'date' => array(
 			'align' => 'left',
 			'label' => 'Date',
-			'sort' => 'date,task'
+			'sort' => 'date,taskref',
+			'display' => 'print dol_print_date($line->date,"day");',
+			'norepeat' => true
 		),
-		'task' => array(
+		'taskref' => array(
 			'align' => 'left',
 			'label' => 'Task',
-			'sort' => 'task,date'
+			'display' => 'displayTask($line);',
+			'norepeat' => true,
+			'sort' => 'taskref,date'
+		),
+		'contributor' => array(
+			'align' => 'left',
+			'label' => 'By',
+			'display' => 'displayUser($line);'
+		),
+		'note' => array(
+			'align' => 'left',
+			'label' => 'Note'
+		),
+		'timespent' => array(
+			'align' => 'right',
+			'label' => 'TimeSpent',
+			'display' => 'displayTime($line->timespent);',
+			'total' => 0
+		),
+		'space' => array(
+			size => '15'
+		),
+		
+		'plotref' => array(
+			'align' => 'left',
+			'label' => 'Plot',
+			'display' => 'displayPlot($line);'
+		),
+		'plotprogress' => array(
+			'align' => 'right',
+			'label' => 'Progress',
+			'display' => 'displayPerCent($line->plotprogress);'
 		)
 	);
-	switch ($tablename) {
-		case 'TimeSpent':
-			$extrafields = array(
-				'contributor' => array(
-					'align' => 'left',
-					'label' => 'Contributor'
-				),
-				'note' => array(
-					'align' => 'left',
-					'label' => 'Note'
-				),
-				'timespent' => array(
-					'align' => 'right',
-					'display' => 'convertSecondToTime',
-					'label' => 'TimeSpent',
-					'total' => 0
-				)
-			);
-			break;
-		case 'Plots':
-			$extrafields = array(
-				'plot' => array(
-					'align' => 'left',
-					'label' => 'Plot'
-				),
-				'progress' => array(
-					'align' => 'right',
-					'label' => 'Progress',
-					'total' => 0
-				),
-				'duration' => array(
-					'align' => 'right',
-					'display' => 'convertSecondToTime',
-					'label' => 'Duration',
-					'total' => 0
-				)
-			);
-			break;
-	}
-	
-	$fields = array_merge($fields, $extrafields);
 	
 	print load_fiche_titre($langs->trans($tablename), '', '');
 	print '<table class="liste" >';
 	// Fields title
 	print '<tr class="liste_titre">';
 	foreach ($fields as $field => $fieldvalue) {
-		if ($fieldvalue['sort'] !== null) {
-			print print_liste_field_titre($langs->trans($fieldvalue['label']), $_SERVER['PHP_SELF'], $fieldvalue['sort'], '', $urlparam, 'align="' . $fieldvalue['align'] . '"', $sort["field"], $sort["order"]);
-		} else
-			print print_liste_field_titre($langs->trans($fieldvalue['label']), '', '', '', '', 'align="' . $fieldvalue['align'] . '"');
+		if ($field == 'space') {
+			print '<td size="' . $fieldvalue['size'] . '">';
+			print '</td>';
+		} else {
+			if ($fieldvalue['sort'] !== null) {
+				print print_liste_field_titre($langs->trans($fieldvalue['label']), $_SERVER['PHP_SELF'], $fieldvalue['sort'], '', $urlparam, 'align="' . $fieldvalue['align'] . '"', $sort["field"], $sort["order"]);
+			} else
+				print print_liste_field_titre($langs->trans($fieldvalue['label']), '', '', '', '', 'align="' . $fieldvalue['align'] . '"');
+		}
 	}
 	print '</tr>';
 	// Table lines
 	foreach ($table as $line) {
 		print '<tr>';
 		foreach ($fields as $field => $fieldvalue) {
-			print '<td align="' . $fieldvalue['align'] . '">';
-			if (! empty($fieldvalue['display'])) {
-				print $fieldvalue['display']($line->$field);
+			if ($field == 'space') {
+				print '<td size="' . $fieldvalue['size'] . '">';
+				print '</td>';
 			} else {
-				print $line->$field;
-			}
-			print '</td>';
-			if ($fieldvalue['total'] !== null) {
-				$fields[$field]['total'] += ($line->$field);
+				print '<td align="' . $fieldvalue['align'] . '">';
+				if (!$fieldvalue['norepeat'] || $fieldvalue['previous'] !== $line->$field) {
+					if (! empty($fieldvalue['display'])) {
+						eval($fieldvalue['display']);
+					} else {
+						print $line->$field;
+					}
+					$fields[$field]['previous'] = $line->$field;
+				}
+				
+				print '</td>';
+				if ($fieldvalue['total'] !== null) {
+					$fields[$field]['total'] += ($line->$field);
+				}
 			}
 		}
 		print '</tr>';
@@ -268,7 +259,8 @@ function displayTable($tablename, $table, $sort, $urlparam)
 		print '<td align="' . $fieldvalue['align'] . '">';
 		if (! empty($fieldvalue['total'])) {
 			if (! empty($fieldvalue['display'])) {
-				print $fieldvalue['display']($fieldvalue['total']);
+				$line->$field = $fieldvalue['total'];
+				eval($fieldvalue['display']);
 			} else
 				print $fieldvalue['total'];
 		} else {
@@ -278,6 +270,53 @@ function displayTable($tablename, $table, $sort, $urlparam)
 	}
 	print '</tr>';
 	print '</table>';
+}
+
+function displayTask($line)
+{
+	global $db, $conf, $langs, $user;
+	
+	$linetask = new Task($db);
+	$linetask->id = $line->fk_task;
+	$linetask->ref = $line->taskref;
+	$linetask->label = $line->tasklabel;
+	print $linetask->getNomUrl(1) . " " . $line->tasklabel;
+}
+
+function displayTime($field)
+{
+	print convertSecondToTime($field, 'allhourmin');
+}
+
+function displayPlot($line)
+{
+	global $db, $conf, $langs, $user;
+	
+	if (! empty($line->plotid)) {
+		$lineplot = new Plot($db);
+		$lineplot->id = $line->plotid;
+		$lineplot->ref = $line->plotref;
+		$lineplot->label = $line->plotlabel;
+		print $lineplot->getNomUrl(1) . " " . $line->plotlabel;
+	}
+}
+
+function displayUser($line)
+{
+	global $db, $conf, $langs, $user;
+	
+	$lineuser = new User($db);
+	$lineuser->id = $line->fk_user;
+	$lineuser->lastname = $line->lastname;
+	$lineuser->firstname = $line->firstname;
+	print $lineuser->getNomUrl(1);
+}
+
+function displayPerCent($field)
+{
+	if (! empty($field)) {
+		print $field . "%";
+	}
 }
 
 /**
@@ -291,7 +330,7 @@ function getsort()
 {
 	$sortfield = GETPOST(sortfield, 'alpha');
 	if (empty($sortfield)) {
-		$sortfield = 'date,task';
+		$sortfield = 'date,taskref';
 	}
 	$sortorder = GETPOST(sortorder, 'alpha');
 	if (empty($sortorder)) {
@@ -411,70 +450,18 @@ function getTaskTimeSpent(Project $project, $sort, $filter)
 	$sql .= " t.task_duration as timespent,";
 	$sql .= " t.fk_user,";
 	$sql .= " t.note as note,";
-	$sql .= " pt.ref, pt.label as task,";
-	$sql .= " trim(concat(u.firstname,' ',u.lastname)) as contributor";
-	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t, " . MAIN_DB_PREFIX . "projet_task as pt, " . MAIN_DB_PREFIX . "user as u";
-	$sql .= " WHERE t.fk_user = u.rowid AND t.fk_task = pt.rowid";
-	$sql .= " AND pt.fk_projet =" . $project->id;
-	
-	if (count($filter) > 0) {
-		// add clauses to WHERE
-		$sql .= ' AND ' . implode(' AND ', $filter);
-	}
-	
-	if (! empty($sort)) {
-		// add ORDER BY
-		$sql .= $db->order($sort['field'], $sort['order']);
-	}
-	
-	$resql = $db->query($sql);
-	if ($resql) {
-		$num = $db->num_rows($resql);
-		$totalnboflines = $num;
-		
-		$i = 0;
-		while ($i < $num) {
-			$row = $db->fetch_object($resql);
-			$tasks[$i] = $row;
-			$i ++;
-		}
-		$db->free($resql);
-		return $tasks;
-	} else {
-		dol_print_error($db);
-		return null;
-	}
-}
-
-/**
- * get the plot progress lines making the proper SQL request.
- *
- * @param Project $project
- *        	the current project
- * @param array $sort
- *        	the sort fields and order
- * @param array $filter
- *        	the conditions to apply to get the lines
- * @return Object[] the plot progress lines |NULL if empty
- */
-function getPlotProgress(Project $project, $sort, $filter)
-{
-	Global $db, $conf, $user, $langs;
-	
-	$tasks = array();
-	
-	$sql = "SELECT";
-	$sql .= " t.rowid,";
-	$sql .= " t.fk_task,";
-	$sql .= " t.dateprogress as date,";
-	$sql .= " t.progress as progress,";
-	$sql .= " t.duration as duration,";
-	$sql .= " t.fk_plot,";
-	$sql .= " pt.ref, pt.label as task,";
-	$sql .= " pl.label as plot";
-	$sql .= " FROM " . MAIN_DB_PREFIX . "plot_taskprogress as t, " . MAIN_DB_PREFIX . "projet_task as pt, " . MAIN_DB_PREFIX . "plot as pl";
-	$sql .= " WHERE t.fk_plot = pl.rowid AND t.fk_task = pt.rowid";
-	$sql .= " AND pt.fk_projet =" . $project->id;
+	$sql .= " pl.rowid as plotid, pl.ref as plotref, pl.label as plotlabel,";
+	$sql .= " pp.progress as plotprogress,";
+	$sql .= " pct.coverage as plotcoverage,";
+	$sql .= " pt.ref as taskref , pt.label as tasklabel,";
+	$sql .= " u.firstname,u.lastname";
+	$sql .= " FROM " . MAIN_DB_PREFIX . "projet_task_time as t";
+	$sql .= " LEFT OUTER JOIN " . MAIN_DB_PREFIX . "plot_taskprogress as pp ON t.rowid = pp.fk_tasktime ";
+	$sql .= " LEFT OUTER JOIN " . MAIN_DB_PREFIX . "plot as pl ON pp.fk_plot = pl.rowid ";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "projet_task as pt ON t.fk_task = pt.rowid ";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "plot_cultivationtask as pct ON pct.fk_task = pt.rowid AND pct.fk_plot = pl.rowid ";
+	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "user as u ON t.fk_user = u.rowid ";
+	$sql .= " WHERE pt.fk_projet =" . $project->id;
 	
 	if (count($filter) > 0) {
 		// add clauses to WHERE
