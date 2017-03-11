@@ -507,7 +507,7 @@ function getTaskTimeSpent($object, $sort, $filter)
  * @param array $totalarray        	
  * @return array $totalarray the total fields and value
  */
-function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User $userstatic, $totalarray, bool $newline = true)
+function displayTaskTimeSpentLine($task_time, $action, $object, Form $form, User $userstatic, $totalarray, $newline = true)
 {
 	Global $db, $conf, $user, $langs;
 	
