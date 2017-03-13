@@ -465,8 +465,8 @@ class Plotcultivationtask extends CommonObject
 		$sql .= ' fk_task = ' . (isset($this->fk_task) ? "'" . $this->db->escape($this->fk_task) . "'" : "null") . ',';
 		$sql .= ' coverage = ' . (isset($this->coverage) ? "'" . $this->db->escape($this->coverage) . "'" : "null") . ',';
 		$sql .= ' note = ' . (isset($this->note) ? "'" . $this->db->escape($this->note) . "'" : "null") . ',';
-		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
-		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id);
+		$sql .= ' tms = ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
+		$sql .= ' fk_user_modif = ' . $user->id;
 		
 		$sql .= ' WHERE rowid=' . $this->id;
 		

@@ -47,7 +47,6 @@ $filter = getfilter();
 
 $timespent = getTaskTimeSpent($cultivationproject, $sort, $filter["timespent"]);
 
-// $plotprogress = getPlotProgress($cultivationproject, $sort, $filter["plotprogress"]);
 
 displayView($cultivationproject, $timespent, $sort, $filter);
 
@@ -72,7 +71,7 @@ $db->close();
  *        	the filter parameters
  *        	
  */
-function displayView(Project $cultivationproject, $timespent, $plotprogress, $sort, $filter)
+function displayView(Project $cultivationproject, $timespent, $sort, $filter)
 {
 	global $db, $conf, $langs, $user;
 	
@@ -107,7 +106,7 @@ function displayView(Project $cultivationproject, $timespent, $plotprogress, $so
 function displaySearchForm(Project $cultivationproject, $filter, $sort)
 {
 	global $db, $conf, $langs, $user;
-	
+
 	$form = new Form($db);
 	print '<div class="fichecenter">';
 	
@@ -183,16 +182,19 @@ function displayTable($tablename, $table, $sort, $urlparam)
 		'contributor' => array(
 			'align' => 'left',
 			'label' => 'By',
-			'display' => 'displayUser($line);'
+			'display' => 'displayUser($line);',
+			'norepeat' => true
 		),
 		'note' => array(
 			'align' => 'left',
-			'label' => 'Note'
+			'label' => 'Note',
+			'norepeat' => true
 		),
 		'timespent' => array(
 			'align' => 'right',
 			'label' => 'TimeSpent',
 			'display' => 'displayTime($line->timespent);',
+			'norepeat' => true,
 			'total' => 0
 		),
 		'space' => array(
@@ -236,19 +238,19 @@ function displayTable($tablename, $table, $sort, $urlparam)
 				print '</td>';
 			} else {
 				print '<td align="' . $fieldvalue['align'] . '">';
-				if (!$fieldvalue['norepeat'] || $fieldvalue['previous'] !== $line->$field) {
+				if (! ($fieldvalue['norepeat']) || $fieldvalue['previous'] !== $line->rowid) {
 					if (! empty($fieldvalue['display'])) {
 						eval($fieldvalue['display']);
 					} else {
 						print $line->$field;
 					}
-					$fields[$field]['previous'] = $line->$field;
+					$fields[$field]['previous'] = $line->rowid;
+					
+					if ($fieldvalue['total'] !== null) {
+						$fields[$field]['total'] += ($line->$field);
+					}
 				}
-				
 				print '</td>';
-				if ($fieldvalue['total'] !== null) {
-					$fields[$field]['total'] += ($line->$field);
-				}
 			}
 		}
 		print '</tr>';

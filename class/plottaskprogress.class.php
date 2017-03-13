@@ -435,8 +435,8 @@ class PlotTaskProgress extends CommonObject
 		$sql .= ' fk_plot = ' . (isset($this->fk_plot) ? "'" . $this->db->escape($this->fk_plot) . "'" : "null") . ',';
 		$sql .= ' fk_tasktime = ' . (isset($this->fk_tasktime) ? "'" . $this->db->escape($this->fk_tasktime) . "'" : "null") . ',';
 		$sql .= ' progress = ' . (isset($this->progress) ? "'" . $this->db->escape($this->progress) . "'" : "null") . ',';
-		$sql .= ' tms = ' . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : "'" . $this->db->idate(dol_now()) . "'") . ',';
-		$sql .= ' fk_user_modif = ' . (isset($this->fk_user_modif) ? $this->fk_user_modif : $user->id);
+		$sql .= ' tms = ' . "'" . $this->db->idate(dol_now()) . "'" . ',';
+		$sql .= ' fk_user_modif = ' . $user->id;
 		
 		$sql .= ' WHERE rowid=' . $this->id;
 		
