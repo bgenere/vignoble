@@ -825,11 +825,11 @@ function displayPlotTaskLinesForm(FormOther $formother, Task $object)
 			print '</td>';
 			// Current Coverage
 			print '<td class=right>';
-			print $formother->select_percent($line->coverage, 'plotoldcoverage' . $line->id, 1);
+			print $formother->select_percent($line->coverage, 'plotoldcoverage' . $line->id, 1, 1);
 			print '</td>';
 			// Coverage
 			print '<td class=right>';
-			print $formother->select_percent($line->coverage, 'plotlinecoverage' . $line->id);
+			print $formother->select_percent($line->coverage, 'plotlinecoverage' . $line->id,0,1,$line->coverage);
 			print '</td>';
 			
 			print '</tr>';
