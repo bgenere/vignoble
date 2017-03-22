@@ -576,9 +576,11 @@ function get_dolusers($force_entity = 0, $morefilter = '', $noactive = 0)
  *        	the current task
  * @param Project $projectstatic
  *        	the cultivation project
+ * @param  $all
+ *        	flag to remove the all option
  * @return array[] list of contributors for project
  */
-function getProjectContributors($task, $projectstatic)
+function getProjectContributors($task, $projectstatic, $all = 1)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -586,12 +588,19 @@ function getProjectContributors($task, $projectstatic)
 		$contributorsofproject = get_dolusers(); // get all users
 	else
 		$contributorsofproject = $projectstatic->Liste_Contact(- 1, 'internal'); // Only users of project. // selection of users
+	
+	if ($all){
 	$contributors = array(
 		'0' => $langs->trans("All")
 	);
+	} else {
+		$contributors = array();
+		
+	}
+	
 	foreach ($contributorsofproject as $contributor) {
 		$key = $contributor["id"];
-		$value = $contributor["firstname"].' '.$contributor["lastname"];
+		$value = $contributor["firstname"] . ' ' . $contributor["lastname"];
 		$contributors[$key] = $value;
 	}
 	return $contributors;

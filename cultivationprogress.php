@@ -47,7 +47,6 @@ $filter = getfilter();
 
 $timespent = getTaskTimeSpent($cultivationproject, $sort, $filter["timespent"]);
 
-
 displayView($cultivationproject, $timespent, $sort, $filter);
 
 /* close database */
@@ -106,7 +105,7 @@ function displayView(Project $cultivationproject, $timespent, $sort, $filter)
 function displaySearchForm(Project $cultivationproject, $filter, $sort)
 {
 	global $db, $conf, $langs, $user;
-
+	
 	$form = new Form($db);
 	print '<div class="fichecenter">';
 	
@@ -116,18 +115,16 @@ function displaySearchForm(Project $cultivationproject, $filter, $sort)
 	print '<input type="hidden" name="sortorder" value="' . $sort['order'] . '">';
 	print '<table class="noborder nohover centpercent">';
 	// Form header
-	print '<tr class="liste_titre"><td colspan="3">' . $langs->trans("Search") . '</td></tr>';
-	// Date Begin and Button
+	print '<tr class="liste_titre"><td colspan="5">' . $langs->trans("Search") . '</td></tr>';
+	// Date Begin End and Button
 	print '<tr>';
 	print '<td class="nowrap"><label for="datebegin">' . $langs->trans("DateStart") . '</label></td>';
 	print '<td>' . $form->select_date($filter['datebegin'], 'datebegin', 0, 0, 0, "datebegin", 1, 1, 1) . '</td>';
-	print '<td rowspan="3"><input type="submit" value="' . $langs->trans("Search") . '" class="button"></td>';
-	print '</tr>';
-	// Date End
-	print '<tr>';
 	print '<td class="nowrap"><label for="dateend">' . $langs->trans("DateEnd") . '</label></td>';
 	print '<td>' . $form->select_date($filter['dateend'], 'dateend', 0, 0, 0, "dateend", 1, 1, 1) . '</td>';
+	print '<td rowspan="2"><input type="submit" value="' . $langs->trans("Search") . '" class="button"></td>';
 	print '</tr>';
+	
 	// Tasks
 	$tasks = array();
 	$lines = getProjectTasks($cultivationproject);
@@ -138,7 +135,13 @@ function displaySearchForm(Project $cultivationproject, $filter, $sort)
 	print '<tr>';
 	print '<td class="nowrap"><label for="tasks">' . $langs->trans("Tasks") . '</label></td>';
 	print '<td>' . $form->multiselectarray('multitasks', $tasks, $filter['tasks'], 0, 0, '', 0, '90%') . '</td>';
+	
+	// Contributors
+	$contributors = getProjectContributors(null, $cultivationproject, 0);
+	print '<td class="nowrap"><label for="by">' . $langs->trans("By") . '</label></td>';
+	print '<td>' . $form->multiselectarray('multicontributors', $contributors, GETPOST('multicontributors'), 0, 0, '', 0, '90%') . '</td>';
 	print '</tr>';
+	
 	print '</table>';
 	print '</form>';
 	print '<br>';
@@ -168,7 +171,7 @@ function displayTable($tablename, $table, $sort, $urlparam)
 		'date' => array(
 			'align' => 'left',
 			'label' => 'Date',
-			'sort' => 'date,taskref',
+			'sort' => 'date,taskref,u.firstname,u.lastname,plotref',
 			'display' => 'print dol_print_date($line->date,"day");',
 			'norepeat' => true
 		),
@@ -177,13 +180,14 @@ function displayTable($tablename, $table, $sort, $urlparam)
 			'label' => 'Task',
 			'display' => 'displayTask($line);',
 			'norepeat' => true,
-			'sort' => 'taskref,date'
+			'sort' => 'taskref,date,u.firstname,u.lastname,plotref'
 		),
 		'contributor' => array(
 			'align' => 'left',
 			'label' => 'By',
 			'display' => 'displayUser($line);',
-			'norepeat' => true
+			'norepeat' => true,
+			'sort' => 'u.firstname,u.lastname,date,taskref,plotref'
 		),
 		'note' => array(
 			'align' => 'left',
@@ -204,7 +208,8 @@ function displayTable($tablename, $table, $sort, $urlparam)
 		'plotref' => array(
 			'align' => 'left',
 			'label' => 'Plot',
-			'display' => 'displayPlot($line);'
+			'display' => 'displayPlot($line);',
+			'sort' => 'plotref,date,taskref,u.firstname,u.lastname'
 		),
 		'plotprogress' => array(
 			'align' => 'right',
@@ -332,7 +337,7 @@ function getsort()
 {
 	$sortfield = GETPOST(sortfield, 'alpha');
 	if (empty($sortfield)) {
-		$sortfield = 'date,taskref';
+		$sortfield = 'date,taskref,u.firstname,u.lastname,plotref';
 	}
 	$sortorder = GETPOST(sortorder, 'alpha');
 	if (empty($sortorder)) {
@@ -386,19 +391,30 @@ function getfilter()
 		$selectedtasks = " pt.ref IN ('" . implode("','", $tasks) . "')";
 	}
 	
+	$contributors = GETPOST('multicontributors','array');
+	
+	if (empty($contributors)){
+		$contributors = GETPOST('contributors','alpha');
+		if (empty($contributors)){
+			$selectedcontributors = "t.fk_user IS NOT NULL";
+		} else {
+			$selectedcontributors = "t.fk_user IN ".$contributors;
+			$contributors = explode("','", trim($contributors, "('')"));
+		}
+	} else {
+		$selectedcontributors = "t.fk_user IN ('" . implode("','", $contributors) . "')";
+	}
+	
 	$filter = array(
 		"datebegin" => $datebegin,
 		"dateend" => $dateend,
 		"tasks" => $tasks,
+		"contributors" => $contributors,
 		"timespent" => array(
 			" t.task_date >= '" . $datebegin . "' ",
 			" t.task_date <= '" . $dateend . "' ",
-			$selectedtasks
-		),
-		"plotprogress" => array(
-			" t.dateprogress >= '" . $datebegin . "' ",
-			" t.dateprogress <= '" . $dateend . "' ",
-			$selectedtasks
+			$selectedtasks,
+			$selectedcontributors
 		)
 	);
 	
@@ -423,6 +439,8 @@ function buildSearchParameters($filter)
 		$param .= "&amp;dateend=" . urlencode($filter['dateend']);
 	if (! empty($filter['tasks']))
 		$param .= "&amp;tasks=" . urlencode("('" . implode("','", $filter['tasks']) . "')");
+	if (! empty($filter['contributors']))
+		$param .= "&amp;contributors=" . urlencode("('" . implode("','", $filter['contributors']) . "')");
 	return $param;
 }
 
