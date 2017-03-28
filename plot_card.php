@@ -261,13 +261,12 @@ function deletePlot(plot $object)
 	}
 }
 
-
 /**
  * Build plot document
- * 
+ *
  * Not in use yet - see comments end of page.
- * 
- * @param plot $object
+ *
+ * @param plot $object        	
  */
 function buildPlotDocument(plot $object)
 {
@@ -364,15 +363,14 @@ function displayPlotEditForm(plot $object, ExtraFields $extrafields)
 	print '</form>';
 }
 
-
 /**
  * Display the proper Plot Tab based on the tab parameter usin GETPOST.
- * 
+ *
  * Support tabs : tasks, notes, info and card as default.
- * 
- * @param string $action
- * @param plot $object
- * @param ExtraFields $extrafields
+ *
+ * @param string $action        	
+ * @param plot $object        	
+ * @param ExtraFields $extrafields        	
  */
 function displayPlotTab($action, plot $object, ExtraFields $extrafields)
 {
@@ -412,9 +410,9 @@ function displayPlotTab($action, plot $object, ExtraFields $extrafields)
 
 /**
  * Display the plot card in read mode
- * 
+ *
  * When $action = delete a confirmation popup
- * 
+ *
  * @param string $action        	
  * @param plot $object        	
  * @param ExtraFields $extrafields        	
@@ -457,12 +455,12 @@ function displayPlotCard($action, plot $object, ExtraFields $extrafields, Form $
 
 /**
  * Display the tasks table for the plot.
- * 
+ *
  * The table could be sorted and searched on all fields
  * Search on date define an interval between start and end
- * 
- * @param plot $plot
- * @param Form $form
+ *
+ * @param plot $plot        	
+ * @param Form $form        	
  */
 function displayPlotTasks(plot $plot, Form $form)
 {
@@ -484,11 +482,16 @@ function displayPlotTasks(plot $plot, Form $form)
 	
 	// Fields header
 	print '<tr class="liste_titre">';
-	print_liste_field_titre($langs->trans("Task"), $_SERVER['PHP_SELF'], 'taskref', '', $params, '', $sort["field"], $sort["order"]);
-	print_liste_field_titre($langs->trans("DateStart"), $_SERVER['PHP_SELF'], 'taskopen', '', $params, '', $sort["field"], $sort["order"]);
-	print_liste_field_titre($langs->trans("DateEnd"), $_SERVER['PHP_SELF'], 'taskend', '', $params, '', $sort["field"], $sort["order"]);
-	print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 'note', '', $params, 'style="width:20%;"', $sort["field"], $sort["order"]);
-	print_liste_field_titre($langs->trans("ProgressDeclared"), $_SERVER['PHP_SELF'], 'coverage', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("Task"), $_SERVER['PHP_SELF'], 'taskref,date', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("DateStart"), $_SERVER['PHP_SELF'], 'taskopen,taskref,date', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("DateEnd"), $_SERVER['PHP_SELF'], 'taskend,taskref,date', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("Note"), $_SERVER['PHP_SELF'], 'note,taskref,date', '', $params, 'style="width:20%;"', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("ProgressDeclared"), $_SERVER['PHP_SELF'], 'coverage,taskref,date', '', $params, '', $sort["field"], $sort["order"]);
+	print '<td width="10 px"> ';
+	print '</td>';
+	print_liste_field_titre($langs->trans("Date"), $_SERVER['PHP_SELF'], 'date,taskref', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("By"), $_SERVER['PHP_SELF'], 'firstname,lastname,taskref,date', '', $params, '', $sort["field"], $sort["order"]);
+	print_liste_field_titre($langs->trans("Progress"), $_SERVER['PHP_SELF'], 'progress,taskref,date', '', $params, '', $sort["field"], $sort["order"]);
 	print '<td class=" right"> ';
 	print '</td>';
 	print "</tr>";
@@ -499,21 +502,23 @@ function displayPlotTasks(plot $plot, Form $form)
 	print '<td >' . $form->select_date((empty($filter['end']) ? - 1 : $filter['end']), 'search_end', 0, 0, 2, "search_end", 1, 0, 1) . '</td>';
 	print '<td ><input type="text" class="flat" name="search_note" value="' . $filter["note"] . '"></td>';
 	print '<td ><input type="text" class="flat" name="search_coverage" value="' . $filter["coverage"] . '"></td>';
+	print '<td > </td>';
+	print '<td > </td>';
+	print '<td ><input type="text" class="flat" name="search_by" value="' . $filter["by"] . '"></td>';
+	print '<td > </td>';
 	// // Action column
 	print '<td class=" right">';
 	print $form->showFilterAndCheckAddButtons(0, 'checkforselect', 1);
 	print '</td>';
 	print '</tr>';
-
+	
 	$plottask = new Plotcultivationtask($db);
-	if ($plottask->fetchAll($sort["order"], $sort["field"], 0, 0, $filter["plot"], 'AND')) {
+	if ($plottask->fetchAllProgress($sort["order"], $sort["field"], 0, 0, $filter["plot"], 'AND')) {
 		displayPlotTaskLines($plottask);
 	}
 	print '</table>';
 	print '</div>';
 	print '</form>';
-
-
 }
 
 /**
@@ -527,7 +532,7 @@ function getTasksort()
 {
 	$sortfield = GETPOST(sortfield, 'alpha');
 	if (empty($sortfield)) {
-		$sortfield = 'taskref';
+		$sortfield = 'taskref,date';
 	}
 	$sortorder = GETPOST(sortorder, 'alpha');
 	if (empty($sortorder)) {
@@ -563,6 +568,7 @@ function getTaskfilter($id)
 		$search_note = '';
 		$search_coverage = '';
 		$search_tasklabel = '';
+		$search_by = '';
 		$search_begin = '';
 		$search_beginday = '';
 		$search_beginmonth = '';
@@ -575,6 +581,10 @@ function getTaskfilter($id)
 		$search_tasklabel = GETPOST('search_tasklabel', 'alpha');
 		if (! empty($search_tasklabel))
 			$plotfilter[] = "task.label LIKE '%" . $search_tasklabel . "%'";
+		
+		$search_by = GETPOST('search_by', 'alpha');
+		if (! empty($search_by))
+			$plotfilter[] = "(u.firstname LIKE '%" . $search_by . "%' OR u.lastname LIKE '%" . $search_by . "%' )";
 		
 		$search_note = GETPOST('search_note', 'alpha');
 		if (! empty($search_note))
@@ -596,7 +606,7 @@ function getTaskfilter($id)
 			$search_end = GETPOST("search_end");
 		}
 		if (! empty($search_end))
-			$plotfilter[] = "DATE(task.datee) <= '" . $search_end."'";
+			$plotfilter[] = "DATE(task.datee) <= '" . $search_end . "'";
 	}
 	$filter = array(
 		"id" => $id,
@@ -605,6 +615,7 @@ function getTaskfilter($id)
 		"end" => $search_end,
 		"note" => $search_note,
 		"coverage" => $search_coverage,
+		"by" => $search_by,
 		"plot" => $plotfilter
 	);
 	return $filter;
@@ -624,12 +635,14 @@ function buildTaskSearchParameters($filter)
 	$params = "";
 	if (! empty($filter["id"]))
 		$params .= '&amp;tab=tasks&amp;id=' . $filter["id"];
-	if (! empty($filter["reference"]))
-		$params .= '&amp;search_reference=' . urlencode($filter["reference"]);
+	if (! empty($filter["tasklabel"]))
+		$params .= '&amp;search_tasklabel=' . urlencode($filter["tasklabel"]);
 	if (! empty($filter["note"]))
 		$params .= '&amp;search_note=' . urlencode($filter["note"]);
 	if (! empty($filter["coverage"]))
 		$params .= '&amp;search_coverage=' . urlencode($filter["coverage"]);
+	if (! empty($filter["by"]))
+		$params .= '&amp;search_by=' . urlencode($filter["by"]);
 	
 	return $params;
 }
@@ -646,45 +659,80 @@ function displayPlotTaskLines($plottask)
 {
 	Global $db, $conf, $user, $langs;
 	
+	$prevtaskid = 0;
 	foreach ($plottask->lines as $line) {
 		
 		$var = ! $var;
 		print "<tr " . $bc[$var] . ">";
+		if ($prevtaskid == $line->fk_task) {
+			$newline = 0;
+		} else {
+			$newline = 1;
+		}
 		// Task
+		print '<td >';
+		if ($newline){
 		$task = new Task($db);
 		$task->fetch($line->fk_task);
-		print '<td >';
-		//print $task->getNomUrl(1, 'projet_task', 'task', 1, ' - ');
-		$url = dol_buildpath('/vignoble/cultivationtaskplot.php?id='.$task->id, 1);
-		print '<a href="'.$url.'">';
-		print $task->ref.'</a>'.' - '.$task->label;
+		$url = dol_buildpath('/vignoble/cultivationtaskplot.php?id=' . $task->id, 1);
+		print '<a href="' . $url . '">';
+		print $task->ref . '</a>' . ' - ' . $task->label;
+		}
 		print '</td>';
 		// Start date
 		print '<td >';
-		print dol_print_date($task->date_start);
+		if ($newline){
+		print dol_print_date($task->date_start, "day");
+		}
 		print '</td>';
 		// End date
 		print '<td >';
-		print dol_print_date($task->date_end);
+		if ($newline){
+		print dol_print_date($task->date_end, "day");
+		}
 		print '</td>';
 		// Note
 		print '<td >';
+		if ($newline){
 		print dol_nl2br($line->note);
+		}
 		print '</td>';
 		// Coverage
 		print '<td>';
+		if ($newline){
 		print $line->coverage . '%';
+		}
+		print '</td>';
+		// blank column
+		print '<td> ';
+		print '</td>';
+		// Date
+		print '<td>';
+		print dol_print_date($line->date, "day");
+		print '</td>';
+		// By
+		print '<td>';
+		$lineuser = new User($db);
+		$lineuser->id = $line->userid;
+		$lineuser->lastname = $line->lastname;
+		$lineuser->firstname = $line->firstname;
+		print $lineuser->getNomUrl(1);
+		print '</td>';
+		// Progress
+		print '<td>';
+		print $line->progress . '%';
 		print '</td>';
 		
 		print '</tr>';
+		$prevtaskid = $line->fk_task;
 	}
 }
 
 /**
  * Set up the 4 Tabs : Card, Tasks, Notes, Info
- * 
- * @param plot $object
- * 
+ *
+ * @param plot $object        	
+ *
  */
 function getTabsHeader($langs, $object)
 {

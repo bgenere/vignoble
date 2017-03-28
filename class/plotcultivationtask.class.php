@@ -421,6 +421,98 @@ class Plotcultivationtask extends CommonObject
 		}
 	}
 
+/**
+ * Load list of plot task progress by contributors.
+ * 
+ * @param string $sortorder
+ * @param string $sortfield
+ * @param number $limit
+ * @param number $offset
+ * @param array $filter
+ * @param string $filtermode
+ * @return number
+ */
+public function fetchAllProgress($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
+	{
+		dol_syslog(__METHOD__, LOG_DEBUG);
+		
+		$sql = 'SELECT';
+		$sql .= ' t.rowid,';	
+		$sql .= " t.entity,";
+		$sql .= " t.fk_plot,";
+		$sql .= " t.fk_task,";
+		$sql .= " task.ref as taskref,";
+		$sql .= " task.label as tasklabel,";
+		$sql .= " task.dateo as taskopen,";
+		$sql .= " task.datee as taskend,";
+		$sql .= " t.coverage as coverage,";
+		$sql .= " t.note as note,";
+		$sql .= " pt.task_date as date,";
+		$sql .= " pt.fk_user as userid,";
+		$sql .= " u.firstname,u.lastname,";
+		$sql .= " pp.progress as progress,";
+		$sql .= " t.tms,";
+		$sql .= " t.datec,";
+		$sql .= " t.fk_user_author,";
+		$sql .= " t.fk_user_modif";
+		
+		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element . ' as t';
+		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'projet_task as task ON t.fk_task = task.rowid';
+		$sql .= " LEFT OUTER JOIN " . MAIN_DB_PREFIX . "projet_task_time as pt ON pt.fk_task = t.fk_task ";
+		$sql .= " JOIN " . MAIN_DB_PREFIX . "plot_taskprogress as pp ON pp.fk_tasktime = pt.rowid AND pp.fk_plot = t.fk_plot ";
+		$sql .= " JOIN " . MAIN_DB_PREFIX . "user as u ON pt.fk_user = u.rowid ";
+		
+		
+		// Manage filter
+		$sqlwhere = array();
+		if (count($filter) > 0) {
+			$sql .= ' WHERE ' . implode(' ' . $filtermode . ' ', $filter);
+		}
+		
+		if (! empty($sortfield)) {
+			$sql .= $this->db->order($sortfield, $sortorder);
+		}
+		if (! empty($limit)) {
+			$sql .= ' ' . $this->db->plimit($limit , $offset);
+		}
+		$this->lines = array();
+		
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$num = $this->db->num_rows($resql);
+			
+			while ($obj = $this->db->fetch_object($resql)) {
+				$line = new plotcultivationtaskLine();
+				
+				$line->id = $obj->rowid;
+				
+				$line->entity = $obj->entity;
+				$line->fk_plot = $obj->fk_plot;
+				$line->fk_task = $obj->fk_task;
+				$line->coverage = $obj->coverage;
+				$line->note = $obj->note;
+				$line->date = $obj->date;
+				$line->userid = $obj->userid;
+				$line->firstname = $obj->firstname;
+				$line->lastname = $obj->lastname;
+				$line->progress = $obj->progress;
+				$line->tms = $this->db->jdate($obj->tms);
+				$line->datec = $this->db->jdate($obj->datec);
+				$line->fk_user_author = $obj->fk_user_author;
+				$line->fk_user_modif = $obj->fk_user_modif;
+				
+				$this->lines[] = $line;
+			}
+			$this->db->free($resql);
+			
+			return $num;
+		} else {
+			$this->errors[] = 'Error ' . $this->db->lasterror();
+			dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+			
+			return - 1;
+		}
+	}
 	/**
 	 * Update object into database
 	 *
