@@ -152,8 +152,8 @@ function fetchWarehouses($package,$quantity)
 	$sql .= 'HAVING count(product.ref) >= (SELECT count(products.ref) ';
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . 'product as packages ';
 	
-		$sql .= ' JOIN dolibarr.llx_product_association as components ON components.fk_product_pere = packages.rowid ';
-		$sql .= ' JOIN dolibarr.llx_product as products ON products.rowid = components.fk_product_fils';
+		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'product_association as components ON components.fk_product_pere = packages.rowid ';
+		$sql .= ' JOIN ' . MAIN_DB_PREFIX . 'product as products ON products.rowid = components.fk_product_fils';
 		
 		$sql .= ' WHERE packages.ref = "'.$package.'")';
 		
