@@ -75,6 +75,20 @@ Fieldlabel = Libellé
 Fielddescription = Description
 
 #
+# Product Package Build
+#
+BuildPackageIntro = Fabrique un produit composé, accroit son stock et diminue celui de ses composants dans un entrepôt
+ProductsUsed = Composants nécessaires au package
+Unit/Package = Unités par package
+ConfirmBuild = Selectionnez l'entrepôt pour la fabrication
+NoWarehouseWithComponentsStock = Aucun entrepôt n'a assez de composants pour la fabrication
+BuildSuccesfull = Fabrication réalisée avec succès !
+StockBefore = Stock avant fabrication
+StockAfter = Stock après fabrication
+on = le
+BuildFailed = La fabrication a échouée pour une raison inattendue !
+
+#
 # Cultivation Task
 #
 Cultivation = Culture
@@ -93,3 +107,4 @@ Rootstock = Portes greffe
 # Menus entries
 #
 Orders&Shipments = Commandes & Expéditions
+Winemaking = Fabrication

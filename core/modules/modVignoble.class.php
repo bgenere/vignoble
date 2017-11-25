@@ -110,11 +110,11 @@ class modVignoble extends DolibarrModules
 		 * editor name and editor url
 		 */
 		$this->editor_name = 'Bruno Généré';
-		$this->editor_url = 'http://webiseasy.org';
+		$this->editor_url = 'http://conseil.encom1.fr';
 		/**
 		 * version : module version as x.x.x
 		 */
-		$this->version = '0.6';
+		$this->version = '0.7';
 		/**
 		 * const_name : module constant to save module status enabled/disabled
 		 */
@@ -498,7 +498,24 @@ class modVignoble extends DolibarrModules
 			'perms' => '$user->rights->vignoble->plot->read'
 		);
 		/**
-		 *  - Define plot left menu entry Orders and Shipment
+		 *  - Define Vinery left menu entry 
+		 */
+		$this->menu[] = array(
+			'type' => 'left',
+			'mainmenu' => 'vignoble',
+			'leftmenu' => 'winemaking',
+			'fk_menu' => 'fk_mainmenu=vignoble',
+			'titre' => 'Winemaking',
+			'langs' => 'vignoble@vignoble',
+			'url' => '/vignoble/productpackagebuild.php',
+			'target' => '',
+			'position' => 3,
+			'user' => 2,
+			'enabled' => '$conf->vignoble->enabled',
+			'perms' => '$user->rights->produit->lire'
+		);
+		/**
+		 *  - Define Orders and Shipment left menu entry 
 		 */
 		$this->menu[] = array(
 			'type' => 'left',
@@ -509,7 +526,7 @@ class modVignoble extends DolibarrModules
 			'langs' => 'vignoble@vignoble',
 			'url' => '/vignoble/ordersandshipments.php',
 			'target' => '',
-			'position' => 3,
+			'position' => 4,
 			'user' => 2,
 			'enabled' => '$conf->vignoble->enabled',
 			'perms' => '$user->rights->produit->lire'

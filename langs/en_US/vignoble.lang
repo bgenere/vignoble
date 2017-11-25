@@ -75,6 +75,20 @@ Fieldlabel = Label
 Fielddescription = Description
 
 #
+# Product Package Build
+#
+BuildPackageIntro = Build a package product, increasing its stock and decreasing related component stock in same warehouse
+ProductsUsed = Components required for the package
+Unit/Package = Unit per package
+ConfirmBuild = Select the warehouse where to build the package
+NoWarehouseWithComponentsStock = No warehouse contains enough components to build the product !
+BuildSuccesfull = Build done succesfully !
+StockBefore = Stock before build
+StockAfter = Stock after build
+on = on
+BuildFailed = The buid failed for unexpected reason !
+
+#
 # Cultivation Task
 #
 Cultivation = Cultivation
@@ -93,4 +107,4 @@ Rootstock = Rootstock
 # Menus entries
 #
 Orders&Shipments = Orders & Shipments
-
+Winemaking = Wine making
