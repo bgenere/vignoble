@@ -18,7 +18,7 @@
  */
 
 /**
- * \file core/boxes/plotsummarybox.php
+ * \file core/boxes/plotslastchanged.php
  * \ingroup dashboard
  * \brief Get Last Plots modified
  */
@@ -187,6 +187,6 @@ class plotslastchanged extends ModeleBoxes
 		// You may make your own code here…
 		// echo 'Now showing Vignoble test box';
 		// … or use the parent's class function using the provided head and contents templates
-		parent::showBox($this->info_box_head, $this->info_box_contents);
+		parent::showBox($this->info_box_head, $this->info_box_contents,0);
 	}
 }

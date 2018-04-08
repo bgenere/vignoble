@@ -456,7 +456,7 @@ if ($resql) {
 							print ' align="' . $align . '"';
 						print '>';
 						$tmpkey = 'options_' . $key;
-						print $extrafields->showOutputField($key, $obj->$tmpkey, '', 1);
+						print $extrafields->showOutputField($key, $obj->$tmpkey, '','plot');
 						print '</td>';
 					}
 				}

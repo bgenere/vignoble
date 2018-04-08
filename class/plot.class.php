@@ -278,7 +278,7 @@ class plot extends CommonObject
 				require_once (DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php');
 				$extrafields = new ExtraFields($this->db);
 				$extralabels = $extrafields->fetch_name_optionals_label($this->table_element, true);
-				$this->fetch_optionals($this->id, $extralabels);
+				$this->fetch_optionals();
 				
 				if ($numrows) {
 					return $this->id;
@@ -353,7 +353,7 @@ class plot extends CommonObject
 			require_once (DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php');
 			$extrafields = new ExtraFields($this->db);
 			$extralabels = $extrafields->fetch_name_optionals_label($this->table_element, true);
-			$this->fetch_optionals($this->id, $extralabels);
+			$this->fetch_optionals();
 			
 			if ($numrows) {
 				return 1;
