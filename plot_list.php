@@ -77,7 +77,7 @@ if (! $sortfield)
 	$sortfield = "t.rowid"; // default sort field
 if (! $sortorder)
 	$sortorder = "ASC"; // default sort order
-		                    
+	                    
 // Protection if external user
 $socid = 0;
 if ($user->socid > 0) { // défini pour utilisateur externe, Id du tiers société vide sinon
@@ -95,8 +95,8 @@ $hookmanager->initHooks(array(
  */
 $extrafields = new ExtraFields($db);
 // fetch extra labels and add to search options
-$extrafieldslabels = $extrafields->fetch_name_optionals_label('plot');
-$search_array_extrafields = $extrafields->getOptionalsFromPost($extrafieldslabels, '', 'search_');
+$extralabels = $extrafields->fetch_name_optionals_label('plot');
+$search_array_extrafields = $extrafields->getOptionalsFromPost($extralabels, '', 'search_');
 
 /**
  *
@@ -138,24 +138,7 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 	$search_description = '';
 	$search_array_extrafields = array();
 }
-// TODO Check if action 'confirm_delete' make sense on a list without line tick box
-if (empty($reshook)) {
-	// Action to delete
-	if ($action == 'confirm_delete') {
-		$result = $currentPlot->delete($user);
-		if ($result > 0) {
-			// Delete OK
-			setEventMessages("RecordDeleted", null, 'mesgs');
-			header("Location: " . dol_buildpath('/vignoble/list.php', 1));
-			exit();
-		} else {
-			if (! empty($currentPlot->errors))
-				setEventMessages(null, $currentPlot->errors, 'errors');
-			else
-				setEventMessages($currentPlot->error, null, 'errors');
-		}
-	}
-}
+
 
 /**
  * *************************************************
@@ -188,8 +171,8 @@ $sql .= " t.datec as date_creation";
 // Add fields for extrafields
 foreach ($extrafields->attribute_list as $key => $val)
 	$sql .= ",ef." . $key . ' as options_' . $key;
-	
-	// Add fields from hooks
+
+// Add fields from hooks
 $parameters = array();
 $reshook = $hookmanager->executeHooks('printFieldListSelect', $parameters); // Note that $action and $currentPlot may have been modified by hook
 $sql .= $hookmanager->resPrint;
@@ -211,8 +194,8 @@ if ($search_description)
 	$sql .= natural_search("description", $search_description);
 if ($search_all)
 	$sql .= natural_search(array_keys($fieldstosearchall), $search_all);
-	
-	// Add search from extra fields
+
+// Add search from extra fields
 foreach ($search_array_extrafields as $key => $val) {
 	$crit = $val;
 	$tmpkey = preg_replace('/search_options_/', '', $key);
@@ -322,7 +305,7 @@ if ($resql) {
 		foreach ($extrafields->attribute_label as $key => $val) {
 			if (! empty($arrayfields["ef." . $key]['checked'])) {
 				$align = $extrafields->getAlignFlag($key);
-				print_liste_field_titre($extrafieldslabels[$key], $_SERVER["PHP_SELF"], "ef." . $key, "", $param, ($align ? 'align="' . $align . '"' : ''), $sortfield, $sortorder);
+				print_liste_field_titre($extralabels[$key], $_SERVER["PHP_SELF"], "ef." . $key, "", $param, ($align ? 'align="' . $align . '"' : ''), $sortfield, $sortorder);
 			}
 		}
 	}
@@ -336,7 +319,7 @@ if ($resql) {
 		print_liste_field_titre($langs->trans("DateCreationShort"), $_SERVER["PHP_SELF"], "t.datec", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
 	if (! empty($arrayfields['t.tms']['checked']))
 		print_liste_field_titre($langs->trans("DateModificationShort"), $_SERVER["PHP_SELF"], "t.tms", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
-		// if (! empty($arrayfields['t.status']['checked'])) print_liste_field_titre($langs->trans("Status"),$_SERVER["PHP_SELF"],"t.status","",$param,'align="center"',$sortfield,$sortorder);
+	// if (! empty($arrayfields['t.status']['checked'])) print_liste_field_titre($langs->trans("Status"),$_SERVER["PHP_SELF"],"t.status","",$param,'align="center"',$sortfield,$sortorder);
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', 'align="right"', $sortfield, $sortorder, 'maxwidthsearch ');
 	print '</tr>' . "\n";
 	
@@ -351,11 +334,11 @@ if ($resql) {
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_label" value="' . $search_label . '" size="10"></td>';
 	if (! empty($arrayfields['t.description']['checked']))
 		print '<td class="liste_titre"><input type="text" class="flat" name="search_description" value="' . $search_description . '" size="10"></td>';
-		
-		// example of a combobox selection for search
-		// if (! empty($arrayfields['t.fk_rootstock']['checked']))
-		// print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock', true) . '</td>';
-		
+	
+	// example of a combobox selection for search
+	// if (! empty($arrayfields['t.fk_rootstock']['checked']))
+	// print '<td class="liste_titre">' . $formvignoble->displayDicCombo('c_rootstock', 'rootstook', $search_fk_rootstock, 'search_fk_rootstock', true) . '</td>';
+	
 	// Search box for Extra fields in title
 	if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 		foreach ($extrafields->attribute_label as $key => $val) {
@@ -446,7 +429,7 @@ if ($resql) {
 				print '<td>' . $obj->label . '</td>';
 			if (! empty($arrayfields['t.description']['checked']))
 				print '<td>' . $obj->description . '</td>';
-				// Extra fields
+			// Extra fields
 			if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label)) {
 				foreach ($extrafields->attribute_label as $key => $val) {
 					if (! empty($arrayfields["ef." . $key]['checked'])) {
@@ -456,7 +439,7 @@ if ($resql) {
 							print ' align="' . $align . '"';
 						print '>';
 						$tmpkey = 'options_' . $key;
-						print $extrafields->showOutputField($key, $obj->$tmpkey, '','plot');
+						print $extrafields->showOutputField($key, $obj->$tmpkey, '', 'plot');
 						print '</td>';
 					}
 				}
@@ -480,16 +463,6 @@ if ($resql) {
 				print dol_print_date($db->jdate($obj->date_update), 'dayhour');
 				print '</td>';
 			}
-			// Status
-			/*
-			 * if (! empty($arrayfields['u.statut']['checked']))
-			 * {
-			 * $userstatic->statut=$obj->statut;
-			 * print '<td align="center">'.$userstatic->getLibStatut(3).'</td>';
-			 * }
-			 */
-			// Action column
-			// TODO check if example of action column exist
 			print '<td></td>';
 			print '</tr>';
 		}

@@ -153,31 +153,31 @@ function printButtonNewField($action)
  * @param array  $extrafields        	
  * @param string $elementtype      	
  */
-function createDefaultFields($extrafields, $elementtype)
+function createDefaultFields(ExtraFields $extrafields, $elementtype)
 {
 	Global $db, $langs;
 	
-	$result = $extrafields->addExtraField('areasize', 'Size (ha)', 'double', 1, '10,2', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 1, '', 0, 0);
+	$result = $extrafields->addExtraField('areasize', 'Size (ha)', 'double', 1, '10,2', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 0, '', 1, 0);
 	if ($result <= 0) {
 		setEventMessages('areasize field not added', null, 'warnings');
 	}
-	$result = $extrafields->addExtraField('rootsnumber', 'Number of Roots', 'int', 2, '10', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 1, '', 0, 0);
+	$result = $extrafields->addExtraField('rootsnumber', 'Number of Roots', 'int', 2, '10', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 0, '', 1, 0);
 	if ($result <= 0) {
 		setEventMessages('rootsnumber field not added', null, 'warnings');
 	}
-	$result = $extrafields->addExtraField('spacing', 'Spacing (cm)', 'double', 3, '3,0', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 1, '', 0, 0);
+	$result = $extrafields->addExtraField('spacing', 'Spacing (cm)', 'double', 3, '3,0', $elementtype, 0, 1, 0, 'a:1:{s:7:\"options\";a:1:{s:0:\"\";N;}}', 0, '', 1, 0);
 	if ($result <= 0) {
 		setEventMessages('spacing field not added', null, 'warnings');
 	}
-	$result = $extrafields->addExtraField('cultivationtype', 'Cultivation type', 'sellist', 4, '', $elementtype, 0, 1,'', 'a:1:{s:7:\"options\";a:1:{s:38:\"c_cultivationtype:label:code::active=1\";N;}}', 1, '', 0, 0);
+	$result = $extrafields->addExtraField('cultivationtype', 'Cultivation type', 'sellist', 4, '', $elementtype, 0, 1,'', 'a:1:{s:7:\"options\";a:1:{s:38:\"c_cultivationtype:label:code::active=1\";N;}}', 0, '', 1, 0);
 	if ($result <= 0) {
 		setEventMessages('cultivationtype field not added', null, 'warnings');
 	}
-	$result = $extrafields->addExtraField('varietal', 'Varietal', 'sellist', 5, '', $elementtype, 0, 1, '', 'a:1:{s:7:\"options\";a:1:{s:31:\"c_varietal:label:code::active=1\";N;}}', 1, '', 0, 0);
+	$result = $extrafields->addExtraField('varietal', 'Varietal', 'sellist', 5, '', $elementtype, 0, 1, '', 'a:1:{s:7:\"options\";a:1:{s:31:\"c_varietal:label:code::active=1\";N;}}', 0, '', 1, 0);
 	if ($result <= 0) {
 		setEventMessages('varietal field not added', null, 'warnings');
 	}
-	$result = $extrafields->addExtraField('rootstock', 'Root Stock', 'sellist', 6, '', $elementtype, 0, 1, '', 'a:1:{s:7:\"options\";a:1:{s:32:\"c_rootstock:label:code::active=1\";N;}}', 1, '', 0, 0);
+	$result = $extrafields->addExtraField('rootstock', 'Root Stock', 'sellist', 6, '', $elementtype, 0, 1, '', 'a:1:{s:7:\"options\";a:1:{s:32:\"c_rootstock:label:code::active=1\";N;}}', 0, '', 1, 0);
 	if ($result <= 0) {
 		setEventMessages('rootstock field not added', null, 'warnings');
 	}

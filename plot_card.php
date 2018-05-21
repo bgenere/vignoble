@@ -43,9 +43,9 @@ if (! $user->rights->vignoble->plot->read)
 	
 	// Plot classes for C R U D operations
 $object = new plot($db);
+// Load Extrafields array in object
 $extrafields = new ExtraFields($db);
-// get $extrafields->attribute_label populated
-$extrafields->fetch_name_optionals_label($object->table_element);
+$extralabels=$extrafields->fetch_name_optionals_label($object->table_element);
 
 if (($id > 0 || ! empty($ref))) { // R U D operation
 	if ($object->fetch($id, $ref) >= 0) {
@@ -89,7 +89,7 @@ if (($id > 0 || ! empty($ref))) { // R U D operation
 		accessforbidden();
 		// actions
 	if ($action == 'add' && ! $cancel) {
-		$action = addPlot($object, $extrafields);
+		$action = addPlot($object, $extrafields, $extralabels);
 	} elseif ($cancel) {
 		header("Location: " . dol_buildpath('/vignoble/plot_list.php', 1));
 		exit();
@@ -113,7 +113,7 @@ $db->close();
  * @param ExtraFields $extrafields        	
  * @return string
  */
-function addPlot(plot $object, ExtraFields $extrafields)
+function addPlot(plot $object, ExtraFields $extrafields, $extralabels)
 {
 	Global $db, $conf, $user, $langs;
 	
@@ -177,10 +177,8 @@ function displayAddPlotForm(plot $object, ExtraFields $extrafields)
 	$doleditor->Create();
 	print "</td></tr>";
 	// extrafields
-	if (! empty($extrafields->attribute_label)) {
-		print $object->showOptionals($extrafields, 'edit');
-	}
-	
+	print $object->showOptionals($extrafields, 'edit');
+		
 	print '</table>';
 	
 	dol_fiche_end();
@@ -432,9 +430,9 @@ function displayPlotCard($action, plot $object, ExtraFields $extrafields, Form $
 	print '<td>' . (dol_textishtml($object->description) ? $object->description : dol_nl2br($object->description, 1, true)) . '</td>';
 	print '</tr>';
 	// Extrafields
-	if (! empty($extrafields->attribute_label)) {
-		print $object->showOptionals($extrafields, 'view');
-	}
+	
+	print $object->showOptionals($extrafields);
+	
 	print '</table>';
 	// edit and delete buttons below the card
 	print '<div class="tabsAction">';
@@ -652,8 +650,8 @@ function buildTaskSearchParameters($filter)
  *
  * Each line display Task ref and label, note and coverage.
  *
- * @param $plottask the
- *        	result of the SQL query on plot task
+ * @param $plottask array
+ * 		the result of the SQL query on plot task
  */
 function displayPlotTaskLines($plottask)
 {
