@@ -144,7 +144,7 @@ function displayView($selectedproduct, $quantity, $productcomponents, $selectedw
 			displayTable($langs->trans('ProductsUsed'), $productcomponents, productcomponentsfields());
 			
 			$warehouses = fetchWarehouses($selectedproduct, $quantity);
-			
+	
 			print '<br/><br/>';
 			
 			if (! empty($warehouses)) {

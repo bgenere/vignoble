@@ -136,7 +136,7 @@ function fetchWarehouses($package,$quantity)
 		
 	$sql = 'SELECT';
 	$sql .= ' stock.fk_entrepot as rowid,';
-	$sql .= ' entrepot.label as label';
+	$sql .= ' entrepot.lieu as label';
 		
 	$sql .= ' FROM ' . MAIN_DB_PREFIX . 'product as package ';
 	
@@ -191,7 +191,7 @@ function fetchWarehouseStock($package,$selectedwarehouse)
 	dol_syslog(__METHOD__, LOG_DEBUG);
 		
 	$sql = 'SELECT';
-	$sql .= ' entrepot.label as warehouse,';
+	$sql .= ' entrepot.lieu as warehouse,';
 	$sql .= ' product.ref as ref,';
 	$sql .= ' product.label as label,';
 	$sql .= ' stock.reel as quantity';
@@ -209,7 +209,7 @@ function fetchWarehouseStock($package,$selectedwarehouse)
 	$sql .= ' UNION';
 	
 	$sql .= ' SELECT';
-	$sql .= ' entrepot.label as warehouse,';
+	$sql .= ' entrepot.lieu as warehouse,';
 	$sql .= ' product.ref as ref,';
 	$sql .= ' product.label as label,';
 	$sql .= ' stock.reel as quantity';
