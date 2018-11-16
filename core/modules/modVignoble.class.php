@@ -114,7 +114,7 @@ class modVignoble extends DolibarrModules
 		/**
 		 * version : module version as x.x.x
 		 */
-		$this->version = '0.8.0';
+		$this->version = '0.9.0';
 		/**
 		 * const_name : module constant to save module status enabled/disabled
 		 */
@@ -220,7 +220,7 @@ class modVignoble extends DolibarrModules
 		 *      
 		 */
 		$this->need_dolibarr_version = array(
-			4,
+			7,
 			0,
 			0
 		);
@@ -267,10 +267,6 @@ class modVignoble extends DolibarrModules
 	private function getTabs()
 	{
 		$this->tabs = array(
-			/**
-			 * add plot tab to resource module
-			 */
-			'resource:+plot:Plot:vignoble@vignoble:1:/vignoble/admin/admin_vignoble.php?id=__ID__',
 			/**
 			 * remove project tabs for cultivation project
 			 */
