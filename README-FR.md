@@ -1,7 +1,7 @@
 Module Vignoble
 ========================================
 
-Auteur : Bruno Généré      <bgenere@webiseasy.org>
+Auteur : Bruno Généré      <bruno.genere@encom1.fr>
 
 
 Ce module est dédié à la culture de la vigne.
@@ -13,11 +13,12 @@ En utilsant ce module la culture de la vigne peut être suivie et améliorées a
 Fonctions Principales
 --------------------
 
-Ce module est en cours de développement.
-
 Fonctionnalités actuelles :
 
-- Catalogue des parcelles (premier jet)
+- Catalogue des parcelles
+- Extension des taches de projet pour le suivi des cultures par parcelles
+- Création des mouvements de stocks liés à la fabrication de produits composés
+- Suivi des commandes et expéditions par produits sur une période donnée.
 
 
 Pre-requis

@@ -1,7 +1,7 @@
 Vineyard Module 
 ========================================
 
-Author : Bruno Généré      <bgenere@webiseasy.org>
+Author : Bruno Généré      <bruno.genere@encom1.fr>
 
 
 The aim of this module is to manage the complete life cycle of vine cultivation.
@@ -12,11 +12,12 @@ Using this module the vine cultivation could be followed and enhanced as needed 
 Main features
 --------------------
 
-This module is under development.
-
 Current list of features :
 
-- Plots of land catalog (first draft)
+- Plots of land catalog
+- Project tasks extension to follow activity by plot
+- Create stock movements following product packaging  
+- List of orders and deliveries by products on a given time frame.
 
 
 Pre-requisites
